@@ -10,7 +10,22 @@
 
 #import "ViewController.h"
 
+#import "GLView.h"
+
+@interface AppDelegate()
+{
+// Inside @interface
+GLView* _glView;
+}
+ 
+// After @interface
+@property (nonatomic, retain) IBOutlet GLView *glView;
+
+@end
+
 @implementation AppDelegate
+// At top of file
+@synthesize glView=_glView;
 
 - (void)dealloc
 {
@@ -22,8 +37,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
-    // Override point for customization after application launch.
-    self.viewController = [[[ViewController alloc] initWithNibName:@"ViewController" bundle:nil] autorelease];
+    self.viewController = [[[ViewController alloc] init] autorelease];
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
     return YES;
