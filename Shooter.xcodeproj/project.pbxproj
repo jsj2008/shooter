@@ -1,0 +1,339 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		07E0463616886E73001F9CCE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07E0463516886E73001F9CCE /* UIKit.framework */; };
+		07E0463816886E73001F9CCE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07E0463716886E73001F9CCE /* Foundation.framework */; };
+		07E0463A16886E73001F9CCE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07E0463916886E73001F9CCE /* CoreGraphics.framework */; };
+		07E0463C16886E73001F9CCE /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07E0463B16886E73001F9CCE /* GLKit.framework */; };
+		07E0463E16886E73001F9CCE /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07E0463D16886E73001F9CCE /* OpenGLES.framework */; };
+		07E0464416886E73001F9CCE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 07E0464216886E73001F9CCE /* InfoPlist.strings */; };
+		07E0464616886E73001F9CCE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E0464516886E73001F9CCE /* main.m */; };
+		07E0464A16886E73001F9CCE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E0464916886E73001F9CCE /* AppDelegate.m */; };
+		07E0464C16886E73001F9CCE /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 07E0464B16886E73001F9CCE /* Default.png */; };
+		07E0464E16886E73001F9CCE /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 07E0464D16886E73001F9CCE /* Default@2x.png */; };
+		07E0465016886E73001F9CCE /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 07E0464F16886E73001F9CCE /* Default-568h@2x.png */; };
+		07E0465216886E73001F9CCE /* Shader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 07E0465116886E73001F9CCE /* Shader.fsh */; };
+		07E0465416886E73001F9CCE /* Shader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 07E0465316886E73001F9CCE /* Shader.vsh */; };
+		07E0465716886E73001F9CCE /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E0465616886E73001F9CCE /* ViewController.m */; };
+		07E0465A16886E73001F9CCE /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07E0465816886E73001F9CCE /* ViewController.xib */; };
+		07E0466216887039001F9CCE /* Actor.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E0466116887039001F9CCE /* Actor.m */; };
+		07E0466516887792001F9CCE /* GLObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E0466416887792001F9CCE /* GLObject.m */; };
+		07E04669168877D4001F9CCE /* VertexBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E04668168877D4001F9CCE /* VertexBuffer.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		07E0463116886E73001F9CCE /* Shooter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shooter.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		07E0463516886E73001F9CCE /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		07E0463716886E73001F9CCE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		07E0463916886E73001F9CCE /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		07E0463B16886E73001F9CCE /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		07E0463D16886E73001F9CCE /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		07E0464116886E73001F9CCE /* Shooter-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Shooter-Info.plist"; sourceTree = "<group>"; };
+		07E0464316886E73001F9CCE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		07E0464516886E73001F9CCE /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		07E0464716886E73001F9CCE /* Shooter-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Shooter-Prefix.pch"; sourceTree = "<group>"; };
+		07E0464816886E73001F9CCE /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		07E0464916886E73001F9CCE /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		07E0464B16886E73001F9CCE /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		07E0464D16886E73001F9CCE /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		07E0464F16886E73001F9CCE /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		07E0465116886E73001F9CCE /* Shader.fsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = Shader.fsh; path = Shaders/Shader.fsh; sourceTree = "<group>"; };
+		07E0465316886E73001F9CCE /* Shader.vsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = Shader.vsh; path = Shaders/Shader.vsh; sourceTree = "<group>"; };
+		07E0465516886E73001F9CCE /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		07E0465616886E73001F9CCE /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		07E0465916886E73001F9CCE /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController.xib; sourceTree = "<group>"; };
+		07E0466016887039001F9CCE /* Actor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Actor.h; sourceTree = "<group>"; };
+		07E0466116887039001F9CCE /* Actor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Actor.m; sourceTree = "<group>"; };
+		07E0466316887792001F9CCE /* GLObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GLObject.h; path = GLES/GLObject.h; sourceTree = "<group>"; };
+		07E0466416887792001F9CCE /* GLObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GLObject.m; path = GLES/GLObject.m; sourceTree = "<group>"; };
+		07E04667168877D4001F9CCE /* VertexBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VertexBuffer.h; sourceTree = "<group>"; };
+		07E04668168877D4001F9CCE /* VertexBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VertexBuffer.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		07E0462E16886E73001F9CCE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				07E0463616886E73001F9CCE /* UIKit.framework in Frameworks */,
+				07E0463816886E73001F9CCE /* Foundation.framework in Frameworks */,
+				07E0463A16886E73001F9CCE /* CoreGraphics.framework in Frameworks */,
+				07E0463C16886E73001F9CCE /* GLKit.framework in Frameworks */,
+				07E0463E16886E73001F9CCE /* OpenGLES.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		07E0462616886E73001F9CCE = {
+			isa = PBXGroup;
+			children = (
+				07E0466616887799001F9CCE /* GLES */,
+				07E0463F16886E73001F9CCE /* Shooter */,
+				07E0463416886E73001F9CCE /* Frameworks */,
+				07E0463216886E73001F9CCE /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		07E0463216886E73001F9CCE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				07E0463116886E73001F9CCE /* Shooter.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		07E0463416886E73001F9CCE /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				07E0463516886E73001F9CCE /* UIKit.framework */,
+				07E0463716886E73001F9CCE /* Foundation.framework */,
+				07E0463916886E73001F9CCE /* CoreGraphics.framework */,
+				07E0463B16886E73001F9CCE /* GLKit.framework */,
+				07E0463D16886E73001F9CCE /* OpenGLES.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		07E0463F16886E73001F9CCE /* Shooter */ = {
+			isa = PBXGroup;
+			children = (
+				07E0464816886E73001F9CCE /* AppDelegate.h */,
+				07E0464916886E73001F9CCE /* AppDelegate.m */,
+				07E0465116886E73001F9CCE /* Shader.fsh */,
+				07E0465316886E73001F9CCE /* Shader.vsh */,
+				07E0465516886E73001F9CCE /* ViewController.h */,
+				07E0465616886E73001F9CCE /* ViewController.m */,
+				07E0465816886E73001F9CCE /* ViewController.xib */,
+				07E0464016886E73001F9CCE /* Supporting Files */,
+				07E0466016887039001F9CCE /* Actor.h */,
+				07E0466116887039001F9CCE /* Actor.m */,
+			);
+			path = Shooter;
+			sourceTree = "<group>";
+		};
+		07E0464016886E73001F9CCE /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				07E0464116886E73001F9CCE /* Shooter-Info.plist */,
+				07E0464216886E73001F9CCE /* InfoPlist.strings */,
+				07E0464516886E73001F9CCE /* main.m */,
+				07E0464716886E73001F9CCE /* Shooter-Prefix.pch */,
+				07E0464B16886E73001F9CCE /* Default.png */,
+				07E0464D16886E73001F9CCE /* Default@2x.png */,
+				07E0464F16886E73001F9CCE /* Default-568h@2x.png */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		07E0466616887799001F9CCE /* GLES */ = {
+			isa = PBXGroup;
+			children = (
+				07E0466316887792001F9CCE /* GLObject.h */,
+				07E0466416887792001F9CCE /* GLObject.m */,
+				07E04667168877D4001F9CCE /* VertexBuffer.h */,
+				07E04668168877D4001F9CCE /* VertexBuffer.m */,
+			);
+			name = GLES;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		07E0463016886E73001F9CCE /* Shooter */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 07E0465D16886E73001F9CCE /* Build configuration list for PBXNativeTarget "Shooter" */;
+			buildPhases = (
+				07E0462D16886E73001F9CCE /* Sources */,
+				07E0462E16886E73001F9CCE /* Frameworks */,
+				07E0462F16886E73001F9CCE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Shooter;
+			productName = Shooter;
+			productReference = 07E0463116886E73001F9CCE /* Shooter.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		07E0462816886E73001F9CCE /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0450;
+				ORGANIZATIONNAME = hayogame;
+			};
+			buildConfigurationList = 07E0462B16886E73001F9CCE /* Build configuration list for PBXProject "Shooter" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 07E0462616886E73001F9CCE;
+			productRefGroup = 07E0463216886E73001F9CCE /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				07E0463016886E73001F9CCE /* Shooter */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		07E0462F16886E73001F9CCE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				07E0464416886E73001F9CCE /* InfoPlist.strings in Resources */,
+				07E0464C16886E73001F9CCE /* Default.png in Resources */,
+				07E0464E16886E73001F9CCE /* Default@2x.png in Resources */,
+				07E0465016886E73001F9CCE /* Default-568h@2x.png in Resources */,
+				07E0465216886E73001F9CCE /* Shader.fsh in Resources */,
+				07E0465416886E73001F9CCE /* Shader.vsh in Resources */,
+				07E0465A16886E73001F9CCE /* ViewController.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		07E0462D16886E73001F9CCE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				07E0464616886E73001F9CCE /* main.m in Sources */,
+				07E0464A16886E73001F9CCE /* AppDelegate.m in Sources */,
+				07E0465716886E73001F9CCE /* ViewController.m in Sources */,
+				07E0466216887039001F9CCE /* Actor.m in Sources */,
+				07E0466516887792001F9CCE /* GLObject.m in Sources */,
+				07E04669168877D4001F9CCE /* VertexBuffer.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		07E0464216886E73001F9CCE /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				07E0464316886E73001F9CCE /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		07E0465816886E73001F9CCE /* ViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				07E0465916886E73001F9CCE /* en */,
+			);
+			name = ViewController.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		07E0465B16886E73001F9CCE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		07E0465C16886E73001F9CCE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		07E0465E16886E73001F9CCE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Shooter/Shooter-Prefix.pch";
+				INFOPLIST_FILE = "Shooter/Shooter-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		07E0465F16886E73001F9CCE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Shooter/Shooter-Prefix.pch";
+				INFOPLIST_FILE = "Shooter/Shooter-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		07E0462B16886E73001F9CCE /* Build configuration list for PBXProject "Shooter" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				07E0465B16886E73001F9CCE /* Debug */,
+				07E0465C16886E73001F9CCE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		07E0465D16886E73001F9CCE /* Build configuration list for PBXNativeTarget "Shooter" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				07E0465E16886E73001F9CCE /* Debug */,
+				07E0465F16886E73001F9CCE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 07E0462816886E73001F9CCE /* Project object */;
+}
