@@ -14,14 +14,12 @@
 class GLES
 {
 public:
+    
+    static void initialize(float viewWidth, float viewHeight);
+    
     static void pushMatrix();
     static void popMatrix();
-    
-    // 頂点シェーダ変数を現在の行列で更新する
-    static void updateMatrix();
-    
-    // 初期化
-    static void initialize(float viewAspect);
+    static void updateMatrix(); // シェーダ変数に現在の行列を渡す
     
     static GLuint aPositionSlot        ;
     static GLuint aColorSlot           ;
@@ -30,10 +28,13 @@ public:
     
     static GLKMatrix4 mvMatrix; // モデルビュー行列
     static GLKMatrix4 projectionMatrix; // 射影行列
-    static float aspect; // アスペクト比
+    
+    static float viewWidth;
+    static float viewHeight;
     
 private:
     static void compileShaders();
     static GLuint compileShader(NSString* shaderName, GLenum shaderType);
     static std::stack<GLKMatrix4> matrixStack; // 行列スタック
+    
 };

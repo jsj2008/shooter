@@ -22,7 +22,8 @@ GLuint GLES::aColorSlot           ;
 GLuint GLES::uProjectionMatrixSlot;
 GLuint GLES::uModelViewMatrixSlot ;
 
-float GLES::aspect;
+float GLES::viewWidth;
+float GLES::viewHeight;
 
 void GLES::pushMatrix()
 {
@@ -35,14 +36,15 @@ void GLES::popMatrix()
     matrixStack.pop();
 }
 
-void GLES::initialize(float aspect)
+void GLES::initialize(float viewWidth, float viewHeight)
 {
+    glViewport(0, 0, viewWidth, viewHeight);
     compileShaders();
-    
-    GLES::aspect = aspect;
+    GLES::viewWidth = viewWidth;
+    GLES::viewHeight = viewHeight;
+    float aspect = (float)(viewWidth / viewHeight);
     GLES::projectionMatrix = GLKMatrix4MakePerspective(GLKMathDegreesToRadians(65.0f), aspect, 0.1f, 100.0f);
     mvMatrix = GLKMatrix4Identity;
-    
 }
 
 void GLES::updateMatrix()

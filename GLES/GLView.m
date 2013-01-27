@@ -21,12 +21,11 @@
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 
 @implementation GLView
+#define SA 1
 
 CAEAGLLayer* _eaglLayer;
 EAGLContext* _context;
 GLuint _colorRenderBuffer;
-
-float _currentRotation;
 GLuint _depthRenderBuffer;
 
 Object3D* obj3d;
@@ -72,9 +71,7 @@ const GLubyte Indices[] = {
         // initialize
         [self setupLayer];
         [self setupContext];
-        glViewport(0, 0, self.frame.size.width, self.frame.size.height);
-        float aspect = fabsf(self.frame.size.width / self.frame.size.height);
-        GLES::initialize(aspect);
+        GLES::initialize(self.frame.size.width, self.frame.size.height);
         [self setupDepthBuffer];
         [self setupRenderBuffer];
         [self setupFrameBuffer];
@@ -159,11 +156,6 @@ const GLubyte Indices[] = {
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, _depthRenderBuffer);
 }
 
-float z = -1;
-float rotateX = 0;
-float rotateY = 0;
-float rotateZ = 0;
-
 - (void)initFrame
 {
     glClearColor(0, 104.0/255.0, 55.0/255.0, 1.0);
@@ -171,27 +163,12 @@ float rotateZ = 0;
     glEnable(GL_DEPTH_TEST);
 }
 
-#define O3 1
 - (void)render
 {
-    // modelview matrix
-    // - transform
-    z -= 0.01;
-#if O3
-    obj3d->position.z = z;
+    obj3d->position.z -= 0.01;
     obj3d->rotate.x += 0.01;
     obj3d->rotate.y += 0.01;
     obj3d->rotate.z += 0.01;
-#else
-    GLES::mvMatrix = GLKMatrix4MakeTranslation(0, 0, z);
-    // - rotation
-    rotateX += 0.1;
-    rotateY += 0.2;
-    rotateZ += 0.3;
-    GLES::mvMatrix = GLKMatrix4Rotate(GLES::mvMatrix, rotateX, rotateY, rotateZ, 1);
-    GLES::updateMatrix();
-#endif
-    
     obj3d->draw();
     
 }
