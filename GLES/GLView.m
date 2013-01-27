@@ -16,7 +16,7 @@
 #import "VertexBuffer.h"
 #import "IndexBuffer.h"
 #import "Mesh.h"
-#import "Shader.h"
+#import "GLES.h"
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 
@@ -72,7 +72,9 @@ const GLubyte Indices[] = {
         // initialize
         [self setupLayer];
         [self setupContext];
-        Shader::compileShaders();
+        glViewport(0, 0, self.frame.size.width, self.frame.size.height);
+        float aspect = fabsf(self.frame.size.width / self.frame.size.height);
+        GLES::initialize(aspect);
         [self setupDepthBuffer];
         [self setupRenderBuffer];
         [self setupFrameBuffer];
@@ -162,38 +164,48 @@ float rotateX = 0;
 float rotateY = 0;
 float rotateZ = 0;
 
-- (void)render:(CADisplayLink*)displayLink {
-
+- (void)initFrame
+{
     glClearColor(0, 104.0/255.0, 55.0/255.0, 1.0);
-    //glClear(GL_COLOR_BUFFER_BIT);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
-    
-    // projection matrix
-    float aspect = fabsf(self.frame.size.width / self.frame.size.height);
-    GLKMatrix4 projection = GLKMatrix4MakePerspective(GLKMathDegreesToRadians(65.0f), aspect, 0.1f, 100.0f);
-    glUniformMatrix4fv(Shader::projectionMatrixSlot(), 1, 0, projection.m);
-    
+}
+
+#define O3 1
+- (void)render
+{
     // modelview matrix
     // - transform
     z -= 0.01;
-    GLKMatrix4 modelView = GLKMatrix4MakeTranslation(0, 0, z);
-    
+#if O3
+    obj3d->position.z = z;
+    obj3d->rotate.x += 0.01;
+    obj3d->rotate.y += 0.01;
+    obj3d->rotate.z += 0.01;
+#else
+    GLES::mvMatrix = GLKMatrix4MakeTranslation(0, 0, z);
     // - rotation
     rotateX += 0.1;
     rotateY += 0.2;
     rotateZ += 0.3;
-    modelView = GLKMatrix4Rotate(modelView, rotateX, rotateY, rotateZ, 1);
+    GLES::mvMatrix = GLKMatrix4Rotate(GLES::mvMatrix, rotateX, rotateY, rotateZ, 1);
+    GLES::updateMatrix();
+#endif
     
-    glUniformMatrix4fv(Shader::modelViewMatrixSlot(), 1, 0, modelView.m);
-    
-    // 1
-    glViewport(0, 0, self.frame.size.width, self.frame.size.height);
-    
-    // 2
     obj3d->draw();
     
+}
+
+- (void)showBuffer
+{
     [_context presentRenderbuffer:GL_RENDERBUFFER];
+}
+
+- (void)render:(CADisplayLink*)displayLink {
+    
+    [self initFrame];
+    [self render];
+    [self showBuffer];
 }
 
 #pragma mark buffer objects

@@ -137,32 +137,6 @@
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "GLES/GLView.m"
-         timestampString = "380966928.510686"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "167"
-         endingLineNumber = "167"
-         landmarkName = "-render:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "GLES/GLView.m"
-         timestampString = "380966928.510686"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "184"
-         endingLineNumber = "184"
-         landmarkName = "-render:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
          filePath = "GLES/IndexBuffer.m"
          timestampString = "380946269.744871"
          startingColumnNumber = "9223372036854775807"
@@ -201,22 +175,22 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "GLES/Object3D.mm"
-         timestampString = "380966045.648833"
+         timestampString = "380979616.055722"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "16"
-         endingLineNumber = "16">
+         startingLineNumber = "17"
+         endingLineNumber = "17">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "GLES/Object3D.mm"
-         timestampString = "380966858.003356"
+         timestampString = "380980206.13664"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "29"
-         endingLineNumber = "29"
+         startingLineNumber = "41"
+         endingLineNumber = "41"
          landmarkName = "draw()"
          landmarkType = "7">
       </FileBreakpoint>
@@ -225,11 +199,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "GLES/Object3D.mm"
-         timestampString = "380966858.003356"
+         timestampString = "380980206.13664"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "28"
-         endingLineNumber = "28"
+         startingLineNumber = "40"
+         endingLineNumber = "40"
          landmarkName = "draw()"
          landmarkType = "7">
       </FileBreakpoint>
@@ -238,11 +212,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "GLES/Object3D.mm"
-         timestampString = "380966085.873135"
+         timestampString = "380980206.13664"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "23"
-         endingLineNumber = "23"
+         startingLineNumber = "26"
+         endingLineNumber = "26"
          landmarkName = "Object3D()"
          landmarkType = "7">
       </FileBreakpoint>
@@ -251,11 +225,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "GLES/GLView.m"
-         timestampString = "380966928.510686"
+         timestampString = "380980467.730104"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "202"
-         endingLineNumber = "202"
+         startingLineNumber = "214"
+         endingLineNumber = "214"
          landmarkName = "-setupVBOs"
          landmarkType = "5">
       </FileBreakpoint>
@@ -264,11 +238,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "GLES/GLView.m"
-         timestampString = "380966928.510686"
+         timestampString = "380980467.730104"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "208"
-         endingLineNumber = "208"
+         startingLineNumber = "220"
+         endingLineNumber = "220"
          landmarkName = "-setupVBOs"
          landmarkType = "5">
       </FileBreakpoint>
@@ -277,11 +251,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "GLES/Object3D.mm"
-         timestampString = "380966858.003356"
+         timestampString = "380980206.13664"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "30"
-         endingLineNumber = "30"
+         startingLineNumber = "42"
+         endingLineNumber = "42"
          landmarkName = "draw()"
          landmarkType = "7">
       </FileBreakpoint>
@@ -290,7 +264,59 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "GLES/Object3D.mm"
-         timestampString = "380966858.003356"
+         timestampString = "380980206.13664"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "43"
+         endingLineNumber = "43"
+         landmarkName = "draw()"
+         landmarkType = "7">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "GLES/Object3D.mm"
+         timestampString = "380980206.13664"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "44"
+         endingLineNumber = "44"
+         landmarkName = "draw()"
+         landmarkType = "7">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "GLES/Vector3.h"
+         timestampString = "380967899.168794"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "12"
+         endingLineNumber = "12"
+         landmarkName = "class Vector3"
+         landmarkType = "3">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "GLES/GLView.m"
+         timestampString = "380980220.924935"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "181"
+         endingLineNumber = "181"
+         landmarkName = "-render"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "GLES/Object3D.mm"
+         timestampString = "380980237.650597"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "31"
@@ -302,25 +328,12 @@
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "GLES/GLView.m"
-         timestampString = "380966928.510686"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "194"
-         endingLineNumber = "194"
-         landmarkName = "-render:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
          filePath = "GLES/Object3D.mm"
-         timestampString = "380966858.003356"
+         timestampString = "380980283.692951"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "32"
-         endingLineNumber = "32"
+         startingLineNumber = "37"
+         endingLineNumber = "37"
          landmarkName = "draw()"
          landmarkType = "7">
       </FileBreakpoint>

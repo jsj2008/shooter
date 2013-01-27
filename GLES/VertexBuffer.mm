@@ -10,7 +10,7 @@
 #import <GLKit/GLKit.h>
 #include <OpenGLES/ES2/gl.h>
 #include <OpenGLES/ES2/glext.h>
-#import "Shader.h"
+#import "GLES.h"
 
 /*
 const Vertex Vertices[] = {
@@ -36,21 +36,21 @@ VertexBuffer::VertexBuffer(const Vertex* v, int size)
 
 void VertexBuffer::bind()
 {
-    glEnableVertexAttribArray(Shader::positionSlot());
-    glEnableVertexAttribArray(Shader::colorSlot());
+    glEnableVertexAttribArray(GLES::aPositionSlot);
+    glEnableVertexAttribArray(GLES::aColorSlot);
     glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
     
-    glVertexAttribPointer(Shader::positionSlot(), 3, GL_FLOAT, GL_FALSE,
+    glVertexAttribPointer(GLES::aPositionSlot, 3, GL_FLOAT, GL_FALSE,
                           sizeof(Vertex), 0);
-    glVertexAttribPointer(Shader::colorSlot(), 4, GL_FLOAT, GL_FALSE,
+    glVertexAttribPointer(GLES::aColorSlot, 4, GL_FLOAT, GL_FALSE,
                           sizeof(Vertex), (GLvoid*) (sizeof(float) * 3));
     
 }
 
 void VertexBuffer::unbind()
 {
-    glDisableVertexAttribArray(Shader::positionSlot());
-    glDisableVertexAttribArray(Shader::colorSlot());
+    glDisableVertexAttribArray(GLES::aPositionSlot);
+    glDisableVertexAttribArray(GLES::aColorSlot);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
