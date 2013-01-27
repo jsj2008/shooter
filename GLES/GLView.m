@@ -18,10 +18,6 @@
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 
-#define VB 1
-#define IB 1
-#define MESH 1
-
 @implementation GLView
 
 CAEAGLLayer* _eaglLayer;
@@ -34,26 +30,7 @@ GLuint _modelViewUniform;
 float _currentRotation;
 GLuint _depthRenderBuffer;
 
-#if VB && !MESH
-VertexBuffer* vertexBuffer;
-#else
-#endif
-
-#if !VB
-typedef struct {
-    float Position[3];
-    float Color[4];
-} Vertex;
-#endif
-
-#if IB && !MESH
-IndexBuffer* indexBuffer;
-#endif
-
-#if MESH
 Mesh* mesh;
-#else // MESH
-#endif // MESH
 
 const Vertex Vertices[] = {
     {{1, -1, 0}, {1, 0, 0, 1}},
@@ -211,28 +188,7 @@ float rotateZ = 0;
     glViewport(0, 0, self.frame.size.width, self.frame.size.height);
     
     // 2
-#if MESH
     [mesh draw:_positionSlot colorHandle:_colorSlot];
-#else // MESH
-#if VB
-    // 5
-    [vertexBuffer bind:_positionSlot colorHandle:_colorSlot];
-#else
-    glVertexAttribPointer(_positionSlot, 3, GL_FLOAT, GL_FALSE,
-                          sizeof(Vertex), 0);
-    glVertexAttribPointer(_colorSlot, 4, GL_FLOAT, GL_FALSE,
-                          sizeof(Vertex), (GLvoid*) (sizeof(float) * 3));
-#endif
-    
-#if IB
-    [indexBuffer bind];
-    [indexBuffer draw];
-#else
-    // 3
-    glDrawElements(GL_TRIANGLES, sizeof(Indices)/sizeof(Indices[0]),
-                   GL_UNSIGNED_BYTE, 0);
-#endif
-#endif // MESH
     
     [_context presentRenderbuffer:GL_RENDERBUFFER];
 }
@@ -309,11 +265,6 @@ float rotateZ = 0;
     // 5
     _positionSlot = glGetAttribLocation(programHandle, "Position");
     _colorSlot = glGetAttribLocation(programHandle, "SourceColor");
-#if VB
-#else
-    glEnableVertexAttribArray(_positionSlot);
-    glEnableVertexAttribArray(_colorSlot);
-#endif
     
     _projectionUniform = glGetUniformLocation(programHandle, "Projection");
     _modelViewUniform = glGetUniformLocation(programHandle, "Modelview");
@@ -324,33 +275,12 @@ float rotateZ = 0;
 
 - (void)setupVBOs {
  
-#if MESH
     VertexBuffer* vertexBuffer = [[VertexBuffer alloc] initWithWithVertices:Vertices size:sizeof(Vertices)];
     IndexBuffer* indexBuffer = [[IndexBuffer alloc] initWithIndices:Indices size:sizeof(Indices)];
     
     mesh = [[Mesh alloc] init];
     [mesh setIndexBuffer:indexBuffer];
     [mesh setVertexBuffer:vertexBuffer];
-#else // MESH
-#if VB
-    vertexBuffer = [[VertexBuffer alloc] initWithWithVertices:Vertices size:sizeof(Vertices)];
-#else
-    GLuint vertexBuffer;
-    glGenBuffers(1, &vertexBuffer);
-    glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(Vertices), Vertices, GL_STATIC_DRAW);
-#endif
-    
-#if IB
-    indexBuffer = [[IndexBuffer alloc] initWithIndices:Indices size:sizeof(Indices)];
-#else
-    GLuint indexBuffer;
-    glGenBuffers(1, &indexBuffer);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Indices), Indices, GL_STATIC_DRAW);
-#endif
-    
-#endif // MESH
  
 }
 
