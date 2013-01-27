@@ -10,7 +10,17 @@
 
 @interface IndexBuffer : NSObject
 {
+    GLuint indexBuffer;
     
 }
+- (id)initWithIndices:(const GLubyte*)indices size:(int)size;
+
+- (void)bind;
+
+- (void)draw;
+
+- (void)unbind;
+
+- (void)dispose;
 
 @end

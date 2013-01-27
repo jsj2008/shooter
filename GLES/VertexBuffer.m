@@ -35,6 +35,7 @@ const Vertex Vertices[] = {
         glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
         //glBufferData(GL_ARRAY_BUFFER, sizeof(v), v, GL_STATIC_DRAW);
         glBufferData(GL_ARRAY_BUFFER, size, v, GL_STATIC_DRAW);
+        // TODO:unbind
     }
     return self;
 }
@@ -53,9 +54,9 @@ const Vertex Vertices[] = {
 
 - (void)unbind:(GLuint)positionHandle colorHandle:(GLuint)colorHandle
 {
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
     glDisableVertexAttribArray(positionHandle);
     glDisableVertexAttribArray(colorHandle);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 - (void)dispose

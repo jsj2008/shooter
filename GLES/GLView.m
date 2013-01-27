@@ -18,6 +18,7 @@
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 
 #define VB 1
+#define IB 1
 
 @implementation GLView
 
@@ -39,6 +40,10 @@ typedef struct {
     float Position[3];
     float Color[4];
 } Vertex;
+#endif
+
+#if IB
+IndexBuffer* indexBuffer;
 #endif
 
 const Vertex Vertices[] = {
@@ -209,9 +214,14 @@ float rotateZ = 0;
                           sizeof(Vertex), (GLvoid*) (sizeof(float) * 3));
 #endif
     
+#if IB
+    [indexBuffer bind];
+    [indexBuffer draw];
+#else
     // 3
     glDrawElements(GL_TRIANGLES, sizeof(Indices)/sizeof(Indices[0]),
                    GL_UNSIGNED_BYTE, 0);
+#endif
     
     [_context presentRenderbuffer:GL_RENDERBUFFER];
 }
@@ -311,11 +321,15 @@ float rotateZ = 0;
     glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
     glBufferData(GL_ARRAY_BUFFER, sizeof(Vertices), Vertices, GL_STATIC_DRAW);
 #endif
- 
+    
+#if IB
+    indexBuffer = [[IndexBuffer alloc] initWithIndices:Indices size:sizeof(Indices)];
+#else
     GLuint indexBuffer;
     glGenBuffers(1, &indexBuffer);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Indices), Indices, GL_STATIC_DRAW);
+#endif
  
 }
 
