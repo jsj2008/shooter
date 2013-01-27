@@ -12,7 +12,11 @@
 #include <OpenGLES/ES2/glext.h>
 #import <GLKit/GLKit.h>
 
+#import "VertexBuffer.h"
+
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
+
+#define VB 1
 
 @implementation GLView
 
@@ -26,10 +30,15 @@ GLuint _modelViewUniform;
 float _currentRotation;
 GLuint _depthRenderBuffer;
 
+#if VB
+VertexBuffer* vertexBuffer;
+
+#else
 typedef struct {
     float Position[3];
     float Color[4];
 } Vertex;
+#endif
 
 const Vertex Vertices[] = {
     {{1, -1, 0}, {1, 0, 0, 1}},
@@ -189,10 +198,15 @@ float rotateZ = 0;
     glViewport(0, 0, self.frame.size.width, self.frame.size.height);
     
     // 2
+#if VB
+    // 5
+    [vertexBuffer bind:_positionSlot colorHandle:_colorSlot];
+#else
     glVertexAttribPointer(_positionSlot, 3, GL_FLOAT, GL_FALSE,
                           sizeof(Vertex), 0);
     glVertexAttribPointer(_colorSlot, 4, GL_FLOAT, GL_FALSE,
                           sizeof(Vertex), (GLvoid*) (sizeof(float) * 3));
+#endif
     
     // 3
     glDrawElements(GL_TRIANGLES, sizeof(Indices)/sizeof(Indices[0]),
@@ -273,8 +287,11 @@ float rotateZ = 0;
     // 5
     _positionSlot = glGetAttribLocation(programHandle, "Position");
     _colorSlot = glGetAttribLocation(programHandle, "SourceColor");
+#if VB
+#else
     glEnableVertexAttribArray(_positionSlot);
     glEnableVertexAttribArray(_colorSlot);
+#endif
     
     _projectionUniform = glGetUniformLocation(programHandle, "Projection");
     _modelViewUniform = glGetUniformLocation(programHandle, "Modelview");
@@ -285,10 +302,14 @@ float rotateZ = 0;
 
 - (void)setupVBOs {
  
+#if VB
+    vertexBuffer = [[VertexBuffer alloc] initWithWithVertices:Vertices size:sizeof(Vertices)];
+#else
     GLuint vertexBuffer;
     glGenBuffers(1, &vertexBuffer);
     glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
     glBufferData(GL_ARRAY_BUFFER, sizeof(Vertices), Vertices, GL_STATIC_DRAW);
+#endif
  
     GLuint indexBuffer;
     glGenBuffers(1, &indexBuffer);

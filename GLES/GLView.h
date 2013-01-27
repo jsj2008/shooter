@@ -11,5 +11,7 @@
 #import <GLKit/GLKit.h>
 
 @interface GLView : UIView
+{
+}
 
 @end
