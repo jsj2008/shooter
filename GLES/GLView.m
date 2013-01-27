@@ -13,6 +13,7 @@
 #import <GLKit/GLKit.h>
 
 #import "VertexBuffer.h"
+#import "IndexBuffer.h"
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 
