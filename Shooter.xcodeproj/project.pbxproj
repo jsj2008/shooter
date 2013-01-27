@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		0755991016B3C3180066A0E9 /* GLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0755990F16B3C3180066A0E9 /* GLView.m */; };
 		0755991316B3D0560066A0E9 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0755991216B3D0560066A0E9 /* QuartzCore.framework */; };
+		0755991816B4BFD90066A0E9 /* IndexBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0755991516B4BFD90066A0E9 /* IndexBuffer.m */; };
+		0755991916B4BFD90066A0E9 /* VertexBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0755991716B4BFD90066A0E9 /* VertexBuffer.m */; };
 		07E0463616886E73001F9CCE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07E0463516886E73001F9CCE /* UIKit.framework */; };
 		07E0463816886E73001F9CCE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07E0463716886E73001F9CCE /* Foundation.framework */; };
 		07E0463A16886E73001F9CCE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07E0463916886E73001F9CCE /* CoreGraphics.framework */; };
@@ -25,13 +27,16 @@
 		07E0465716886E73001F9CCE /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E0465616886E73001F9CCE /* ViewController.m */; };
 		07E0466216887039001F9CCE /* Actor.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E0466116887039001F9CCE /* Actor.m */; };
 		07E0466516887792001F9CCE /* GLObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E0466416887792001F9CCE /* GLObject.m */; };
-		07E04669168877D4001F9CCE /* VertexBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E04668168877D4001F9CCE /* VertexBuffer.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		0755990E16B3C3180066A0E9 /* GLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GLView.h; path = GLES/GLView.h; sourceTree = "<group>"; };
 		0755990F16B3C3180066A0E9 /* GLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GLView.m; path = GLES/GLView.m; sourceTree = "<group>"; };
 		0755991216B3D0560066A0E9 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		0755991416B4BFD90066A0E9 /* IndexBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IndexBuffer.h; path = GLES/IndexBuffer.h; sourceTree = "<group>"; };
+		0755991516B4BFD90066A0E9 /* IndexBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IndexBuffer.m; path = GLES/IndexBuffer.m; sourceTree = "<group>"; };
+		0755991616B4BFD90066A0E9 /* VertexBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VertexBuffer.h; path = GLES/VertexBuffer.h; sourceTree = "<group>"; };
+		0755991716B4BFD90066A0E9 /* VertexBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VertexBuffer.m; path = GLES/VertexBuffer.m; sourceTree = "<group>"; };
 		07E0463116886E73001F9CCE /* Shooter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shooter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		07E0463516886E73001F9CCE /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		07E0463716886E73001F9CCE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -55,8 +60,6 @@
 		07E0466116887039001F9CCE /* Actor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Actor.m; sourceTree = "<group>"; };
 		07E0466316887792001F9CCE /* GLObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GLObject.h; path = GLES/GLObject.h; sourceTree = "<group>"; };
 		07E0466416887792001F9CCE /* GLObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GLObject.m; path = GLES/GLObject.m; sourceTree = "<group>"; };
-		07E04667168877D4001F9CCE /* VertexBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VertexBuffer.h; sourceTree = "<group>"; };
-		07E04668168877D4001F9CCE /* VertexBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VertexBuffer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,12 +143,14 @@
 		07E0466616887799001F9CCE /* GLES */ = {
 			isa = PBXGroup;
 			children = (
+				0755991416B4BFD90066A0E9 /* IndexBuffer.h */,
+				0755991516B4BFD90066A0E9 /* IndexBuffer.m */,
+				0755991616B4BFD90066A0E9 /* VertexBuffer.h */,
+				0755991716B4BFD90066A0E9 /* VertexBuffer.m */,
 				0755990E16B3C3180066A0E9 /* GLView.h */,
 				0755990F16B3C3180066A0E9 /* GLView.m */,
 				07E0466316887792001F9CCE /* GLObject.h */,
 				07E0466416887792001F9CCE /* GLObject.m */,
-				07E04667168877D4001F9CCE /* VertexBuffer.h */,
-				07E04668168877D4001F9CCE /* VertexBuffer.m */,
 			);
 			name = GLES;
 			sourceTree = "<group>";
@@ -222,8 +227,9 @@
 				07E0465716886E73001F9CCE /* ViewController.m in Sources */,
 				07E0466216887039001F9CCE /* Actor.m in Sources */,
 				07E0466516887792001F9CCE /* GLObject.m in Sources */,
-				07E04669168877D4001F9CCE /* VertexBuffer.m in Sources */,
 				0755991016B3C3180066A0E9 /* GLView.m in Sources */,
+				0755991816B4BFD90066A0E9 /* IndexBuffer.m in Sources */,
+				0755991916B4BFD90066A0E9 /* VertexBuffer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
