@@ -18,6 +18,6 @@
 
 - (void)setIndexBuffer:(IndexBuffer*)i;
 
-- (void)draw:(GLuint)positionHandle colorHandle:(GLuint)colorHandle;
+- (void)draw;
 
 @end

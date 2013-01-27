@@ -34,11 +34,11 @@ VertexBuffer* vertexBuffer;
     [indexBuffer retain];
 }
 
-- (void)draw:(GLuint)positionHandle colorHandle:(GLuint)colorHandle
+- (void)draw
 {
-    [vertexBuffer bind:positionHandle colorHandle:colorHandle];
+    [vertexBuffer bind];
     [indexBuffer draw];
-    [vertexBuffer unbind:positionHandle colorHandle:colorHandle];
+    [vertexBuffer unbind];
 }
 
 

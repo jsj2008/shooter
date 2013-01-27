@@ -186,7 +186,7 @@ float rotateZ = 0;
     glViewport(0, 0, self.frame.size.width, self.frame.size.height);
     
     // 2
-    [mesh draw:[Shader positionSlot] colorHandle:[Shader colorSlot]];
+    [mesh draw];
     
     [_context presentRenderbuffer:GL_RENDERBUFFER];
 }

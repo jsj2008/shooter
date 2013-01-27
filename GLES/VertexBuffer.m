@@ -11,6 +11,8 @@
 #include <OpenGLES/ES2/gl.h>
 #include <OpenGLES/ES2/glext.h>
 
+#import "Shader.h"
+
 @implementation VertexBuffer
 
 /*
@@ -40,22 +42,22 @@ const Vertex Vertices[] = {
     return self;
 }
 
-- (void)bind:(GLuint)positionHandle colorHandle:(GLuint)colorHandle
+- (void)bind
 {
-    glEnableVertexAttribArray(positionHandle);
-    glEnableVertexAttribArray(colorHandle);
+    glEnableVertexAttribArray([Shader positionSlot]);
+    glEnableVertexAttribArray([Shader colorSlot]);
     glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
     
-    glVertexAttribPointer(positionHandle, 3, GL_FLOAT, GL_FALSE,
+    glVertexAttribPointer([Shader positionSlot], 3, GL_FLOAT, GL_FALSE,
                           sizeof(Vertex), 0);
-    glVertexAttribPointer(colorHandle, 4, GL_FLOAT, GL_FALSE,
+    glVertexAttribPointer([Shader colorSlot], 4, GL_FLOAT, GL_FALSE,
                           sizeof(Vertex), (GLvoid*) (sizeof(float) * 3));
 }
 
-- (void)unbind:(GLuint)positionHandle colorHandle:(GLuint)colorHandle
+- (void)unbind
 {
-    glDisableVertexAttribArray(positionHandle);
-    glDisableVertexAttribArray(colorHandle);
+    glDisableVertexAttribArray([Shader positionSlot]);
+    glDisableVertexAttribArray([Shader colorSlot]);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 

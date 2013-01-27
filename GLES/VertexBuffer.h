@@ -18,13 +18,12 @@ typedef struct {
     @public
         GLuint vertexBuffer;
     
-    
 }
 
 - (id)initWithWithVertices:(const Vertex*)v size:(int)size;
 
-- (void)bind:(GLuint)positionHandle colorHandle:(GLuint)colorHandle;
+- (void)bind;
 
-- (void)unbind:(GLuint)positionHandle colorHandle:(GLuint)colorHandle;
+- (void)unbind;
 
 @end
