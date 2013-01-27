@@ -15,18 +15,26 @@
 #import "VertexBuffer.h"
 #import "IndexBuffer.h"
 #import "Mesh.h"
+#import "Shader.h"
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
+
+#define SH 1
 
 @implementation GLView
 
 CAEAGLLayer* _eaglLayer;
 EAGLContext* _context;
 GLuint _colorRenderBuffer;
+
+#if SH
+#else
 GLuint _positionSlot;
 GLuint _colorSlot;
 GLuint _projectionUniform;
 GLuint _modelViewUniform;
+#endif
+
 float _currentRotation;
 GLuint _depthRenderBuffer;
 
@@ -73,7 +81,11 @@ const GLubyte Indices[] = {
         // initialize
         [self setupLayer];
         [self setupContext];
+#if SH
+        [Shader compileShaders];
+#else
         [self compileShaders];
+#endif
         [self setupDepthBuffer];
         [self setupRenderBuffer];
         [self setupFrameBuffer];
@@ -169,7 +181,11 @@ float rotateZ = 0;
     // projection matrix
     float aspect = fabsf(self.frame.size.width / self.frame.size.height);
     GLKMatrix4 projection = GLKMatrix4MakePerspective(GLKMathDegreesToRadians(65.0f), aspect, 0.1f, 100.0f);
+#if SH
+    glUniformMatrix4fv([Shader projectionMatrixSlot], 1, 0, projection.m);
+#else
     glUniformMatrix4fv(_projectionUniform, 1, 0, projection.m);
+#endif
     
     // modelview matrix
     // - transform
@@ -182,19 +198,28 @@ float rotateZ = 0;
     rotateZ += 0.3;
     modelView = GLKMatrix4Rotate(modelView, rotateX, rotateY, rotateZ, 1);
     
+#if SH
+    glUniformMatrix4fv([Shader modelViewMatrixSlot], 1, 0, modelView.m);
+#else
     glUniformMatrix4fv(_modelViewUniform, 1, 0, modelView.m);
+#endif
     
     // 1
     glViewport(0, 0, self.frame.size.width, self.frame.size.height);
     
     // 2
+#if SH
+    [mesh draw:[Shader positionSlot] colorHandle:[Shader colorSlot]];
+#else
     [mesh draw:_positionSlot colorHandle:_colorSlot];
+#endif
     
     [_context presentRenderbuffer:GL_RENDERBUFFER];
 }
 
 #pragma mark compile shaders
-
+#if SH
+#else
 - (GLuint)compileShader:(NSString*)shaderName withType:(GLenum)shaderType {
     
     // 1
@@ -270,6 +295,7 @@ float rotateZ = 0;
     _modelViewUniform = glGetUniformLocation(programHandle, "Modelview");
     
 }
+#endif // SH
 
 #pragma mark buffer objects
 
