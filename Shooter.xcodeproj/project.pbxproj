@@ -9,9 +9,11 @@
 /* Begin PBXBuildFile section */
 		0755991016B3C3180066A0E9 /* GLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0755990F16B3C3180066A0E9 /* GLView.m */; };
 		0755991316B3D0560066A0E9 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0755991216B3D0560066A0E9 /* QuartzCore.framework */; };
-		0755991816B4BFD90066A0E9 /* IndexBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0755991516B4BFD90066A0E9 /* IndexBuffer.m */; };
-		0755991916B4BFD90066A0E9 /* VertexBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0755991716B4BFD90066A0E9 /* VertexBuffer.m */; };
-		0755991C16B4CA1A0066A0E9 /* Mesh.m in Sources */ = {isa = PBXBuildFile; fileRef = 0755991B16B4CA1A0066A0E9 /* Mesh.m */; };
+		0755991816B4BFD90066A0E9 /* IndexBuffer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0755991516B4BFD90066A0E9 /* IndexBuffer.mm */; };
+		0755991916B4BFD90066A0E9 /* VertexBuffer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0755991716B4BFD90066A0E9 /* VertexBuffer.mm */; };
+		0755991C16B4CA1A0066A0E9 /* Mesh.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0755991B16B4CA1A0066A0E9 /* Mesh.mm */; };
+		0755991F16B4CF5B0066A0E9 /* Shader.m in Sources */ = {isa = PBXBuildFile; fileRef = 0755991E16B4CF5B0066A0E9 /* Shader.m */; };
+		0755992216B4F99B0066A0E9 /* Object3D.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0755992116B4F99B0066A0E9 /* Object3D.mm */; };
 		07E0463616886E73001F9CCE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07E0463516886E73001F9CCE /* UIKit.framework */; };
 		07E0463816886E73001F9CCE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07E0463716886E73001F9CCE /* Foundation.framework */; };
 		07E0463A16886E73001F9CCE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07E0463916886E73001F9CCE /* CoreGraphics.framework */; };
@@ -34,11 +36,15 @@
 		0755990F16B3C3180066A0E9 /* GLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GLView.m; path = GLES/GLView.m; sourceTree = "<group>"; };
 		0755991216B3D0560066A0E9 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		0755991416B4BFD90066A0E9 /* IndexBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IndexBuffer.h; path = GLES/IndexBuffer.h; sourceTree = "<group>"; };
-		0755991516B4BFD90066A0E9 /* IndexBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IndexBuffer.m; path = GLES/IndexBuffer.m; sourceTree = "<group>"; };
+		0755991516B4BFD90066A0E9 /* IndexBuffer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = IndexBuffer.mm; path = GLES/IndexBuffer.mm; sourceTree = "<group>"; };
 		0755991616B4BFD90066A0E9 /* VertexBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VertexBuffer.h; path = GLES/VertexBuffer.h; sourceTree = "<group>"; };
-		0755991716B4BFD90066A0E9 /* VertexBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VertexBuffer.m; path = GLES/VertexBuffer.m; sourceTree = "<group>"; };
+		0755991716B4BFD90066A0E9 /* VertexBuffer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VertexBuffer.mm; path = GLES/VertexBuffer.mm; sourceTree = "<group>"; };
 		0755991A16B4CA1A0066A0E9 /* Mesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Mesh.h; path = GLES/Mesh.h; sourceTree = "<group>"; };
-		0755991B16B4CA1A0066A0E9 /* Mesh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Mesh.m; path = GLES/Mesh.m; sourceTree = "<group>"; };
+		0755991B16B4CA1A0066A0E9 /* Mesh.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Mesh.mm; path = GLES/Mesh.mm; sourceTree = "<group>"; };
+		0755991D16B4CF5B0066A0E9 /* Shader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Shader.h; path = GLES/Shader.h; sourceTree = "<group>"; };
+		0755991E16B4CF5B0066A0E9 /* Shader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Shader.m; path = GLES/Shader.m; sourceTree = "<group>"; };
+		0755992016B4F99B0066A0E9 /* Object3D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Object3D.h; path = GLES/Object3D.h; sourceTree = "<group>"; };
+		0755992116B4F99B0066A0E9 /* Object3D.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Object3D.mm; path = GLES/Object3D.mm; sourceTree = "<group>"; };
 		07E0463116886E73001F9CCE /* Shooter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shooter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		07E0463516886E73001F9CCE /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		07E0463716886E73001F9CCE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -82,7 +88,6 @@
 		07E0462616886E73001F9CCE = {
 			isa = PBXGroup;
 			children = (
-				0755991216B3D0560066A0E9 /* QuartzCore.framework */,
 				07E0466616887799001F9CCE /* GLES */,
 				07E0463F16886E73001F9CCE /* Shooter */,
 				07E0463416886E73001F9CCE /* Frameworks */,
@@ -101,6 +106,7 @@
 		07E0463416886E73001F9CCE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0755991216B3D0560066A0E9 /* QuartzCore.framework */,
 				07E0463516886E73001F9CCE /* UIKit.framework */,
 				07E0463716886E73001F9CCE /* Foundation.framework */,
 				07E0463916886E73001F9CCE /* CoreGraphics.framework */,
@@ -143,12 +149,16 @@
 		07E0466616887799001F9CCE /* GLES */ = {
 			isa = PBXGroup;
 			children = (
+				0755992016B4F99B0066A0E9 /* Object3D.h */,
+				0755992116B4F99B0066A0E9 /* Object3D.mm */,
+				0755991D16B4CF5B0066A0E9 /* Shader.h */,
+				0755991E16B4CF5B0066A0E9 /* Shader.m */,
 				0755991A16B4CA1A0066A0E9 /* Mesh.h */,
-				0755991B16B4CA1A0066A0E9 /* Mesh.m */,
+				0755991B16B4CA1A0066A0E9 /* Mesh.mm */,
 				0755991416B4BFD90066A0E9 /* IndexBuffer.h */,
-				0755991516B4BFD90066A0E9 /* IndexBuffer.m */,
+				0755991516B4BFD90066A0E9 /* IndexBuffer.mm */,
 				0755991616B4BFD90066A0E9 /* VertexBuffer.h */,
-				0755991716B4BFD90066A0E9 /* VertexBuffer.m */,
+				0755991716B4BFD90066A0E9 /* VertexBuffer.mm */,
 				0755990E16B3C3180066A0E9 /* GLView.h */,
 				0755990F16B3C3180066A0E9 /* GLView.m */,
 			);
@@ -227,9 +237,11 @@
 				07E0465716886E73001F9CCE /* ViewController.m in Sources */,
 				07E0466216887039001F9CCE /* Actor.m in Sources */,
 				0755991016B3C3180066A0E9 /* GLView.m in Sources */,
-				0755991816B4BFD90066A0E9 /* IndexBuffer.m in Sources */,
-				0755991916B4BFD90066A0E9 /* VertexBuffer.m in Sources */,
-				0755991C16B4CA1A0066A0E9 /* Mesh.m in Sources */,
+				0755991816B4BFD90066A0E9 /* IndexBuffer.mm in Sources */,
+				0755991916B4BFD90066A0E9 /* VertexBuffer.mm in Sources */,
+				0755991C16B4CA1A0066A0E9 /* Mesh.mm in Sources */,
+				0755991F16B4CF5B0066A0E9 /* Shader.m in Sources */,
+				0755992216B4F99B0066A0E9 /* Object3D.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -259,6 +271,7 @@
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_INPUT_FILETYPE = sourcecode.cpp.objcpp;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -270,6 +283,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "$(OTHER_CFLAGS)";
+				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -285,11 +300,13 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_INPUT_FILETYPE = sourcecode.cpp.objcpp;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
-				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				OTHER_CFLAGS = "$(OTHER_CFLAGS)";
+				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};

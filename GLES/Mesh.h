@@ -10,14 +10,16 @@
 #import "IndexBuffer.h"
 #import "VertexBuffer.h"
 
-@interface Mesh : NSObject
+class Mesh
 {
+public:
+    void setVertexBuffer(VertexBuffer* v);
+    void setIndexBuffer(IndexBuffer* i);
+    void draw();
+    ~Mesh();
     
-}
-- (void)setVertexBuffer:(VertexBuffer*)v;
+private:
+    IndexBuffer* indexBuffer;
+    VertexBuffer* vertexBuffer;
 
-- (void)setIndexBuffer:(IndexBuffer*)i;
-
-- (void)draw;
-
-@end
+};

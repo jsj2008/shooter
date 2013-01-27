@@ -13,17 +13,14 @@ typedef struct {
     float Color[4];
 } Vertex;
 
-@interface VertexBuffer : NSObject
+class VertexBuffer
 {
-    @public
-        GLuint vertexBuffer;
-    
-}
+public:
+    VertexBuffer(const Vertex* v, int size);
+    void bind();
+    void unbind();
+    ~VertexBuffer();
+private:
+    GLuint vertexBuffer;
+};
 
-- (id)initWithWithVertices:(const Vertex*)v size:(int)size;
-
-- (void)bind;
-
-- (void)unbind;
-
-@end

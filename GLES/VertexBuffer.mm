@@ -10,10 +10,7 @@
 #import <GLKit/GLKit.h>
 #include <OpenGLES/ES2/gl.h>
 #include <OpenGLES/ES2/glext.h>
-
 #import "Shader.h"
-
-@implementation VertexBuffer
 
 /*
 const Vertex Vertices[] = {
@@ -28,21 +25,16 @@ const Vertex Vertices[] = {
 };
 */
 
-- (id)initWithWithVertices:(const Vertex*)v size:(int)size
+VertexBuffer::VertexBuffer(const Vertex* v, int size)
 {
-    self = [super init];
-    if (self)
-    {
-        glGenBuffers(1, &vertexBuffer);
-        glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-        //glBufferData(GL_ARRAY_BUFFER, sizeof(v), v, GL_STATIC_DRAW);
-        glBufferData(GL_ARRAY_BUFFER, size, v, GL_STATIC_DRAW);
-        // TODO:unbind
-    }
-    return self;
+    glGenBuffers(1, &vertexBuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+    //glBufferData(GL_ARRAY_BUFFER, sizeof(v), v, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, size, v, GL_STATIC_DRAW);
+    // TODO:unbind
 }
 
-- (void)bind
+void VertexBuffer::bind()
 {
     glEnableVertexAttribArray([Shader positionSlot]);
     glEnableVertexAttribArray([Shader colorSlot]);
@@ -52,29 +44,22 @@ const Vertex Vertices[] = {
                           sizeof(Vertex), 0);
     glVertexAttribPointer([Shader colorSlot], 4, GL_FLOAT, GL_FALSE,
                           sizeof(Vertex), (GLvoid*) (sizeof(float) * 3));
+    
 }
 
-- (void)unbind
+void VertexBuffer::unbind()
 {
     glDisableVertexAttribArray([Shader positionSlot]);
     glDisableVertexAttribArray([Shader colorSlot]);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-- (void)dispose
+VertexBuffer::~VertexBuffer()
 {
     if (vertexBuffer)
     {
         glDeleteBuffers(1, &vertexBuffer);
         vertexBuffer = 0;
     }
-    
 }
 
-- (void) dealloc
-{
-    [self dispose];
-    [super dealloc];
-}
-
-@end

@@ -186,7 +186,7 @@ float rotateZ = 0;
     glViewport(0, 0, self.frame.size.width, self.frame.size.height);
     
     // 2
-    [mesh draw];
+    mesh->draw();
     
     [_context presentRenderbuffer:GL_RENDERBUFFER];
 }
@@ -195,12 +195,11 @@ float rotateZ = 0;
 
 - (void)setupVBOs {
  
-    VertexBuffer* vertexBuffer = [[VertexBuffer alloc] initWithWithVertices:Vertices size:sizeof(Vertices)];
-    IndexBuffer* indexBuffer = [[IndexBuffer alloc] initWithIndices:Indices size:sizeof(Indices)];
-    
-    mesh = [[Mesh alloc] init];
-    [mesh setIndexBuffer:indexBuffer];
-    [mesh setVertexBuffer:vertexBuffer];
+    VertexBuffer* vertexBuffer = new VertexBuffer(Vertices, sizeof(Vertices));
+    IndexBuffer* indexBuffer = new IndexBuffer(Indices, sizeof(Indices));
+    mesh = new Mesh();
+    mesh->setIndexBuffer(indexBuffer);
+    mesh->setVertexBuffer(vertexBuffer);
  
 }
 

@@ -8,19 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
-@interface IndexBuffer : NSObject
+class IndexBuffer
 {
+public:
+    IndexBuffer(const GLubyte* indices, int size);
+    void bind();
+    void draw();
+    void unbind();
+    ~IndexBuffer();
+private:
     GLuint indexBuffer;
-    
-}
-- (id)initWithIndices:(const GLubyte*)indices size:(int)size;
-
-- (void)bind;
-
-- (void)draw;
-
-- (void)unbind;
-
-- (void)dispose;
-
-@end
+    int size;
+};
