@@ -12,6 +12,7 @@
 #include <OpenGLES/ES2/glext.h>
 #import <GLKit/GLKit.h>
 
+#import "Object3D.h"
 #import "VertexBuffer.h"
 #import "IndexBuffer.h"
 #import "Mesh.h"
@@ -28,7 +29,7 @@ GLuint _colorRenderBuffer;
 float _currentRotation;
 GLuint _depthRenderBuffer;
 
-Mesh* mesh;
+Object3D* obj3d;
 
 const Vertex Vertices[] = {
     {{1, -1, 0}, {1, 0, 0, 1}},
@@ -86,6 +87,10 @@ const GLubyte Indices[] = {
     [_context release];
     _context = nil;
     [super dealloc];
+    if (obj3d)
+    {
+        delete obj3d;
+    }
 }
 
 
@@ -186,7 +191,7 @@ float rotateZ = 0;
     glViewport(0, 0, self.frame.size.width, self.frame.size.height);
     
     // 2
-    mesh->draw();
+    obj3d->draw();
     
     [_context presentRenderbuffer:GL_RENDERBUFFER];
 }
@@ -194,13 +199,13 @@ float rotateZ = 0;
 #pragma mark buffer objects
 
 - (void)setupVBOs {
- 
+    obj3d = new Object3D();
     VertexBuffer* vertexBuffer = new VertexBuffer(Vertices, sizeof(Vertices));
     IndexBuffer* indexBuffer = new IndexBuffer(Indices, sizeof(Indices));
-    mesh = new Mesh();
+    Mesh* mesh = new Mesh();
     mesh->setIndexBuffer(indexBuffer);
     mesh->setVertexBuffer(vertexBuffer);
- 
+    obj3d->addMesh(mesh);
 }
 
 @end

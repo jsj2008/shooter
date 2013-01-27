@@ -30,6 +30,12 @@ void Mesh::draw()
 
 Mesh::~Mesh()
 {
-    delete vertexBuffer;
-    delete indexBuffer;
+    if (vertexBuffer)
+    {
+        delete vertexBuffer;
+    }
+    if (indexBuffer)
+    {
+        delete indexBuffer;
+    }
 }

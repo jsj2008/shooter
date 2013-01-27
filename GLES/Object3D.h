@@ -7,9 +7,19 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Mesh.h"
+#import <vector>
 
-@interface Object3D : NSObject
+class Object3D
 {
+public:
+    Object3D();
+    void addMesh(Mesh* m);
+    void draw();
+    ~Object3D();
     
-}
-@end
+private:
+    std::vector<Mesh*> meshlist;
+    std::vector<Object3D*> children;
+    
+};

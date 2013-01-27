@@ -13,8 +13,29 @@
 #import "Mesh.h"
 #include <vector>
 
-@implementation Object3D
-//std::vector<Mesh> meshlist;
+Object3D::Object3D()
+{
+    
+}
 
+Object3D::~Object3D()
+{
+    meshlist.clear();
+}
 
-@end
+void Object3D::draw()
+{
+    std::vector<Mesh*>::iterator it;
+    it = meshlist.begin();
+    while (it != meshlist.end()) {
+        Mesh* m = *it;
+        m->draw();
+        it++;
+    }
+}
+
+void Object3D::addMesh(Mesh* m)
+{
+    meshlist.push_back(m);
+}
+
