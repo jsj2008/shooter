@@ -8,19 +8,18 @@
 
 #import <Foundation/Foundation.h>
 
-@interface Shader : NSObject
+class Shader
 {
-    
-}
-
-+ (GLuint)projectionMatrixSlot;
-
-+ (GLuint)modelViewMatrixSlot;
-
-+ (GLuint)positionSlot;
-
-+ (GLuint)colorSlot;
-
-+ (void)compileShaders;
-
-@end
+public:
+    static void compileShaders();
+    static GLuint projectionMatrixSlot();
+    static GLuint modelViewMatrixSlot();
+    static GLuint positionSlot();
+    static GLuint colorSlot();
+    static GLuint compileShader(NSString* shaderName, GLenum shaderType);
+private:
+static GLuint aPositionSlot        ;
+static GLuint aColorSlot           ;
+static GLuint uProjectionMatrixSlot;
+static GLuint uModelViewMatrixSlot ;
+};

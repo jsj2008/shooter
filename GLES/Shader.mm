@@ -10,35 +10,36 @@
 #import <GLKit/GLKit.h>
 #include <OpenGLES/ES2/gl.h>
 #include <OpenGLES/ES2/glext.h>
+#import <string>
 
-@implementation Shader
+// static
+GLuint Shader::aPositionSlot        ;
+GLuint Shader::aColorSlot           ;
+GLuint Shader::uProjectionMatrixSlot;
+GLuint Shader::uModelViewMatrixSlot ;
 
-static GLuint aPositionSlot         = 0;
-static GLuint aColorSlot            = 0;
-static GLuint uProjectionMatrixSlot = 0;
-static GLuint uModelViewMatrixSlot  = 0;
-
-+ (GLuint)projectionMatrixSlot
+// static
+GLuint Shader::projectionMatrixSlot()
 {
     return uProjectionMatrixSlot;
 }
 
-+ (GLuint)modelViewMatrixSlot
+GLuint Shader::modelViewMatrixSlot()
 {
     return uModelViewMatrixSlot;
 }
 
-+ (GLuint)positionSlot
+GLuint Shader::positionSlot()
 {
     return aPositionSlot;
 }
 
-+ (GLuint)colorSlot
+GLuint Shader::colorSlot()
 {
     return aColorSlot;
 }
 
-+ (GLuint)compileShader:(NSString*)shaderName withType:(GLenum)shaderType
+GLuint Shader::compileShader(NSString* shaderName, GLenum shaderType)
 {
     
     // 1
@@ -78,14 +79,11 @@ static GLuint uModelViewMatrixSlot  = 0;
     
 }
 
-+ (void)compileShaders
+void Shader::compileShaders()
 {
-    
     // 1
-    GLuint vertexShader = [Shader compileShader:@"vertex"
-                                     withType:GL_VERTEX_SHADER];
-    GLuint fragmentShader = [Shader compileShader:@"fragment"
-                                       withType:GL_FRAGMENT_SHADER];
+    GLuint vertexShader = Shader::compileShader(@"vertex", GL_VERTEX_SHADER);
+    GLuint fragmentShader = Shader::compileShader(@"fragment", GL_FRAGMENT_SHADER);
     
     // 2
     GLuint programHandle = glCreateProgram();
@@ -116,4 +114,3 @@ static GLuint uModelViewMatrixSlot  = 0;
     
 }
 
-@end

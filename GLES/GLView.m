@@ -71,7 +71,7 @@ const GLubyte Indices[] = {
         // initialize
         [self setupLayer];
         [self setupContext];
-        [Shader compileShaders];
+        Shader::compileShaders();
         [self setupDepthBuffer];
         [self setupRenderBuffer];
         [self setupFrameBuffer];
@@ -167,7 +167,7 @@ float rotateZ = 0;
     // projection matrix
     float aspect = fabsf(self.frame.size.width / self.frame.size.height);
     GLKMatrix4 projection = GLKMatrix4MakePerspective(GLKMathDegreesToRadians(65.0f), aspect, 0.1f, 100.0f);
-    glUniformMatrix4fv([Shader projectionMatrixSlot], 1, 0, projection.m);
+    glUniformMatrix4fv(Shader::projectionMatrixSlot(), 1, 0, projection.m);
     
     // modelview matrix
     // - transform
@@ -180,7 +180,7 @@ float rotateZ = 0;
     rotateZ += 0.3;
     modelView = GLKMatrix4Rotate(modelView, rotateX, rotateY, rotateZ, 1);
     
-    glUniformMatrix4fv([Shader modelViewMatrixSlot], 1, 0, modelView.m);
+    glUniformMatrix4fv(Shader::modelViewMatrixSlot(), 1, 0, modelView.m);
     
     // 1
     glViewport(0, 0, self.frame.size.width, self.frame.size.height);

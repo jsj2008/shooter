@@ -12,7 +12,7 @@
 		0755991816B4BFD90066A0E9 /* IndexBuffer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0755991516B4BFD90066A0E9 /* IndexBuffer.mm */; };
 		0755991916B4BFD90066A0E9 /* VertexBuffer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0755991716B4BFD90066A0E9 /* VertexBuffer.mm */; };
 		0755991C16B4CA1A0066A0E9 /* Mesh.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0755991B16B4CA1A0066A0E9 /* Mesh.mm */; };
-		0755991F16B4CF5B0066A0E9 /* Shader.m in Sources */ = {isa = PBXBuildFile; fileRef = 0755991E16B4CF5B0066A0E9 /* Shader.m */; };
+		0755991F16B4CF5B0066A0E9 /* Shader.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0755991E16B4CF5B0066A0E9 /* Shader.mm */; };
 		0755992216B4F99B0066A0E9 /* Object3D.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0755992116B4F99B0066A0E9 /* Object3D.mm */; };
 		07E0463616886E73001F9CCE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07E0463516886E73001F9CCE /* UIKit.framework */; };
 		07E0463816886E73001F9CCE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07E0463716886E73001F9CCE /* Foundation.framework */; };
@@ -42,7 +42,7 @@
 		0755991A16B4CA1A0066A0E9 /* Mesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Mesh.h; path = GLES/Mesh.h; sourceTree = "<group>"; };
 		0755991B16B4CA1A0066A0E9 /* Mesh.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Mesh.mm; path = GLES/Mesh.mm; sourceTree = "<group>"; };
 		0755991D16B4CF5B0066A0E9 /* Shader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Shader.h; path = GLES/Shader.h; sourceTree = "<group>"; };
-		0755991E16B4CF5B0066A0E9 /* Shader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Shader.m; path = GLES/Shader.m; sourceTree = "<group>"; };
+		0755991E16B4CF5B0066A0E9 /* Shader.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Shader.mm; path = GLES/Shader.mm; sourceTree = "<group>"; };
 		0755992016B4F99B0066A0E9 /* Object3D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Object3D.h; path = GLES/Object3D.h; sourceTree = "<group>"; };
 		0755992116B4F99B0066A0E9 /* Object3D.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Object3D.mm; path = GLES/Object3D.mm; sourceTree = "<group>"; };
 		07E0463116886E73001F9CCE /* Shooter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shooter.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -152,7 +152,7 @@
 				0755992016B4F99B0066A0E9 /* Object3D.h */,
 				0755992116B4F99B0066A0E9 /* Object3D.mm */,
 				0755991D16B4CF5B0066A0E9 /* Shader.h */,
-				0755991E16B4CF5B0066A0E9 /* Shader.m */,
+				0755991E16B4CF5B0066A0E9 /* Shader.mm */,
 				0755991A16B4CA1A0066A0E9 /* Mesh.h */,
 				0755991B16B4CA1A0066A0E9 /* Mesh.mm */,
 				0755991416B4BFD90066A0E9 /* IndexBuffer.h */,
@@ -240,7 +240,7 @@
 				0755991816B4BFD90066A0E9 /* IndexBuffer.mm in Sources */,
 				0755991916B4BFD90066A0E9 /* VertexBuffer.mm in Sources */,
 				0755991C16B4CA1A0066A0E9 /* Mesh.mm in Sources */,
-				0755991F16B4CF5B0066A0E9 /* Shader.m in Sources */,
+				0755991F16B4CF5B0066A0E9 /* Shader.mm in Sources */,
 				0755992216B4F99B0066A0E9 /* Object3D.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -36,21 +36,21 @@ VertexBuffer::VertexBuffer(const Vertex* v, int size)
 
 void VertexBuffer::bind()
 {
-    glEnableVertexAttribArray([Shader positionSlot]);
-    glEnableVertexAttribArray([Shader colorSlot]);
+    glEnableVertexAttribArray(Shader::positionSlot());
+    glEnableVertexAttribArray(Shader::colorSlot());
     glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
     
-    glVertexAttribPointer([Shader positionSlot], 3, GL_FLOAT, GL_FALSE,
+    glVertexAttribPointer(Shader::positionSlot(), 3, GL_FLOAT, GL_FALSE,
                           sizeof(Vertex), 0);
-    glVertexAttribPointer([Shader colorSlot], 4, GL_FLOAT, GL_FALSE,
+    glVertexAttribPointer(Shader::colorSlot(), 4, GL_FLOAT, GL_FALSE,
                           sizeof(Vertex), (GLvoid*) (sizeof(float) * 3));
     
 }
 
 void VertexBuffer::unbind()
 {
-    glDisableVertexAttribArray([Shader positionSlot]);
-    glDisableVertexAttribArray([Shader colorSlot]);
+    glDisableVertexAttribArray(Shader::positionSlot());
+    glDisableVertexAttribArray(Shader::colorSlot());
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
