@@ -84,4 +84,10 @@ const GLubyte Indices[] = {
     
 }
 
+- (void) dealloc
+{
+    [self dispose];
+    [super dealloc];
+}
+
 @end

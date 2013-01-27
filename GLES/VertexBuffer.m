@@ -69,4 +69,10 @@ const Vertex Vertices[] = {
     
 }
 
+- (void) dealloc
+{
+    [self dispose];
+    [super dealloc];
+}
+
 @end

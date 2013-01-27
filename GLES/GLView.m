@@ -14,11 +14,13 @@
 
 #import "VertexBuffer.h"
 #import "IndexBuffer.h"
+#import "Mesh.h"
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 
 #define VB 1
 #define IB 1
+#define MESH 1
 
 @implementation GLView
 
@@ -32,19 +34,26 @@ GLuint _modelViewUniform;
 float _currentRotation;
 GLuint _depthRenderBuffer;
 
-#if VB
+#if VB && !MESH
 VertexBuffer* vertexBuffer;
-
 #else
+#endif
+
+#if !VB
 typedef struct {
     float Position[3];
     float Color[4];
 } Vertex;
 #endif
 
-#if IB
+#if IB && !MESH
 IndexBuffer* indexBuffer;
 #endif
+
+#if MESH
+Mesh* mesh;
+#else // MESH
+#endif // MESH
 
 const Vertex Vertices[] = {
     {{1, -1, 0}, {1, 0, 0, 1}},
@@ -93,9 +102,7 @@ const GLubyte Indices[] = {
         [self setupFrameBuffer];
         [self setupVBOs];
         [self setupDisplayLink];
-        
     }
-    
     return self;
 }
 
@@ -204,6 +211,9 @@ float rotateZ = 0;
     glViewport(0, 0, self.frame.size.width, self.frame.size.height);
     
     // 2
+#if MESH
+    [mesh draw:_positionSlot colorHandle:_colorSlot];
+#else // MESH
 #if VB
     // 5
     [vertexBuffer bind:_positionSlot colorHandle:_colorSlot];
@@ -222,6 +232,7 @@ float rotateZ = 0;
     glDrawElements(GL_TRIANGLES, sizeof(Indices)/sizeof(Indices[0]),
                    GL_UNSIGNED_BYTE, 0);
 #endif
+#endif // MESH
     
     [_context presentRenderbuffer:GL_RENDERBUFFER];
 }
@@ -313,6 +324,14 @@ float rotateZ = 0;
 
 - (void)setupVBOs {
  
+#if MESH
+    VertexBuffer* vertexBuffer = [[VertexBuffer alloc] initWithWithVertices:Vertices size:sizeof(Vertices)];
+    IndexBuffer* indexBuffer = [[IndexBuffer alloc] initWithIndices:Indices size:sizeof(Indices)];
+    
+    mesh = [[Mesh alloc] init];
+    [mesh setIndexBuffer:indexBuffer];
+    [mesh setVertexBuffer:vertexBuffer];
+#else // MESH
 #if VB
     vertexBuffer = [[VertexBuffer alloc] initWithWithVertices:Vertices size:sizeof(Vertices)];
 #else
@@ -330,6 +349,8 @@ float rotateZ = 0;
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Indices), Indices, GL_STATIC_DRAW);
 #endif
+    
+#endif // MESH
  
 }
 
