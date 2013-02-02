@@ -36,7 +36,6 @@ typedef struct Vertex{
 } Vertex;
 
 float s2f(const std::string* str);
-
 int s2i(const std::string* str);
 
 bool operator==(Vertex p1, Vertex p2);

@@ -8,6 +8,4 @@
 #import <string>
 #import <vector>
 
-typedef std::vector<std::string*> t_string_list;
-
-t_string_list* split_string(const std::string* str, const std::string delims);
+void split(std::vector<std::string>* v, const std::string* str, const std::string delims);

@@ -18,6 +18,7 @@
 #import "Mesh.h"
 #import "GLES.h"
 #import "GLTypes.h"
+#import "ObjLoader.h"
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 
@@ -188,13 +189,26 @@ const GLubyte Indices[] = {
 #pragma mark buffer objects
 
 - (void)setupVBOs {
+    ObjLoader::load(@"block");
     obj3d = new Object3D();
     VertexBuffer* vertexBuffer = new VertexBuffer(Vertices, sizeof(Vertices));
     IndexBuffer* indexBuffer = new IndexBuffer(Indices, sizeof(Indices));
-    Mesh* mesh = new Mesh();
-    mesh->setIndexBuffer(indexBuffer);
-    mesh->setVertexBuffer(vertexBuffer);
+    Mesh* mesh = new Mesh(vertexBuffer, indexBuffer);
     obj3d->addMesh(mesh);
 }
+
+/*
+- (NSString*)readFile:(NSString*)name
+{
+    NSError* error = nil;
+    NSString* path = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:name];
+    NSString* str = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:&error];
+    if (&error)
+    {
+        return nil;
+    }
+    return [[NSString alloc] initWithString:str];
+}
+*/
 
 @end

@@ -11,13 +11,9 @@
 #include <OpenGLES/ES2/gl.h>
 #include <OpenGLES/ES2/glext.h>
 
-void Mesh::setVertexBuffer(VertexBuffer* v)
+Mesh::Mesh(VertexBuffer* v, IndexBuffer* i)
 {
     vertexBuffer = v;
-}
-
-void Mesh::setIndexBuffer(IndexBuffer* i)
-{
     indexBuffer = i;
 }
 

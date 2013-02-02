@@ -16,6 +16,13 @@ public:
     static Object3D* load(NSString* name);
 private:
     static void loadMtl(NSString* name);
+    static void addIndex(std::string* index_str);
+    static std::vector<Position> positions;
+    static std::vector<Normal> normals;
+    static std::vector<UV> uvs;
+    
+    static std::vector<Vertex> vertices; // position+uv+normal
+    static std::vector<GLubyte> indices;
     
 };
 

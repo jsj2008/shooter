@@ -13,8 +13,7 @@
 class Mesh
 {
 public:
-    void setVertexBuffer(VertexBuffer* v);
-    void setIndexBuffer(IndexBuffer* i);
+    Mesh(VertexBuffer* v, IndexBuffer* i);
     void draw();
     ~Mesh();
     
