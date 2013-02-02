@@ -2,22 +2,22 @@
 
 typedef struct Position
 {
-    float position[3];
+    float x, y, z;
 } Position;
 
 typedef struct UV
 {
-    float uv[2];
+    float s, t;
 } UV;
 
 typedef struct Normal
 {
-    float normal[3];
+    float x, y, z;
 } Normal;
 
 typedef struct Color
 {
-    float color[4];
+    float r, g, b, a;
 } Color;
 
 typedef short Index;
