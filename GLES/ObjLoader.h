@@ -6,7 +6,6 @@
 //  Copyright (c) 2012年 hayogame. All rights reserved.
 //
 
-/*
 #import <Foundation/Foundation.h>
 #import <vector>
 #import "Object3D.h"
@@ -20,4 +19,3 @@ private:
     
 };
 
-*/

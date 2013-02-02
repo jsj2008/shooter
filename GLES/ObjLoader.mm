@@ -1,5 +1,4 @@
 //
-        /*
          //  IndexBuffer.m
 //  Shooter
 //
@@ -89,20 +88,19 @@ Object3D* ObjLoader::load(NSString* name)
             {
                 Position tmp_pos = positions[s2i((*words)[1])];
                 UV tmp_uv = uvs[s2i((*words)[2])];
-                s_vec3f tmp_normal = normals[atoi((*words)[3]->c_str())];
+                Normal tmp_normal = normals[s2i((*words)[3])];
                 
                 t_string_list *m = split_string(*wordItr, "/");
-                Vertex v;
-                v.Position[0] = tmp_pos.x;
-                v.Position[1] = tmp_pos.y;
-                v.Position[2] = tmp_pos.z;
+                Vertex v(tmp_pos, tmp_uv, tmp_normal);
                 
                 std::vector<Vertex>::iterator vItr = find(vertices.begin(), vertices.end(), v);
+                short index = 0;
                 if (vItr != vertices.end())
                 {
                     vertices.push_back(v);
+                    index++;
                 }
-                indices.push_back(<#const_reference __x#>)
+                indices.push_back(index);
                 delete m;
                 wordItr++;
             }
@@ -110,7 +108,7 @@ Object3D* ObjLoader::load(NSString* name)
         else if (mesh_flg)
         {
             mesh_flg = false;
-            Mesh *mesh = new Mesh();
+            //Mesh mesh = new Mesh();
             
         }
         delete words;
@@ -136,5 +134,4 @@ void ObjLoader::loadMtl(NSString* name)
 
 
 
-         */
-        
+
