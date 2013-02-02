@@ -13,12 +13,11 @@ t_string_list* split_string(const std::string* str, const std::string delims)
     using namespace std;
     t_string_list* result = new t_string_list();
     
-    int startidx = 0, endidx = 0;
-    
+    int startidx = str->find_first_not_of(delims, 0);
+    int endidx = 0;
     while (startidx != string::npos)
     {
         endidx = str->find_first_of(delims, startidx);
-        startidx = str->find_first_not_of(delims, endidx);
         string* tok = new string(str->substr(startidx, endidx - startidx));
         result->push_back(tok);
         startidx = str->find_first_not_of(delims, endidx);

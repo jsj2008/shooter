@@ -17,6 +17,7 @@
 #import "IndexBuffer.h"
 #import "Mesh.h"
 #import "GLES.h"
+#import "GLTypes.h"
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 
@@ -30,7 +31,7 @@ GLuint _depthRenderBuffer;
 
 Object3D* obj3d;
 
-const Vertex Vertices[] = {
+const VertexPC Vertices[] = {
     {{1, -1, 0}, {1, 0, 0, 1}},
     {{1, 1, 0}, {1, 0, 0, 1}},
     {{-1, 1, 0}, {0, 1, 0, 1}},

@@ -25,7 +25,7 @@ const Vertex Vertices[] = {
 };
 */
 
-VertexBuffer::VertexBuffer(const Vertex* v, int size)
+VertexBuffer::VertexBuffer(const VertexPC* v, int size)
 {
     glGenBuffers(1, &vertexBuffer);
     glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
@@ -41,9 +41,9 @@ void VertexBuffer::bind()
     glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
     
     glVertexAttribPointer(GLES::aPositionSlot, 3, GL_FLOAT, GL_FALSE,
-                          sizeof(Vertex), 0);
+                          sizeof(VertexPC), 0);
     glVertexAttribPointer(GLES::aColorSlot, 4, GL_FLOAT, GL_FALSE,
-                          sizeof(Vertex), (GLvoid*) (sizeof(float) * 3));
+                          sizeof(VertexPC), (GLvoid*) (sizeof(float) * 3));
     
 }
 

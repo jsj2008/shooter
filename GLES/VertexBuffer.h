@@ -7,16 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
-
-typedef struct {
-    float Position[3];
-    float Color[4];
-} Vertex;
+#import "GLTypes.h"
 
 class VertexBuffer
 {
 public:
-    VertexBuffer(const Vertex* v, int size);
+    VertexBuffer(const VertexPC* v, int size);
     void bind();
     void unbind();
     ~VertexBuffer();

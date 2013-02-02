@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0755991016B3C3180066A0E9 /* GLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0755990F16B3C3180066A0E9 /* GLView.m */; };
+		0755991016B3C3180066A0E9 /* GLView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0755990F16B3C3180066A0E9 /* GLView.mm */; };
 		0755991316B3D0560066A0E9 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0755991216B3D0560066A0E9 /* QuartzCore.framework */; };
 		0755991816B4BFD90066A0E9 /* IndexBuffer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0755991516B4BFD90066A0E9 /* IndexBuffer.mm */; };
 		0755991916B4BFD90066A0E9 /* VertexBuffer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0755991716B4BFD90066A0E9 /* VertexBuffer.mm */; };
@@ -15,6 +15,11 @@
 		0755991F16B4CF5B0066A0E9 /* GLES.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0755991E16B4CF5B0066A0E9 /* GLES.mm */; };
 		0755992216B4F99B0066A0E9 /* Object3D.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0755992116B4F99B0066A0E9 /* Object3D.mm */; };
 		0755992516B5188E0066A0E9 /* Vector3.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0755992416B5188E0066A0E9 /* Vector3.mm */; };
+		0755992916B561490066A0E9 /* block.mtl in Resources */ = {isa = PBXBuildFile; fileRef = 0755992716B561490066A0E9 /* block.mtl */; };
+		0755992A16B561490066A0E9 /* block.obj in Resources */ = {isa = PBXBuildFile; fileRef = 0755992816B561490066A0E9 /* block.obj */; };
+		0755992D16B561950066A0E9 /* ObjLoader.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0755992C16B561950066A0E9 /* ObjLoader.mm */; };
+		0755993016B56A8C0066A0E9 /* HayoUtil.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0755992F16B56A8C0066A0E9 /* HayoUtil.mm */; };
+		0755993316BD13180066A0E9 /* GLTypes.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0755993216BD13170066A0E9 /* GLTypes.mm */; };
 		07E0463616886E73001F9CCE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07E0463516886E73001F9CCE /* UIKit.framework */; };
 		07E0463816886E73001F9CCE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07E0463716886E73001F9CCE /* Foundation.framework */; };
 		07E0463A16886E73001F9CCE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07E0463916886E73001F9CCE /* CoreGraphics.framework */; };
@@ -34,7 +39,7 @@
 
 /* Begin PBXFileReference section */
 		0755990E16B3C3180066A0E9 /* GLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GLView.h; path = GLES/GLView.h; sourceTree = "<group>"; };
-		0755990F16B3C3180066A0E9 /* GLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GLView.m; path = GLES/GLView.m; sourceTree = "<group>"; };
+		0755990F16B3C3180066A0E9 /* GLView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = GLView.mm; path = GLES/GLView.mm; sourceTree = "<group>"; };
 		0755991216B3D0560066A0E9 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		0755991416B4BFD90066A0E9 /* IndexBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IndexBuffer.h; path = GLES/IndexBuffer.h; sourceTree = "<group>"; };
 		0755991516B4BFD90066A0E9 /* IndexBuffer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = IndexBuffer.mm; path = GLES/IndexBuffer.mm; sourceTree = "<group>"; };
@@ -48,6 +53,14 @@
 		0755992116B4F99B0066A0E9 /* Object3D.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Object3D.mm; path = GLES/Object3D.mm; sourceTree = "<group>"; };
 		0755992316B5188E0066A0E9 /* Vector3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Vector3.h; path = GLES/Vector3.h; sourceTree = "<group>"; };
 		0755992416B5188E0066A0E9 /* Vector3.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Vector3.mm; path = GLES/Vector3.mm; sourceTree = "<group>"; };
+		0755992716B561490066A0E9 /* block.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = block.mtl; sourceTree = "<group>"; };
+		0755992816B561490066A0E9 /* block.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = block.obj; sourceTree = "<group>"; };
+		0755992B16B561950066A0E9 /* ObjLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ObjLoader.h; path = GLES/ObjLoader.h; sourceTree = "<group>"; };
+		0755992C16B561950066A0E9 /* ObjLoader.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ObjLoader.mm; path = GLES/ObjLoader.mm; sourceTree = "<group>"; };
+		0755992E16B56A8C0066A0E9 /* HayoUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HayoUtil.h; path = GLES/HayoUtil.h; sourceTree = "<group>"; };
+		0755992F16B56A8C0066A0E9 /* HayoUtil.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = HayoUtil.mm; path = GLES/HayoUtil.mm; sourceTree = "<group>"; };
+		0755993116BD13170066A0E9 /* GLTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GLTypes.h; path = GLES/GLTypes.h; sourceTree = "<group>"; };
+		0755993216BD13170066A0E9 /* GLTypes.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = GLTypes.mm; path = GLES/GLTypes.mm; sourceTree = "<group>"; };
 		07E0463116886E73001F9CCE /* Shooter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shooter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		07E0463516886E73001F9CCE /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		07E0463716886E73001F9CCE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -88,9 +101,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0755992616B561490066A0E9 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				0755992716B561490066A0E9 /* block.mtl */,
+				0755992816B561490066A0E9 /* block.obj */,
+			);
+			path = Assets;
+			sourceTree = "<group>";
+		};
 		07E0462616886E73001F9CCE = {
 			isa = PBXGroup;
 			children = (
+				0755992616B561490066A0E9 /* Assets */,
 				07E0466616887799001F9CCE /* GLES */,
 				07E0463F16886E73001F9CCE /* Shooter */,
 				07E0463416886E73001F9CCE /* Frameworks */,
@@ -152,6 +175,12 @@
 		07E0466616887799001F9CCE /* GLES */ = {
 			isa = PBXGroup;
 			children = (
+				0755993116BD13170066A0E9 /* GLTypes.h */,
+				0755993216BD13170066A0E9 /* GLTypes.mm */,
+				0755992E16B56A8C0066A0E9 /* HayoUtil.h */,
+				0755992F16B56A8C0066A0E9 /* HayoUtil.mm */,
+				0755992B16B561950066A0E9 /* ObjLoader.h */,
+				0755992C16B561950066A0E9 /* ObjLoader.mm */,
 				0755992316B5188E0066A0E9 /* Vector3.h */,
 				0755992416B5188E0066A0E9 /* Vector3.mm */,
 				0755992016B4F99B0066A0E9 /* Object3D.h */,
@@ -165,7 +194,7 @@
 				0755991616B4BFD90066A0E9 /* VertexBuffer.h */,
 				0755991716B4BFD90066A0E9 /* VertexBuffer.mm */,
 				0755990E16B3C3180066A0E9 /* GLView.h */,
-				0755990F16B3C3180066A0E9 /* GLView.m */,
+				0755990F16B3C3180066A0E9 /* GLView.mm */,
 			);
 			name = GLES;
 			sourceTree = "<group>";
@@ -227,6 +256,8 @@
 				07E0465016886E73001F9CCE /* Default-568h@2x.png in Resources */,
 				07E0465216886E73001F9CCE /* fragment.glsl in Resources */,
 				07E0465416886E73001F9CCE /* vertex.glsl in Resources */,
+				0755992916B561490066A0E9 /* block.mtl in Resources */,
+				0755992A16B561490066A0E9 /* block.obj in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -241,13 +272,16 @@
 				07E0464A16886E73001F9CCE /* AppDelegate.m in Sources */,
 				07E0465716886E73001F9CCE /* ViewController.m in Sources */,
 				07E0466216887039001F9CCE /* Actor.m in Sources */,
-				0755991016B3C3180066A0E9 /* GLView.m in Sources */,
+				0755991016B3C3180066A0E9 /* GLView.mm in Sources */,
 				0755991816B4BFD90066A0E9 /* IndexBuffer.mm in Sources */,
 				0755991916B4BFD90066A0E9 /* VertexBuffer.mm in Sources */,
 				0755991C16B4CA1A0066A0E9 /* Mesh.mm in Sources */,
 				0755991F16B4CF5B0066A0E9 /* GLES.mm in Sources */,
 				0755992216B4F99B0066A0E9 /* Object3D.mm in Sources */,
 				0755992516B5188E0066A0E9 /* Vector3.mm in Sources */,
+				0755992D16B561950066A0E9 /* ObjLoader.mm in Sources */,
+				0755993016B56A8C0066A0E9 /* HayoUtil.mm in Sources */,
+				0755993316BD13180066A0E9 /* GLTypes.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
