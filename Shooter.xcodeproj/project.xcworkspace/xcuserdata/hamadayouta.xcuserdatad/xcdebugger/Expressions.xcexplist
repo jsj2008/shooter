@@ -20,6 +20,17 @@
          contextName = "IndexBuffer::draw():IndexBuffer.mm">
       </ContextState>
       <ContextState
+         contextName = "GLES::compileShaders():GLES.mm">
+         <PersistentStrings>
+            <PersistentString
+               value = "aPositionSlot">
+            </PersistentString>
+            <PersistentString
+               value = "aNormalSlot">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "ObjLoader::load(NSString*):ObjLoader.mm">
          <PersistentStrings>
             <PersistentString
@@ -27,6 +38,14 @@
             </PersistentString>
             <PersistentString
                value = "indices">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "GLES::updateMatrix():GLES.mm">
+         <PersistentStrings>
+            <PersistentString
+               value = "GLES::mvMatrix">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

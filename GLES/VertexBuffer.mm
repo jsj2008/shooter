@@ -30,11 +30,18 @@ VertexBuffer::VertexBuffer(const Vertex* v, int num)
 void VertexBuffer::bind()
 {
     glEnableVertexAttribArray(GLES::aPositionSlot);
+    glEnableVertexAttribArray(GLES::aNormalSlot);
     //glEnableVertexAttribArray(GLES::aColorSlot);
     glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
     
+    // 頂点
     glVertexAttribPointer(GLES::aPositionSlot, 3, GL_FLOAT, GL_FALSE,
                           sizeof(Vertex), 0);
+    // 法線
+    //glVertexAttribPointer(GLES::aNormalSlot, 3, GL_FLOAT, GL_FALSE,
+                          //sizeof(Vertex), (GLvoid*)(sizeof(float)*0));
+    glVertexAttribPointer(GLES::aNormalSlot, 3, GL_FLOAT, GL_FALSE,
+                          sizeof(Vertex), (GLvoid*) (sizeof(float) * 5));
     //glVertexAttribPointer(GLES::aColorSlot, 4, GL_FLOAT, GL_FALSE,
                           //sizeof(Vertex), (GLvoid*) (sizeof(float) * 3));
     

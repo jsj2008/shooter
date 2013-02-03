@@ -144,20 +144,32 @@ void ObjLoader::addIndex(std::string* index_str)
     vector<string> m;
     split(&m, index_str, "/");
     
-    Position p = positions[s2i(&(m[0]))-1];
-    UV uv;
+    int i1, i2, i3;
+    i1 = s2i(&(m[0]))-1;
+    i2 = i3 = i1;
     if (m.size() >= 2)
     {
-        uv = uvs[s2i(&((m)[1]))-1];
+        i2 = s2i(&(m[1]))-1;
+        i3 = i1;
     }
-    Normal n;
     if (m.size() >= 3)
     {
-        n = normals[s2i(&((m)[2]))-1];
+        i2 = i1;
+        i3 = s2i(&(m[2]))-1;
+    }
+    Position p = positions[i1];
+    UV uv = {0,0};
+    if (uvs.size() > i2)
+    {
+        uv = uvs[i2];
+    }
+    Normal n = {0, 0, 0};
+    if (normals.size() > i3)
+    {
+        n = normals[i3];
     }
     
     Vertex v(p, uv, n);
-    //Vertex v(p);
     
     // search vertex index
     std::vector<Vertex>::iterator vItr;

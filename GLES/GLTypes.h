@@ -43,6 +43,14 @@ typedef struct Vertex{
     Normal normal;
 } Vertex;
 
+/*
+typedef struct Vertex{
+    Vertex(Position p, Normal n):position(p), normal(n){}
+    Position position;
+    Normal normal;
+} Vertex;
+*/
+
 float s2f(const std::string* str);
 int s2i(const std::string* str);
 
