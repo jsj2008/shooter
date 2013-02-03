@@ -205,7 +205,7 @@ const GLubyte Indices[] = {
 
 - (void)setupVBOs {
      //obj3d = ObjLoader::load(@"block");
-     obj3d = ObjLoader::load(@"block");
+     obj3d = ObjLoader::load(@"teapot");
     /*
      obj3d = new Object3D();
     VertexBuffer* vertexBuffer = new VertexBuffer(Vertices, sizeof(Vertices));

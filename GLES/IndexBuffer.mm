@@ -61,7 +61,7 @@ void IndexBuffer::unbind()
 void IndexBuffer::draw()
 {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
-    glDrawElements(GL_LINES, size, GL_UNSIGNED_SHORT, 0);
+    glDrawElements(GL_TRIANGLES, size, GL_UNSIGNED_SHORT, 0);
     /*
     glDrawElements(GL_TRIANGLES, sizeof(Indices)/sizeof(Indices[0]),
                    GL_UNSIGNED_BYTE, 0);

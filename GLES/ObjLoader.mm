@@ -118,9 +118,7 @@ Object3D* ObjLoader::load(NSString* name)
         }
     }
     addMeshTo(obj3d);
-    
     delete s_dat;
-    
     return obj3d;
 }
 
