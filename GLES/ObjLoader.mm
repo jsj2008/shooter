@@ -198,10 +198,10 @@ void ObjLoader::loadMtl(NSString* name)
 {
 #warning TODO
     Material* m = new Material();
-    m->ambient  = {0.9, 0.7, 0.7, 1.0};
-    m->diffuse  = {0.7, 0.7, 0.7, 1.0};
-    m->specular = {0.7, 0.7, 0.7, 1.0};
-    m->shininess = 80;
+    m->ambient  = {0.19225,0.19225,0.19225, 1.0};
+    m->diffuse  = {0.50754,0.50754,0.50754, 1.0};
+    m->specular = {0.508273,0.508273,0.508273, 1.0};
+    m->shininess = 5.3;
     materials["block"] = m;
 }
 

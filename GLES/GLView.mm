@@ -180,7 +180,7 @@ const GLubyte Indices[] = {
 
 - (void)render
 {
-    obj3d->position.z = -150;
+    obj3d->position.z = -5;
     obj3d->position.y = -0.2;
     obj3d->rotate.x += 0.01;
     obj3d->rotate.y += 0.01;
@@ -205,7 +205,7 @@ const GLubyte Indices[] = {
 
 - (void)setupVBOs {
      //obj3d = ObjLoader::load(@"block");
-     obj3d = ObjLoader::load(@"teapot");
+     obj3d = ObjLoader::load(@"droid");
     /*
      obj3d = new Object3D();
     VertexBuffer* vertexBuffer = new VertexBuffer(Vertices, sizeof(Vertices));

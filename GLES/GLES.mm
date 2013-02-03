@@ -70,10 +70,11 @@ void GLES::initialize(float viewWidth, float viewHeight)
 // 光源の初期値
 void GLES::setDefaultLight()
 {
-    ambient = {0.2, 0.2, 0.2, 1.0};
+#warning TODO
+    ambient = {1.0, 1.0, 1.0, 1.0};
     diffuse = {0.7, 0.7, 0.7, 1.0};
-    specular = {0.9, 0.9, 0.9, 1.0};
-    lightPos = {115.0, 4115.0, 0.0};
+    specular = {1.9, 1.9, 1.9, 1.0};
+    lightPos = {115.0, 115.0, 0.0};
     glUniform4fv(uLightAmbientSlot, 1, (GLfloat*)(&ambient));
     glUniform4fv(uLightDiffuseSlot, 1, (GLfloat*)(&diffuse));
     glUniform4fv(uLightSpecular, 1, (GLfloat*)(&specular));
