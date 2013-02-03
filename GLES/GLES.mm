@@ -30,6 +30,12 @@ GLuint GLES::uLightDiffuseSlot;
 GLuint GLES::uLightSpecular;
 GLuint GLES::uLightPos;
 
+GLuint GLES::uMaterialAmbient;
+GLuint GLES::uMaterialDiffuse;
+GLuint GLES::uMaterialSpecular;
+GLuint GLES::uMaterialShininess;
+
+// 光源設定
 Color GLES::ambient;
 Color GLES::diffuse;
 Color GLES::specular;
@@ -149,10 +155,16 @@ void GLES::compileShaders()
     uModelViewMatrixSlot = glGetUniformLocation(programHandle, "uMMatrix");
     uNormalMatrixSlot = glGetUniformLocation(programHandle, "uNormalMatrix");
     
+    uMaterialAmbient = glGetUniformLocation(programHandle, "uMaterialAmbient");
+    uMaterialDiffuse = glGetUniformLocation(programHandle, "uMaterialDiffuse");
+    uMaterialSpecular = glGetUniformLocation(programHandle, "uMaterialSpecular");
+    uMaterialShininess = glGetUniformLocation(programHandle, "uMaterialShininess");
+    
     uLightAmbientSlot = glGetUniformLocation(programHandle, "uLightAmbient");
     uLightDiffuseSlot = glGetUniformLocation(programHandle, "uLightDiffuse");
     uLightSpecular = glGetUniformLocation(programHandle, "uLightSpecular");
     uLightPos = glGetUniformLocation(programHandle, "uLightPos");
+    
     
     // 3
     GLint linkSuccess;

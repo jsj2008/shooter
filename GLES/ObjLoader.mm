@@ -13,6 +13,7 @@
 #import "GLTypes.h"
 #import "Mesh.h"
 #import "Object3D.h"
+#import "Material.h"
 
 #import <string>
 #import <vector>
@@ -24,7 +25,7 @@ std::vector<UV> ObjLoader::uvs;
 
 std::vector<Vertex> ObjLoader::vertices; // position+uv+normal
 std::vector<Index> ObjLoader::indices;
-
+std::map<std::string, Material*> ObjLoader::materials;
 
 Object3D* ObjLoader::load(NSString* name)
 {
@@ -74,7 +75,6 @@ Object3D* ObjLoader::load(NSString* name)
         else if (*t == "mtlib")
         {
             //TODO:後で
-            //loadMtl(materials, (*word)[1]);
         }
         else if (*t == "usemtl")
         {
@@ -126,8 +126,11 @@ void ObjLoader::addMeshTo(Object3D* obj3d)
 {
     VertexBuffer* v = new VertexBuffer(&vertices[0], vertices.size());
     IndexBuffer* i = new IndexBuffer(&indices[0], indices.size());
-    Mesh *m = new Mesh(v, i);
-    obj3d->addMesh(m);
+#warning TODO
+    loadMtl(@"block"); // fixme
+    Material* m = materials["block"];
+    Mesh* mesh = new Mesh(v, i, m);
+    obj3d->addMesh(mesh);
     
     positions.clear();
     normals.clear();
@@ -193,7 +196,13 @@ void ObjLoader::addIndex(std::string* index_str)
 
 void ObjLoader::loadMtl(NSString* name)
 {
-    
+#warning TODO
+    Material* m = new Material();
+    m->ambient  = {0.9, 0.7, 0.7, 1.0};
+    m->diffuse  = {0.7, 0.7, 0.7, 1.0};
+    m->specular = {0.7, 0.7, 0.7, 1.0};
+    m->shininess = 80;
+    materials["block"] = m;
 }
 
 

@@ -7,18 +7,20 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "IndexBuffer.h"
-#import "VertexBuffer.h"
+
+class IndexBuffer;
+class VertexBuffer;
+class Material;
 
 class Mesh
 {
 public:
-    Mesh(VertexBuffer* v, IndexBuffer* i);
+    Mesh(VertexBuffer* v, IndexBuffer* i, Material* m);
     void draw();
     ~Mesh();
     
 private:
     IndexBuffer* indexBuffer;
     VertexBuffer* vertexBuffer;
-
+    Material* material;
 };

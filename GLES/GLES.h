@@ -35,6 +35,11 @@ public:
     static GLuint uLightPos;
 //    static GLuint uUseLigtht;
     
+    static GLuint uMaterialAmbient;
+    static GLuint uMaterialDiffuse;
+    static GLuint uMaterialSpecular;
+    static GLuint uMaterialShininess;
+    
     static GLKMatrix4 mvMatrix; // モデルビュー行列
     static GLKMatrix4 projectionMatrix; // 射影行列
     

@@ -1,3 +1,6 @@
+#ifndef GLTYPES
+#define GLTYPES
+
 #import <string>
 
 typedef struct Position
@@ -58,3 +61,5 @@ bool operator==(Vertex p1, Vertex p2);
 bool operator==(Position p1, Position p2);
 bool operator==(Normal p1, Normal p2);
 bool operator==(UV p1, UV p2);
+
+#endif

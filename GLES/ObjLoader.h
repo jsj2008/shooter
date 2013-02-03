@@ -8,7 +8,11 @@
 
 #import <Foundation/Foundation.h>
 #import <vector>
-#import "Object3D.h"
+#import <map>
+#import "GLTypes.h"
+
+class Object3D;
+class Material;
 
 class ObjLoader
 {
@@ -24,6 +28,7 @@ private:
     
     static std::vector<Vertex> vertices; // position+uv+normal
     static std::vector<Index> indices;
+    static std::map<std::string, Material*> materials;
     
 };
 
