@@ -38,17 +38,30 @@ Object3D* ObjLoader::load(NSString* name)
     string* s_dat = new string([modelDataStr UTF8String]);
     vector<string> v_dat;
     split(&v_dat, s_dat, "\n\r");
-    delete s_dat;
     vector<string>::iterator itr = v_dat.begin();
     
     Object3D* obj3d = new Object3D();
     
-    while (itr != v_dat.end())
+    string::size_type current = 0;
+    string::size_type eol = 0;
+    string l;
+    long len = s_dat->length();
+    
+    while (current != string::npos)
     {
-        string* l = &(*itr);
+        eol = s_dat->find_first_of("\r\n", current);
+        if (eol == string::npos)
+        {
+            eol = len - 1;
+        }
+        string l;
+        l = string(s_dat->substr(current, eol - current));
+        current = s_dat->find_first_not_of("\r\n", eol + 1);
+        //string* l = &(*itr);
         ++itr;
         vector<string> words;
-        split(&words, l, " ");
+        //split(&words, l, " ");
+        split(&words, &l, " ");
         if (!words.size()) {
             continue;
         }
@@ -104,12 +117,9 @@ Object3D* ObjLoader::load(NSString* name)
             }
         }
     }
+    addMeshTo(obj3d);
     
-    if (mesh_flg)
-    {
-        addMeshTo(obj3d);
-        
-    }
+    delete s_dat;
     
     return obj3d;
 }
@@ -121,13 +131,14 @@ void ObjLoader::addMeshTo(Object3D* obj3d)
     Mesh *m = new Mesh(v, i);
     obj3d->addMesh(m);
     
-    //vertices.clear();
-    indices.clear();
+    positions.clear();
+    normals.clear();
+    uvs.clear();
     
-    //positions.clear();
-    //uvs.clear();
-    //normals.clear();
+    vertices.clear();
+    indices.clear();
 }
+
 void ObjLoader::addIndex(std::string* index_str)
 {
     
