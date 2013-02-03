@@ -20,7 +20,7 @@ typedef struct Color
     float r, g, b, a;
 } Color;
 
-typedef GLushort Index;
+typedef unsigned short Index;
 
 /*
 typedef struct VertexPC{
@@ -29,20 +29,20 @@ typedef struct VertexPC{
     Color color;
 } VertexPC;*/
 
-typedef struct Vertex{
+/*
+ typedef struct Vertex{
     Vertex(Position p):position(p){}
     Position position;
 } Vertex;
+ */
 
-/*
 typedef struct Vertex{
     Vertex(Position p, UV u, Normal n):position(p), uv(u), normal(n){}
     Position position;
     UV uv;
     Normal normal;
 } Vertex;
-*/
- 
+
 float s2f(const std::string* str);
 int s2i(const std::string* str);
 

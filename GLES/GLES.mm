@@ -120,11 +120,11 @@ void GLES::compileShaders()
     glUseProgram(programHandle);
     
     // 5
-    aPositionSlot = glGetAttribLocation(programHandle, "Position");
+    aPositionSlot = glGetAttribLocation(programHandle, "aPosition");
     //aColorSlot = glGetAttribLocation(programHandle, "SourceColor");
     
-    uProjectionMatrixSlot = glGetUniformLocation(programHandle, "Projection");
-    uModelViewMatrixSlot = glGetUniformLocation(programHandle, "Modelview");
+    uProjectionMatrixSlot = glGetUniformLocation(programHandle, "uProjection");
+    uModelViewMatrixSlot = glGetUniformLocation(programHandle, "uModelview");
     
 }
 

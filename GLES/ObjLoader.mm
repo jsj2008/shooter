@@ -147,8 +147,8 @@ void ObjLoader::addIndex(std::string* index_str)
         n = normals[s2i(&((m)[2]))-1];
     }
     
-    //Vertex v(p, uv, n);
-    Vertex v(p);
+    Vertex v(p, uv, n);
+    //Vertex v(p);
     
     // search vertex index
     std::vector<Vertex>::iterator vItr;

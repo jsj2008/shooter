@@ -10,18 +10,18 @@ int s2i(const std::string* str)
     return atoi(str->c_str());
 }
 
+/*
 bool operator==(Vertex p1, Vertex p2)
 {
     return p1.position == p2.position;
-}
+}*/
 
-/*
 bool operator==(Vertex p1, Vertex p2)
 {
     return p1.position == p2.position
     && p1.uv == p2.uv
     && p1.normal == p2.normal;
-}*/
+}
 
 bool operator==(Position p1, Position p2)
 {

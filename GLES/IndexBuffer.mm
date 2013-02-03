@@ -40,7 +40,7 @@ IndexBuffer::IndexBuffer(const GLushort* indices, int num)
     glGenBuffers(1, &indexBuffer);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
     //glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, num*2, indices, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, num*sizeof(GLushort), indices, GL_STATIC_DRAW);
     size = num;
     
 //    for (int i = 0; i < num; i++) {
@@ -61,7 +61,7 @@ void IndexBuffer::unbind()
 void IndexBuffer::draw()
 {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
-    glDrawElements(GL_TRIANGLES, size, GL_UNSIGNED_SHORT, 0);
+    glDrawElements(GL_LINES, size, GL_UNSIGNED_SHORT, 0);
     /*
     glDrawElements(GL_TRIANGLES, sizeof(Indices)/sizeof(Indices[0]),
                    GL_UNSIGNED_BYTE, 0);
