@@ -128,7 +128,6 @@ void ObjLoader::addMeshTo(Object3D* obj3d)
     //uvs.clear();
     //normals.clear();
 }
-static GLushort ind =0 ;
 void ObjLoader::addIndex(std::string* index_str)
 {
     
@@ -154,8 +153,7 @@ void ObjLoader::addIndex(std::string* index_str)
     // search vertex index
     std::vector<Vertex>::iterator vItr;
     vItr = vertices.begin();
-    //Index index = 0;
-    /*
+    Index index = 0;
     while (vItr != vertices.end())
     {
         if (v == *vItr) {
@@ -164,12 +162,12 @@ void ObjLoader::addIndex(std::string* index_str)
         ++index; ++vItr;
     }
     if (vItr == vertices.end())
-    {*/
+    {
         // this vertex does not exist yet.
         vertices.push_back(v);
-    ind++;
-    //}
-    indices.push_back(ind);
+        index = vertices.size() - 1;
+    }
+    indices.push_back(index);
 }
 
 void ObjLoader::loadMtl(NSString* name)
