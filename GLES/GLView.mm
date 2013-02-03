@@ -32,6 +32,19 @@ GLuint _depthRenderBuffer;
 
 Object3D* obj3d;
 
+/*
+const Vertex Vertices[] = {
+    Vertex({1, -1, 0}, {1, 0}, {1,1,1}),
+    Vertex({1, 1, 0}, {1, 0}, {1,1,1}),
+    Vertex({-1, 1, 0}, {0, 1}, {1,1,1}),
+    Vertex({-1, -1, 0}, {0, 1}, {1,1,1}),
+    Vertex({1, -1, -1}, {1, 0}, {1,1,1}),
+    Vertex({1, 1, -1}, {1, 0}, {1,1,1}),
+    Vertex({-1, 1, -1}, {0, 1}, {1,1,1}),
+    Vertex({-1, -1, -1}, {0, 1}, {1,1,1})
+};*/
+
+/*
 const VertexPC Vertices[] = {
     VertexPC({1, -1, 0}, {1, 0, 0, 1}),
     VertexPC({1, 1, 0}, {1, 0, 0, 1}),
@@ -42,6 +55,7 @@ const VertexPC Vertices[] = {
     VertexPC({-1, 1, -1}, {0, 1, 0, 1}),
     VertexPC({-1, -1, -1}, {0, 1, 0, 1})
 };
+*/
                                          
 const GLubyte Indices[] = {
     // Front
@@ -166,7 +180,8 @@ const GLubyte Indices[] = {
 
 - (void)render
 {
-    obj3d->position.z -= 0.01;
+    obj3d->position.z = -5;
+    obj3d->position.y = 0;
     obj3d->rotate.x += 0.01;
     obj3d->rotate.y += 0.01;
     obj3d->rotate.z += 0.01;
@@ -189,12 +204,15 @@ const GLubyte Indices[] = {
 #pragma mark buffer objects
 
 - (void)setupVBOs {
-    ObjLoader::load(@"block");
-    obj3d = new Object3D();
+     //obj3d = ObjLoader::load(@"block");
+     obj3d = ObjLoader::load(@"box");
+    /*
+     obj3d = new Object3D();
     VertexBuffer* vertexBuffer = new VertexBuffer(Vertices, sizeof(Vertices));
     IndexBuffer* indexBuffer = new IndexBuffer(Indices, sizeof(Indices));
     Mesh* mesh = new Mesh(vertexBuffer, indexBuffer);
     obj3d->addMesh(mesh);
+     */
 }
 
 /*

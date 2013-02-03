@@ -18,7 +18,7 @@ GLKMatrix4 GLES::mvMatrix;
 GLKMatrix4 GLES::projectionMatrix;
 
 GLuint GLES::aPositionSlot        ;
-GLuint GLES::aColorSlot           ;
+//GLuint GLES::aColorSlot           ;
 GLuint GLES::uProjectionMatrixSlot;
 GLuint GLES::uModelViewMatrixSlot ;
 
@@ -43,7 +43,7 @@ void GLES::initialize(float viewWidth, float viewHeight)
     GLES::viewWidth = viewWidth;
     GLES::viewHeight = viewHeight;
     float aspect = (float)(viewWidth / viewHeight);
-    GLES::projectionMatrix = GLKMatrix4MakePerspective(GLKMathDegreesToRadians(65.0f), aspect, 0.1f, 100.0f);
+    GLES::projectionMatrix = GLKMatrix4MakePerspective(GLKMathDegreesToRadians(65.0f), aspect, 0.1f, 350.0f);
     mvMatrix = GLKMatrix4Identity;
 }
 
@@ -121,7 +121,7 @@ void GLES::compileShaders()
     
     // 5
     aPositionSlot = glGetAttribLocation(programHandle, "Position");
-    aColorSlot = glGetAttribLocation(programHandle, "SourceColor");
+    //aColorSlot = glGetAttribLocation(programHandle, "SourceColor");
     
     uProjectionMatrixSlot = glGetUniformLocation(programHandle, "Projection");
     uModelViewMatrixSlot = glGetUniformLocation(programHandle, "Modelview");

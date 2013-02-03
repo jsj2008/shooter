@@ -3,6 +3,34 @@
    version = "1.0">
    <ContextStates>
       <ContextState
+         contextName = "ObjLoader::addMeshTo(Object3D*):ObjLoader.mm">
+         <PersistentStrings>
+            <PersistentString
+               value = "indices">
+            </PersistentString>
+            <PersistentString
+               value = "vertices">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "split(std::__1::vector&lt;std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;, std::__1::allocator&lt;std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; &gt; &gt;*, std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; const*, std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;):HayoUtil.mm">
+      </ContextState>
+      <ContextState
+         contextName = "IndexBuffer::draw():IndexBuffer.mm">
+      </ContextState>
+      <ContextState
+         contextName = "ObjLoader::load(NSString*):ObjLoader.mm">
+         <PersistentStrings>
+            <PersistentString
+               value = "uvs">
+            </PersistentString>
+            <PersistentString
+               value = "indices">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "ObjLoader::addIndex(std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;*):ObjLoader.mm">
          <PersistentStrings>
             <PersistentString
@@ -20,21 +48,35 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "ObjLoader::load(NSString*):ObjLoader.mm">
+         contextName = "split(std::__1::vector&lt;std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;, std::__1::allocator&lt;std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; &gt; &gt;*, std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; const*, std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;):GLUtil.mm">
+      </ContextState>
+      <ContextState
+         contextName = "VertexBuffer::VertexBuffer(Vertex const*, int):VertexBuffer.mm">
          <PersistentStrings>
             <PersistentString
-               value = "uvs">
+               value = "num*sizeof(Vertex)">
             </PersistentString>
             <PersistentString
-               value = "indices">
+               value = "v+10">
+            </PersistentString>
+            <PersistentString
+               value = "sizeof(Vertex)">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "split(std::__1::vector&lt;std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;, std::__1::allocator&lt;std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; &gt; &gt;*, std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; const*, std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;):GLUtil.mm">
-      </ContextState>
-      <ContextState
-         contextName = "split(std::__1::vector&lt;std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;, std::__1::allocator&lt;std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; &gt; &gt;*, std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; const*, std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;):HayoUtil.mm">
+         contextName = "IndexBuffer::IndexBuffer(unsigned char const*, int):IndexBuffer.mm">
+         <PersistentStrings>
+            <PersistentString
+               value = "sizeof(Index)">
+            </PersistentString>
+            <PersistentString
+               value = "sizeof(Vertex)">
+            </PersistentString>
+            <PersistentString
+               value = "indices[1]">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
    </ContextStates>
 </VariablesViewState>

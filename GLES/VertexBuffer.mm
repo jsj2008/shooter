@@ -12,45 +12,38 @@
 #include <OpenGLES/ES2/glext.h>
 #import "GLES.h"
 
-/*
-const Vertex Vertices[] = {
-    {{1, -1, 0}, {1, 0, 0, 1}},
-    {{1, 1, 0}, {1, 0, 0, 1}},
-    {{-1, 1, 0}, {0, 1, 0, 1}},
-    {{-1, -1, 0}, {0, 1, 0, 1}},
-    {{1, -1, -1}, {1, 0, 0, 1}},
-    {{1, 1, -1}, {1, 0, 0, 1}},
-    {{-1, 1, -1}, {0, 1, 0, 1}},
-    {{-1, -1, -1}, {0, 1, 0, 1}}
-};
-*/
-
-VertexBuffer::VertexBuffer(const VertexPC* v, int size)
+VertexBuffer::VertexBuffer(const Vertex* v, int num)
 {
     glGenBuffers(1, &vertexBuffer);
     glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
     //glBufferData(GL_ARRAY_BUFFER, sizeof(v), v, GL_STATIC_DRAW);
-    glBufferData(GL_ARRAY_BUFFER, size, v, GL_STATIC_DRAW);
-    // TODO:unbind
+    glBufferData(GL_ARRAY_BUFFER, num*sizeof(Vertex), v, GL_STATIC_DRAW);
+//    for (int i = 0; i < num; i++) {
+//        NSLog(@"%d:%f,%f,%f", i,
+//              v[i].position.x,
+//              v[i].position.y,
+//              v[i].position.z
+//              );
+//    }
 }
 
 void VertexBuffer::bind()
 {
     glEnableVertexAttribArray(GLES::aPositionSlot);
-    glEnableVertexAttribArray(GLES::aColorSlot);
+    //glEnableVertexAttribArray(GLES::aColorSlot);
     glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
     
     glVertexAttribPointer(GLES::aPositionSlot, 3, GL_FLOAT, GL_FALSE,
-                          sizeof(VertexPC), 0);
-    glVertexAttribPointer(GLES::aColorSlot, 4, GL_FLOAT, GL_FALSE,
-                          sizeof(VertexPC), (GLvoid*) (sizeof(float) * 3));
+                          sizeof(Vertex), 0);
+    //glVertexAttribPointer(GLES::aColorSlot, 4, GL_FLOAT, GL_FALSE,
+                          //sizeof(Vertex), (GLvoid*) (sizeof(float) * 3));
     
 }
 
 void VertexBuffer::unbind()
 {
-    glDisableVertexAttribArray(GLES::aPositionSlot);
-    glDisableVertexAttribArray(GLES::aColorSlot);
+    //glDisableVertexAttribArray(GLES::aPositionSlot);
+    //glDisableVertexAttribArray(GLES::aColorSlot);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 

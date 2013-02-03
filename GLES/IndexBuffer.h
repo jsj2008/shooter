@@ -11,7 +11,7 @@
 class IndexBuffer
 {
 public:
-    IndexBuffer(const GLubyte* indices, int size);
+    IndexBuffer(const GLushort* indices, int num);
     void bind();
     void draw();
     void unbind();

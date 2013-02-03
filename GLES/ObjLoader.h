@@ -17,12 +17,13 @@ public:
 private:
     static void loadMtl(NSString* name);
     static void addIndex(std::string* index_str);
+    static void addMeshTo(Object3D* obj);
     static std::vector<Position> positions;
     static std::vector<Normal> normals;
     static std::vector<UV> uvs;
     
     static std::vector<Vertex> vertices; // position+uv+normal
-    static std::vector<GLubyte> indices;
+    static std::vector<Index> indices;
     
 };
 

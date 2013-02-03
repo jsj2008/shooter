@@ -12,7 +12,7 @@
 class VertexBuffer
 {
 public:
-    VertexBuffer(const VertexPC* v, int size);
+    VertexBuffer(const Vertex* v, int num);
     void bind();
     void unbind();
     ~VertexBuffer();

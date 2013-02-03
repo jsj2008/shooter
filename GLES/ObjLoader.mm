@@ -12,6 +12,7 @@
 #import "GLUtil.h"
 #import "GLTypes.h"
 #import "Mesh.h"
+#import "Object3D.h"
 
 #import <string>
 #import <vector>
@@ -22,7 +23,7 @@ std::vector<Normal> ObjLoader::normals;
 std::vector<UV> ObjLoader::uvs;
 
 std::vector<Vertex> ObjLoader::vertices; // position+uv+normal
-std::vector<GLubyte> ObjLoader::indices;
+std::vector<Index> ObjLoader::indices;
 
 
 Object3D* ObjLoader::load(NSString* name)
@@ -39,6 +40,8 @@ Object3D* ObjLoader::load(NSString* name)
     split(&v_dat, s_dat, "\n\r");
     delete s_dat;
     vector<string>::iterator itr = v_dat.begin();
+    
+    Object3D* obj3d = new Object3D();
     
     while (itr != v_dat.end())
     {
@@ -100,25 +103,32 @@ Object3D* ObjLoader::load(NSString* name)
                 addIndex(&(*wItr));
             }
         }
-        else if (mesh_flg)
-        {
-            mesh_flg = false;
-            obj3d = new Object3D();
-            VertexBuffer* vertexBuffer = new VertexBuffer(&vertices[0], vertices.size()));
-            IndexBuffer* indexBuffer = new IndexBuffer(Indices, sizeof(Indices));
-            Mesh *mesh = new Mesh();
-            
-        }
     }
     
     if (mesh_flg)
     {
+        addMeshTo(obj3d);
         
     }
     
-    return nil;
+    return obj3d;
 }
 
+void ObjLoader::addMeshTo(Object3D* obj3d)
+{
+    VertexBuffer* v = new VertexBuffer(&vertices[0], vertices.size());
+    IndexBuffer* i = new IndexBuffer(&indices[0], indices.size());
+    Mesh *m = new Mesh(v, i);
+    obj3d->addMesh(m);
+    
+    //vertices.clear();
+    indices.clear();
+    
+    //positions.clear();
+    //uvs.clear();
+    //normals.clear();
+}
+static GLushort ind =0 ;
 void ObjLoader::addIndex(std::string* index_str)
 {
     
@@ -126,28 +136,40 @@ void ObjLoader::addIndex(std::string* index_str)
     vector<string> m;
     split(&m, index_str, "/");
     
-    Position p = positions[s2i(&(m[0]))];
-    UV uv = uvs[s2i(&((m)[1]))];
-    Normal n = normals[s2i(&((m)[2]))];
+    Position p = positions[s2i(&(m[0]))-1];
+    UV uv;
+    if (m.size() >= 2)
+    {
+        uv = uvs[s2i(&((m)[1]))-1];
+    }
+    Normal n;
+    if (m.size() >= 3)
+    {
+        n = normals[s2i(&((m)[2]))-1];
+    }
     
-    Vertex v(p, uv, n);
+    //Vertex v(p, uv, n);
+    Vertex v(p);
     
     // search vertex index
     std::vector<Vertex>::iterator vItr;
-    vItr = find(vertices.begin(), vertices.end(), v);
-    Index index = 0;
+    vItr = vertices.begin();
+    //Index index = 0;
+    /*
     while (vItr != vertices.end())
     {
-        if (v == *vItr) break;
+        if (v == *vItr) {
+            break;
+        }
         ++index; ++vItr;
     }
     if (vItr == vertices.end())
-    {
+    {*/
         // this vertex does not exist yet.
         vertices.push_back(v);
-        index = vertices.size() - 1;
-    }
-    indices.push_back(index);
+    ind++;
+    //}
+    indices.push_back(ind);
 }
 
 void ObjLoader::loadMtl(NSString* name)
