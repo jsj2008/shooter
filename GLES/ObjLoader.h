@@ -19,9 +19,9 @@ class ObjLoader
 public:
     static Object3D* load(NSString* name);
 private:
-    static void loadMtl(NSString* name);
+    static void loadMtl(std::string* name);
     static void addIndex(std::string* index_str);
-    static void addMeshTo(Object3D* obj);
+    static void addMeshTo(Object3D* obj, std::string material_name);
     static std::vector<Position> positions;
     static std::vector<Normal> normals;
     static std::vector<UV> uvs;

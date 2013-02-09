@@ -45,6 +45,8 @@ Object3D* ObjLoader::load(NSString* name)
     string l;
     long len = s_dat->length();
     
+    std::string material_name = ""; // マテリアル名
+    
     while (current != string::npos)
     {
         eol = s_dat->find_first_of("\r\n", current);
@@ -54,29 +56,33 @@ Object3D* ObjLoader::load(NSString* name)
         }
         string l;
         l = string(s_dat->substr(current, eol - current));
+        
+        // 現在の行を単語ごとに分解する。
         current = s_dat->find_first_not_of("\r\n", eol + 1);
         vector<string> words;
         split(&words, &l, " ");
         if (!words.size()) {
             continue;
         }
-        string* t = &(words[0]);
-        string a = *t;
-        if (*t == "#")
+        
+        // １つめの単語でデータの種類を判定する
+        // コメント
+        if (words[0] == "#")
         {
             continue;
         }
-        else if (*t == "mtlib")
+        // マテリアルファイル名
+        else if (words[0] == "mtllib")
         {
-            //loadMtl(&(words[1]));
-            //TODO:後で
+            loadMtl(&(words[1]));
         }
-        else if (*t == "usemtl")
+        // マテリアル名
+        else if (words[0] == "usemtl")
         {
-            // TODO:後で
+            material_name = words[1];
         }
         // position
-        else if (*t == "v")
+        else if (words[0] == "v")
         {
             positions.push_back({
                 s2f(&(words)[1]),
@@ -85,7 +91,7 @@ Object3D* ObjLoader::load(NSString* name)
             });
         }
         // uv
-        else if (*t == "vt")
+        else if (words[0] == "vt")
         {
             uvs.push_back({
                 s2f(&(words)[1]),
@@ -93,7 +99,7 @@ Object3D* ObjLoader::load(NSString* name)
             });
         }
         // normal
-        else if (*t == "vn")
+        else if (words[0] == "vn")
         {
             normals.push_back({
                 s2f(&(words)[1]),
@@ -102,7 +108,7 @@ Object3D* ObjLoader::load(NSString* name)
             });
         }
         // index
-        else if (*t == "f")
+        else if (words[0] == "f")
         {
             mesh_flg = true;
             vector<string>::iterator wItr = words.begin();
@@ -112,18 +118,35 @@ Object3D* ObjLoader::load(NSString* name)
             }
         }
     }
-    addMeshTo(obj3d);
+    addMeshTo(obj3d, material_name);
     delete s_dat;
+    
+    for (std::map<std::string, Material*>::iterator itr = materials.begin(); itr != materials.end(); itr++)
+    {
+        delete itr->second;
+    }
+    materials.clear();
+    
     return obj3d;
 }
 
-void ObjLoader::addMeshTo(Object3D* obj3d)
+// メッシュを作る
+void ObjLoader::addMeshTo(Object3D* obj3d, std::string material_name)
 {
     VertexBuffer* v = new VertexBuffer(&vertices[0], vertices.size());
     IndexBuffer* i = new IndexBuffer(&indices[0], indices.size());
-#warning TODO
-    loadMtl(@"block"); // fixme
-    Material* m = materials["block"];
+    
+    Material* m = NULL;
+    if (material_name.length())
+    {
+        Material* temp = materials[material_name];
+        m = new Material();
+        m->name      = temp->name;
+        m->ambient   = temp->ambient;
+        m->diffuse   = temp->diffuse;
+        m->specular  = temp->specular;
+        m->shininess = temp->shininess;
+    }
     Mesh* mesh = new Mesh(v, i, m);
     obj3d->addMesh(mesh);
     
@@ -193,15 +216,89 @@ void ObjLoader::addIndex(std::string* index_str)
     indices.push_back(index);
 }
 
-void ObjLoader::loadMtl(NSString* name)
+void ObjLoader::loadMtl(std::string* name)
 {
-#warning TODO
-    Material* m = new Material();
-    m->ambient  = {0.19225,0.19225,0.19225, 1.0};
-    m->diffuse  = {0.50754,0.50754,0.50754, 1.0};
-    m->specular = {0.508273,0.508273,0.508273, 1.0};
-    m->shininess = 5.3;
-    materials["block"] = m;
+    
+    using namespace std;
+    
+    materials.clear();
+    Material* m = NULL; // メッシュに渡すときにcopyする
+    
+    // ファイルを文字列に読み込む
+    NSString* s = [NSString stringWithCString:name->c_str() encoding:NSUTF8StringEncoding];
+    NSString *path = [[NSBundle mainBundle] pathForResource:s ofType:@""];
+    NSData *modelData = [NSData dataWithContentsOfFile:path];
+    NSString *modelDataStr = [[[NSString alloc] initWithData:modelData encoding:NSUTF8StringEncoding] autorelease];
+    string* s_dat = new string([modelDataStr UTF8String]);
+    
+    // １行ずつ処理
+    string::size_type current = 0;
+    string::size_type eol = 0;
+    string l;
+    long len = s_dat->length();
+    
+    try {
+        while (current != string::npos)
+        {
+            eol = s_dat->find_first_of("\r\n", current);
+            if (eol == string::npos)
+            {
+                eol = len - 1;
+            }
+            string l;
+            l = string(s_dat->substr(current, eol - current));
+            
+            // 現在の行を単語ごとに分解する。
+            current = s_dat->find_first_not_of("\r\n", eol + 1);
+            vector<string> words;
+            split(&words, &l, " ");
+            if (!words.size()) {
+                continue;
+            }
+            
+            // １つめの単語でデータの種類を判定する
+            // マテリアル名
+            if (words[0] == "newmtl")
+            {
+                m = new Material();
+                m->name = words[1];
+                materials[words[1]] = m;
+            }
+            // 環境光
+            else if (words[0] == "Ka")
+            {
+                if (m == NULL) throw 1;
+                m->ambient = {s2f(&words[1]), s2f(&words[2]), s2f(&words[3]), 1.0};
+            }
+            // 拡散光
+            else if (words[0] == "Kd")
+            {
+                if (m == NULL) throw 1;
+                m->diffuse = {s2f(&words[1]), s2f(&words[2]), s2f(&words[3]), 1.0};
+            }
+            // 鏡面光
+            else if (words[0] == "Ks")
+            {
+                if (m == NULL) throw 1;
+                m->specular = {s2f(&words[1]), s2f(&words[2]), s2f(&words[3]), 1.0};
+            }
+            // 鏡面反射角度
+            else if (words[0] == "Ns")
+            {
+                if (m == NULL) throw 1;
+                m->shininess = s2f(&words[1]);
+            }
+            // テクスチャ
+            else if (words[0] == "map_Kd")
+            {
+                if (m == NULL) throw 1;
+#warning todo
+                
+            }
+        }
+    } catch (...) {
+        NSLog(@"%@", @"failed to load material");
+    }
 }
 
 

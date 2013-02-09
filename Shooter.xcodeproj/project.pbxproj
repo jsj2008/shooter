@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		070054F416BE48F8002BA473 /* Material.mm in Sources */ = {isa = PBXBuildFile; fileRef = 070054F316BE48F7002BA473 /* Material.mm */; };
+		070054FA16C62DB5002BA473 /* droid.mtl in Resources */ = {isa = PBXBuildFile; fileRef = 070054F616C62DB4002BA473 /* droid.mtl */; };
+		070054FB16C62DB5002BA473 /* floor.mtl in Resources */ = {isa = PBXBuildFile; fileRef = 070054F716C62DB5002BA473 /* floor.mtl */; };
+		070054FC16C62DB5002BA473 /* floor.obj in Resources */ = {isa = PBXBuildFile; fileRef = 070054F816C62DB5002BA473 /* floor.obj */; };
+		070054FD16C62DB5002BA473 /* floor.png in Resources */ = {isa = PBXBuildFile; fileRef = 070054F916C62DB5002BA473 /* floor.png */; };
 		0733405316BD9D9100DB2D34 /* test.obj in Resources */ = {isa = PBXBuildFile; fileRef = 0733405216BD9D9100DB2D34 /* test.obj */; };
 		0733405616BDA18100DB2D34 /* droid.obj in Resources */ = {isa = PBXBuildFile; fileRef = 0733405516BDA18100DB2D34 /* droid.obj */; };
 		0733405816BDA1FB00DB2D34 /* box.obj in Resources */ = {isa = PBXBuildFile; fileRef = 0733405716BDA1FB00DB2D34 /* box.obj */; };
@@ -50,6 +54,10 @@
 /* Begin PBXFileReference section */
 		070054F216BE48F7002BA473 /* Material.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Material.h; path = GLES/Material.h; sourceTree = "<group>"; };
 		070054F316BE48F7002BA473 /* Material.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Material.mm; path = GLES/Material.mm; sourceTree = "<group>"; };
+		070054F616C62DB4002BA473 /* droid.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = droid.mtl; sourceTree = "<group>"; };
+		070054F716C62DB5002BA473 /* floor.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = floor.mtl; sourceTree = "<group>"; };
+		070054F816C62DB5002BA473 /* floor.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = floor.obj; sourceTree = "<group>"; };
+		070054F916C62DB5002BA473 /* floor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = floor.png; sourceTree = "<group>"; };
 		0733405216BD9D9100DB2D34 /* test.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = test.obj; sourceTree = "<group>"; };
 		0733405516BDA18100DB2D34 /* droid.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = droid.obj; sourceTree = "<group>"; };
 		0733405716BDA1FB00DB2D34 /* box.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = box.obj; sourceTree = "<group>"; };
@@ -125,6 +133,10 @@
 		0755992616B561490066A0E9 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				070054F616C62DB4002BA473 /* droid.mtl */,
+				070054F716C62DB5002BA473 /* floor.mtl */,
+				070054F816C62DB5002BA473 /* floor.obj */,
+				070054F916C62DB5002BA473 /* floor.png */,
 				0733406516BDB06D00DB2D34 /* teapot.obj */,
 				0733406316BDAF7800DB2D34 /* yakuimon.obj */,
 				0733406116BDAE4A00DB2D34 /* teoke.obj */,
@@ -299,6 +311,10 @@
 				0733406216BDAE4B00DB2D34 /* teoke.obj in Resources */,
 				0733406416BDAF7800DB2D34 /* yakuimon.obj in Resources */,
 				0733406616BDB06D00DB2D34 /* teapot.obj in Resources */,
+				070054FA16C62DB5002BA473 /* droid.mtl in Resources */,
+				070054FB16C62DB5002BA473 /* floor.mtl in Resources */,
+				070054FC16C62DB5002BA473 /* floor.obj in Resources */,
+				070054FD16C62DB5002BA473 /* floor.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

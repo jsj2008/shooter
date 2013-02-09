@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "GLTypes.h"
+#import <string>
 
 class Material
 {
@@ -21,4 +22,5 @@ public:
     Color diffuse;
     Color specular;
     float shininess;
+    std::string name;
 };
