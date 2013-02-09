@@ -29,20 +29,17 @@ std::map<std::string, Material*> ObjLoader::materials;
 
 Object3D* ObjLoader::load(NSString* name)
 {
-    // load file
+    using namespace std;
+    
+    // ファイルを文字列に読み込む
     NSString *path = [[NSBundle mainBundle] pathForResource:name ofType:@"obj"];
     NSData *modelData = [NSData dataWithContentsOfFile:path];
     NSString *modelDataStr = [[[NSString alloc] initWithData:modelData encoding:NSUTF8StringEncoding] autorelease];
-    
-    using namespace std;
-    bool mesh_flg = false;
     string* s_dat = new string([modelDataStr UTF8String]);
-    vector<string> v_dat;
-    split(&v_dat, s_dat, "\n\r");
-    vector<string>::iterator itr = v_dat.begin();
     
+    // １行ずつ処理
     Object3D* obj3d = new Object3D();
-    
+    bool mesh_flg = false;
     string::size_type current = 0;
     string::size_type eol = 0;
     string l;
@@ -58,10 +55,7 @@ Object3D* ObjLoader::load(NSString* name)
         string l;
         l = string(s_dat->substr(current, eol - current));
         current = s_dat->find_first_not_of("\r\n", eol + 1);
-        //string* l = &(*itr);
-        ++itr;
         vector<string> words;
-        //split(&words, l, " ");
         split(&words, &l, " ");
         if (!words.size()) {
             continue;
@@ -74,6 +68,7 @@ Object3D* ObjLoader::load(NSString* name)
         }
         else if (*t == "mtlib")
         {
+            //loadMtl(&(words[1]));
             //TODO:後で
         }
         else if (*t == "usemtl")
@@ -140,10 +135,13 @@ void ObjLoader::addMeshTo(Object3D* obj3d)
     indices.clear();
 }
 
+// インデックスが示す頂点を作成する
 void ObjLoader::addIndex(std::string* index_str)
 {
     
     using namespace std;
+    
+    // インデックスが指す座標、UV座標、法線を探して頂点を作る
     vector<string> m;
     split(&m, index_str, "/");
     
@@ -174,7 +172,7 @@ void ObjLoader::addIndex(std::string* index_str)
     
     Vertex v(p, uv, n);
     
-    // search vertex index
+    // このインデックスが指す頂点が既にリストにある場合は再利用する
     std::vector<Vertex>::iterator vItr;
     vItr = vertices.begin();
     Index index = 0;
@@ -191,6 +189,7 @@ void ObjLoader::addIndex(std::string* index_str)
         vertices.push_back(v);
         index = vertices.size() - 1;
     }
+    // 追加した(または既にリストに入っていた)頂点を指すインデックスを追加する
     indices.push_back(index);
 }
 
