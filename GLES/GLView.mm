@@ -31,6 +31,7 @@ GLuint _colorRenderBuffer;
 GLuint _depthRenderBuffer;
 
 Object3D* obj3d;
+Object3D* obj3d2;
 
 /*
 const Vertex Vertices[] = {
@@ -104,6 +105,10 @@ const GLubyte Indices[] = {
     if (obj3d)
     {
         delete obj3d;
+    }
+    if (obj3d2)
+    {
+        delete obj3d2;
     }
 }
 
@@ -185,7 +190,15 @@ const GLubyte Indices[] = {
     obj3d->rotate.x += 0.01;
     obj3d->rotate.y += 0.01;
     obj3d->rotate.z += 0.01;
+    obj3d->scale.set(0.1, 0.1, 0.1);
     obj3d->draw();
+    
+    obj3d2->position.z = -5;
+    obj3d2->position.y = -0.2;
+    obj3d2->rotate.x += 0.01;
+    obj3d2->rotate.y += 0.01;
+    obj3d2->rotate.z += 0.01;
+    obj3d2->draw();
     
 }
 
@@ -205,7 +218,8 @@ const GLubyte Indices[] = {
 
 - (void)setupVBOs {
      //obj3d = ObjLoader::load(@"block");
-     obj3d = ObjLoader::load(@"droid");
+     obj3d = ObjLoader::load(@"floor");
+     obj3d2 = ObjLoader::load(@"droid");
     /*
      obj3d = new Object3D();
     VertexBuffer* vertexBuffer = new VertexBuffer(Vertices, sizeof(Vertices));
