@@ -58,6 +58,7 @@ void Texture::bind()
 {
     if (textureId)
     {
+        glUniform1f(GLES::uUseTexture, 1.0);
         glEnable(GL_TEXTURE_2D);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, textureId);
@@ -67,6 +68,7 @@ void Texture::bind()
 
 void Texture::unbind()
 {
+    glUniform1f(GLES::uUseTexture, 0);
     glDisable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, 0);
 }

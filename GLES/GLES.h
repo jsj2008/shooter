@@ -45,6 +45,7 @@ public:
     static GLKMatrix4 projectionMatrix; // 射影行列
     
     // texture
+    static GLuint uUseTexture;
     static GLuint uTexMatrixSlot;
     static GLuint uTexSlot;
     

@@ -1,3 +1,5 @@
+precision mediump float;
+
 attribute vec4 aPosition;
 attribute vec3 aNormal;
 attribute vec2 aUV;
@@ -21,6 +23,7 @@ uniform mat4 uNormalMatrix; // gyakutenti
 
 // texture matrix
 uniform mat4 uTexMatrix;
+uniform float uUseTexture;
 
 // output
 varying vec4 DestinationColor;
@@ -49,5 +52,8 @@ void main(void) { // 4
     gl_Position = uPMatrix * uMMatrix * aPosition;
     
     // UV
-    vUV = vec2(uTexMatrix*vec4(aUV, 0.0, 1.0));
+    if (uUseTexture > 0.0)
+    {
+        vUV = vec2(uTexMatrix*vec4(aUV, 0.0, 1.0));
+    }
 }

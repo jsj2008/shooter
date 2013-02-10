@@ -38,6 +38,7 @@ GLuint GLES::uMaterialShininess;
 
 GLuint GLES::uTexMatrixSlot;
 GLuint GLES::uTexSlot;
+GLuint GLES::uUseTexture;
 
 // 光源設定
 Color GLES::ambient;
@@ -92,6 +93,8 @@ void GLES::updateMatrix()
 {
     glUniformMatrix4fv(GLES::uProjectionMatrixSlot, 1, 0, GLES::projectionMatrix.m);
     glUniformMatrix4fv(GLES::uModelViewMatrixSlot, 1, 0, GLES::mvMatrix.m);
+    
+    
     // モデルビュー行列の逆転置行列の指定
     GLKMatrix4 normalM = GLES::mvMatrix;
     bool result = true;
@@ -176,6 +179,7 @@ void GLES::compileShaders()
     
     uTexMatrixSlot = glGetUniformLocation(programHandle, "uTexMatrix");
     uTexSlot = glGetUniformLocation(programHandle, "uTex");
+    uUseTexture = glGetUniformLocation(programHandle, "uUseTexture");
     
     
     // 3
