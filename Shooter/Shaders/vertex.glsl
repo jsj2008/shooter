@@ -1,7 +1,6 @@
 attribute vec4 aPosition;
 attribute vec3 aNormal;
-
-varying vec4 DestinationColor;
+attribute vec2 aUV;
 
 // light
 uniform vec4 uLightAmbient;
@@ -19,6 +18,13 @@ uniform mat4 uPMatrix; // projection
 uniform mat4 uMMatrix; // modelview
 
 uniform mat4 uNormalMatrix; // gyakutenti
+
+// texture matrix
+uniform mat4 uTexMatrix;
+
+// output
+varying vec4 DestinationColor;
+varying vec2 vUV;
 
 void main(void) { // 4
 
@@ -41,4 +47,7 @@ void main(void) { // 4
     DestinationColor = ambient + diffuse + specular;
 
     gl_Position = uPMatrix * uMMatrix * aPosition;
+    
+    // UV
+    vUV = vec2(uTexMatrix*vec4(aUV, 0.0, 1.0));
 }

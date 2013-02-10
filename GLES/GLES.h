@@ -24,6 +24,7 @@ public:
     
     static GLuint aPositionSlot        ;
     static GLuint aNormalSlot          ;
+    static GLuint aUVSlot              ;
     
     static GLuint uProjectionMatrixSlot;
     static GLuint uModelViewMatrixSlot ;
@@ -43,6 +44,12 @@ public:
     static GLKMatrix4 mvMatrix; // モデルビュー行列
     static GLKMatrix4 projectionMatrix; // 射影行列
     
+    // texture
+    static GLuint uTexMatrixSlot;
+    static GLuint uTexSlot;
+    
+    
+    // light
     static Color ambient;
     static Color diffuse;
     static Color specular;
@@ -55,6 +62,6 @@ private:
     static void compileShaders();
     static GLuint compileShader(NSString* shaderName, GLenum shaderType);
     static std::stack<GLKMatrix4> matrixStack; // 行列スタック
-    static void setDefaultLight();
+    static void setDefault();
     
 };

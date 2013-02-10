@@ -8,6 +8,9 @@
             <PersistentString
                value = "current">
             </PersistentString>
+            <PersistentString
+               value = "materials">
+            </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState

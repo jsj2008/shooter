@@ -23,6 +23,10 @@ Object3D::Object3D()
 
 Object3D::~Object3D()
 {
+    for (std::vector<Mesh*>::iterator itr = meshlist.begin(); itr != meshlist.end(); itr++)
+    {
+        free(*itr);
+    }
     meshlist.clear();
 }
 

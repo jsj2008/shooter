@@ -14,6 +14,7 @@
 #import "Mesh.h"
 #import "Object3D.h"
 #import "Material.h"
+#import "Texture.h"
 
 #import <string>
 #import <vector>
@@ -119,8 +120,9 @@ Object3D* ObjLoader::load(NSString* name)
         }
     }
     addMeshTo(obj3d, material_name);
-    delete s_dat;
     
+    // メモリ解放
+    delete s_dat;
     for (std::map<std::string, Material*>::iterator itr = materials.begin(); itr != materials.end(); itr++)
     {
         delete itr->second;
@@ -146,6 +148,11 @@ void ObjLoader::addMeshTo(Object3D* obj3d, std::string material_name)
         m->diffuse   = temp->diffuse;
         m->specular  = temp->specular;
         m->shininess = temp->shininess;
+        m->texture_name = temp->texture_name;
+        if (m->texture_name.length())
+        {
+            m->texture = Texture::createTextureWithAsset(m->texture_name);
+        }
     }
     Mesh* mesh = new Mesh(v, i, m);
     obj3d->addMesh(mesh);
@@ -292,13 +299,13 @@ void ObjLoader::loadMtl(std::string* name)
             else if (words[0] == "map_Kd")
             {
                 if (m == NULL) throw 1;
-#warning todo
-                
+                m->texture_name = words[1];
             }
         }
     } catch (...) {
         NSLog(@"%@", @"failed to load material");
     }
+    //delete s_dat;
 }
 
 

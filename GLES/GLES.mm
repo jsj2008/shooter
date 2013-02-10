@@ -20,6 +20,7 @@ GLKMatrix4 GLES::projectionMatrix;
 
 GLuint GLES::aPositionSlot        ;
 GLuint GLES::aNormalSlot          ;
+GLuint GLES::aUVSlot              ;
 
 GLuint GLES::uProjectionMatrixSlot;
 GLuint GLES::uModelViewMatrixSlot ;
@@ -34,6 +35,9 @@ GLuint GLES::uMaterialAmbient;
 GLuint GLES::uMaterialDiffuse;
 GLuint GLES::uMaterialSpecular;
 GLuint GLES::uMaterialShininess;
+
+GLuint GLES::uTexMatrixSlot;
+GLuint GLES::uTexSlot;
 
 // 光源設定
 Color GLES::ambient;
@@ -64,13 +68,12 @@ void GLES::initialize(float viewWidth, float viewHeight)
     float aspect = (float)(viewWidth / viewHeight);
     GLES::projectionMatrix = GLKMatrix4MakePerspective(GLKMathDegreesToRadians(65.0f), aspect, 0.1f, 350.0f);
     mvMatrix = GLKMatrix4Identity;
-    setDefaultLight();
+    setDefault();
 }
 
-// 光源の初期値
-void GLES::setDefaultLight()
+void GLES::setDefault()
 {
-#warning TODO
+    // light
     ambient = {1.0, 1.0, 1.0, 1.0};
     diffuse = {0.7, 0.7, 0.7, 1.0};
     specular = {1.9, 1.9, 1.9, 1.0};
@@ -79,6 +82,10 @@ void GLES::setDefaultLight()
     glUniform4fv(uLightDiffuseSlot, 1, (GLfloat*)(&diffuse));
     glUniform4fv(uLightSpecular, 1, (GLfloat*)(&specular));
     glUniform3fv(uLightPos, 1, (GLfloat*)(&lightPos));
+    
+    // texture
+    GLKMatrix4 texMatrix = GLKMatrix4Identity;
+    glUniformMatrix4fv(uTexMatrixSlot, 1, 0, texMatrix.m);
 }
 
 void GLES::updateMatrix()
@@ -148,6 +155,7 @@ void GLES::compileShaders()
     // 5
     aPositionSlot = glGetAttribLocation(programHandle, "aPosition");
     aNormalSlot = glGetAttribLocation(programHandle, "aNormal");
+    aUVSlot = glGetAttribLocation(programHandle, "aUV");
     //aNormalSlot = glGetAttribLocation(programHandle, "aNormal");
     //aNormalSlot = glGetAttribLocation(programHandle, "normal");
     //aColorSlot = glGetAttribLocation(programHandle, "SourceColor");
@@ -165,6 +173,9 @@ void GLES::compileShaders()
     uLightDiffuseSlot = glGetUniformLocation(programHandle, "uLightDiffuse");
     uLightSpecular = glGetUniformLocation(programHandle, "uLightSpecular");
     uLightPos = glGetUniformLocation(programHandle, "uLightPos");
+    
+    uTexMatrixSlot = glGetUniformLocation(programHandle, "uTexMatrix");
+    uTexSlot = glGetUniformLocation(programHandle, "uTex");
     
     
     // 3

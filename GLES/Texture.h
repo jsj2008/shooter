@@ -8,22 +8,16 @@
 
 #import <Foundation/Foundation.h>
 #import "GLTypes.h"
-#import "Texture.h"
 #import <string>
 
-class Material
+class Texture
 {
 public:
-    Material();
+    static Texture* createTextureWithAsset(std::string name);
+    Texture();
     void bind();
     void unbind();
-    ~Material();
-    
-    Color ambient;
-    Color diffuse;
-    Color specular;
-    float shininess;
-    std::string name;
-    Texture* texture;
-    std::string texture_name;
+    ~Texture();
+private:
+    GLuint textureId;
 };
