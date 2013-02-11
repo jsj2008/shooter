@@ -2,10 +2,10 @@
 
 newmtl default
 Ns 64
-Kd 0.800 0.300 0.200
-Ks 0.400 0.300 0.500
-Ka 0.200 0.300 0.400
-map_Kd floor.png
+Kd 0.900 0.900 0.900
+Ks 0.900 0.900 0.900
+Ka 0.900 0.900 0.900
+map_Kd antaeus.png
 
 newmtl Material
 Ns 80.000000
@@ -13,5 +13,5 @@ Tr 1.000000
 Kd 1.000000 1.000000 1.000000
 Ks 1.000000 1.000000 1.000000
 Ka 1.000000 1.000000 1.000000
-map_Kd floor.png
+map_Kd dngn_rock_wall_13.png
 

@@ -16,8 +16,9 @@ uniform vec4 uMaterialDiffuse;
 uniform vec4 uMaterialSpecular;
 uniform float uMaterialShininess;
 
-uniform mat4 uPMatrix; // projection
+//uniform mat4 uPMatrix; // projection
 uniform mat4 uMMatrix; // modelview
+uniform mat4 uMvpMatrix; // model*view*projection matrix
 
 uniform mat4 uNormalMatrix; // gyakutenti
 
@@ -49,7 +50,7 @@ void main(void) { // 4
     // fragment color
     DestinationColor = ambient + diffuse + specular;
 
-    gl_Position = uPMatrix * uMMatrix * aPosition;
+    gl_Position = uMvpMatrix * aPosition;
     
     // UV
     if (uUseTexture > 0.0)

@@ -19,6 +19,7 @@
 #import "GLES.h"
 #import "GLTypes.h"
 #import "ObjLoader.h"
+#import "Vector3.h"
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 
@@ -29,55 +30,10 @@ CAEAGLLayer* _eaglLayer;
 EAGLContext* _context;
 GLuint _colorRenderBuffer;
 GLuint _depthRenderBuffer;
+Vector3 _cameraPosition(0,0,0);
 
 Object3D* obj3d;
 Object3D* obj3d2;
-
-/*
-const Vertex Vertices[] = {
-    Vertex({1, -1, 0}, {1, 0}, {1,1,1}),
-    Vertex({1, 1, 0}, {1, 0}, {1,1,1}),
-    Vertex({-1, 1, 0}, {0, 1}, {1,1,1}),
-    Vertex({-1, -1, 0}, {0, 1}, {1,1,1}),
-    Vertex({1, -1, -1}, {1, 0}, {1,1,1}),
-    Vertex({1, 1, -1}, {1, 0}, {1,1,1}),
-    Vertex({-1, 1, -1}, {0, 1}, {1,1,1}),
-    Vertex({-1, -1, -1}, {0, 1}, {1,1,1})
-};*/
-
-/*
-const VertexPC Vertices[] = {
-    VertexPC({1, -1, 0}, {1, 0, 0, 1}),
-    VertexPC({1, 1, 0}, {1, 0, 0, 1}),
-    VertexPC({-1, 1, 0}, {0, 1, 0, 1}),
-    VertexPC({-1, -1, 0}, {0, 1, 0, 1}),
-    VertexPC({1, -1, -1}, {1, 0, 0, 1}),
-    VertexPC({1, 1, -1}, {1, 0, 0, 1}),
-    VertexPC({-1, 1, -1}, {0, 1, 0, 1}),
-    VertexPC({-1, -1, -1}, {0, 1, 0, 1})
-};
-*/
-                                         
-const GLubyte Indices[] = {
-    // Front
-    0, 1, 2,
-    2, 3, 0,
-    // Back
-    4, 6, 5,
-    4, 7, 6,
-    // Left
-    2, 7, 3,
-    7, 6, 2,
-    // Right
-    0, 4, 1,
-    4, 1, 5,
-    // Top
-    6, 2, 1,
-    1, 6, 5,
-    // Bottom
-    0, 3, 7,
-    0, 7, 4
-};
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -185,13 +141,9 @@ const GLubyte Indices[] = {
 
 - (void)render
 {
-    obj3d->position.z = -5;
-    obj3d->position.y = -0.2;
-    obj3d->rotate.x += 0.01;
-    obj3d->rotate.y += 0.01;
-    obj3d->rotate.z += 0.01;
-    obj3d->scale.set(0.1, 0.1, 0.1);
-    obj3d->draw();
+    _cameraPosition.z = 1;
+    GLES::mvMatrix = GLKMatrix4Identity;
+    GLES::mvMatrix = GLKMatrix4Translate(GLES::mvMatrix, _cameraPosition.x, _cameraPosition.y, _cameraPosition.z);
     
     if (obj3d2)
     {
@@ -202,6 +154,14 @@ const GLubyte Indices[] = {
         obj3d2->rotate.z += 0.01;
         obj3d2->draw();
     }
+    
+    obj3d->position.z = -5;
+    obj3d->position.y = -0.2;
+    obj3d->rotate.x += 0.01;
+    obj3d->rotate.y += 0.01;
+    obj3d->rotate.z += 0.01;
+    obj3d->scale.set(0.1, 0.1, 0.1);
+    obj3d->draw();
     
 }
 
@@ -223,27 +183,6 @@ const GLubyte Indices[] = {
      //obj3d = ObjLoader::load(@"block");
      obj3d = ObjLoader::load(@"floor");
      obj3d2 = ObjLoader::load(@"droid");
-    /*
-     obj3d = new Object3D();
-    VertexBuffer* vertexBuffer = new VertexBuffer(Vertices, sizeof(Vertices));
-    IndexBuffer* indexBuffer = new IndexBuffer(Indices, sizeof(Indices));
-    Mesh* mesh = new Mesh(vertexBuffer, indexBuffer);
-    obj3d->addMesh(mesh);
-     */
 }
-
-/*
-- (NSString*)readFile:(NSString*)name
-{
-    NSError* error = nil;
-    NSString* path = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:name];
-    NSString* str = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:&error];
-    if (&error)
-    {
-        return nil;
-    }
-    return [[NSString alloc] initWithString:str];
-}
-*/
 
 @end

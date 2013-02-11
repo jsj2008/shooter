@@ -22,8 +22,9 @@ GLuint GLES::aPositionSlot        ;
 GLuint GLES::aNormalSlot          ;
 GLuint GLES::aUVSlot              ;
 
-GLuint GLES::uProjectionMatrixSlot;
+//GLuint GLES::uProjectionMatrixSlot;
 GLuint GLES::uModelViewMatrixSlot ;
+GLuint GLES::uMvpMatrixSlot       ;
 GLuint GLES::uNormalMatrixSlot    ;
 
 GLuint GLES::uLightAmbientSlot;
@@ -83,16 +84,14 @@ void GLES::setDefault()
     glUniform4fv(uLightDiffuseSlot, 1, (GLfloat*)(&diffuse));
     glUniform4fv(uLightSpecular, 1, (GLfloat*)(&specular));
     glUniform3fv(uLightPos, 1, (GLfloat*)(&lightPos));
-    
-    // texture
-    GLKMatrix4 texMatrix = GLKMatrix4Identity;
-    glUniformMatrix4fv(uTexMatrixSlot, 1, 0, texMatrix.m);
 }
 
 void GLES::updateMatrix()
 {
-    glUniformMatrix4fv(GLES::uProjectionMatrixSlot, 1, 0, GLES::projectionMatrix.m);
+    //glUniformMatrix4fv(GLES::uProjectionMatrixSlot, 1, 0, GLES::projectionMatrix.m);
     glUniformMatrix4fv(GLES::uModelViewMatrixSlot, 1, 0, GLES::mvMatrix.m);
+    GLKMatrix4 mvpMatrix = GLKMatrix4Multiply(projectionMatrix, mvMatrix);
+    glUniformMatrix4fv(GLES::uMvpMatrixSlot, 1, 0, mvpMatrix.m);
     
     
     // モデルビュー行列の逆転置行列の指定
@@ -163,8 +162,9 @@ void GLES::compileShaders()
     //aNormalSlot = glGetAttribLocation(programHandle, "normal");
     //aColorSlot = glGetAttribLocation(programHandle, "SourceColor");
     
-    uProjectionMatrixSlot = glGetUniformLocation(programHandle, "uPMatrix");
-    uModelViewMatrixSlot = glGetUniformLocation(programHandle, "uMMatrix");
+    //uProjectionMatrixSlot = glGetUniformLocation(programHandle, "uPMatrix");
+    //uModelViewMatrixSlot = glGetUniformLocation(programHandle, "uMMatrix");
+    uMvpMatrixSlot = glGetUniformLocation(programHandle, "uMvpMatrix");
     uNormalMatrixSlot = glGetUniformLocation(programHandle, "uNormalMatrix");
     
     uMaterialAmbient = glGetUniformLocation(programHandle, "uMaterialAmbient");

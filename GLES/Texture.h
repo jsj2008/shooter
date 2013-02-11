@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "GLTypes.h"
 #import <string>
+#import <GLKit/GLKit.h>
 
 class Texture
 {
@@ -17,7 +18,12 @@ public:
     Texture();
     void bind();
     void unbind();
+    void setTextureArea(int textureW,int textureH, int x, int y, int w, int h);
     ~Texture();
+    
 private:
     GLuint textureId;
+    size_t width;
+    size_t height;
+    GLKMatrix4 textureMatrix;
 };

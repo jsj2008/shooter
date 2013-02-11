@@ -16,6 +16,9 @@
 		0700550316C760EE002BA473 /* dngn_deep_water.bmp in Resources */ = {isa = PBXBuildFile; fileRef = 0700550116C760EE002BA473 /* dngn_deep_water.bmp */; };
 		0700550416C760EE002BA473 /* dngn_lava.bmp in Resources */ = {isa = PBXBuildFile; fileRef = 0700550216C760EE002BA473 /* dngn_lava.bmp */; };
 		0700550616C77AA0002BA473 /* dngn_rock_wall_13.png in Resources */ = {isa = PBXBuildFile; fileRef = 0700550516C77AA0002BA473 /* dngn_rock_wall_13.png */; };
+		071B041E16C8C1AB00BEBAC4 /* dngn_lava.png in Resources */ = {isa = PBXBuildFile; fileRef = 071B041D16C8C1AB00BEBAC4 /* dngn_lava.png */; };
+		071B042116C8C24800BEBAC4 /* dngn_lava.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 071B042016C8C24800BEBAC4 /* dngn_lava.jpg */; };
+		071B042316C8C59500BEBAC4 /* antaeus.png in Resources */ = {isa = PBXBuildFile; fileRef = 071B042216C8C59400BEBAC4 /* antaeus.png */; };
 		0733405316BD9D9100DB2D34 /* test.obj in Resources */ = {isa = PBXBuildFile; fileRef = 0733405216BD9D9100DB2D34 /* test.obj */; };
 		0733405616BDA18100DB2D34 /* droid.obj in Resources */ = {isa = PBXBuildFile; fileRef = 0733405516BDA18100DB2D34 /* droid.obj */; };
 		0733405816BDA1FB00DB2D34 /* box.obj in Resources */ = {isa = PBXBuildFile; fileRef = 0733405716BDA1FB00DB2D34 /* box.obj */; };
@@ -67,6 +70,9 @@
 		0700550116C760EE002BA473 /* dngn_deep_water.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = dngn_deep_water.bmp; sourceTree = "<group>"; };
 		0700550216C760EE002BA473 /* dngn_lava.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = dngn_lava.bmp; sourceTree = "<group>"; };
 		0700550516C77AA0002BA473 /* dngn_rock_wall_13.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dngn_rock_wall_13.png; sourceTree = "<group>"; };
+		071B041D16C8C1AB00BEBAC4 /* dngn_lava.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dngn_lava.png; sourceTree = "<group>"; };
+		071B042016C8C24800BEBAC4 /* dngn_lava.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = dngn_lava.jpg; sourceTree = "<group>"; };
+		071B042216C8C59400BEBAC4 /* antaeus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = antaeus.png; sourceTree = "<group>"; };
 		0733405216BD9D9100DB2D34 /* test.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = test.obj; sourceTree = "<group>"; };
 		0733405516BDA18100DB2D34 /* droid.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = droid.obj; sourceTree = "<group>"; };
 		0733405716BDA1FB00DB2D34 /* box.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = box.obj; sourceTree = "<group>"; };
@@ -142,6 +148,9 @@
 		0755992616B561490066A0E9 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				071B042216C8C59400BEBAC4 /* antaeus.png */,
+				071B042016C8C24800BEBAC4 /* dngn_lava.jpg */,
+				071B041D16C8C1AB00BEBAC4 /* dngn_lava.png */,
 				0700550516C77AA0002BA473 /* dngn_rock_wall_13.png */,
 				0700550116C760EE002BA473 /* dngn_deep_water.bmp */,
 				0700550216C760EE002BA473 /* dngn_lava.bmp */,
@@ -332,6 +341,9 @@
 				0700550316C760EE002BA473 /* dngn_deep_water.bmp in Resources */,
 				0700550416C760EE002BA473 /* dngn_lava.bmp in Resources */,
 				0700550616C77AA0002BA473 /* dngn_rock_wall_13.png in Resources */,
+				071B041E16C8C1AB00BEBAC4 /* dngn_lava.png in Resources */,
+				071B042116C8C24800BEBAC4 /* dngn_lava.jpg in Resources */,
+				071B042316C8C59500BEBAC4 /* antaeus.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

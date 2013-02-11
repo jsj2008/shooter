@@ -26,8 +26,9 @@ public:
     static GLuint aNormalSlot          ;
     static GLuint aUVSlot              ;
     
-    static GLuint uProjectionMatrixSlot;
+    ///static GLuint uProjectionMatrixSlot;
     static GLuint uModelViewMatrixSlot ;
+    static GLuint uMvpMatrixSlot ;
     static GLuint uNormalMatrixSlot    ;
     
     static GLuint uLightAmbientSlot;
