@@ -12,12 +12,12 @@ class IndexBuffer;
 class VertexBuffer;
 class HGLMaterial;
 
-class Mesh
+class HGLMesh
 {
 public:
-    Mesh(VertexBuffer* v, IndexBuffer* i, HGLMaterial* m);
+    HGLMesh(VertexBuffer* v, IndexBuffer* i, HGLMaterial* m);
     void draw();
-    ~Mesh();
+    ~HGLMesh();
     
 private:
     IndexBuffer* indexBuffer;

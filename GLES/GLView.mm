@@ -15,7 +15,7 @@
 #import "HGLObject3D.h"
 #import "VertexBuffer.h"
 #import "IndexBuffer.h"
-#import "Mesh.h"
+#import "HGLMesh.h"
 #import "HGLES.h"
 #import "HGLTypes.h"
 #import "HGLObjLoader.h"

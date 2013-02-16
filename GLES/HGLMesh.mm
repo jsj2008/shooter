@@ -6,7 +6,7 @@
 //  Copyright (c) 2012年 hayogame. All rights reserved.
 //
 
-#import "Mesh.h"
+#import "HGLMesh.h"
 #import "HGLES.h"
 #import <GLKit/GLKit.h>
 #include <OpenGLES/ES2/gl.h>
@@ -16,14 +16,14 @@
 #import "VertexBuffer.h"
 #import "HGLMaterial.h"
 
-Mesh::Mesh(VertexBuffer* v, IndexBuffer* i, HGLMaterial* m)
+HGLMesh::HGLMesh(VertexBuffer* v, IndexBuffer* i, HGLMaterial* m)
 {
     vertexBuffer = v;
     indexBuffer = i;
     material = m;
 }
 
-void Mesh::draw()
+void HGLMesh::draw()
 {
     material->bind();
     vertexBuffer->bind();
@@ -32,7 +32,7 @@ void Mesh::draw()
     material->unbind();
 }
 
-Mesh::~Mesh()
+HGLMesh::~HGLMesh()
 {
     if (vertexBuffer)
     {

@@ -34,7 +34,6 @@
 		0755991316B3D0560066A0E9 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0755991216B3D0560066A0E9 /* QuartzCore.framework */; };
 		0755991816B4BFD90066A0E9 /* IndexBuffer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0755991516B4BFD90066A0E9 /* IndexBuffer.mm */; };
 		0755991916B4BFD90066A0E9 /* VertexBuffer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0755991716B4BFD90066A0E9 /* VertexBuffer.mm */; };
-		0755991C16B4CA1A0066A0E9 /* Mesh.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0755991B16B4CA1A0066A0E9 /* Mesh.mm */; };
 		0755992216B4F99B0066A0E9 /* HGLObject3D.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0755992116B4F99B0066A0E9 /* HGLObject3D.mm */; };
 		0755992516B5188E0066A0E9 /* HGLVector3.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0755992416B5188E0066A0E9 /* HGLVector3.mm */; };
 		0755992916B561490066A0E9 /* block.mtl in Resources */ = {isa = PBXBuildFile; fileRef = 0755992716B561490066A0E9 /* block.mtl */; };
@@ -129,6 +128,7 @@
 		07E6511116C9244D00192B8B /* topmenuback.png in Resources */ = {isa = PBXBuildFile; fileRef = 07E650C816C9244D00192B8B /* topmenuback.png */; };
 		07E6511216C9244D00192B8B /* yesnowin1.png in Resources */ = {isa = PBXBuildFile; fileRef = 07E650C916C9244D00192B8B /* yesnowin1.png */; };
 		07E6511616C926F200192B8B /* Actor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07E6511516C926F200192B8B /* Actor.mm */; };
+		07E6512016CF64E900192B8B /* HGLMesh.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07E6511F16CF64E900192B8B /* HGLMesh.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -166,8 +166,6 @@
 		0755991516B4BFD90066A0E9 /* IndexBuffer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = IndexBuffer.mm; path = GLES/IndexBuffer.mm; sourceTree = "<group>"; };
 		0755991616B4BFD90066A0E9 /* VertexBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VertexBuffer.h; path = GLES/VertexBuffer.h; sourceTree = "<group>"; };
 		0755991716B4BFD90066A0E9 /* VertexBuffer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VertexBuffer.mm; path = GLES/VertexBuffer.mm; sourceTree = "<group>"; };
-		0755991A16B4CA1A0066A0E9 /* Mesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Mesh.h; path = GLES/Mesh.h; sourceTree = "<group>"; };
-		0755991B16B4CA1A0066A0E9 /* Mesh.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Mesh.mm; path = GLES/Mesh.mm; sourceTree = "<group>"; };
 		0755992016B4F99B0066A0E9 /* HGLObject3D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HGLObject3D.h; path = GLES/HGLObject3D.h; sourceTree = "<group>"; };
 		0755992116B4F99B0066A0E9 /* HGLObject3D.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = HGLObject3D.mm; path = GLES/HGLObject3D.mm; sourceTree = "<group>"; };
 		0755992316B5188E0066A0E9 /* HGLVector3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HGLVector3.h; path = GLES/HGLVector3.h; sourceTree = "<group>"; };
@@ -272,6 +270,8 @@
 		07E650C916C9244D00192B8B /* yesnowin1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yesnowin1.png; sourceTree = "<group>"; };
 		07E6511416C926F200192B8B /* Actor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Actor.h; sourceTree = "<group>"; };
 		07E6511516C926F200192B8B /* Actor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Actor.mm; sourceTree = "<group>"; };
+		07E6511E16CF64E800192B8B /* HGLMesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HGLMesh.h; path = GLES/HGLMesh.h; sourceTree = "<group>"; };
+		07E6511F16CF64E900192B8B /* HGLMesh.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = HGLMesh.mm; path = GLES/HGLMesh.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -454,31 +454,31 @@
 		07E0466616887799001F9CCE /* GLES */ = {
 			isa = PBXGroup;
 			children = (
-				07E6507C16C9230800192B8B /* Shaders */,
-				070054FE16C75FA7002BA473 /* HGLTexture.h */,
-				070054FF16C75FA7002BA473 /* HGLTexture.mm */,
-				070054F216BE48F7002BA473 /* HGLMaterial.h */,
-				070054F316BE48F7002BA473 /* HGLMaterial.mm */,
-				0735C89E16BD7BF8009DEF10 /* HGLES.h */,
-				0735C89F16BD7BF8009DEF10 /* HGLES.mm */,
-				0735C89B16BD7B0E009DEF10 /* HGLUtil.h */,
-				0735C89C16BD7B0E009DEF10 /* HGLUtil.mm */,
-				0755993116BD13170066A0E9 /* HGLTypes.h */,
-				0755993216BD13170066A0E9 /* HGLTypes.mm */,
-				0755992B16B561950066A0E9 /* HGLObjLoader.h */,
-				0755992C16B561950066A0E9 /* HGLObjLoader.mm */,
-				0755992316B5188E0066A0E9 /* HGLVector3.h */,
-				0755992416B5188E0066A0E9 /* HGLVector3.mm */,
-				0755992016B4F99B0066A0E9 /* HGLObject3D.h */,
-				0755992116B4F99B0066A0E9 /* HGLObject3D.mm */,
-				0755991A16B4CA1A0066A0E9 /* Mesh.h */,
-				0755991B16B4CA1A0066A0E9 /* Mesh.mm */,
-				0755991416B4BFD90066A0E9 /* IndexBuffer.h */,
-				0755991516B4BFD90066A0E9 /* IndexBuffer.mm */,
-				0755991616B4BFD90066A0E9 /* VertexBuffer.h */,
-				0755991716B4BFD90066A0E9 /* VertexBuffer.mm */,
 				0755990E16B3C3180066A0E9 /* GLView.h */,
 				0755990F16B3C3180066A0E9 /* GLView.mm */,
+				0735C89E16BD7BF8009DEF10 /* HGLES.h */,
+				0735C89F16BD7BF8009DEF10 /* HGLES.mm */,
+				070054F216BE48F7002BA473 /* HGLMaterial.h */,
+				070054F316BE48F7002BA473 /* HGLMaterial.mm */,
+				07E6511E16CF64E800192B8B /* HGLMesh.h */,
+				07E6511F16CF64E900192B8B /* HGLMesh.mm */,
+				0755992016B4F99B0066A0E9 /* HGLObject3D.h */,
+				0755992116B4F99B0066A0E9 /* HGLObject3D.mm */,
+				0755992B16B561950066A0E9 /* HGLObjLoader.h */,
+				0755992C16B561950066A0E9 /* HGLObjLoader.mm */,
+				070054FE16C75FA7002BA473 /* HGLTexture.h */,
+				070054FF16C75FA7002BA473 /* HGLTexture.mm */,
+				0755993116BD13170066A0E9 /* HGLTypes.h */,
+				0755993216BD13170066A0E9 /* HGLTypes.mm */,
+				0735C89B16BD7B0E009DEF10 /* HGLUtil.h */,
+				0735C89C16BD7B0E009DEF10 /* HGLUtil.mm */,
+				0755992316B5188E0066A0E9 /* HGLVector3.h */,
+				0755992416B5188E0066A0E9 /* HGLVector3.mm */,
+				0755991416B4BFD90066A0E9 /* IndexBuffer.h */,
+				0755991516B4BFD90066A0E9 /* IndexBuffer.mm */,
+				07E6507C16C9230800192B8B /* Shaders */,
+				0755991616B4BFD90066A0E9 /* VertexBuffer.h */,
+				0755991716B4BFD90066A0E9 /* VertexBuffer.mm */,
 			);
 			name = GLES;
 			sourceTree = "<group>";
@@ -669,7 +669,6 @@
 				0755991016B3C3180066A0E9 /* GLView.mm in Sources */,
 				0755991816B4BFD90066A0E9 /* IndexBuffer.mm in Sources */,
 				0755991916B4BFD90066A0E9 /* VertexBuffer.mm in Sources */,
-				0755991C16B4CA1A0066A0E9 /* Mesh.mm in Sources */,
 				0755992216B4F99B0066A0E9 /* HGLObject3D.mm in Sources */,
 				0755992516B5188E0066A0E9 /* HGLVector3.mm in Sources */,
 				0755992D16B561950066A0E9 /* HGLObjLoader.mm in Sources */,
@@ -679,6 +678,7 @@
 				070054F416BE48F8002BA473 /* HGLMaterial.mm in Sources */,
 				0700550016C75FA8002BA473 /* HGLTexture.mm in Sources */,
 				07E6511616C926F200192B8B /* Actor.mm in Sources */,
+				07E6512016CF64E900192B8B /* HGLMesh.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

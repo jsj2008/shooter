@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Mesh.h"
+#import "HGLMesh.h"
 #import "HGLVector3.h"
 #import <vector>
 
@@ -15,7 +15,7 @@ class HGLObject3D
 {
 public:
     HGLObject3D();
-    void addMesh(Mesh* m);
+    void addMesh(HGLMesh* m);
     void draw();
     ~HGLObject3D();
     
@@ -24,7 +24,7 @@ public:
     HGLVector3 scale   ; // 拡大縮小
     
 private:
-    std::vector<Mesh*> meshlist;
+    std::vector<HGLMesh*> meshlist;
     std::vector<HGLObject3D*> children;
     
 };

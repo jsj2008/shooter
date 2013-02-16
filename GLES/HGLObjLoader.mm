@@ -11,7 +11,7 @@
 #import "IndexBuffer.h"
 #import "HGLUtil.h"
 #import "HGLTypes.h"
-#import "Mesh.h"
+#import "HGLMesh.h"
 #import "HGLObject3D.h"
 #import "HGLMaterial.h"
 #import "HGLTexture.h"
@@ -154,7 +154,7 @@ void HGLObjLoader::addMeshTo(HGLObject3D* obj3d, std::string material_name)
             m->texture = HGLTexture::createTextureWithAsset(m->texture_name);
         }
     }
-    Mesh* mesh = new Mesh(v, i, m);
+    HGLMesh* mesh = new HGLMesh(v, i, m);
     obj3d->addMesh(mesh);
     
     positions.clear();

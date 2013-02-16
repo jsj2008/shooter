@@ -10,7 +10,7 @@
 #import <GLKit/GLKit.h>
 #include <OpenGLES/ES2/gl.h>
 #include <OpenGLES/ES2/glext.h>
-#import "Mesh.h"
+#import "HGLMesh.h"
 #import "HGLES.h"
 #include <vector>
 
@@ -23,7 +23,7 @@ HGLObject3D::HGLObject3D()
 
 HGLObject3D::~HGLObject3D()
 {
-    for (std::vector<Mesh*>::iterator itr = meshlist.begin(); itr != meshlist.end(); itr++)
+    for (std::vector<HGLMesh*>::iterator itr = meshlist.begin(); itr != meshlist.end(); itr++)
     {
         free(*itr);
     }
@@ -41,10 +41,10 @@ void HGLObject3D::draw()
     HGLES::updateMatrix();
     
     // 自分を描画
-    std::vector<Mesh*>::iterator meshItr;
+    std::vector<HGLMesh*>::iterator meshItr;
     meshItr = meshlist.begin();
     while (meshItr != meshlist.end()) {
-        Mesh* m = *meshItr;
+        HGLMesh* m = *meshItr;
         m->draw();
         meshItr++;
     }
@@ -61,7 +61,7 @@ void HGLObject3D::draw()
     HGLES::popMatrix();
 }
 
-void HGLObject3D::addMesh(Mesh* m)
+void HGLObject3D::addMesh(HGLMesh* m)
 {
     meshlist.push_back(m);
 }
