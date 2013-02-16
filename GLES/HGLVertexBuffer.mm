@@ -6,13 +6,13 @@
 //  Copyright (c) 2012年 hayogame. All rights reserved.
 //
 
-#import "VertexBuffer.h"
+#import "HGLVertexBuffer.h"
 #import <GLKit/GLKit.h>
 #include <OpenGLES/ES2/gl.h>
 #include <OpenGLES/ES2/glext.h>
 #import "HGLES.h"
 
-VertexBuffer::VertexBuffer(const Vertex* v, int num)
+HGLVertexBuffer::HGLVertexBuffer(const Vertex* v, int num)
 {
     glGenBuffers(1, &vertexBuffer);
     glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
@@ -27,7 +27,7 @@ VertexBuffer::VertexBuffer(const Vertex* v, int num)
 //    }
 }
 
-void VertexBuffer::bind()
+void HGLVertexBuffer::bind()
 {
     glEnableVertexAttribArray(HGLES::aPositionSlot);
     glEnableVertexAttribArray(HGLES::aNormalSlot);
@@ -47,12 +47,12 @@ void VertexBuffer::bind()
     
 }
 
-void VertexBuffer::unbind()
+void HGLVertexBuffer::unbind()
 {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-VertexBuffer::~VertexBuffer()
+HGLVertexBuffer::~HGLVertexBuffer()
 {
     if (vertexBuffer)
     {

@@ -9,13 +9,13 @@
 #import <Foundation/Foundation.h>
 #import "HGLTypes.h"
 
-class VertexBuffer
+class HGLVertexBuffer
 {
 public:
-    VertexBuffer(const Vertex* v, int num);
+    HGLVertexBuffer(const Vertex* v, int num);
     void bind();
     void unbind();
-    ~VertexBuffer();
+    ~HGLVertexBuffer();
 private:
     GLuint vertexBuffer;
 };

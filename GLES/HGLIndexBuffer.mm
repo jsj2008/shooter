@@ -6,7 +6,7 @@
 //  Copyright (c) 2012年 hayogame. All rights reserved.
 //
 
-#import "IndexBuffer.h"
+#import "HGLIndexBuffer.h"
 #import <GLKit/GLKit.h>
 #include <OpenGLES/ES2/gl.h>
 #include <OpenGLES/ES2/glext.h>
@@ -35,7 +35,7 @@ const GLubyte Indices[] = {
 };
 */
 
-IndexBuffer::IndexBuffer(const GLushort* indices, int num)
+HGLIndexBuffer::HGLIndexBuffer(const GLushort* indices, int num)
 {
     glGenBuffers(1, &indexBuffer);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
@@ -48,17 +48,17 @@ IndexBuffer::IndexBuffer(const GLushort* indices, int num)
 //    }
 }
 
-void IndexBuffer::bind()
+void HGLIndexBuffer::bind()
 {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
 }
 
-void IndexBuffer::unbind()
+void HGLIndexBuffer::unbind()
 {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-void IndexBuffer::draw()
+void HGLIndexBuffer::draw()
 {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
     glDrawElements(GL_TRIANGLES, size, GL_UNSIGNED_SHORT, 0);
@@ -69,7 +69,7 @@ void IndexBuffer::draw()
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-IndexBuffer::~IndexBuffer()
+HGLIndexBuffer::~HGLIndexBuffer()
 {
     if (indexBuffer)
     {

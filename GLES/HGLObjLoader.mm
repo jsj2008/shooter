@@ -7,8 +7,8 @@
 //
 
 #import "HGLObjLoader.h"
-#import "VertexBuffer.h"
-#import "IndexBuffer.h"
+#import "HGLVertexBuffer.h"
+#import "HGLIndexBuffer.h"
 #import "HGLUtil.h"
 #import "HGLTypes.h"
 #import "HGLMesh.h"
@@ -135,8 +135,8 @@ HGLObject3D* HGLObjLoader::load(NSString* name)
 // メッシュを作る
 void HGLObjLoader::addMeshTo(HGLObject3D* obj3d, std::string material_name)
 {
-    VertexBuffer* v = new VertexBuffer(&vertices[0], vertices.size());
-    IndexBuffer* i = new IndexBuffer(&indices[0], indices.size());
+    HGLVertexBuffer* v = new HGLVertexBuffer(&vertices[0], vertices.size());
+    HGLIndexBuffer* i = new HGLIndexBuffer(&indices[0], indices.size());
     
     HGLMaterial* m = NULL;
     if (material_name.length())

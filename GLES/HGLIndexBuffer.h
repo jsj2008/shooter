@@ -8,14 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
-class IndexBuffer
+class HGLIndexBuffer
 {
 public:
-    IndexBuffer(const GLushort* indices, int num);
+    HGLIndexBuffer(const GLushort* indices, int num);
     void bind();
     void draw();
     void unbind();
-    ~IndexBuffer();
+    ~HGLIndexBuffer();
 private:
     GLuint indexBuffer;
     int size;

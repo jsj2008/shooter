@@ -12,11 +12,11 @@
 #include <OpenGLES/ES2/gl.h>
 #include <OpenGLES/ES2/glext.h>
 
-#import "IndexBuffer.h"
-#import "VertexBuffer.h"
+#import "HGLIndexBuffer.h"
+#import "HGLVertexBuffer.h"
 #import "HGLMaterial.h"
 
-HGLMesh::HGLMesh(VertexBuffer* v, IndexBuffer* i, HGLMaterial* m)
+HGLMesh::HGLMesh(HGLVertexBuffer* v, HGLIndexBuffer* i, HGLMaterial* m)
 {
     vertexBuffer = v;
     indexBuffer = i;

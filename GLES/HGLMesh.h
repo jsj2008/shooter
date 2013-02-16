@@ -8,19 +8,19 @@
 
 #import <Foundation/Foundation.h>
 
-class IndexBuffer;
-class VertexBuffer;
+class HGLIndexBuffer;
+class HGLVertexBuffer;
 class HGLMaterial;
 
 class HGLMesh
 {
 public:
-    HGLMesh(VertexBuffer* v, IndexBuffer* i, HGLMaterial* m);
+    HGLMesh(HGLVertexBuffer* v, HGLIndexBuffer* i, HGLMaterial* m);
     void draw();
     ~HGLMesh();
     
 private:
-    IndexBuffer* indexBuffer;
-    VertexBuffer* vertexBuffer;
+    HGLIndexBuffer* indexBuffer;
+    HGLVertexBuffer* vertexBuffer;
     HGLMaterial* material;
 };

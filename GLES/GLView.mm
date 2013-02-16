@@ -13,8 +13,8 @@
 #import <GLKit/GLKit.h>
 
 #import "HGLObject3D.h"
-#import "VertexBuffer.h"
-#import "IndexBuffer.h"
+#import "HGLVertexBuffer.h"
+#import "HGLIndexBuffer.h"
 #import "HGLMesh.h"
 #import "HGLES.h"
 #import "HGLTypes.h"
