@@ -27,7 +27,7 @@ uniform mat4 uTexMatrix;
 uniform float uUseTexture;
 
 // output
-varying vec4 DestinationColor;
+varying vec4 vColor;
 varying vec2 vUV;
 
 void main(void) { // 4
@@ -48,7 +48,7 @@ void main(void) { // 4
     vec4 specular = specularP * uLightSpecular * uMaterialSpecular;
 
     // fragment color
-    DestinationColor = ambient + diffuse + specular;
+    vColor = ambient + diffuse + specular;
 
     gl_Position = uMvpMatrix * aPosition;
     

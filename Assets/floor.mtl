@@ -5,7 +5,7 @@ Ns 64
 Kd 0.900 0.900 0.900
 Ks 0.900 0.900 0.900
 Ka 0.900 0.900 0.900
-map_Kd antaeus.png
+map_Kd e_robo2.png
 
 newmtl Material
 Ns 80.000000

@@ -88,6 +88,7 @@ void Texture::bind()
 {
    if (textureId)
     {
+        setTextureArea(width, height, 0, 0, 64, 64);
         // テクスチャ使用フラグ
         glUniform1f(GLES::uUseTexture, 1.0);
         glEnable(GL_TEXTURE_2D);
