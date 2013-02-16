@@ -7,10 +7,10 @@
 //
 
 #import "ViewController.h"
-#import "GLView.h"
+#import "HGLView.h"
 
 @implementation ViewController
-GLView* glview;
+HGLView* glview;
     
 - (void)dealloc
 {
@@ -24,7 +24,7 @@ GLView* glview;
 {
     self = [super init];
     CGRect frame = [[UIScreen mainScreen] bounds];
-    glview = [[GLView alloc] initWithFrame:frame];
+    glview = [[HGLView alloc] initWithFrame:frame];
     self.view = glview;
     return self;
 }

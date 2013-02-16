@@ -10,7 +10,7 @@
 #import <UIKit/UIKit.h>
 #import <GLKit/GLKit.h>
 
-@interface GLView : UIView
+@interface HGLView : UIView
 {
 }
 

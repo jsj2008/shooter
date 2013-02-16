@@ -30,7 +30,7 @@
 		0733406616BDB06D00DB2D34 /* teapot.obj in Resources */ = {isa = PBXBuildFile; fileRef = 0733406516BDB06D00DB2D34 /* teapot.obj */; };
 		0735C89D16BD7B0E009DEF10 /* HGLUtil.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0735C89C16BD7B0E009DEF10 /* HGLUtil.mm */; };
 		0735C8A016BD7BF8009DEF10 /* HGLES.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0735C89F16BD7BF8009DEF10 /* HGLES.mm */; };
-		0755991016B3C3180066A0E9 /* GLView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0755990F16B3C3180066A0E9 /* GLView.mm */; };
+		0755991016B3C3180066A0E9 /* HGLView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0755990F16B3C3180066A0E9 /* HGLView.mm */; };
 		0755991316B3D0560066A0E9 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0755991216B3D0560066A0E9 /* QuartzCore.framework */; };
 		0755991916B4BFD90066A0E9 /* HGLVertexBuffer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0755991716B4BFD90066A0E9 /* HGLVertexBuffer.mm */; };
 		0755992216B4F99B0066A0E9 /* HGLObject3D.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0755992116B4F99B0066A0E9 /* HGLObject3D.mm */; };
@@ -159,8 +159,8 @@
 		0735C89C16BD7B0E009DEF10 /* HGLUtil.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = HGLUtil.mm; path = GLES/HGLUtil.mm; sourceTree = "<group>"; };
 		0735C89E16BD7BF8009DEF10 /* HGLES.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HGLES.h; path = GLES/HGLES.h; sourceTree = "<group>"; };
 		0735C89F16BD7BF8009DEF10 /* HGLES.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = HGLES.mm; path = GLES/HGLES.mm; sourceTree = "<group>"; };
-		0755990E16B3C3180066A0E9 /* GLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GLView.h; path = GLES/GLView.h; sourceTree = "<group>"; };
-		0755990F16B3C3180066A0E9 /* GLView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = GLView.mm; path = GLES/GLView.mm; sourceTree = "<group>"; };
+		0755990E16B3C3180066A0E9 /* HGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HGLView.h; path = GLES/HGLView.h; sourceTree = "<group>"; };
+		0755990F16B3C3180066A0E9 /* HGLView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = HGLView.mm; path = GLES/HGLView.mm; sourceTree = "<group>"; };
 		0755991216B3D0560066A0E9 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		0755991616B4BFD90066A0E9 /* HGLVertexBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HGLVertexBuffer.h; path = GLES/HGLVertexBuffer.h; sourceTree = "<group>"; };
 		0755991716B4BFD90066A0E9 /* HGLVertexBuffer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = HGLVertexBuffer.mm; path = GLES/HGLVertexBuffer.mm; sourceTree = "<group>"; };
@@ -456,8 +456,8 @@
 			children = (
 				07E6512116CF65A400192B8B /* HGLIndexBuffer.h */,
 				07E6512216CF65A400192B8B /* HGLIndexBuffer.mm */,
-				0755990E16B3C3180066A0E9 /* GLView.h */,
-				0755990F16B3C3180066A0E9 /* GLView.mm */,
+				0755990E16B3C3180066A0E9 /* HGLView.h */,
+				0755990F16B3C3180066A0E9 /* HGLView.mm */,
 				0735C89E16BD7BF8009DEF10 /* HGLES.h */,
 				0735C89F16BD7BF8009DEF10 /* HGLES.mm */,
 				070054F216BE48F7002BA473 /* HGLMaterial.h */,
@@ -666,7 +666,7 @@
 				07E0464616886E73001F9CCE /* main.m in Sources */,
 				07E0464A16886E73001F9CCE /* AppDelegate.m in Sources */,
 				07E0465716886E73001F9CCE /* ViewController.m in Sources */,
-				0755991016B3C3180066A0E9 /* GLView.mm in Sources */,
+				0755991016B3C3180066A0E9 /* HGLView.mm in Sources */,
 				0755991916B4BFD90066A0E9 /* HGLVertexBuffer.mm in Sources */,
 				0755992216B4F99B0066A0E9 /* HGLObject3D.mm in Sources */,
 				0755992516B5188E0066A0E9 /* HGLVector3.mm in Sources */,

@@ -6,7 +6,7 @@
 //  Copyright (c) 2012年 hayogame. All rights reserved.
 //
 
-#import "GLView.h"
+#import "HGLView.h"
 #import <QuartzCore/QuartzCore.h>
 #include <OpenGLES/ES2/gl.h>
 #include <OpenGLES/ES2/glext.h>
@@ -23,7 +23,7 @@
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 
-@implementation GLView
+@implementation HGLView
 #define SA 1
 
 CAEAGLLayer* _eaglLayer;

@@ -10,16 +10,16 @@
 
 #import "ViewController.h"
 
-#import "GLView.h"
+#import "HGLView.h"
 
 @interface AppDelegate()
 {
 // Inside @interface
-GLView* _glView;
+HGLView* _glView;
 }
  
 // After @interface
-@property (nonatomic, retain) IBOutlet GLView *glView;
+@property (nonatomic, retain) IBOutlet HGLView *glView;
 
 @end
 
