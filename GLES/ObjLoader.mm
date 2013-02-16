@@ -14,7 +14,7 @@
 #import "Mesh.h"
 #import "Object3D.h"
 #import "Material.h"
-#import "Texture.h"
+#import "HGLTexture.h"
 
 #import <string>
 #import <vector>
@@ -151,7 +151,7 @@ void ObjLoader::addMeshTo(Object3D* obj3d, std::string material_name)
         m->texture_name = temp->texture_name;
         if (m->texture_name.length())
         {
-            m->texture = Texture::createTextureWithAsset(m->texture_name);
+            m->texture = HGLTexture::createTextureWithAsset(m->texture_name);
         }
     }
     Mesh* mesh = new Mesh(v, i, m);

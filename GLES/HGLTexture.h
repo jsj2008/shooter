@@ -11,15 +11,15 @@
 #import <string>
 #import <GLKit/GLKit.h>
 
-class Texture
+class HGLTexture
 {
 public:
-    static Texture* createTextureWithAsset(std::string name);
-    Texture();
+    static HGLTexture* createTextureWithAsset(std::string name);
+    HGLTexture();
     void bind();
     void unbind();
     void setTextureArea(int textureW,int textureH, int x, int y, int w, int h);
-    ~Texture();
+    ~HGLTexture();
     
 private:
     GLuint textureId;

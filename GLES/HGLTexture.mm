@@ -11,19 +11,19 @@
 // 24bitカラー、アルファ付きの画像をテクスチャとして使用すること
 // (インデックスカラーは不可)
 
-#import "Texture.h"
+#import "HGLTexture.h"
 #import "GLES.h"
 #include <OpenGLES/ES2/gl.h>
 #include <OpenGLES/ES2/glext.h>
 
-Texture* Texture::createTextureWithAsset(std::string name)
+HGLTexture* HGLTexture::createTextureWithAsset(std::string name)
 {
     
     glEnable(GL_TEXTURE_2D);
     glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
     
-    Texture* tex = new Texture();
+    HGLTexture* tex = new HGLTexture();
     glGenTextures(1, &tex->textureId);
     
     CGImageRef image;
@@ -62,7 +62,7 @@ Texture* Texture::createTextureWithAsset(std::string name)
     return tex;
 }
 
-Texture::Texture()
+HGLTexture::HGLTexture()
 {
     textureId = 0;
     textureMatrix = GLKMatrix4Identity;
@@ -70,7 +70,7 @@ Texture::Texture()
 
 // テクスチャ領域の指定
 // テクスチャ行列を使ってテクスチャの一部分を表示する
-void Texture::setTextureArea(int textureW,int textureH, int x, int y, int w, int h)
+void HGLTexture::setTextureArea(int textureW,int textureH, int x, int y, int w, int h)
 {
     //ピクセル座標をUV座標に変換
     float tw=(float)w/(float)textureW;
@@ -84,7 +84,7 @@ void Texture::setTextureArea(int textureW,int textureH, int x, int y, int w, int
     textureMatrix = GLKMatrix4Scale(textureMatrix, tw, th, 0);
 }
 
-void Texture::bind()
+void HGLTexture::bind()
 {
    if (textureId)
     {
@@ -100,14 +100,14 @@ void Texture::bind()
     }
 }
 
-void Texture::unbind()
+void HGLTexture::unbind()
 {
     glUniform1f(GLES::uUseTexture, 0);
     glDisable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-Texture::~Texture()
+HGLTexture::~HGLTexture()
 {
     if (textureId)
     {

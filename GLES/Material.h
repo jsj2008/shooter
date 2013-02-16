@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "GLTypes.h"
-#import "Texture.h"
+#import "HGLTexture.h"
 #import <string>
 
 class Material
@@ -24,6 +24,6 @@ public:
     Color specular;
     float shininess;
     std::string name;
-    Texture* texture;
+    HGLTexture* texture;
     std::string texture_name;
 };

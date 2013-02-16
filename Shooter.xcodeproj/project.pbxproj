@@ -12,7 +12,7 @@
 		070054FB16C62DB5002BA473 /* floor.mtl in Resources */ = {isa = PBXBuildFile; fileRef = 070054F716C62DB5002BA473 /* floor.mtl */; };
 		070054FC16C62DB5002BA473 /* floor.obj in Resources */ = {isa = PBXBuildFile; fileRef = 070054F816C62DB5002BA473 /* floor.obj */; };
 		070054FD16C62DB5002BA473 /* floor.png in Resources */ = {isa = PBXBuildFile; fileRef = 070054F916C62DB5002BA473 /* floor.png */; };
-		0700550016C75FA8002BA473 /* Texture.mm in Sources */ = {isa = PBXBuildFile; fileRef = 070054FF16C75FA7002BA473 /* Texture.mm */; };
+		0700550016C75FA8002BA473 /* HGLTexture.mm in Sources */ = {isa = PBXBuildFile; fileRef = 070054FF16C75FA7002BA473 /* HGLTexture.mm */; };
 		0700550316C760EE002BA473 /* dngn_deep_water.bmp in Resources */ = {isa = PBXBuildFile; fileRef = 0700550116C760EE002BA473 /* dngn_deep_water.bmp */; };
 		0700550416C760EE002BA473 /* dngn_lava.bmp in Resources */ = {isa = PBXBuildFile; fileRef = 0700550216C760EE002BA473 /* dngn_lava.bmp */; };
 		0700550616C77AA0002BA473 /* dngn_rock_wall_13.png in Resources */ = {isa = PBXBuildFile; fileRef = 0700550516C77AA0002BA473 /* dngn_rock_wall_13.png */; };
@@ -138,8 +138,8 @@
 		070054F716C62DB5002BA473 /* floor.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = floor.mtl; sourceTree = "<group>"; };
 		070054F816C62DB5002BA473 /* floor.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = floor.obj; sourceTree = "<group>"; };
 		070054F916C62DB5002BA473 /* floor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = floor.png; sourceTree = "<group>"; };
-		070054FE16C75FA7002BA473 /* Texture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Texture.h; path = GLES/Texture.h; sourceTree = "<group>"; };
-		070054FF16C75FA7002BA473 /* Texture.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Texture.mm; path = GLES/Texture.mm; sourceTree = "<group>"; };
+		070054FE16C75FA7002BA473 /* HGLTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HGLTexture.h; path = GLES/HGLTexture.h; sourceTree = "<group>"; };
+		070054FF16C75FA7002BA473 /* HGLTexture.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = HGLTexture.mm; path = GLES/HGLTexture.mm; sourceTree = "<group>"; };
 		0700550116C760EE002BA473 /* dngn_deep_water.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = dngn_deep_water.bmp; sourceTree = "<group>"; };
 		0700550216C760EE002BA473 /* dngn_lava.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = dngn_lava.bmp; sourceTree = "<group>"; };
 		0700550516C77AA0002BA473 /* dngn_rock_wall_13.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dngn_rock_wall_13.png; sourceTree = "<group>"; };
@@ -455,8 +455,8 @@
 			isa = PBXGroup;
 			children = (
 				07E6507C16C9230800192B8B /* Shaders */,
-				070054FE16C75FA7002BA473 /* Texture.h */,
-				070054FF16C75FA7002BA473 /* Texture.mm */,
+				070054FE16C75FA7002BA473 /* HGLTexture.h */,
+				070054FF16C75FA7002BA473 /* HGLTexture.mm */,
 				070054F216BE48F7002BA473 /* Material.h */,
 				070054F316BE48F7002BA473 /* Material.mm */,
 				0735C89E16BD7BF8009DEF10 /* GLES.h */,
@@ -677,7 +677,7 @@
 				0735C89D16BD7B0E009DEF10 /* GLUtil.mm in Sources */,
 				0735C8A016BD7BF8009DEF10 /* GLES.mm in Sources */,
 				070054F416BE48F8002BA473 /* Material.mm in Sources */,
-				0700550016C75FA8002BA473 /* Texture.mm in Sources */,
+				0700550016C75FA8002BA473 /* HGLTexture.mm in Sources */,
 				07E6511616C926F200192B8B /* Actor.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
