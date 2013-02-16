@@ -11,13 +11,13 @@
 #import "HGLTexture.h"
 #import <string>
 
-class Material
+class HGLMaterial
 {
 public:
-    Material();
+    HGLMaterial();
     void bind();
     void unbind();
-    ~Material();
+    ~HGLMaterial();
     
     Color ambient;
     Color diffuse;

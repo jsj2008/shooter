@@ -10,17 +10,17 @@
 
 class IndexBuffer;
 class VertexBuffer;
-class Material;
+class HGLMaterial;
 
 class Mesh
 {
 public:
-    Mesh(VertexBuffer* v, IndexBuffer* i, Material* m);
+    Mesh(VertexBuffer* v, IndexBuffer* i, HGLMaterial* m);
     void draw();
     ~Mesh();
     
 private:
     IndexBuffer* indexBuffer;
     VertexBuffer* vertexBuffer;
-    Material* material;
+    HGLMaterial* material;
 };

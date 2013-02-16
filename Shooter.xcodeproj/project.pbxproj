@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		070054F416BE48F8002BA473 /* Material.mm in Sources */ = {isa = PBXBuildFile; fileRef = 070054F316BE48F7002BA473 /* Material.mm */; };
+		070054F416BE48F8002BA473 /* HGLMaterial.mm in Sources */ = {isa = PBXBuildFile; fileRef = 070054F316BE48F7002BA473 /* HGLMaterial.mm */; };
 		070054FA16C62DB5002BA473 /* droid.mtl in Resources */ = {isa = PBXBuildFile; fileRef = 070054F616C62DB4002BA473 /* droid.mtl */; };
 		070054FB16C62DB5002BA473 /* floor.mtl in Resources */ = {isa = PBXBuildFile; fileRef = 070054F716C62DB5002BA473 /* floor.mtl */; };
 		070054FC16C62DB5002BA473 /* floor.obj in Resources */ = {isa = PBXBuildFile; fileRef = 070054F816C62DB5002BA473 /* floor.obj */; };
@@ -132,8 +132,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		070054F216BE48F7002BA473 /* Material.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Material.h; path = GLES/Material.h; sourceTree = "<group>"; };
-		070054F316BE48F7002BA473 /* Material.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Material.mm; path = GLES/Material.mm; sourceTree = "<group>"; };
+		070054F216BE48F7002BA473 /* HGLMaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HGLMaterial.h; path = GLES/HGLMaterial.h; sourceTree = "<group>"; };
+		070054F316BE48F7002BA473 /* HGLMaterial.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = HGLMaterial.mm; path = GLES/HGLMaterial.mm; sourceTree = "<group>"; };
 		070054F616C62DB4002BA473 /* droid.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = droid.mtl; sourceTree = "<group>"; };
 		070054F716C62DB5002BA473 /* floor.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = floor.mtl; sourceTree = "<group>"; };
 		070054F816C62DB5002BA473 /* floor.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = floor.obj; sourceTree = "<group>"; };
@@ -457,8 +457,8 @@
 				07E6507C16C9230800192B8B /* Shaders */,
 				070054FE16C75FA7002BA473 /* HGLTexture.h */,
 				070054FF16C75FA7002BA473 /* HGLTexture.mm */,
-				070054F216BE48F7002BA473 /* Material.h */,
-				070054F316BE48F7002BA473 /* Material.mm */,
+				070054F216BE48F7002BA473 /* HGLMaterial.h */,
+				070054F316BE48F7002BA473 /* HGLMaterial.mm */,
 				0735C89E16BD7BF8009DEF10 /* GLES.h */,
 				0735C89F16BD7BF8009DEF10 /* GLES.mm */,
 				0735C89B16BD7B0E009DEF10 /* GLUtil.h */,
@@ -676,7 +676,7 @@
 				0755993316BD13180066A0E9 /* GLTypes.mm in Sources */,
 				0735C89D16BD7B0E009DEF10 /* GLUtil.mm in Sources */,
 				0735C8A016BD7BF8009DEF10 /* GLES.mm in Sources */,
-				070054F416BE48F8002BA473 /* Material.mm in Sources */,
+				070054F416BE48F8002BA473 /* HGLMaterial.mm in Sources */,
 				0700550016C75FA8002BA473 /* HGLTexture.mm in Sources */,
 				07E6511616C926F200192B8B /* Actor.mm in Sources */,
 			);

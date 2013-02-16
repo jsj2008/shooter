@@ -6,20 +6,20 @@
 //  Copyright (c) 2012年 hayogame. All rights reserved.
 //
 
-#import "Material.h"
+#import "HGLMaterial.h"
 #import "GLES.h"
 #import "HGLTexture.h"
 #import <GLKit/GLKit.h>
 #include <OpenGLES/ES2/gl.h>
 #include <OpenGLES/ES2/glext.h>
 
-Material::Material()
+HGLMaterial::HGLMaterial()
 {
     texture = NULL;
     texture_name = "";
 }
 
-void Material::bind()
+void HGLMaterial::bind()
 {
     glUniform4fv(GLES::uMaterialAmbient, 1, (float*)(&ambient));
     glUniform4fv(GLES::uMaterialDiffuse, 1, (float*)(&diffuse));
@@ -31,7 +31,7 @@ void Material::bind()
     }
 }
 
-void Material::unbind()
+void HGLMaterial::unbind()
 {
     if (texture)
     {
@@ -39,7 +39,7 @@ void Material::unbind()
     }
 }
 
-Material::~Material()
+HGLMaterial::~HGLMaterial()
 {
     if (texture)
     {

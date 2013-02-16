@@ -12,7 +12,7 @@
 #import "GLTypes.h"
 
 class Object3D;
-class Material;
+class HGLMaterial;
 
 class ObjLoader
 {
@@ -28,7 +28,7 @@ private:
     
     static std::vector<Vertex> vertices; // position+uv+normal
     static std::vector<Index> indices;
-    static std::map<std::string, Material*> materials;
+    static std::map<std::string, HGLMaterial*> materials;
     
 };
 

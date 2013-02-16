@@ -14,9 +14,9 @@
 
 #import "IndexBuffer.h"
 #import "VertexBuffer.h"
-#import "Material.h"
+#import "HGLMaterial.h"
 
-Mesh::Mesh(VertexBuffer* v, IndexBuffer* i, Material* m)
+Mesh::Mesh(VertexBuffer* v, IndexBuffer* i, HGLMaterial* m)
 {
     vertexBuffer = v;
     indexBuffer = i;

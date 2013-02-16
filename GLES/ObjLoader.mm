@@ -13,7 +13,7 @@
 #import "GLTypes.h"
 #import "Mesh.h"
 #import "Object3D.h"
-#import "Material.h"
+#import "HGLMaterial.h"
 #import "HGLTexture.h"
 
 #import <string>
@@ -26,7 +26,7 @@ std::vector<UV> ObjLoader::uvs;
 
 std::vector<Vertex> ObjLoader::vertices; // position+uv+normal
 std::vector<Index> ObjLoader::indices;
-std::map<std::string, Material*> ObjLoader::materials;
+std::map<std::string, HGLMaterial*> ObjLoader::materials;
 
 Object3D* ObjLoader::load(NSString* name)
 {
@@ -123,7 +123,7 @@ Object3D* ObjLoader::load(NSString* name)
     
     // メモリ解放
     delete s_dat;
-    for (std::map<std::string, Material*>::iterator itr = materials.begin(); itr != materials.end(); itr++)
+    for (std::map<std::string, HGLMaterial*>::iterator itr = materials.begin(); itr != materials.end(); itr++)
     {
         delete itr->second;
     }
@@ -138,11 +138,11 @@ void ObjLoader::addMeshTo(Object3D* obj3d, std::string material_name)
     VertexBuffer* v = new VertexBuffer(&vertices[0], vertices.size());
     IndexBuffer* i = new IndexBuffer(&indices[0], indices.size());
     
-    Material* m = NULL;
+    HGLMaterial* m = NULL;
     if (material_name.length())
     {
-        Material* temp = materials[material_name];
-        m = new Material();
+        HGLMaterial* temp = materials[material_name];
+        m = new HGLMaterial();
         m->name      = temp->name;
         m->ambient   = temp->ambient;
         m->diffuse   = temp->diffuse;
@@ -229,7 +229,7 @@ void ObjLoader::loadMtl(std::string* name)
     using namespace std;
     
     materials.clear();
-    Material* m = NULL; // メッシュに渡すときにcopyする
+    HGLMaterial* m = NULL; // メッシュに渡すときにcopyする
     
     // ファイルを文字列に読み込む
     NSString* s = [NSString stringWithCString:name->c_str() encoding:NSUTF8StringEncoding];
@@ -267,7 +267,7 @@ void ObjLoader::loadMtl(std::string* name)
             // マテリアル名
             if (words[0] == "newmtl")
             {
-                m = new Material();
+                m = new HGLMaterial();
                 m->name = words[1];
                 materials[words[1]] = m;
             }
