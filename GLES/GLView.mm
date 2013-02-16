@@ -12,14 +12,14 @@
 #include <OpenGLES/ES2/glext.h>
 #import <GLKit/GLKit.h>
 
-#import "Object3D.h"
+#import "HGLObject3D.h"
 #import "VertexBuffer.h"
 #import "IndexBuffer.h"
 #import "Mesh.h"
 #import "HGLES.h"
 #import "HGLTypes.h"
-#import "HObjLoader.h"
-#import "Vector3.h"
+#import "HGLObjLoader.h"
+#import "HGLVector3.h"
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 
@@ -30,10 +30,10 @@ CAEAGLLayer* _eaglLayer;
 EAGLContext* _context;
 GLuint _colorRenderBuffer;
 GLuint _depthRenderBuffer;
-Vector3 _cameraPosition(0,0,0);
+HGLVector3 _cameraPosition(0,0,0);
 
-Object3D* obj3d;
-Object3D* obj3d2;
+HGLObject3D* obj3d;
+HGLObject3D* obj3d2;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -181,8 +181,8 @@ Object3D* obj3d2;
 
 - (void)setupVBOs {
      //obj3d = ObjLoader::load(@"block");
-     obj3d = HObjLoader::load(@"floor");
-     obj3d2 = HObjLoader::load(@"droid");
+     obj3d = HGLObjLoader::load(@"floor");
+     obj3d2 = HGLObjLoader::load(@"droid");
 }
 
 @end

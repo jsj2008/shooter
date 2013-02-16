@@ -8,23 +8,23 @@
 
 #import <Foundation/Foundation.h>
 #import "Mesh.h"
-#import "Vector3.h"
+#import "HGLVector3.h"
 #import <vector>
 
-class Object3D
+class HGLObject3D
 {
 public:
-    Object3D();
+    HGLObject3D();
     void addMesh(Mesh* m);
     void draw();
-    ~Object3D();
+    ~HGLObject3D();
     
-    Vector3 position; // 位置
-    Vector3 rotate  ; // 回転
-    Vector3 scale   ; // 拡大縮小
+    HGLVector3 position; // 位置
+    HGLVector3 rotate  ; // 回転
+    HGLVector3 scale   ; // 拡大縮小
     
 private:
     std::vector<Mesh*> meshlist;
-    std::vector<Object3D*> children;
+    std::vector<HGLObject3D*> children;
     
 };

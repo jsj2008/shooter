@@ -6,7 +6,7 @@
 //  Copyright (c) 2012年 hayogame. All rights reserved.
 //
 
-#import "Object3D.h"
+#import "HGLObject3D.h"
 #import <GLKit/GLKit.h>
 #include <OpenGLES/ES2/gl.h>
 #include <OpenGLES/ES2/glext.h>
@@ -14,14 +14,14 @@
 #import "HGLES.h"
 #include <vector>
 
-Object3D::Object3D()
+HGLObject3D::HGLObject3D()
 {
-    position = Vector3();
-    rotate   = Vector3();
-    scale    = Vector3(1, 1, 1);
+    position = HGLVector3();
+    rotate   = HGLVector3();
+    scale    = HGLVector3(1, 1, 1);
 }
 
-Object3D::~Object3D()
+HGLObject3D::~HGLObject3D()
 {
     for (std::vector<Mesh*>::iterator itr = meshlist.begin(); itr != meshlist.end(); itr++)
     {
@@ -30,7 +30,7 @@ Object3D::~Object3D()
     meshlist.clear();
 }
 
-void Object3D::draw()
+void HGLObject3D::draw()
 {
     HGLES::pushMatrix();
     HGLES::mvMatrix = GLKMatrix4Translate(HGLES::mvMatrix, position.x, position.y, position.z);
@@ -50,10 +50,10 @@ void Object3D::draw()
     }
     
     // 子を描画
-    std::vector<Object3D*>::iterator childItr;
+    std::vector<HGLObject3D*>::iterator childItr;
     childItr = children.begin();
     while (childItr != children.end()) {
-        Object3D* c = *childItr;
+        HGLObject3D* c = *childItr;
         c->draw();
         childItr++;
     }
@@ -61,7 +61,7 @@ void Object3D::draw()
     HGLES::popMatrix();
 }
 
-void Object3D::addMesh(Mesh* m)
+void HGLObject3D::addMesh(Mesh* m)
 {
     meshlist.push_back(m);
 }

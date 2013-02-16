@@ -35,11 +35,11 @@
 		0755991816B4BFD90066A0E9 /* IndexBuffer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0755991516B4BFD90066A0E9 /* IndexBuffer.mm */; };
 		0755991916B4BFD90066A0E9 /* VertexBuffer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0755991716B4BFD90066A0E9 /* VertexBuffer.mm */; };
 		0755991C16B4CA1A0066A0E9 /* Mesh.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0755991B16B4CA1A0066A0E9 /* Mesh.mm */; };
-		0755992216B4F99B0066A0E9 /* Object3D.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0755992116B4F99B0066A0E9 /* Object3D.mm */; };
-		0755992516B5188E0066A0E9 /* Vector3.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0755992416B5188E0066A0E9 /* Vector3.mm */; };
+		0755992216B4F99B0066A0E9 /* HGLObject3D.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0755992116B4F99B0066A0E9 /* HGLObject3D.mm */; };
+		0755992516B5188E0066A0E9 /* HGLVector3.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0755992416B5188E0066A0E9 /* HGLVector3.mm */; };
 		0755992916B561490066A0E9 /* block.mtl in Resources */ = {isa = PBXBuildFile; fileRef = 0755992716B561490066A0E9 /* block.mtl */; };
 		0755992A16B561490066A0E9 /* block.obj in Resources */ = {isa = PBXBuildFile; fileRef = 0755992816B561490066A0E9 /* block.obj */; };
-		0755992D16B561950066A0E9 /* HObjLoader.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0755992C16B561950066A0E9 /* HObjLoader.mm */; };
+		0755992D16B561950066A0E9 /* HGLObjLoader.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0755992C16B561950066A0E9 /* HGLObjLoader.mm */; };
 		0755993316BD13180066A0E9 /* HGLTypes.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0755993216BD13170066A0E9 /* HGLTypes.mm */; };
 		07E0463616886E73001F9CCE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07E0463516886E73001F9CCE /* UIKit.framework */; };
 		07E0463816886E73001F9CCE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07E0463716886E73001F9CCE /* Foundation.framework */; };
@@ -168,14 +168,14 @@
 		0755991716B4BFD90066A0E9 /* VertexBuffer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VertexBuffer.mm; path = GLES/VertexBuffer.mm; sourceTree = "<group>"; };
 		0755991A16B4CA1A0066A0E9 /* Mesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Mesh.h; path = GLES/Mesh.h; sourceTree = "<group>"; };
 		0755991B16B4CA1A0066A0E9 /* Mesh.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Mesh.mm; path = GLES/Mesh.mm; sourceTree = "<group>"; };
-		0755992016B4F99B0066A0E9 /* Object3D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Object3D.h; path = GLES/Object3D.h; sourceTree = "<group>"; };
-		0755992116B4F99B0066A0E9 /* Object3D.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Object3D.mm; path = GLES/Object3D.mm; sourceTree = "<group>"; };
-		0755992316B5188E0066A0E9 /* Vector3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Vector3.h; path = GLES/Vector3.h; sourceTree = "<group>"; };
-		0755992416B5188E0066A0E9 /* Vector3.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Vector3.mm; path = GLES/Vector3.mm; sourceTree = "<group>"; };
+		0755992016B4F99B0066A0E9 /* HGLObject3D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HGLObject3D.h; path = GLES/HGLObject3D.h; sourceTree = "<group>"; };
+		0755992116B4F99B0066A0E9 /* HGLObject3D.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = HGLObject3D.mm; path = GLES/HGLObject3D.mm; sourceTree = "<group>"; };
+		0755992316B5188E0066A0E9 /* HGLVector3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HGLVector3.h; path = GLES/HGLVector3.h; sourceTree = "<group>"; };
+		0755992416B5188E0066A0E9 /* HGLVector3.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = HGLVector3.mm; path = GLES/HGLVector3.mm; sourceTree = "<group>"; };
 		0755992716B561490066A0E9 /* block.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = block.mtl; sourceTree = "<group>"; };
 		0755992816B561490066A0E9 /* block.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = block.obj; sourceTree = "<group>"; };
-		0755992B16B561950066A0E9 /* HObjLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HObjLoader.h; path = GLES/HObjLoader.h; sourceTree = "<group>"; };
-		0755992C16B561950066A0E9 /* HObjLoader.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = HObjLoader.mm; path = GLES/HObjLoader.mm; sourceTree = "<group>"; };
+		0755992B16B561950066A0E9 /* HGLObjLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HGLObjLoader.h; path = GLES/HGLObjLoader.h; sourceTree = "<group>"; };
+		0755992C16B561950066A0E9 /* HGLObjLoader.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = HGLObjLoader.mm; path = GLES/HGLObjLoader.mm; sourceTree = "<group>"; };
 		0755993116BD13170066A0E9 /* HGLTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HGLTypes.h; path = GLES/HGLTypes.h; sourceTree = "<group>"; };
 		0755993216BD13170066A0E9 /* HGLTypes.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = HGLTypes.mm; path = GLES/HGLTypes.mm; sourceTree = "<group>"; };
 		07E0463116886E73001F9CCE /* Shooter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shooter.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -465,12 +465,12 @@
 				0735C89C16BD7B0E009DEF10 /* HGLUtil.mm */,
 				0755993116BD13170066A0E9 /* HGLTypes.h */,
 				0755993216BD13170066A0E9 /* HGLTypes.mm */,
-				0755992B16B561950066A0E9 /* HObjLoader.h */,
-				0755992C16B561950066A0E9 /* HObjLoader.mm */,
-				0755992316B5188E0066A0E9 /* Vector3.h */,
-				0755992416B5188E0066A0E9 /* Vector3.mm */,
-				0755992016B4F99B0066A0E9 /* Object3D.h */,
-				0755992116B4F99B0066A0E9 /* Object3D.mm */,
+				0755992B16B561950066A0E9 /* HGLObjLoader.h */,
+				0755992C16B561950066A0E9 /* HGLObjLoader.mm */,
+				0755992316B5188E0066A0E9 /* HGLVector3.h */,
+				0755992416B5188E0066A0E9 /* HGLVector3.mm */,
+				0755992016B4F99B0066A0E9 /* HGLObject3D.h */,
+				0755992116B4F99B0066A0E9 /* HGLObject3D.mm */,
 				0755991A16B4CA1A0066A0E9 /* Mesh.h */,
 				0755991B16B4CA1A0066A0E9 /* Mesh.mm */,
 				0755991416B4BFD90066A0E9 /* IndexBuffer.h */,
@@ -670,9 +670,9 @@
 				0755991816B4BFD90066A0E9 /* IndexBuffer.mm in Sources */,
 				0755991916B4BFD90066A0E9 /* VertexBuffer.mm in Sources */,
 				0755991C16B4CA1A0066A0E9 /* Mesh.mm in Sources */,
-				0755992216B4F99B0066A0E9 /* Object3D.mm in Sources */,
-				0755992516B5188E0066A0E9 /* Vector3.mm in Sources */,
-				0755992D16B561950066A0E9 /* HObjLoader.mm in Sources */,
+				0755992216B4F99B0066A0E9 /* HGLObject3D.mm in Sources */,
+				0755992516B5188E0066A0E9 /* HGLVector3.mm in Sources */,
+				0755992D16B561950066A0E9 /* HGLObjLoader.mm in Sources */,
 				0755993316BD13180066A0E9 /* HGLTypes.mm in Sources */,
 				0735C89D16BD7B0E009DEF10 /* HGLUtil.mm in Sources */,
 				0735C8A016BD7BF8009DEF10 /* HGLES.mm in Sources */,

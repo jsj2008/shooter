@@ -1,4 +1,4 @@
-#import "Object3D.h"
+#import "HGLObject3D.h"
 
 class Actor
 {
@@ -8,5 +8,5 @@ public:
     float speed;
     float vx, vy, vz;
     float scale;
-    Object3D* object3d;
+    HGLObject3D* object3d;
 };

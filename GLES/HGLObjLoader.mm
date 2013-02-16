@@ -6,13 +6,13 @@
 //  Copyright (c) 2012年 hayogame. All rights reserved.
 //
 
-#import "HObjLoader.h"
+#import "HGLObjLoader.h"
 #import "VertexBuffer.h"
 #import "IndexBuffer.h"
 #import "HGLUtil.h"
 #import "HGLTypes.h"
 #import "Mesh.h"
-#import "Object3D.h"
+#import "HGLObject3D.h"
 #import "HGLMaterial.h"
 #import "HGLTexture.h"
 
@@ -20,15 +20,15 @@
 #import <vector>
 #import <algorithm>
 
-std::vector<Position> HObjLoader::positions;
-std::vector<Normal> HObjLoader::normals;
-std::vector<UV> HObjLoader::uvs;
+std::vector<Position> HGLObjLoader::positions;
+std::vector<Normal> HGLObjLoader::normals;
+std::vector<UV> HGLObjLoader::uvs;
 
-std::vector<Vertex> HObjLoader::vertices; // position+uv+normal
-std::vector<Index> HObjLoader::indices;
-std::map<std::string, HGLMaterial*> HObjLoader::materials;
+std::vector<Vertex> HGLObjLoader::vertices; // position+uv+normal
+std::vector<Index> HGLObjLoader::indices;
+std::map<std::string, HGLMaterial*> HGLObjLoader::materials;
 
-Object3D* HObjLoader::load(NSString* name)
+HGLObject3D* HGLObjLoader::load(NSString* name)
 {
     using namespace std;
     
@@ -39,7 +39,7 @@ Object3D* HObjLoader::load(NSString* name)
     string* s_dat = new string([modelDataStr UTF8String]);
     
     // １行ずつ処理
-    Object3D* obj3d = new Object3D();
+    HGLObject3D* obj3d = new HGLObject3D();
     bool mesh_flg = false;
     string::size_type current = 0;
     string::size_type eol = 0;
@@ -133,7 +133,7 @@ Object3D* HObjLoader::load(NSString* name)
 }
 
 // メッシュを作る
-void HObjLoader::addMeshTo(Object3D* obj3d, std::string material_name)
+void HGLObjLoader::addMeshTo(HGLObject3D* obj3d, std::string material_name)
 {
     VertexBuffer* v = new VertexBuffer(&vertices[0], vertices.size());
     IndexBuffer* i = new IndexBuffer(&indices[0], indices.size());
@@ -166,7 +166,7 @@ void HObjLoader::addMeshTo(Object3D* obj3d, std::string material_name)
 }
 
 // インデックスが示す頂点を作成する
-void HObjLoader::addIndex(std::string* index_str)
+void HGLObjLoader::addIndex(std::string* index_str)
 {
     
     using namespace std;
@@ -223,7 +223,7 @@ void HObjLoader::addIndex(std::string* index_str)
     indices.push_back(index);
 }
 
-void HObjLoader::loadMtl(std::string* name)
+void HGLObjLoader::loadMtl(std::string* name)
 {
     
     using namespace std;

@@ -11,17 +11,17 @@
 #import <map>
 #import "HGLTypes.h"
 
-class Object3D;
+class HGLObject3D;
 class HGLMaterial;
 
-class HObjLoader
+class HGLObjLoader
 {
 public:
-    static Object3D* load(NSString* name);
+    static HGLObject3D* load(NSString* name);
 private:
     static void loadMtl(std::string* name);
     static void addIndex(std::string* index_str);
-    static void addMeshTo(Object3D* obj, std::string material_name);
+    static void addMeshTo(HGLObject3D* obj, std::string material_name);
     static std::vector<Position> positions;
     static std::vector<Normal> normals;
     static std::vector<UV> uvs;

@@ -6,52 +6,52 @@
 //  Copyright (c) 2012年 hayogame. All rights reserved.
 //
 
-#import "Vector3.h"
+#import "HGLVector3.h"
 
-Vector3::Vector3()
+HGLVector3::HGLVector3()
 {
     x = y = z = 0;
 }
 
-Vector3::Vector3(float x, float y, float z)
+HGLVector3::HGLVector3(float x, float y, float z)
 {
     this->x = x;
     this->y = y;
     this->z = z;
 }
 
-Vector3::Vector3(const Vector3* origin)
+HGLVector3::HGLVector3(const HGLVector3* origin)
 {
     this->x = origin->x;
     this->y = origin->y;
     this->z = origin->z;
 }
 
-void Vector3::set(const Vector3* origin)
+void HGLVector3::set(const HGLVector3* origin)
 {
     this->x = origin->x;
     this->y = origin->y;
     this->z = origin->z;
 }
 
-void Vector3::set(float x, float y, float z)
+void HGLVector3::set(float x, float y, float z)
 {
     this->x = x;
     this->y = y;
     this->z = z;
 }
 
-float Vector3::dot(const Vector3* v)
+float HGLVector3::dot(const HGLVector3* v)
 {
     return (v->x*x) + (v->y*y) + (v->z*z);
 }
 
-float Vector3::dot(float x, float y, float z)
+float HGLVector3::dot(float x, float y, float z)
 {
     return (this->x*x) + (this->y*y) + (this->z*z);
 }
 
-Vector3* Vector3::cross(const Vector3* v, Vector3* result)
+HGLVector3* HGLVector3::cross(const HGLVector3* v, HGLVector3* result)
 {
     result->set(
         (this->y * v->z) - (this->z * v->y),
@@ -60,7 +60,7 @@ Vector3* Vector3::cross(const Vector3* v, Vector3* result)
     return result;
 }
 
-void Vector3::cross(float x, float y, float z)
+void HGLVector3::cross(float x, float y, float z)
 {
     this->set(
         (this->y * z) - (this->z * y),
@@ -68,26 +68,26 @@ void Vector3::cross(float x, float y, float z)
         (this->x * y) - (this->y * x));
 }
 
-void Vector3::add(const Vector3* v0, const Vector3* v1)
+void HGLVector3::add(const HGLVector3* v0, const HGLVector3* v1)
 {
     this->x = v0->x + v1->x;
     this->y = v0->y + v1->y;
     this->z = v0->z + v1->z;
 }
 
-void Vector3::sub(const Vector3* v0, const Vector3* v1)
+void HGLVector3::sub(const HGLVector3* v0, const HGLVector3* v1)
 {
     this->x = v0->x - v1->x;
     this->y = v0->y - v1->y;
     this->z = v0->z - v1->z;
 }
 
-float Vector3::length()
+float HGLVector3::length()
 {
     return (float)sqrt((double)((x*x)+(y*y)+(z*z)));
 }
 
-void Vector3::normalize()
+void HGLVector3::normalize()
 {
     float len = length();
     this->x /= len;
@@ -95,7 +95,7 @@ void Vector3::normalize()
     this->z /= len;
 }
 
-bool Vector3::equals(const Vector3* v)
+bool HGLVector3::equals(const HGLVector3* v)
 {
     return (x == v->x && y == v->y && z == v->z);
 }
