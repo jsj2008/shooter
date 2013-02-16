@@ -126,7 +126,7 @@
 		07E6511016C9244D00192B8B /* tobira_right.png in Resources */ = {isa = PBXBuildFile; fileRef = 07E650C716C9244D00192B8B /* tobira_right.png */; };
 		07E6511116C9244D00192B8B /* topmenuback.png in Resources */ = {isa = PBXBuildFile; fileRef = 07E650C816C9244D00192B8B /* topmenuback.png */; };
 		07E6511216C9244D00192B8B /* yesnowin1.png in Resources */ = {isa = PBXBuildFile; fileRef = 07E650C916C9244D00192B8B /* yesnowin1.png */; };
-		07E6511616C926F200192B8B /* Actor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07E6511516C926F200192B8B /* Actor.mm */; };
+		07E6511616C926F200192B8B /* HGActor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07E6511516C926F200192B8B /* HGActor.mm */; };
 		07E6512016CF64E900192B8B /* HGLMesh.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07E6511F16CF64E900192B8B /* HGLMesh.mm */; };
 		07E6512316CF65A600192B8B /* HGLIndexBuffer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07E6512216CF65A400192B8B /* HGLIndexBuffer.mm */; };
 /* End PBXBuildFile section */
@@ -266,8 +266,8 @@
 		07E650C716C9244D00192B8B /* tobira_right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tobira_right.png; sourceTree = "<group>"; };
 		07E650C816C9244D00192B8B /* topmenuback.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = topmenuback.png; sourceTree = "<group>"; };
 		07E650C916C9244D00192B8B /* yesnowin1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yesnowin1.png; sourceTree = "<group>"; };
-		07E6511416C926F200192B8B /* Actor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Actor.h; sourceTree = "<group>"; };
-		07E6511516C926F200192B8B /* Actor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Actor.mm; sourceTree = "<group>"; };
+		07E6511416C926F200192B8B /* HGActor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGActor.h; sourceTree = "<group>"; };
+		07E6511516C926F200192B8B /* HGActor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGActor.mm; sourceTree = "<group>"; };
 		07E6511E16CF64E800192B8B /* HGLMesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HGLMesh.h; path = GLES/HGLMesh.h; sourceTree = "<group>"; };
 		07E6511F16CF64E900192B8B /* HGLMesh.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = HGLMesh.mm; path = GLES/HGLMesh.mm; sourceTree = "<group>"; };
 		07E6512116CF65A400192B8B /* HGLIndexBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HGLIndexBuffer.h; path = GLES/HGLIndexBuffer.h; sourceTree = "<group>"; };
@@ -454,12 +454,10 @@
 		07E0466616887799001F9CCE /* GLES */ = {
 			isa = PBXGroup;
 			children = (
-				07E6512116CF65A400192B8B /* HGLIndexBuffer.h */,
-				07E6512216CF65A400192B8B /* HGLIndexBuffer.mm */,
-				0755990E16B3C3180066A0E9 /* HGLView.h */,
-				0755990F16B3C3180066A0E9 /* HGLView.mm */,
 				0735C89E16BD7BF8009DEF10 /* HGLES.h */,
 				0735C89F16BD7BF8009DEF10 /* HGLES.mm */,
+				07E6512116CF65A400192B8B /* HGLIndexBuffer.h */,
+				07E6512216CF65A400192B8B /* HGLIndexBuffer.mm */,
 				070054F216BE48F7002BA473 /* HGLMaterial.h */,
 				070054F316BE48F7002BA473 /* HGLMaterial.mm */,
 				07E6511E16CF64E800192B8B /* HGLMesh.h */,
@@ -476,9 +474,11 @@
 				0735C89C16BD7B0E009DEF10 /* HGLUtil.mm */,
 				0755992316B5188E0066A0E9 /* HGLVector3.h */,
 				0755992416B5188E0066A0E9 /* HGLVector3.mm */,
-				07E6507C16C9230800192B8B /* Shaders */,
 				0755991616B4BFD90066A0E9 /* HGLVertexBuffer.h */,
 				0755991716B4BFD90066A0E9 /* HGLVertexBuffer.mm */,
+				0755990E16B3C3180066A0E9 /* HGLView.h */,
+				0755990F16B3C3180066A0E9 /* HGLView.mm */,
+				07E6507C16C9230800192B8B /* Shaders */,
 			);
 			name = GLES;
 			sourceTree = "<group>";
@@ -496,8 +496,8 @@
 		07E6511316C926F100192B8B /* Game */ = {
 			isa = PBXGroup;
 			children = (
-				07E6511416C926F200192B8B /* Actor.h */,
-				07E6511516C926F200192B8B /* Actor.mm */,
+				07E6511416C926F200192B8B /* HGActor.h */,
+				07E6511516C926F200192B8B /* HGActor.mm */,
 			);
 			path = Game;
 			sourceTree = "<group>";
@@ -676,7 +676,7 @@
 				0735C8A016BD7BF8009DEF10 /* HGLES.mm in Sources */,
 				070054F416BE48F8002BA473 /* HGLMaterial.mm in Sources */,
 				0700550016C75FA8002BA473 /* HGLTexture.mm in Sources */,
-				07E6511616C926F200192B8B /* Actor.mm in Sources */,
+				07E6511616C926F200192B8B /* HGActor.mm in Sources */,
 				07E6512016CF64E900192B8B /* HGLMesh.mm in Sources */,
 				07E6512316CF65A600192B8B /* HGLIndexBuffer.mm in Sources */,
 			);
