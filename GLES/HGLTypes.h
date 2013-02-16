@@ -1,5 +1,5 @@
-#ifndef GLTYPES
-#define GLTYPES
+#ifndef HGLTYPES
+#define HGLTYPES
 
 #import <string>
 

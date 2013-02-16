@@ -1,4 +1,4 @@
-#import "GLTypes.h"
+#import "HGLTypes.h"
 
 float s2f(const std::string* str)
 {

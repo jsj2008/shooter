@@ -6,11 +6,11 @@
 //  Copyright (c) 2012年 hayogame. All rights reserved.
 //
 
-#import "ObjLoader.h"
+#import "HObjLoader.h"
 #import "VertexBuffer.h"
 #import "IndexBuffer.h"
-#import "GLUtil.h"
-#import "GLTypes.h"
+#import "HGLUtil.h"
+#import "HGLTypes.h"
 #import "Mesh.h"
 #import "Object3D.h"
 #import "HGLMaterial.h"
@@ -20,15 +20,15 @@
 #import <vector>
 #import <algorithm>
 
-std::vector<Position> ObjLoader::positions;
-std::vector<Normal> ObjLoader::normals;
-std::vector<UV> ObjLoader::uvs;
+std::vector<Position> HObjLoader::positions;
+std::vector<Normal> HObjLoader::normals;
+std::vector<UV> HObjLoader::uvs;
 
-std::vector<Vertex> ObjLoader::vertices; // position+uv+normal
-std::vector<Index> ObjLoader::indices;
-std::map<std::string, HGLMaterial*> ObjLoader::materials;
+std::vector<Vertex> HObjLoader::vertices; // position+uv+normal
+std::vector<Index> HObjLoader::indices;
+std::map<std::string, HGLMaterial*> HObjLoader::materials;
 
-Object3D* ObjLoader::load(NSString* name)
+Object3D* HObjLoader::load(NSString* name)
 {
     using namespace std;
     
@@ -133,7 +133,7 @@ Object3D* ObjLoader::load(NSString* name)
 }
 
 // メッシュを作る
-void ObjLoader::addMeshTo(Object3D* obj3d, std::string material_name)
+void HObjLoader::addMeshTo(Object3D* obj3d, std::string material_name)
 {
     VertexBuffer* v = new VertexBuffer(&vertices[0], vertices.size());
     IndexBuffer* i = new IndexBuffer(&indices[0], indices.size());
@@ -166,7 +166,7 @@ void ObjLoader::addMeshTo(Object3D* obj3d, std::string material_name)
 }
 
 // インデックスが示す頂点を作成する
-void ObjLoader::addIndex(std::string* index_str)
+void HObjLoader::addIndex(std::string* index_str)
 {
     
     using namespace std;
@@ -223,7 +223,7 @@ void ObjLoader::addIndex(std::string* index_str)
     indices.push_back(index);
 }
 
-void ObjLoader::loadMtl(std::string* name)
+void HObjLoader::loadMtl(std::string* name)
 {
     
     using namespace std;

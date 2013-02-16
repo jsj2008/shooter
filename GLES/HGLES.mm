@@ -7,7 +7,7 @@
 //
 
 #import "HGLES.h"
-#import "GLTypes.h"
+#import "HGLTypes.h"
 #import <GLKit/GLKit.h>
 #include <OpenGLES/ES2/gl.h>
 #include <OpenGLES/ES2/glext.h>

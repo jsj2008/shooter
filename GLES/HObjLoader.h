@@ -9,12 +9,12 @@
 #import <Foundation/Foundation.h>
 #import <vector>
 #import <map>
-#import "GLTypes.h"
+#import "HGLTypes.h"
 
 class Object3D;
 class HGLMaterial;
 
-class ObjLoader
+class HObjLoader
 {
 public:
     static Object3D* load(NSString* name);

@@ -17,8 +17,8 @@
 #import "IndexBuffer.h"
 #import "Mesh.h"
 #import "HGLES.h"
-#import "GLTypes.h"
-#import "ObjLoader.h"
+#import "HGLTypes.h"
+#import "HObjLoader.h"
 #import "Vector3.h"
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
@@ -181,8 +181,8 @@ Object3D* obj3d2;
 
 - (void)setupVBOs {
      //obj3d = ObjLoader::load(@"block");
-     obj3d = ObjLoader::load(@"floor");
-     obj3d2 = ObjLoader::load(@"droid");
+     obj3d = HObjLoader::load(@"floor");
+     obj3d2 = HObjLoader::load(@"droid");
 }
 
 @end

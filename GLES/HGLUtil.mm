@@ -6,7 +6,7 @@
 //  Copyright (c) 2012年 hayogame. All rights reserved.
 //
 
-#import "GLUtil.h"
+#import "HGLUtil.h"
 
 void split(std::vector<std::string>* v, const std::string* str, const std::string delims)
 {

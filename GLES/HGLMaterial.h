@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "GLTypes.h"
+#import "HGLTypes.h"
 #import "HGLTexture.h"
 #import <string>
 
