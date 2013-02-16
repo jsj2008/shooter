@@ -11,7 +11,7 @@
 #include <OpenGLES/ES2/gl.h>
 #include <OpenGLES/ES2/glext.h>
 #import "Mesh.h"
-#import "GLES.h"
+#import "HGLES.h"
 #include <vector>
 
 Object3D::Object3D()
@@ -32,13 +32,13 @@ Object3D::~Object3D()
 
 void Object3D::draw()
 {
-    GLES::pushMatrix();
-    GLES::mvMatrix = GLKMatrix4Translate(GLES::mvMatrix, position.x, position.y, position.z);
-    GLES::mvMatrix = GLKMatrix4Rotate(GLES::mvMatrix, rotate.z, 0, 0, 1);
-    GLES::mvMatrix = GLKMatrix4Rotate(GLES::mvMatrix, rotate.y, 0, 1, 0);
-    GLES::mvMatrix = GLKMatrix4Rotate(GLES::mvMatrix, rotate.x, 1, 0, 0);
-    GLES::mvMatrix = GLKMatrix4Scale(GLES::mvMatrix, scale.x, scale.y, scale.z);
-    GLES::updateMatrix();
+    HGLES::pushMatrix();
+    HGLES::mvMatrix = GLKMatrix4Translate(HGLES::mvMatrix, position.x, position.y, position.z);
+    HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, rotate.z, 0, 0, 1);
+    HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, rotate.y, 0, 1, 0);
+    HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, rotate.x, 1, 0, 0);
+    HGLES::mvMatrix = GLKMatrix4Scale(HGLES::mvMatrix, scale.x, scale.y, scale.z);
+    HGLES::updateMatrix();
     
     // 自分を描画
     std::vector<Mesh*>::iterator meshItr;
@@ -58,7 +58,7 @@ void Object3D::draw()
         childItr++;
     }
     
-    GLES::popMatrix();
+    HGLES::popMatrix();
 }
 
 void Object3D::addMesh(Mesh* m)

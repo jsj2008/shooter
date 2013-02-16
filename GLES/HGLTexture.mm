@@ -12,7 +12,7 @@
 // (インデックスカラーは不可)
 
 #import "HGLTexture.h"
-#import "GLES.h"
+#import "HGLES.h"
 #include <OpenGLES/ES2/gl.h>
 #include <OpenGLES/ES2/glext.h>
 
@@ -90,19 +90,19 @@ void HGLTexture::bind()
     {
         setTextureArea(width, height, 0, 0, 64, 64);
         // テクスチャ使用フラグ
-        glUniform1f(GLES::uUseTexture, 1.0);
+        glUniform1f(HGLES::uUseTexture, 1.0);
         glEnable(GL_TEXTURE_2D);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, textureId);
-        glUniform1f(GLES::uTexSlot, 0);
+        glUniform1f(HGLES::uTexSlot, 0);
         // テクスチャ行列
-        glUniformMatrix4fv(GLES::uTexMatrixSlot, 1, 0, textureMatrix.m);
+        glUniformMatrix4fv(HGLES::uTexMatrixSlot, 1, 0, textureMatrix.m);
     }
 }
 
 void HGLTexture::unbind()
 {
-    glUniform1f(GLES::uUseTexture, 0);
+    glUniform1f(HGLES::uUseTexture, 0);
     glDisable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, 0);
 }

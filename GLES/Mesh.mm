@@ -7,7 +7,7 @@
 //
 
 #import "Mesh.h"
-#import "GLES.h"
+#import "HGLES.h"
 #import <GLKit/GLKit.h>
 #include <OpenGLES/ES2/gl.h>
 #include <OpenGLES/ES2/glext.h>

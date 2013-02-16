@@ -16,7 +16,7 @@
 #import "VertexBuffer.h"
 #import "IndexBuffer.h"
 #import "Mesh.h"
-#import "GLES.h"
+#import "HGLES.h"
 #import "GLTypes.h"
 #import "ObjLoader.h"
 #import "Vector3.h"
@@ -43,7 +43,7 @@ Object3D* obj3d2;
         // initialize
         [self setupLayer];
         [self setupContext];
-        GLES::initialize(self.frame.size.width, self.frame.size.height);
+        HGLES::initialize(self.frame.size.width, self.frame.size.height);
         [self setupDepthBuffer];
         [self setupRenderBuffer];
         [self setupFrameBuffer];
@@ -142,8 +142,8 @@ Object3D* obj3d2;
 - (void)render
 {
     _cameraPosition.z = 1;
-    GLES::mvMatrix = GLKMatrix4Identity;
-    GLES::mvMatrix = GLKMatrix4Translate(GLES::mvMatrix, _cameraPosition.x, _cameraPosition.y, _cameraPosition.z);
+    HGLES::mvMatrix = GLKMatrix4Identity;
+    HGLES::mvMatrix = GLKMatrix4Translate(HGLES::mvMatrix, _cameraPosition.x, _cameraPosition.y, _cameraPosition.z);
     
     if (obj3d2)
     {

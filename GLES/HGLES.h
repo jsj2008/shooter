@@ -12,7 +12,7 @@
 
 struct Color;
 struct Position;
-class GLES
+class HGLES
 {
 public:
     

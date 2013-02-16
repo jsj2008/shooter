@@ -7,7 +7,7 @@
 //
 
 #import "HGLMaterial.h"
-#import "GLES.h"
+#import "HGLES.h"
 #import "HGLTexture.h"
 #import <GLKit/GLKit.h>
 #include <OpenGLES/ES2/gl.h>
@@ -21,10 +21,10 @@ HGLMaterial::HGLMaterial()
 
 void HGLMaterial::bind()
 {
-    glUniform4fv(GLES::uMaterialAmbient, 1, (float*)(&ambient));
-    glUniform4fv(GLES::uMaterialDiffuse, 1, (float*)(&diffuse));
-    glUniform4fv(GLES::uMaterialSpecular, 1, (float*)(&specular));
-    glUniform1f(GLES::uMaterialShininess, shininess);
+    glUniform4fv(HGLES::uMaterialAmbient, 1, (float*)(&ambient));
+    glUniform4fv(HGLES::uMaterialDiffuse, 1, (float*)(&diffuse));
+    glUniform4fv(HGLES::uMaterialSpecular, 1, (float*)(&specular));
+    glUniform1f(HGLES::uMaterialShininess, shininess);
     if (texture)
     {
         texture->bind();

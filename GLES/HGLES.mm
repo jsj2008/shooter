@@ -6,74 +6,74 @@
 //  Copyright (c) 2012年 hayogame. All rights reserved.
 //
 
-#import "GLES.h"
+#import "HGLES.h"
 #import "GLTypes.h"
 #import <GLKit/GLKit.h>
 #include <OpenGLES/ES2/gl.h>
 #include <OpenGLES/ES2/glext.h>
 #import <string>
 
-std::stack<GLKMatrix4> GLES::matrixStack;
+std::stack<GLKMatrix4> HGLES::matrixStack;
 
-GLKMatrix4 GLES::mvMatrix;
-GLKMatrix4 GLES::projectionMatrix;
+GLKMatrix4 HGLES::mvMatrix;
+GLKMatrix4 HGLES::projectionMatrix;
 
-GLuint GLES::aPositionSlot        ;
-GLuint GLES::aNormalSlot          ;
-GLuint GLES::aUVSlot              ;
+GLuint HGLES::aPositionSlot        ;
+GLuint HGLES::aNormalSlot          ;
+GLuint HGLES::aUVSlot              ;
 
-//GLuint GLES::uProjectionMatrixSlot;
-GLuint GLES::uModelViewMatrixSlot ;
-GLuint GLES::uMvpMatrixSlot       ;
-GLuint GLES::uNormalMatrixSlot    ;
+//GLuint HGLES::uProjectionMatrixSlot;
+GLuint HGLES::uModelViewMatrixSlot ;
+GLuint HGLES::uMvpMatrixSlot       ;
+GLuint HGLES::uNormalMatrixSlot    ;
 
-GLuint GLES::uLightAmbientSlot;
-GLuint GLES::uLightDiffuseSlot;
-GLuint GLES::uLightSpecular;
-GLuint GLES::uLightPos;
+GLuint HGLES::uLightAmbientSlot;
+GLuint HGLES::uLightDiffuseSlot;
+GLuint HGLES::uLightSpecular;
+GLuint HGLES::uLightPos;
 
-GLuint GLES::uMaterialAmbient;
-GLuint GLES::uMaterialDiffuse;
-GLuint GLES::uMaterialSpecular;
-GLuint GLES::uMaterialShininess;
+GLuint HGLES::uMaterialAmbient;
+GLuint HGLES::uMaterialDiffuse;
+GLuint HGLES::uMaterialSpecular;
+GLuint HGLES::uMaterialShininess;
 
-GLuint GLES::uTexMatrixSlot;
-GLuint GLES::uTexSlot;
-GLuint GLES::uUseTexture;
+GLuint HGLES::uTexMatrixSlot;
+GLuint HGLES::uTexSlot;
+GLuint HGLES::uUseTexture;
 
 // 光源設定
-Color GLES::ambient;
-Color GLES::diffuse;
-Color GLES::specular;
-Position GLES::lightPos;
+Color HGLES::ambient;
+Color HGLES::diffuse;
+Color HGLES::specular;
+Position HGLES::lightPos;
 
-float GLES::viewWidth;
-float GLES::viewHeight;
+float HGLES::viewWidth;
+float HGLES::viewHeight;
 
-void GLES::pushMatrix()
+void HGLES::pushMatrix()
 {
     matrixStack.push(mvMatrix);
 }
 
-void GLES::popMatrix()
+void HGLES::popMatrix()
 {
     mvMatrix = matrixStack.top();
     matrixStack.pop();
 }
 
-void GLES::initialize(float viewWidth, float viewHeight)
+void HGLES::initialize(float viewWidth, float viewHeight)
 {
     glViewport(0, 0, viewWidth, viewHeight);
     compileShaders();
-    GLES::viewWidth = viewWidth;
-    GLES::viewHeight = viewHeight;
+    HGLES::viewWidth = viewWidth;
+    HGLES::viewHeight = viewHeight;
     float aspect = (float)(viewWidth / viewHeight);
-    GLES::projectionMatrix = GLKMatrix4MakePerspective(GLKMathDegreesToRadians(65.0f), aspect, 0.1f, 350.0f);
+    HGLES::projectionMatrix = GLKMatrix4MakePerspective(GLKMathDegreesToRadians(65.0f), aspect, 0.1f, 350.0f);
     mvMatrix = GLKMatrix4Identity;
     setDefault();
 }
 
-void GLES::setDefault()
+void HGLES::setDefault()
 {
     // light
     ambient = {1.0, 1.0, 1.0, 1.0};
@@ -86,22 +86,22 @@ void GLES::setDefault()
     glUniform3fv(uLightPos, 1, (GLfloat*)(&lightPos));
 }
 
-void GLES::updateMatrix()
+void HGLES::updateMatrix()
 {
-    //glUniformMatrix4fv(GLES::uProjectionMatrixSlot, 1, 0, GLES::projectionMatrix.m);
-    glUniformMatrix4fv(GLES::uModelViewMatrixSlot, 1, 0, GLES::mvMatrix.m);
+    //glUniformMatrix4fv(HGLES::uProjectionMatrixSlot, 1, 0, HGLES::projectionMatrix.m);
+    glUniformMatrix4fv(HGLES::uModelViewMatrixSlot, 1, 0, HGLES::mvMatrix.m);
     GLKMatrix4 mvpMatrix = GLKMatrix4Multiply(projectionMatrix, mvMatrix);
-    glUniformMatrix4fv(GLES::uMvpMatrixSlot, 1, 0, mvpMatrix.m);
+    glUniformMatrix4fv(HGLES::uMvpMatrixSlot, 1, 0, mvpMatrix.m);
     
     
     // モデルビュー行列の逆転置行列の指定
-    GLKMatrix4 normalM = GLES::mvMatrix;
+    GLKMatrix4 normalM = HGLES::mvMatrix;
     bool result = true;
     normalM = GLKMatrix4InvertAndTranspose(normalM, (bool*)&result);
-    glUniformMatrix4fv(GLES::uNormalMatrixSlot, 1, false, normalM.m);
+    glUniformMatrix4fv(HGLES::uNormalMatrixSlot, 1, false, normalM.m);
 }
 
-GLuint GLES::compileShader(NSString* shaderName, GLenum shaderType)
+GLuint HGLES::compileShader(NSString* shaderName, GLenum shaderType)
 {
     
     // 1
@@ -141,11 +141,11 @@ GLuint GLES::compileShader(NSString* shaderName, GLenum shaderType)
     
 }
 
-void GLES::compileShaders()
+void HGLES::compileShaders()
 {
     // 1
-    GLuint vertexShader = GLES::compileShader(@"vertex", GL_VERTEX_SHADER);
-    GLuint fragmentShader = GLES::compileShader(@"fragment", GL_FRAGMENT_SHADER);
+    GLuint vertexShader = HGLES::compileShader(@"vertex", GL_VERTEX_SHADER);
+    GLuint fragmentShader = HGLES::compileShader(@"fragment", GL_FRAGMENT_SHADER);
     
     // 2
     GLuint programHandle = glCreateProgram();

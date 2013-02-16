@@ -29,7 +29,7 @@
 		0733406416BDAF7800DB2D34 /* yakuimon.obj in Resources */ = {isa = PBXBuildFile; fileRef = 0733406316BDAF7800DB2D34 /* yakuimon.obj */; };
 		0733406616BDB06D00DB2D34 /* teapot.obj in Resources */ = {isa = PBXBuildFile; fileRef = 0733406516BDB06D00DB2D34 /* teapot.obj */; };
 		0735C89D16BD7B0E009DEF10 /* GLUtil.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0735C89C16BD7B0E009DEF10 /* GLUtil.mm */; };
-		0735C8A016BD7BF8009DEF10 /* GLES.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0735C89F16BD7BF8009DEF10 /* GLES.mm */; };
+		0735C8A016BD7BF8009DEF10 /* HGLES.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0735C89F16BD7BF8009DEF10 /* HGLES.mm */; };
 		0755991016B3C3180066A0E9 /* GLView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0755990F16B3C3180066A0E9 /* GLView.mm */; };
 		0755991316B3D0560066A0E9 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0755991216B3D0560066A0E9 /* QuartzCore.framework */; };
 		0755991816B4BFD90066A0E9 /* IndexBuffer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0755991516B4BFD90066A0E9 /* IndexBuffer.mm */; };
@@ -157,8 +157,8 @@
 		0733406516BDB06D00DB2D34 /* teapot.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = teapot.obj; sourceTree = "<group>"; };
 		0735C89B16BD7B0E009DEF10 /* GLUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GLUtil.h; path = GLES/GLUtil.h; sourceTree = "<group>"; };
 		0735C89C16BD7B0E009DEF10 /* GLUtil.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = GLUtil.mm; path = GLES/GLUtil.mm; sourceTree = "<group>"; };
-		0735C89E16BD7BF8009DEF10 /* GLES.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GLES.h; path = GLES/GLES.h; sourceTree = "<group>"; };
-		0735C89F16BD7BF8009DEF10 /* GLES.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = GLES.mm; path = GLES/GLES.mm; sourceTree = "<group>"; };
+		0735C89E16BD7BF8009DEF10 /* HGLES.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HGLES.h; path = GLES/HGLES.h; sourceTree = "<group>"; };
+		0735C89F16BD7BF8009DEF10 /* HGLES.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = HGLES.mm; path = GLES/HGLES.mm; sourceTree = "<group>"; };
 		0755990E16B3C3180066A0E9 /* GLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GLView.h; path = GLES/GLView.h; sourceTree = "<group>"; };
 		0755990F16B3C3180066A0E9 /* GLView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = GLView.mm; path = GLES/GLView.mm; sourceTree = "<group>"; };
 		0755991216B3D0560066A0E9 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -459,8 +459,8 @@
 				070054FF16C75FA7002BA473 /* HGLTexture.mm */,
 				070054F216BE48F7002BA473 /* HGLMaterial.h */,
 				070054F316BE48F7002BA473 /* HGLMaterial.mm */,
-				0735C89E16BD7BF8009DEF10 /* GLES.h */,
-				0735C89F16BD7BF8009DEF10 /* GLES.mm */,
+				0735C89E16BD7BF8009DEF10 /* HGLES.h */,
+				0735C89F16BD7BF8009DEF10 /* HGLES.mm */,
 				0735C89B16BD7B0E009DEF10 /* GLUtil.h */,
 				0735C89C16BD7B0E009DEF10 /* GLUtil.mm */,
 				0755993116BD13170066A0E9 /* GLTypes.h */,
@@ -675,7 +675,7 @@
 				0755992D16B561950066A0E9 /* ObjLoader.mm in Sources */,
 				0755993316BD13180066A0E9 /* GLTypes.mm in Sources */,
 				0735C89D16BD7B0E009DEF10 /* GLUtil.mm in Sources */,
-				0735C8A016BD7BF8009DEF10 /* GLES.mm in Sources */,
+				0735C8A016BD7BF8009DEF10 /* HGLES.mm in Sources */,
 				070054F416BE48F8002BA473 /* HGLMaterial.mm in Sources */,
 				0700550016C75FA8002BA473 /* HGLTexture.mm in Sources */,
 				07E6511616C926F200192B8B /* Actor.mm in Sources */,
