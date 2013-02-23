@@ -30,6 +30,7 @@
 		0755992916B561490066A0E9 /* block.mtl in Resources */ = {isa = PBXBuildFile; fileRef = 0755992716B561490066A0E9 /* block.mtl */; };
 		0755992A16B561490066A0E9 /* block.obj in Resources */ = {isa = PBXBuildFile; fileRef = 0755992816B561490066A0E9 /* block.obj */; };
 		07B4243B16D11552007055DF /* HGFighter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07B4243A16D11551007055DF /* HGFighter.mm */; };
+		07B4243F16D8F3FA007055DF /* rect.obj in Resources */ = {isa = PBXBuildFile; fileRef = 07B4243E16D8F3FA007055DF /* rect.obj */; };
 		07E0463616886E73001F9CCE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07E0463516886E73001F9CCE /* UIKit.framework */; };
 		07E0463816886E73001F9CCE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07E0463716886E73001F9CCE /* Foundation.framework */; };
 		07E0463A16886E73001F9CCE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07E0463916886E73001F9CCE /* CoreGraphics.framework */; };
@@ -161,6 +162,7 @@
 		07B4243916D11551007055DF /* HGFighter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGFighter.h; sourceTree = "<group>"; };
 		07B4243A16D11551007055DF /* HGFighter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGFighter.mm; sourceTree = "<group>"; };
 		07B4243D16D8926E007055DF /* HGLCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGLCommon.h; sourceTree = "<group>"; };
+		07B4243E16D8F3FA007055DF /* rect.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = rect.obj; sourceTree = "<group>"; };
 		07E0463116886E73001F9CCE /* Shooter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shooter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		07E0463516886E73001F9CCE /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		07E0463716886E73001F9CCE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -307,6 +309,7 @@
 		0755992616B561490066A0E9 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				07B4243E16D8F3FA007055DF /* rect.obj */,
 				07E6508116C9244D00192B8B /* antaeus.bmp */,
 				07E6508216C9244D00192B8B /* arabicnum.png */,
 				07E6508316C9244D00192B8B /* banner.png */,
@@ -674,6 +677,7 @@
 				07E6511216C9244D00192B8B /* yesnowin1.png in Resources */,
 				07E6514C16CF685B00192B8B /* fragment.glsl in Resources */,
 				07E6514D16CF685B00192B8B /* vertex.glsl in Resources */,
+				07B4243F16D8F3FA007055DF /* rect.obj in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

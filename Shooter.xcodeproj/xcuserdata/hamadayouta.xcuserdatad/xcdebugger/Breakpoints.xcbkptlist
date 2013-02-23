@@ -333,11 +333,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Shooter/ViewController.mm"
-         timestampString = "383311434.169737"
+         timestampString = "383319819.024659"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "145"
-         endingLineNumber = "145"
+         startingLineNumber = "152"
+         endingLineNumber = "152"
          landmarkName = "-setupGame"
          landmarkType = "5">
       </FileBreakpoint>
@@ -450,11 +450,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Shooter/ViewController.mm"
-         timestampString = "383311434.169737"
+         timestampString = "383319819.024659"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "150"
-         endingLineNumber = "150"
+         startingLineNumber = "157"
+         endingLineNumber = "157"
          landmarkName = "-setupGame"
          landmarkType = "5">
       </FileBreakpoint>
@@ -463,11 +463,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Shooter/ViewController.mm"
-         timestampString = "383311434.169737"
+         timestampString = "383319819.024659"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "152"
-         endingLineNumber = "152"
+         startingLineNumber = "159"
+         endingLineNumber = "159"
          landmarkName = "-setupGame"
          landmarkType = "5">
       </FileBreakpoint>
@@ -476,11 +476,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Shooter/ViewController.mm"
-         timestampString = "383311703.63915"
+         timestampString = "383319819.024659"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "183"
-         endingLineNumber = "183"
+         startingLineNumber = "190"
+         endingLineNumber = "190"
          landmarkName = "-game_main"
          landmarkType = "5">
       </FileBreakpoint>
@@ -489,11 +489,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Game/HGActor.mm"
-         timestampString = "383316295.150132"
+         timestampString = "383318217.353997"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "66"
-         endingLineNumber = "66"
+         startingLineNumber = "86"
+         endingLineNumber = "86"
          landmarkName = "HGActor::move()"
          landmarkType = "5">
       </FileBreakpoint>
@@ -502,11 +502,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Game/HGActor.mm"
-         timestampString = "383316295.150132"
+         timestampString = "383318217.353997"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "43"
-         endingLineNumber = "43"
+         startingLineNumber = "63"
+         endingLineNumber = "63"
          landmarkName = "HGActor::setVelocity(float inVelocity)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -528,11 +528,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Game/HGActor.mm"
-         timestampString = "383316295.150132"
+         timestampString = "383318217.353997"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "68"
-         endingLineNumber = "68"
+         startingLineNumber = "88"
+         endingLineNumber = "88"
          landmarkName = "HGActor::move()"
          landmarkType = "5">
       </FileBreakpoint>
@@ -541,11 +541,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Game/HGActor.mm"
-         timestampString = "383316295.150132"
+         timestampString = "383318217.353997"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "69"
-         endingLineNumber = "69"
+         startingLineNumber = "89"
+         endingLineNumber = "89"
          landmarkName = "HGActor::move()"
          landmarkType = "5">
       </FileBreakpoint>
@@ -580,11 +580,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Game/HGActor.mm"
-         timestampString = "383316295.150132"
+         timestampString = "383318217.353997"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "55"
-         endingLineNumber = "55"
+         startingLineNumber = "75"
+         endingLineNumber = "75"
          landmarkName = "HGActor::setTextureArea(int x, int y, int w, int h)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -593,11 +593,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Shooter/ViewController.mm"
-         timestampString = "383311703.63915"
+         timestampString = "383319819.024659"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "197"
-         endingLineNumber = "197"
+         startingLineNumber = "204"
+         endingLineNumber = "204"
          landmarkName = "-render"
          landmarkType = "5">
       </FileBreakpoint>
@@ -632,11 +632,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Game/HGActor.mm"
-         timestampString = "383316295.150132"
+         timestampString = "383318217.353997"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "53"
-         endingLineNumber = "53"
+         startingLineNumber = "73"
+         endingLineNumber = "73"
          landmarkName = "HGActor::setTextureArea(int x, int y, int w, int h)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -645,11 +645,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Game/HGActor.mm"
-         timestampString = "383316295.150132"
+         timestampString = "383318217.353997"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "57"
-         endingLineNumber = "57"
+         startingLineNumber = "77"
+         endingLineNumber = "77"
          landmarkName = "HGActor::setTextureArea(int x, int y, int w, int h)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -710,11 +710,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Shooter/ViewController.mm"
-         timestampString = "383311434.169737"
+         timestampString = "383319819.024659"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "113"
-         endingLineNumber = "113"
+         startingLineNumber = "120"
+         endingLineNumber = "120"
          landmarkName = "-setupGame"
          landmarkType = "5">
       </FileBreakpoint>
@@ -775,25 +775,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Game/HGActor.mm"
-         timestampString = "383316295.150132"
+         timestampString = "383318217.353997"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "72"
-         endingLineNumber = "72"
+         startingLineNumber = "92"
+         endingLineNumber = "92"
          landmarkName = "HGActor::move()"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "Game/HGActor.mm"
-         timestampString = "383316295.150132"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "36"
-         endingLineNumber = "36"
-         landmarkName = "HGActor::setObject3D(HGLObject3D* obj)"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

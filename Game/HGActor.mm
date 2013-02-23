@@ -21,21 +21,41 @@ void HGActor::draw()
         object3d->alpha = alpha;
         if (texture)
         {
+            // テクスチャ設定
+            HGLMesh* mesh = object3d->getMesh(0);
+            assert(mesh->texture == NULL);
+            mesh->texture = texture;
             texture->setTextureMatrix(textureMatrix);
+            object3d->draw();
+            mesh->texture = NULL;
         }
-        object3d->draw();
+        else
+        {
+            object3d->draw();
+        }
     }
+}
+
+void HGActor::setObject3D(HGLObject3D* obj, HGLTexture* tex)
+{
+    object3d = obj;
+    HGLMesh* mesh = object3d->getMesh(0);
+    // textureが指定されている場合
+    if (tex)
+    {
+        texture = tex;
+        assert(mesh->texture == NULL);
+    }
+    else
+    {
+        texture = mesh->texture;
+    }
+    textureMatrix = GLKMatrix4Identity;
 }
 
 void HGActor::setObject3D(HGLObject3D* obj)
 {
-    object3d = obj;
-    HGLMesh* mesh = object3d->getMesh(0);
-    if (mesh)
-    {
-        texture = mesh->texture;
-        textureMatrix = GLKMatrix4Identity;
-    }
+    setObject3D(obj, NULL);
 }
 
 void HGActor::setVelocity(float inVelocity)

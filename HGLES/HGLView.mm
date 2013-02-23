@@ -252,7 +252,7 @@
     {
         if (now - lastDrawTime < (1.0 / FPS))
         {
-#if IS_DEBUG
+#if IS_DEBUG && 0
             NSLog(@"frame skip");
 #endif
             return;

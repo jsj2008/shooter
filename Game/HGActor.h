@@ -23,6 +23,7 @@ public:
     virtual void setAspect(float degree);
     void setTextureArea(int x, int y, int w, int h);
     void setObject3D(HGLObject3D* obj);
+    void setObject3D(HGLObject3D* obj, HGLTexture* tex);
     
     ~HGActor();
     

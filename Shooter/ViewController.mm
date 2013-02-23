@@ -26,25 +26,29 @@
 @interface ViewController()
 {
     
-HGLView* _glview;
-HGLObject3D* _playerObj3d;
-HGLObject3D* _enemyObj3d;
+    HGLView* _glview;
+    HGLObject3D* _baseRectObj3d;
+    HGLObject3D* _droidObj3d;
+    HGLTexture* _e_robo2Tex;
+    //HGLObject3D* _playerObj3d;
+    //HGLObject3D* _enemyObj3d;
+    //HGLTexture* _playerTexture;
     
-HGLVector3 _cameraPosition;
+    HGLVector3 _cameraPosition;
     
-HGActor* _player;
-std::vector<HGActor*> _enemies;
+    HGActor* _player;
+    std::vector<HGActor*> _enemies;
     
-dispatch_queue_t _game_queue;
+    dispatch_queue_t _game_queue;
     
-PadView* _leftPadView;
-PadView* _rightPadView;
-
-// 視点行列
-GLKMatrix4 _viewMatrix;
+    PadView* _leftPadView;
+    PadView* _rightPadView;
     
-// 描画順を制御する
-float _fighterZ; // 機体用
+    // 視点行列
+    GLKMatrix4 _viewMatrix;
+    
+    // 描画順を制御する
+    float _fighterZ; // 機体用
     
 }
 @end
@@ -90,28 +94,31 @@ float _fighterZ; // 機体用
     // ユーティリティ初期化
     initSpriteIndexTable();
     
+    // 素材ロード
+    _baseRectObj3d = HGLObjLoader::load(@"rect");
+    
     // エンティティ作成
-    _playerObj3d = HGLObjLoader::load(@"floor");
+    _e_robo2Tex = HGLTexture::createTextureWithAsset("e_robo2.png");
     _player = new HGFighter();
-    _player->setObject3D(_playerObj3d);
+    _player->setObject3D(_baseRectObj3d, _e_robo2Tex);
     _player->position.set(0, 0, 0);
     _player->setAspect(0);
     _fighterZ -= ZPOS_DIFF;
     
-    //_enemyObj3d = HGLObjLoader::load(@"droid");
+    _droidObj3d = HGLObjLoader::load(@"droid");
     for (int i = 0; i < ENEMY_NUM; i++)
     {
         HGActor* t;
         //if (i == 0)
-        if (1)
+        if (i % 2 == 0)
         {
             t = new HGFighter();
-            t->setObject3D(_playerObj3d);
+            t->setObject3D(_baseRectObj3d, _e_robo2Tex);
         }
         else
         {
             t = new HGActor();
-            t->setObject3D(_enemyObj3d);
+            t->setObject3D(_droidObj3d);
             t->rotate.x = 45;
         }
         t->position.x = (i*2) + -2;

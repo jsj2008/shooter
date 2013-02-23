@@ -110,7 +110,6 @@ void HGLTexture::bind()
    if (textureId)
     {
         // テクスチャ使用フラグ
-        glUniform1f(HGLES::uUseTexture, 1.0);
         glEnable(GL_TEXTURE_2D);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, textureId);

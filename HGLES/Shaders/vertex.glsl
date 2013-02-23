@@ -32,6 +32,9 @@ varying vec2 vUV;
 
 void main(void) { // 4
 
+    gl_Position = uMvpMatrix * aPosition;
+
+    // Color
     if (uUseLight > 0.0)
     {
         // environment
@@ -57,11 +60,10 @@ void main(void) { // 4
         vColor = vec4(1.0, 1.0, 1.0, 1.0);
     }
 
-    gl_Position = uMvpMatrix * aPosition;
-    
     // UV
     if (uUseTexture > 0.0)
     {
         vUV = vec2(uTexMatrix*vec4(aUV, 0.0, 1.0));
     }
+
 }
