@@ -46,6 +46,9 @@ void HGLObject3D::draw()
     // 光源使用有無設定
     glUniform1f(HGLES::uUseLight, useLight?1.0:0.0);
     
+    // アルファ値設定
+    glUniform1f(HGLES::uAlpha, alpha);
+    
     // モデルビュー変換
     HGLES::pushMatrix();
     HGLES::mvMatrix = GLKMatrix4Translate(HGLES::mvMatrix, position.x, position.y, position.z);

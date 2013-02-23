@@ -19,24 +19,12 @@ void HGLMaterial::bind()
     glUniform4fv(HGLES::uMaterialDiffuse, 1, (float*)(&diffuse));
     glUniform4fv(HGLES::uMaterialSpecular, 1, (float*)(&specular));
     glUniform1f(HGLES::uMaterialShininess, shininess);
-    if (texture)
-    {
-        texture->bind();
-    }
 }
 
 void HGLMaterial::unbind()
 {
-    if (texture)
-    {
-        texture->unbind();
-    }
 }
 
 HGLMaterial::~HGLMaterial()
 {
-    if (texture)
-    {
-        free(texture);
-    }
 }

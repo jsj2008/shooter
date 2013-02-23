@@ -195,6 +195,7 @@
     glUniform4fv(HGLES::uLightSpecular, 1, (GLfloat*)(&specular));
     glUniform3fv(HGLES::uLightPos, 1, (GLfloat*)(&lightPos));
     glUniform1f(HGLES::uUseLight, 1);
+    glUniform1f(HGLES::uAlpha, 1.0);
 }
 
 - (void)updateCamera

@@ -14,7 +14,9 @@
 class HGLMaterial
 {
 public:
-    HGLMaterial():texture(NULL), texture_name(""){}
+    HGLMaterial():
+        texture_name("")
+        {}
     void bind();
     void unbind();
     ~HGLMaterial();
@@ -23,7 +25,7 @@ public:
     Color diffuse;
     Color specular;
     float shininess;
+    
     std::string name;
-    HGLTexture* texture;
-    std::string texture_name;
+    std::string texture_name; // obj loader用
 };

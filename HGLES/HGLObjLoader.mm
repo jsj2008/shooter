@@ -139,6 +139,7 @@ void HGLObjLoader::addMeshTo(HGLObject3D* obj3d, std::string material_name)
     HGLIndexBuffer* i = new HGLIndexBuffer(&indices[0], indices.size());
     
     HGLMaterial* m = NULL;
+    HGLTexture* t = NULL;
     if (material_name.length())
     {
         HGLMaterial* temp = materials[material_name];
@@ -151,10 +152,10 @@ void HGLObjLoader::addMeshTo(HGLObject3D* obj3d, std::string material_name)
         m->texture_name = temp->texture_name;
         if (m->texture_name.length())
         {
-            m->texture = HGLTexture::createTextureWithAsset(m->texture_name);
+            t = HGLTexture::createTextureWithAsset(m->texture_name);
         }
     }
-    HGLMesh* mesh = new HGLMesh(v, i, m);
+    HGLMesh* mesh = new HGLMesh(v, i, m, t);
     obj3d->addMesh(mesh);
     
     positions.clear();

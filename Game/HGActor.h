@@ -14,6 +14,7 @@ public:
         acceleration(0,0,0),
         object3d(NULL),
         useLight(true),
+        alpha(1.0),
         texture(NULL){}
     
     void draw();
@@ -36,6 +37,7 @@ private:
     HGLObject3D* object3d; // 3Dオブジェクト
     float velocity; // 速度
     float aspect; // radian
+    float alpha; // alpha
     HGLVector3 acceleration; // 加速
     // スプライト処理用
     GLKMatrix4 textureMatrix;

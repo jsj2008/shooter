@@ -42,6 +42,9 @@ GLuint HGLES::uTexMatrixSlot;
 GLuint HGLES::uTexSlot;
 GLuint HGLES::uUseTexture;
 
+// アルファ
+GLuint HGLES::uAlpha;
+
 // 光源設定
 Color HGLES::ambient;
 Color HGLES::diffuse;
@@ -169,6 +172,7 @@ void HGLES::compileShaders()
     uTexSlot = glGetUniformLocation(programHandle, "uTex");
     uUseTexture = glGetUniformLocation(programHandle, "uUseTexture");
     
+    uAlpha = glGetUniformLocation(programHandle, "uAlpha");
     
     // 3
     GLint linkSuccess;

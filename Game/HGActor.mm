@@ -18,6 +18,7 @@ void HGActor::draw()
         object3d->position = position;
         object3d->rotate = rotate;
         object3d->scale = scale;
+        object3d->alpha = alpha;
         if (texture)
         {
             texture->setTextureMatrix(textureMatrix);
@@ -32,12 +33,8 @@ void HGActor::setObject3D(HGLObject3D* obj)
     HGLMesh* mesh = object3d->getMesh(0);
     if (mesh)
     {
-        HGLMaterial* mat = mesh->material;
-        if (mat)
-        {
-            texture = mat->texture;
-            textureMatrix = GLKMatrix4Identity;
-        }
+        texture = mesh->texture;
+        textureMatrix = GLKMatrix4Identity;
     }
 }
 

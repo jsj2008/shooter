@@ -11,17 +11,20 @@
 class HGLIndexBuffer;
 class HGLVertexBuffer;
 class HGLMaterial;
+class HGLTexture;
 
 class HGLMesh
 {
 public:
-    HGLMesh(HGLVertexBuffer* v, HGLIndexBuffer* i, HGLMaterial* m);
+    HGLMesh(HGLVertexBuffer* v, HGLIndexBuffer* i, HGLMaterial* m, HGLTexture* t);
     void draw();
     ~HGLMesh();
     HGLMaterial* getMaterial();
     
+    // property
     HGLIndexBuffer* indexBuffer;
     HGLVertexBuffer* vertexBuffer;
+    HGLTexture* texture;
     HGLMaterial* material;
     
 };

@@ -50,6 +50,8 @@ public:
     static GLuint uTexMatrixSlot;
     static GLuint uTexSlot;
     
+    static GLuint uAlpha;
+    
     // light
     static Color ambient;
     static Color diffuse;
