@@ -23,27 +23,38 @@
          contextName = "IndexBuffer::IndexBuffer(unsigned char const*, int):IndexBuffer.mm">
          <PersistentStrings>
             <PersistentString
-               value = "sizeof(Index)">
-            </PersistentString>
-            <PersistentString
                value = "sizeof(Vertex)">
             </PersistentString>
             <PersistentString
                value = "indices[1]">
             </PersistentString>
+            <PersistentString
+               value = "sizeof(Index)">
+            </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "IndexBuffer::draw():IndexBuffer.mm">
+         contextName = "HGLMesh::draw():HGLMesh.mm">
+      </ContextState>
+      <ContextState
+         contextName = "HGLIndexBuffer::draw():HGLIndexBuffer.mm">
+      </ContextState>
+      <ContextState
+         contextName = "HGLIndexBuffer::HGLIndexBuffer(unsigned short const*, int):HGLIndexBuffer.mm">
+         <PersistentStrings>
+            <PersistentString
+               value = "indexBuffer">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "GLES::compileShaders():GLES.mm">
          <PersistentStrings>
             <PersistentString
-               value = "aPositionSlot">
+               value = "aNormalSlot">
             </PersistentString>
             <PersistentString
-               value = "aNormalSlot">
+               value = "aPositionSlot">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -54,6 +65,9 @@
                value = "materials">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "IndexBuffer::draw():IndexBuffer.mm">
       </ContextState>
       <ContextState
          contextName = "ObjLoader::addIndex(std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;*):ObjLoader.mm">

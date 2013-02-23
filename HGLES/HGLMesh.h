@@ -18,9 +18,10 @@ public:
     HGLMesh(HGLVertexBuffer* v, HGLIndexBuffer* i, HGLMaterial* m);
     void draw();
     ~HGLMesh();
+    HGLMaterial* getMaterial();
     
-private:
     HGLIndexBuffer* indexBuffer;
     HGLVertexBuffer* vertexBuffer;
     HGLMaterial* material;
+    
 };

@@ -31,6 +31,7 @@ GLuint HGLES::uLightAmbientSlot;
 GLuint HGLES::uLightDiffuseSlot;
 GLuint HGLES::uLightSpecular;
 GLuint HGLES::uLightPos;
+GLuint HGLES::uUseLight;
 
 GLuint HGLES::uMaterialAmbient;
 GLuint HGLES::uMaterialDiffuse;
@@ -68,22 +69,8 @@ void HGLES::initialize(float viewWidth, float viewHeight)
     HGLES::viewWidth = viewWidth;
     HGLES::viewHeight = viewHeight;
     float aspect = (float)(viewWidth / viewHeight);
-    HGLES::projectionMatrix = GLKMatrix4MakePerspective(GLKMathDegreesToRadians(65.0f), aspect, 0.1f, 350.0f);
+    HGLES::projectionMatrix = GLKMatrix4MakePerspective(GLKMathDegreesToRadians(65.0f), aspect, 0.1f, 100.0f);
     mvMatrix = GLKMatrix4Identity;
-    setDefault();
-}
-
-void HGLES::setDefault()
-{
-    // light
-    ambient = {1.0, 1.0, 1.0, 1.0};
-    diffuse = {0.7, 0.7, 0.7, 1.0};
-    specular = {1.9, 1.9, 1.9, 1.0};
-    lightPos = {115.0, 115.0, 0.0};
-    glUniform4fv(uLightAmbientSlot, 1, (GLfloat*)(&ambient));
-    glUniform4fv(uLightDiffuseSlot, 1, (GLfloat*)(&diffuse));
-    glUniform4fv(uLightSpecular, 1, (GLfloat*)(&specular));
-    glUniform3fv(uLightPos, 1, (GLfloat*)(&lightPos));
 }
 
 void HGLES::updateMatrix()
@@ -176,6 +163,7 @@ void HGLES::compileShaders()
     uLightDiffuseSlot = glGetUniformLocation(programHandle, "uLightDiffuse");
     uLightSpecular = glGetUniformLocation(programHandle, "uLightSpecular");
     uLightPos = glGetUniformLocation(programHandle, "uLightPos");
+    uUseLight = glGetUniformLocation(programHandle, "uUseLight");
     
     uTexMatrixSlot = glGetUniformLocation(programHandle, "uTexMatrix");
     uTexSlot = glGetUniformLocation(programHandle, "uTex");

@@ -8,16 +8,20 @@
 
 #import "ViewController.h"
 #import "HGLView.h"
+#import "HGUtil.h"
 #import "HGLObject3D.h"
 #import "HGLObjLoader.h"
 #import "HGLVector3.h"
 #import "HGActor.h"
+#import "HGFighter.h"
 #import "PadView.h"
 #import "TouchHandlerView.h"
 #import <vector>
 
 // game define
-#define ENEMY_NUM 3
+#define ENEMY_NUM 20
+#define ZPOS_DIFF 0.1 // Z軸上でずらす量
+#define FPS 40
 
 @interface ViewController()
 {
@@ -25,6 +29,7 @@
 HGLView* _glview;
 HGLObject3D* _playerObj3d;
 HGLObject3D* _enemyObj3d;
+    
 HGLVector3 _cameraPosition;
     
 HGActor* _player;
@@ -34,6 +39,12 @@ dispatch_queue_t _game_queue;
     
 PadView* _leftPadView;
 PadView* _rightPadView;
+
+// 視点行列
+GLKMatrix4 _viewMatrix;
+    
+// 描画順を制御する
+float _fighterZ; // 機体用
     
 }
 @end
@@ -76,26 +87,42 @@ PadView* _rightPadView;
 - (void)setupGame
 {
 #warning 後でdelete
+    // ユーティリティ初期化
+    initSpriteIndexTable();
+    
     // エンティティ作成
     _playerObj3d = HGLObjLoader::load(@"floor");
-    _player = new HGActor();
-    _player->object3d = _playerObj3d;
+    _player = new HGFighter();
+    _player->setObject3D(_playerObj3d);
     _player->position.set(0, 0, 0);
     _player->setAspect(0);
-    //_player->setVelocity(0.1);
+    _fighterZ -= ZPOS_DIFF;
     
-    _enemyObj3d = HGLObjLoader::load(@"droid");
+    //_enemyObj3d = HGLObjLoader::load(@"droid");
     for (int i = 0; i < ENEMY_NUM; i++)
     {
-        HGActor* t = new HGActor();
-        t->object3d = _enemyObj3d;
+        HGActor* t;
+        //if (i == 0)
+        if (1)
+        {
+            t = new HGFighter();
+            t->setObject3D(_playerObj3d);
+        }
+        else
+        {
+            t = new HGActor();
+            t->setObject3D(_enemyObj3d);
+            t->rotate.x = 45;
+        }
         t->position.x = (i*2) + -2;
         t->position.y = 1;
+        t->position.z = _fighterZ;
         t->setAspect(90);
         t->setVelocity(0.05);
+        _fighterZ -= ZPOS_DIFF;
         _enemies.push_back(t);
     }
-    _cameraPosition = HGLVector3(0,0,-15);
+    _cameraPosition = HGLVector3(0,0,-20);
     
     // ゲームスレッド作成
     _game_queue = dispatch_queue_create(DISPATCH_QUEUE_PRIORITY_DEFAULT, NULL);
@@ -103,7 +130,8 @@ PadView* _rightPadView;
         while (1)
         {
             [self game_main];
-            [NSThread sleepForTimeInterval:0.05f];
+#warning 処理落ち対策
+            [NSThread sleepForTimeInterval:(1.0/FPS)];
         }
     });
     
@@ -116,11 +144,12 @@ PadView* _rightPadView;
         frame.origin.x = 0;
         frame.origin.y = winframe.size.height - frame.size.height;
         _leftPadView = [[[PadView alloc] initWithFrame:frame WithOnTouchBlock:^(int degree, float power) {
-            // タッチ
-            //NSLog(@"touch degree:%d pow:%f", degree, power);
             // プレイヤーを動かす
-            _player->setAspect(degree);
-            _player->setVelocity(0.8*power);
+            if (power > 0)
+            {
+                _player->setAspect(degree);
+            }
+            _player->setVelocity(0.6*power);
             
         }] autorelease];
         [_glview addSubview:_leftPadView];
@@ -135,35 +164,29 @@ PadView* _rightPadView;
         frame.origin.x = winframe.size.width - frame.size.width;
         frame.origin.y = winframe.size.height - frame.size.height;
         _rightPadView = [[[PadView alloc] initWithFrame:frame WithOnTouchBlock:^(int degree, float power) {
-            // タッチ
-            //NSLog(@"touch degree:%d pow:%f", degree, power);
+#warning TODO
         }] autorelease];
         [_glview addSubview:_rightPadView];
     }
-    
-    /*
-    // タッチハンドラ
-    TouchHandlerView* handlerView = [[[TouchHandlerView alloc] initWithHandler:^UIView *(CGPoint point, UIEvent *event) {
-        if (_leftPadView && [_leftPadView pointInside:point withEvent:event]) {
-            return _leftPadView;
-        }
-        if (_rightPadView && [_rightPadView pointInside:point withEvent:event]) {
-            return _rightPadView;
-        }
-        return nil;
-    }] autorelease];
-    [_glview addSubview:handlerView];*/
     
 }
 
 // メイン処理
 - (void)game_main
 {
-    _player->move();
-    for (std::vector<HGActor*>::iterator itr = _enemies.begin(); itr != _enemies.end(); ++itr)
+    @synchronized(self)
     {
-        HGActor* a = *itr;
-        a->move();
+        _player->move();
+        for (std::vector<HGActor*>::iterator itr = _enemies.begin(); itr != _enemies.end(); ++itr)
+        {
+            HGActor* a = *itr;
+            a->move();
+        }
+        // カメラ位置
+        _cameraPosition.x = _player->position.x * -1;
+        _cameraPosition.y = _player->position.y * -1 + 4.5;
+        // 描画
+        [_glview draw];
     }
 }
 
@@ -171,12 +194,19 @@ PadView* _rightPadView;
 // 描画処理
 - (void)render
 {
-    [_glview setCamera:&_cameraPosition];
-    _player->draw();
-    for (std::vector<HGActor*>::iterator itr = _enemies.begin(); itr != _enemies.end(); ++itr)
+    @synchronized(self)
     {
-        HGActor* a = *itr;
-        a->draw();
+        _glview.cameraRotateRadian = -15 * M_PI/180;
+        _glview.cameraRotate = HGLVector3(1, 0, 0);
+        _glview.cameraPosition = _cameraPosition;
+        [_glview updateCamera];
+        
+        for (std::vector<HGActor*>::reverse_iterator itr = _enemies.rbegin(); itr != _enemies.rend(); ++itr)
+        {
+            HGActor* a = *itr;
+            a->draw();
+        }
+        _player->draw();
     }
 }
 

@@ -18,12 +18,14 @@ public:
     HGLTexture();
     void bind();
     void unbind();
-    void setTextureArea(int textureW,int textureH, int x, int y, int w, int h);
     ~HGLTexture();
+    GLKMatrix4 getTextureMatrix(int x, int y, int w, int h);
+    void setTextureMatrix(GLKMatrix4 mat);
     
 private:
     GLuint textureId;
     size_t width;
     size_t height;
     GLKMatrix4 textureMatrix;
+    void setTextureArea(int textureW,int textureH, int x, int y, int w, int h);
 };

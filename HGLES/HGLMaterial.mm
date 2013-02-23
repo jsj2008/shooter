@@ -13,12 +13,6 @@
 #include <OpenGLES/ES2/gl.h>
 #include <OpenGLES/ES2/glext.h>
 
-HGLMaterial::HGLMaterial()
-{
-    texture = NULL;
-    texture_name = "";
-}
-
 void HGLMaterial::bind()
 {
     glUniform4fv(HGLES::uMaterialAmbient, 1, (float*)(&ambient));

@@ -18,10 +18,13 @@ public:
     void addMesh(HGLMesh* m);
     void draw();
     ~HGLObject3D();
+    HGLMesh* getMesh(int index);
     
     HGLVector3 position; // 位置
     HGLVector3 rotate  ; // 回転
     HGLVector3 scale   ; // 拡大縮小
+    bool useLight; // 光源を使用するか
+    float alpha; // アルファ値
     
 private:
     std::vector<HGLMesh*> meshlist;

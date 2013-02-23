@@ -57,9 +57,30 @@ HGLTexture* HGLTexture::createTextureWithAsset(std::string name)
         glEnable(GL_TEXTURE_2D);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glEnable(GL_BLEND);
+        
     }
     
     return tex;
+}
+
+GLKMatrix4 HGLTexture::getTextureMatrix(int x, int y, int w, int h)
+{
+    //ピクセル座標をUV座標に変換
+    float tw=(float)w/(float)width;
+    float th=(float)h/(float)height;
+    float tx=(float)x/(float)width;
+    float ty=(float)y/(float)height;
+    
+    //テクスチャ行列の移動・拡大縮小
+    GLKMatrix4 mat = GLKMatrix4Identity;
+    mat = GLKMatrix4Translate(mat, tx, ty, 0);
+    mat = GLKMatrix4Scale(mat, tw, th, 0);
+    return mat;
+}
+
+void HGLTexture::setTextureMatrix(GLKMatrix4 mat)
+{
+    textureMatrix = mat;
 }
 
 HGLTexture::HGLTexture()
@@ -88,7 +109,6 @@ void HGLTexture::bind()
 {
    if (textureId)
     {
-        setTextureArea(width, height, 0, 0, 64, 64);
         // テクスチャ使用フラグ
         glUniform1f(HGLES::uUseTexture, 1.0);
         glEnable(GL_TEXTURE_2D);

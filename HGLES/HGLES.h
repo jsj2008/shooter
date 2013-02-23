@@ -35,7 +35,7 @@ public:
     static GLuint uLightDiffuseSlot;
     static GLuint uLightSpecular;
     static GLuint uLightPos;
-//    static GLuint uUseLigtht;
+    static GLuint uUseLight;
     
     static GLuint uMaterialAmbient;
     static GLuint uMaterialDiffuse;
@@ -49,7 +49,6 @@ public:
     static GLuint uUseTexture;
     static GLuint uTexMatrixSlot;
     static GLuint uTexSlot;
-    
     
     // light
     static Color ambient;

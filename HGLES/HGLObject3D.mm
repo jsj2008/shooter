@@ -19,6 +19,8 @@ HGLObject3D::HGLObject3D()
     position = HGLVector3();
     rotate   = HGLVector3();
     scale    = HGLVector3(1, 1, 1);
+    useLight = false;
+    alpha = 1.0;
 }
 
 HGLObject3D::~HGLObject3D()
@@ -30,8 +32,21 @@ HGLObject3D::~HGLObject3D()
     meshlist.clear();
 }
 
+HGLMesh* HGLObject3D::getMesh(int index)
+{
+    if (meshlist.size() > index)
+    {
+        return meshlist.at(index);
+    }
+    return NULL;
+}
+
 void HGLObject3D::draw()
 {
+    // 光源使用有無設定
+    glUniform1f(HGLES::uUseLight, useLight?1.0:0.0);
+    
+    // モデルビュー変換
     HGLES::pushMatrix();
     HGLES::mvMatrix = GLKMatrix4Translate(HGLES::mvMatrix, position.x, position.y, position.z);
     HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, rotate.z, 0, 0, 1);

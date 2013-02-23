@@ -14,7 +14,7 @@
 class HGLMaterial
 {
 public:
-    HGLMaterial();
+    HGLMaterial():texture(NULL), texture_name(""){}
     void bind();
     void unbind();
     ~HGLMaterial();
