@@ -1,0 +1,26 @@
+
+enum HG_OBJECT_TYPE {
+    HG_OBJECT_SPACE1
+};
+
+class HGActor;
+class HGObject : public HGActor
+{
+public:
+    HGObject();
+    void draw();
+    void init(HG_OBJECT_TYPE type);
+    
+private:
+    
+    // 描画用関数
+    void (HGObject::*pDrawFunc)();
+    
+    // 初期化用関数
+    void (HGObject::*pInitFunc)();
+    
+    // 種類別関数群
+    void Space1Draw();
+    void Space1Init();
+    
+};

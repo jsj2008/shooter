@@ -15,6 +15,7 @@
 #import "HGActor.h"
 #import "HGFighter.h"
 #import "HGBullet.h"
+#import "HGObject.h"
 #import "PadView.h"
 #import "TouchHandlerView.h"
 #import <vector>
@@ -50,9 +51,9 @@
     std::vector<HGBullet*> _bullets;
     std::vector<HGBullet*> _bulletsInActive;
     
-    std::vector<HGActor*> _enemies;
+    std::vector<HGFighter*> _enemies;
     
-    std::vector<HGActor*> _background;
+    std::vector<HGObject*> _background;
     
     // game's main thread
     dispatch_queue_t _game_queue;
@@ -119,7 +120,7 @@
     
     // create players
     _player = new HGFighter();
-    _player->init(FIGHTER_N1);
+    _player->init(HG_FIGHTER_N1);
     _player->setObject3D(_baseRectObj3d, _e_robo2Tex);
     _player->position.set(0, 0, 1);
     _player->setAspect(0);
@@ -137,7 +138,7 @@
         HGFighter* t;
         t = new HGFighter();
         t->setObject3D(_baseRectObj3d, _e_robo2Tex);
-        t->init(FIGHTER_N1);
+        t->init(HG_FIGHTER_N1);
 #endif
         t->position.x = (i*2) + -2;
         t->position.y = 1;
@@ -162,12 +163,11 @@
     {
         for (int j = 0; j < 5; ++j)
         {
-            HGActor* t = new HGActor();
+            HGObject* t = new HGObject();
             t->setObject3D(_baseRectObj3d, _spaceTex);
+            t->init(HG_OBJECT_SPACE1);
             t->scale.set(100, 100, 100);
             t->position.set(i * 100 - 250, j * 100 - 250, -1);
-            t->textureRepeatNum = 10;
-            t->lookToCamera = false;
             _background.push_back(t);
         }
     }
@@ -231,7 +231,7 @@
 - (void) startFire
 {
     fire = true;
-    fireAspect = _player->aspect * 180/M_PI;
+    fireAspect = _player->aspect;
 }
 
 - (void) stopFire
@@ -257,7 +257,7 @@
     t->setVelocity(0.3);
     t->scale.set(0.3, 0.3, 0.3);
     t->color = {1.0, 1.0, 1.0};
-    t->init(BULLET_N1);
+    t->init(HG_BULLET_N1);
     _bulletsInActive.pop_back();
     _bullets.push_back(t);
     
@@ -272,9 +272,9 @@
         [self fire];
         
         // move enemies
-        for (std::vector<HGActor*>::iterator itr = _enemies.begin(); itr != _enemies.end(); ++itr)
+        for (std::vector<HGFighter*>::iterator itr = _enemies.begin(); itr != _enemies.end(); ++itr)
         {
-            HGActor* a = *itr;
+            HGFighter* a = *itr;
             a->move();
         }
         
@@ -306,23 +306,23 @@
         [_glview updateCamera];
         
         // draw bg
-        for (std::vector<HGActor*>::reverse_iterator itr = _background.rbegin(); itr != _background.rend(); ++itr)
+        for (std::vector<HGObject*>::reverse_iterator itr = _background.rbegin(); itr != _background.rend(); ++itr)
         {
-            HGActor* a = *itr;
+            HGObject* a = *itr;
             a->draw();
         }
         
         // draw enemies
-        for (std::vector<HGActor*>::reverse_iterator itr = _enemies.rbegin(); itr != _enemies.rend(); ++itr)
+        for (std::vector<HGFighter*>::reverse_iterator itr = _enemies.rbegin(); itr != _enemies.rend(); ++itr)
         {
-            HGActor* a = *itr;
+            HGFighter* a = *itr;
             a->draw();
         }
         
         // draw bullets
         for (std::vector<HGBullet*>::reverse_iterator itr = _bullets.rbegin(); itr != _bullets.rend(); ++itr)
         {
-            HGActor* a = *itr;
+            HGBullet* a = *itr;
             a->draw();
         }
         

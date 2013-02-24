@@ -98,6 +98,11 @@ HGLTexture::HGLTexture()
     blend2 = GL_ONE_MINUS_SRC_ALPHA;
 }
 
+void HGLTexture::setTextureArea(int x, int y, int w, int h)
+{
+    this->setTextureArea(width, height, x, y, w, h);
+}
+
 // テクスチャ領域の指定
 // テクスチャ行列を使ってテクスチャの一部分を表示する
 void HGLTexture::setTextureArea(int textureW,int textureH, int x, int y, int w, int h)

@@ -1,7 +1,7 @@
 #import "HGLTypes.h"
 
-enum BULLET_TYPE {
-    BULLET_N1
+enum HG_BULLET_TYPE {
+    HG_BULLET_N1
 };
 
 class HGActor;
@@ -11,7 +11,7 @@ public:
     HGBullet();
     Color color;
     void draw();
-    void init(BULLET_TYPE type);
+    void init(HG_BULLET_TYPE type);
     HGLTexture* blurTexture;
 private:
     

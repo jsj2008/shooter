@@ -1,6 +1,6 @@
 
-enum FIGHTER_TYPE {
-    FIGHTER_N1
+enum HG_FIGHTER_TYPE {
+    HG_FIGHTER_N1
 };
 
 class HGActor;
@@ -8,11 +8,11 @@ class HGFighter : public HGActor
 {
 public:
     HGFighter();
-    void setAspect(float degree);
     void draw();
-    void init(FIGHTER_TYPE type);
+    void init(HG_FIGHTER_TYPE type);
     
 private:
+    
     // 描画用関数
     void (HGFighter::*pDrawFunc)();
     

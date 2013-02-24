@@ -13,7 +13,7 @@ HGBullet::HGBullet()
     blend2 = GL_ALPHA;
 }
 
-void HGBullet::init(BULLET_TYPE type)
+void HGBullet::init(HG_BULLET_TYPE type)
 {
     // オブジェクトの種類別の関数を設定
 #warning テーブル化
@@ -59,6 +59,7 @@ void HGBullet::N1Draw()
 void HGBullet::N1Init()
 {
     s_draw1.texture = textureTable["star.png"];
+    s_draw1.object3D = object3DTable["rect"];
     s_draw1.position = position;
     s_draw1.scale = scale;
     s_draw1.scale.x += 0.8;
@@ -71,6 +72,7 @@ void HGBullet::N1Init()
     s_draw1.blend2 = GL_ALPHA;
     
     s_draw2.texture = textureTable["divine.png"];
+    s_draw2.object3D = object3DTable["rect"];
     s_draw2.position = position;
     s_draw2.scale = scale;
     s_draw2.alpha = 1;

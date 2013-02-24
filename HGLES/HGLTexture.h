@@ -21,6 +21,7 @@ public:
     void unbind();
     ~HGLTexture();
     GLKMatrix4 getTextureMatrix(int x, int y, int w, int h);
+    void setTextureArea(int x, int y, int w, int h);
     void setTextureMatrix(GLKMatrix4 mat);
     Color color;
     float repeatNum;

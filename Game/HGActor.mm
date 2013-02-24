@@ -8,11 +8,12 @@
 using namespace std;
 
 #warning 後で移すと思う
-std::map<std::string, HGLObject3D*> HGActor::object3dTable;
+std::map<std::string, HGLObject3D*> HGActor::object3DTable;
 std::map<std::string, HGLTexture*> HGActor::textureTable;
 void HGLoadData()
 {
-    HGActor::object3dTable["rect"] = HGLObjLoader::load(@"rect");
+    HGActor::object3DTable["rect"] = HGLObjLoader::load(@"rect");
+    HGActor::object3DTable["droid"] = HGLObjLoader::load(@"droid");
     HGActor::textureTable["e_robo2.png"] = HGLTexture::createTextureWithAsset("e_robo2.png");
     HGActor::textureTable["divine.png"] = HGLTexture::createTextureWithAsset("divine.png");
     HGActor::textureTable["space.png"] = HGLTexture::createTextureWithAsset("space.png");
@@ -32,6 +33,7 @@ void HGActor::draw(t_draw* p)
 {
     drawCounter++;
     
+    HGLObject3D* object3d = p->object3D;
     object3d->useLight = false; // 2Dのため
     object3d->position = p->position;
     object3d->rotate = p->rotate;
@@ -40,52 +42,28 @@ void HGActor::draw(t_draw* p)
     object3d->looktoCamera = p->lookToCamera;
     
     // テクスチャ設定
-    HGLTexture* t = p->texture;
-    t->setTextureMatrix(p->textureMatrix);
-    t->isAlphaMap = p->isAlphaMap;
-    t->color = p->color;
-    t->repeatNum = textureRepeatNum; // とりあえずオブジェクト単位
-    
-    // 合成方法指定
-    t->blend1 = p->blend1;
-    t->blend2 = p->blend2;
-    
-    HGLMesh* mesh = object3d->getMesh(0);
-    assert(mesh->texture == NULL);
-    mesh->texture = t;
-    
-    // 描画
-    object3d->draw();
-    mesh->texture = NULL;
-}
-
-void HGActor::draw()
-{
-    object3d->useLight = useLight;
-    object3d->position = position;
-    object3d->rotate = rotate;
-    object3d->scale = scale;
-    object3d->alpha = alpha;
-    object3d->looktoCamera = lookToCamera;
-    if (texture)
+    if (p->texture)
     {
-        // テクスチャ設定
-        HGLMesh* mesh = object3d->getMesh(0);
-        assert(mesh->texture == NULL);
-        mesh->texture = texture;
-        texture->setTextureMatrix(textureMatrix);
-        texture->repeatNum = textureRepeatNum;
+        HGLTexture* t = p->texture;
+        t->isAlphaMap = p->isAlphaMap;
+        t->color = p->color;
+        t->repeatNum = p->textureRepeatNum; // とりあえずオブジェクト単位
         
         // 合成方法指定
-        texture->blend1 = blend1;
-        texture->blend2 = blend2;
+        t->blend1 = p->blend1;
+        t->blend2 = p->blend2;
         
+        HGLMesh* mesh = object3d->getMesh(0);
+        assert(mesh->texture == NULL);
+        mesh->texture = t;
+    
         // 描画
         object3d->draw();
         mesh->texture = NULL;
     }
     else
     {
+        // 描画
         object3d->draw();
     }
 }
@@ -122,17 +100,10 @@ void HGActor::setVelocity(float inVelocity)
     );
 }
 
-void HGActor::setTextureArea(int x, int y, int w, int h)
-{
-    if (texture)
-    {
-        textureMatrix = texture->getTextureMatrix(x, y, w, h);
-    }
-}
-
 void HGActor::setAspect(float degree)
 {
-    aspect = degree * M_PI / 180;
+    aspect = degree;
+    radian = degree * M_PI / 180;
 }
 
 void HGActor::setMoveAspect(float degree)

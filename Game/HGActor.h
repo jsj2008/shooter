@@ -6,6 +6,7 @@
 
 typedef struct t_draw {
     t_draw():
+        object3D(NULL),
         texture(NULL),
         scale(1,1,1),
         color({1,1,1,1}),
@@ -16,8 +17,12 @@ typedef struct t_draw {
         isAlphaMap(0),
         alpha(1),
         lookToCamera(1),
+        textureW(0),
+        textureH(0),
+        textureRepeatNum(1),
         textureMatrix(GLKMatrix4Identity)
     {}
+    HGLObject3D* object3D;
     HGLTexture* texture;
     HGLVector3 scale;
     HGLVector3 position;
@@ -29,6 +34,9 @@ typedef struct t_draw {
     bool lookToCamera;
     GLKMatrix4 textureMatrix;
     Color color;
+    short textureW;
+    short textureH;
+    short textureRepeatNum;
 } t_draw;
 
 // 3dやテクスチャなどのデータを読み込む
@@ -41,6 +49,7 @@ public:
     HGActor():
         velocity(0),
         aspect(0),
+        radian(0),
         moveAspect(0),
         scale(1,1,1),
         rotate(0,0,0),
@@ -56,11 +65,10 @@ public:
         blend2(GL_ONE_MINUS_SRC_ALPHA),
         texture(NULL){}
     
-    virtual void draw();
+    virtual void draw() = 0;
     void move();
     void setVelocity(float velocity);
     virtual void setAspect(float degree);
-    void setTextureArea(int x, int y, int w, int h);
     void setObject3D(HGLObject3D* obj);
     void setObject3D(HGLObject3D* obj, HGLTexture* tex);
     void setMoveAspect(float degree);
@@ -71,7 +79,8 @@ public:
     HGLVector3 rotate;
     HGLVector3 scale;
     float velocity; // 速度
-    float aspect; // radian
+    float aspect; // degree
+    float radian;
     float moveAspect; // radian
     float alpha; // alpha
     float textureRepeatNum;
@@ -81,7 +90,7 @@ public:
     unsigned int blend2;
     
 #warning 後で適切な場所に移すことを検討
-    static std::map<std::string, HGLObject3D*> object3dTable;
+    static std::map<std::string, HGLObject3D*> object3DTable;
     static std::map<std::string, HGLTexture*> textureTable;
     
 protected:
