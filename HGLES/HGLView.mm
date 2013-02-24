@@ -44,13 +44,6 @@
     Color HGLES::specular;
     Position HGLES::lightPos;
     
-#if TEST_GL_VIEW
-    HGLVector3 _cameraPosition(0,0,0);
-    HGLVector3 _cameraRotate(0,0,0);
-    HGLObject3D* obj3d;
-    HGLObject3D* obj3d2;
-#endif
-    
 }
 @end
 
@@ -83,10 +76,6 @@
         
         // シェーダのデフォルト値をセットする
         [self setDefault];
-#if TEST_GL_VIEW
-        [self setupVBOs];
-        [self start];
-#endif
     }
     return self;
 }
@@ -101,16 +90,6 @@
     [_context release];
     _context = nil;
     [super dealloc];
-#if TEST_GL_VIEW
-    if (obj3d)
-    {
-        delete obj3d;
-    }
-    if (obj3d2)
-    {
-        delete obj3d2;
-    }
-#endif
 }
 
 #pragma mark - overwrite UIView's methods
@@ -206,33 +185,6 @@
     HGLES::mvMatrix = GLKMatrix4Translate(HGLES::mvMatrix, self.cameraPosition.x, self.cameraPosition.y, self.cameraPosition.z);
 }
 
-#if TEST_GL_VIEW
-- (void)render
-{
-    _cameraPosition.z = 1;
-    HGLES::mvMatrix = GLKMatrix4Identity;
-    HGLES::mvMatrix = GLKMatrix4Translate(HGLES::mvMatrix, _cameraPosition.x, _cameraPosition.y, _cameraPosition.z);
-    
-    if (obj3d2)
-    {
-        obj3d2->position.z = -5;
-        obj3d2->position.y = -0.2;
-        obj3d2->rotate.x += 0.01;
-        obj3d2->rotate.y += 0.01;
-        obj3d2->rotate.z += 0.01;
-        obj3d2->draw();
-    }
-    
-    obj3d->position.z = -5;
-    obj3d->position.y = -0.2;
-    obj3d->rotate.x += 0.01;
-    obj3d->rotate.y += 0.01;
-    obj3d->rotate.z += 0.01;
-    obj3d->scale.set(0.1, 0.1, 0.1);
-    obj3d->draw();
-}
-#endif
-
 - (void)showBuffer
 {
     [_context presentRenderbuffer:GL_RENDERBUFFER];
@@ -244,7 +196,6 @@
 }
 
 - (void)render:(CADisplayLink*)displayLink {
-#warning フレームスキップ(できれば60fpsとか。)
     // FPS計算
     NSDate* nowDate = [NSDate date];
     NSTimeInterval now = [nowDate timeIntervalSince1970];
@@ -266,28 +217,14 @@
     isRenderRequired = false;
     
     [self initFrame];
-#if TEST_GL_VIEW
-    [self render];
-#else
     if (render)
     {
         // call block
         render();
     }
-#endif
     [self showBuffer];
     
     lastDrawTime = now;
 }
-
-#pragma mark buffer objects
-
-#if TEST_GL_VIEW
-- (void)setupVBOs {
-     //obj3d = ObjLoader::load(@"block");
-     obj3d = HGLObjLoader::load(@"floor");
-     obj3d2 = HGLObjLoader::load(@"droid");
-}
-#endif
 
 @end

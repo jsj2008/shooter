@@ -52,11 +52,14 @@ HGLTexture* HGLTexture::createTextureWithAsset(std::string name)
         free(spriteData);
         
         //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glEnable(GL_TEXTURE_2D);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glEnable(GL_BLEND);
+        
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
         
     }
     
@@ -87,6 +90,14 @@ HGLTexture::HGLTexture()
 {
     textureId = 0;
     textureMatrix = GLKMatrix4Identity;
+    isAlphaMap = 0.0;
+    color.r = 1.0; color.g = 1.0; color.b = 1.0; color.a = 1.0;
+    repeatNum = 1;
+}
+
+void HGLTexture::useAsAlphaMap(bool p)
+{
+    isAlphaMap = 1.0;
 }
 
 // テクスチャ領域の指定
@@ -114,14 +125,23 @@ void HGLTexture::bind()
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, textureId);
         glUniform1f(HGLES::uTexSlot, 0);
+        glUniform1f(HGLES::uUseTexture, 1.0);
+        glUniform1f(HGLES::uUseAlphaMap, isAlphaMap);
+        glUniform1f(HGLES::uTextureRepeatNum, repeatNum);
+        
         // テクスチャ行列
         glUniformMatrix4fv(HGLES::uTexMatrixSlot, 1, 0, textureMatrix.m);
+        if (isAlphaMap)
+        {
+            glUniform4fv(HGLES::uColor, 1, (GLfloat*)(&color));
+        }
     }
 }
 
 void HGLTexture::unbind()
 {
     glUniform1f(HGLES::uUseTexture, 0);
+    glUniform1f(HGLES::uUseAlphaMap, 0);
     glDisable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, 0);
 }

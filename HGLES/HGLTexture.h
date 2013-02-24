@@ -10,6 +10,7 @@
 #import "HGLTypes.h"
 #import <string>
 #import <GLKit/GLKit.h>
+#import "HGLVector3.h"
 
 class HGLTexture
 {
@@ -21,11 +22,15 @@ public:
     ~HGLTexture();
     GLKMatrix4 getTextureMatrix(int x, int y, int w, int h);
     void setTextureMatrix(GLKMatrix4 mat);
+    void useAsAlphaMap(bool p);
+    Color color;
+    float repeatNum;
     
 private:
     GLuint textureId;
     size_t width;
     size_t height;
     GLKMatrix4 textureMatrix;
+    float isAlphaMap;
     void setTextureArea(int textureW,int textureH, int x, int y, int w, int h);
 };

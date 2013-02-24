@@ -26,6 +26,9 @@ uniform mat4 uNormalMatrix; // gyakutenti
 uniform mat4 uTexMatrix;
 uniform float uUseTexture;
 
+// color
+uniform vec4 uColor;
+
 // output
 varying vec4 vColor;
 varying vec2 vUV;
@@ -57,7 +60,7 @@ void main(void) { // 4
     }
     else
     {
-        vColor = vec4(1.0, 1.0, 1.0, 1.0);
+        vColor = uColor;
     }
 
     // UV

@@ -42,6 +42,8 @@ public:
     static GLuint uMaterialSpecular;
     static GLuint uMaterialShininess;
     
+    static GLuint uColor;
+    
     static GLKMatrix4 mvMatrix; // モデルビュー行列
     static GLKMatrix4 projectionMatrix; // 射影行列
     
@@ -49,8 +51,13 @@ public:
     static GLuint uUseTexture;
     static GLuint uTexMatrixSlot;
     static GLuint uTexSlot;
+    static GLuint uTextureRepeatNum;
     
+    // alpha of mesh
     static GLuint uAlpha;
+    
+    // alpha map
+    static GLuint uUseAlphaMap;
     
     // light
     static Color ambient;

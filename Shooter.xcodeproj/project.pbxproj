@@ -31,6 +31,11 @@
 		0755992A16B561490066A0E9 /* block.obj in Resources */ = {isa = PBXBuildFile; fileRef = 0755992816B561490066A0E9 /* block.obj */; };
 		07B4243B16D11552007055DF /* HGFighter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07B4243A16D11551007055DF /* HGFighter.mm */; };
 		07B4243F16D8F3FA007055DF /* rect.obj in Resources */ = {isa = PBXBuildFile; fileRef = 07B4243E16D8F3FA007055DF /* rect.obj */; };
+		07B4244416D91BF1007055DF /* HGBullet.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07B4244316D91BF1007055DF /* HGBullet.mm */; };
+		07B4244B16D932E3007055DF /* wavering.png in Resources */ = {isa = PBXBuildFile; fileRef = 07B4244A16D932E3007055DF /* wavering.png */; };
+		07B4244D16D93F86007055DF /* corona.png in Resources */ = {isa = PBXBuildFile; fileRef = 07B4244C16D93F86007055DF /* corona.png */; };
+		07B4244F16D94145007055DF /* divine.png in Resources */ = {isa = PBXBuildFile; fileRef = 07B4244E16D94145007055DF /* divine.png */; };
+		07B4245116D94AEC007055DF /* space.png in Resources */ = {isa = PBXBuildFile; fileRef = 07B4245016D94AEC007055DF /* space.png */; };
 		07E0463616886E73001F9CCE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07E0463516886E73001F9CCE /* UIKit.framework */; };
 		07E0463816886E73001F9CCE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07E0463716886E73001F9CCE /* Foundation.framework */; };
 		07E0463A16886E73001F9CCE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07E0463916886E73001F9CCE /* CoreGraphics.framework */; };
@@ -163,6 +168,12 @@
 		07B4243A16D11551007055DF /* HGFighter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGFighter.mm; sourceTree = "<group>"; };
 		07B4243D16D8926E007055DF /* HGLCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGLCommon.h; sourceTree = "<group>"; };
 		07B4243E16D8F3FA007055DF /* rect.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = rect.obj; sourceTree = "<group>"; };
+		07B4244216D91BF0007055DF /* HGBullet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGBullet.h; sourceTree = "<group>"; };
+		07B4244316D91BF1007055DF /* HGBullet.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGBullet.mm; sourceTree = "<group>"; };
+		07B4244A16D932E3007055DF /* wavering.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wavering.png; sourceTree = "<group>"; };
+		07B4244C16D93F86007055DF /* corona.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = corona.png; sourceTree = "<group>"; };
+		07B4244E16D94145007055DF /* divine.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = divine.png; sourceTree = "<group>"; };
+		07B4245016D94AEC007055DF /* space.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = space.png; sourceTree = "<group>"; };
 		07E0463116886E73001F9CCE /* Shooter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shooter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		07E0463516886E73001F9CCE /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		07E0463716886E73001F9CCE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -309,6 +320,10 @@
 		0755992616B561490066A0E9 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				07B4245016D94AEC007055DF /* space.png */,
+				07B4244E16D94145007055DF /* divine.png */,
+				07B4244C16D93F86007055DF /* corona.png */,
+				07B4244A16D932E3007055DF /* wavering.png */,
 				07B4243E16D8F3FA007055DF /* rect.obj */,
 				07E6508116C9244D00192B8B /* antaeus.bmp */,
 				07E6508216C9244D00192B8B /* arabicnum.png */,
@@ -474,6 +489,8 @@
 		07E6511316C926F100192B8B /* Game */ = {
 			isa = PBXGroup;
 			children = (
+				07B4244216D91BF0007055DF /* HGBullet.h */,
+				07B4244316D91BF1007055DF /* HGBullet.mm */,
 				07B4243916D11551007055DF /* HGFighter.h */,
 				07B4243A16D11551007055DF /* HGFighter.mm */,
 				07E6514E16CF9C5600192B8B /* HGUtil.h */,
@@ -678,6 +695,10 @@
 				07E6514C16CF685B00192B8B /* fragment.glsl in Resources */,
 				07E6514D16CF685B00192B8B /* vertex.glsl in Resources */,
 				07B4243F16D8F3FA007055DF /* rect.obj in Resources */,
+				07B4244B16D932E3007055DF /* wavering.png in Resources */,
+				07B4244D16D93F86007055DF /* corona.png in Resources */,
+				07B4244F16D94145007055DF /* divine.png in Resources */,
+				07B4245116D94AEC007055DF /* space.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -708,6 +729,7 @@
 				07E6515316CFA07700192B8B /* PadView.mm in Sources */,
 				07E6515616D0096B00192B8B /* TouchHandlerView.mm in Sources */,
 				07B4243B16D11552007055DF /* HGFighter.mm in Sources */,
+				07B4244416D91BF1007055DF /* HGBullet.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

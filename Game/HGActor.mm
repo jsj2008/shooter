@@ -26,6 +26,7 @@ void HGActor::draw()
             assert(mesh->texture == NULL);
             mesh->texture = texture;
             texture->setTextureMatrix(textureMatrix);
+            texture->repeatNum = textureRepeatNum;
             object3d->draw();
             mesh->texture = NULL;
         }
@@ -62,8 +63,8 @@ void HGActor::setVelocity(float inVelocity)
 {
     velocity = inVelocity;
     acceleration.set(
-        cos(aspect) * velocity,
-        sin(aspect) * velocity * -1, // 上下逆に
+        cos(moveAspect) * velocity,
+        sin(moveAspect) * velocity * -1, // 上下逆に
         0
     );
 }
@@ -79,6 +80,11 @@ void HGActor::setTextureArea(int x, int y, int w, int h)
 void HGActor::setAspect(float degree)
 {
     aspect = degree * M_PI / 180;
+}
+
+void HGActor::setMoveAspect(float degree)
+{
+    moveAspect = degree * M_PI / 180;
 }
 
 void HGActor::move()

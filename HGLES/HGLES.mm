@@ -41,6 +41,11 @@ GLuint HGLES::uMaterialShininess;
 GLuint HGLES::uTexMatrixSlot;
 GLuint HGLES::uTexSlot;
 GLuint HGLES::uUseTexture;
+GLuint HGLES::uTextureRepeatNum;
+
+GLuint HGLES::uColor;
+
+GLuint HGLES::uUseAlphaMap;
 
 // アルファ
 GLuint HGLES::uAlpha;
@@ -94,7 +99,6 @@ void HGLES::updateMatrix()
 GLuint HGLES::compileShader(NSString* shaderName, GLenum shaderType)
 {
     
-    // 1
     NSString* GLESPath = [[NSBundle mainBundle] pathForResource:shaderName
                                                            ofType:@"glsl"];
     NSError* error;
@@ -105,18 +109,14 @@ GLuint HGLES::compileShader(NSString* shaderName, GLenum shaderType)
         exit(1);
     }
     
-    // 2
     GLuint GLESHandle = glCreateShader(shaderType);
     
-    // 3
     const char * GLESStringUTF8 = [GLESString UTF8String];
     int GLESStringLength = [GLESString length];
     glShaderSource(GLESHandle, 1, &GLESStringUTF8, &GLESStringLength);
     
-    // 4
     glCompileShader(GLESHandle);
     
-    // 5
     GLint compileSuccess;
     glGetShaderiv(GLESHandle, GL_COMPILE_STATUS, &compileSuccess);
     if (compileSuccess == GL_FALSE) {
@@ -133,27 +133,18 @@ GLuint HGLES::compileShader(NSString* shaderName, GLenum shaderType)
 
 void HGLES::compileShaders()
 {
-    // 1
     GLuint vertexShader = HGLES::compileShader(@"vertex", GL_VERTEX_SHADER);
     GLuint fragmentShader = HGLES::compileShader(@"fragment", GL_FRAGMENT_SHADER);
     
-    // 2
     GLuint programHandle = glCreateProgram();
     glAttachShader(programHandle, vertexShader);
     glAttachShader(programHandle, fragmentShader);
     glLinkProgram(programHandle);
     
-    
-    // 5
     aPositionSlot = glGetAttribLocation(programHandle, "aPosition");
     aNormalSlot = glGetAttribLocation(programHandle, "aNormal");
     aUVSlot = glGetAttribLocation(programHandle, "aUV");
-    //aNormalSlot = glGetAttribLocation(programHandle, "aNormal");
-    //aNormalSlot = glGetAttribLocation(programHandle, "normal");
-    //aColorSlot = glGetAttribLocation(programHandle, "SourceColor");
     
-    //uProjectionMatrixSlot = glGetUniformLocation(programHandle, "uPMatrix");
-    //uModelViewMatrixSlot = glGetUniformLocation(programHandle, "uMMatrix");
     uMvpMatrixSlot = glGetUniformLocation(programHandle, "uMvpMatrix");
     uNormalMatrixSlot = glGetUniformLocation(programHandle, "uNormalMatrix");
     
@@ -171,10 +162,14 @@ void HGLES::compileShaders()
     uTexMatrixSlot = glGetUniformLocation(programHandle, "uTexMatrix");
     uTexSlot = glGetUniformLocation(programHandle, "uTex");
     uUseTexture = glGetUniformLocation(programHandle, "uUseTexture");
+    uTextureRepeatNum = glGetUniformLocation(programHandle, "uTextureRepeatNum");
+    
+    uColor = glGetUniformLocation(programHandle, "uColor");
+    
+    uUseAlphaMap = glGetUniformLocation(programHandle, "uUseAlphaMap");
     
     uAlpha = glGetUniformLocation(programHandle, "uAlpha");
     
-    // 3
     GLint linkSuccess;
     glGetProgramiv(programHandle, GL_LINK_STATUS, &linkSuccess);
     if (linkSuccess == GL_FALSE) {
@@ -185,7 +180,6 @@ void HGLES::compileShaders()
         exit(1);
     }
     
-    // 4
     glUseProgram(programHandle);
     
 }
