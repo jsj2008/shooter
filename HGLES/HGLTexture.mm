@@ -20,7 +20,7 @@ HGLTexture* HGLTexture::createTextureWithAsset(std::string name)
 {
     
     glEnable(GL_TEXTURE_2D);
-    glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
     
     HGLTexture* tex = new HGLTexture();
@@ -57,6 +57,7 @@ HGLTexture* HGLTexture::createTextureWithAsset(std::string name)
         glEnable(GL_TEXTURE_2D);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glEnable(GL_BLEND);
+        glEnable(GL_ALPHA_TEST);
         
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -93,11 +94,8 @@ HGLTexture::HGLTexture()
     isAlphaMap = 0.0;
     color.r = 1.0; color.g = 1.0; color.b = 1.0; color.a = 1.0;
     repeatNum = 1;
-}
-
-void HGLTexture::useAsAlphaMap(bool p)
-{
-    isAlphaMap = 1.0;
+    blend1 = GL_SRC_ALPHA;
+    blend2 = GL_ONE_MINUS_SRC_ALPHA;
 }
 
 // テクスチャ領域の指定
@@ -124,6 +122,7 @@ void HGLTexture::bind()
         glEnable(GL_TEXTURE_2D);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, textureId);
+        glBlendFunc(blend1, blend2);
         glUniform1f(HGLES::uTexSlot, 0);
         glUniform1f(HGLES::uUseTexture, 1.0);
         glUniform1f(HGLES::uUseAlphaMap, isAlphaMap);

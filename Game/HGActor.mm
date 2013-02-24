@@ -1,6 +1,23 @@
 #import "HGActor.h"
 #import "HGLMesh.h"
 #import "HGLMaterial.h"
+#import "HGLObjLoader.h"
+#import <map>
+#import <string>
+
+using namespace std;
+
+#warning 後で移すと思う
+std::map<std::string, HGLObject3D*> HGActor::object3dTable;
+std::map<std::string, HGLTexture*> HGActor::textureTable;
+void HGLoadData()
+{
+    HGActor::object3dTable["rect"] = HGLObjLoader::load(@"rect");
+    HGActor::textureTable["e_robo2.png"] = HGLTexture::createTextureWithAsset("e_robo2.png");
+    HGActor::textureTable["divine.png"] = HGLTexture::createTextureWithAsset("divine.png");
+    HGActor::textureTable["space.png"] = HGLTexture::createTextureWithAsset("space.png");
+    HGActor::textureTable["star.png"] = HGLTexture::createTextureWithAsset("star.png");
+}
 
 HGActor::~HGActor()
 {
@@ -10,30 +27,66 @@ HGActor::~HGActor()
     }
 }
 
+// サブクラスから呼ばれる
+void HGActor::draw(t_draw* p)
+{
+    drawCounter++;
+    
+    object3d->useLight = false; // 2Dのため
+    object3d->position = p->position;
+    object3d->rotate = p->rotate;
+    object3d->scale = p->scale;
+    object3d->alpha = p->alpha;
+    object3d->looktoCamera = p->lookToCamera;
+    
+    // テクスチャ設定
+    HGLTexture* t = p->texture;
+    t->setTextureMatrix(p->textureMatrix);
+    t->isAlphaMap = p->isAlphaMap;
+    t->color = p->color;
+    t->repeatNum = textureRepeatNum; // とりあえずオブジェクト単位
+    
+    // 合成方法指定
+    t->blend1 = p->blend1;
+    t->blend2 = p->blend2;
+    
+    HGLMesh* mesh = object3d->getMesh(0);
+    assert(mesh->texture == NULL);
+    mesh->texture = t;
+    
+    // 描画
+    object3d->draw();
+    mesh->texture = NULL;
+}
+
 void HGActor::draw()
 {
-    if (object3d)
+    object3d->useLight = useLight;
+    object3d->position = position;
+    object3d->rotate = rotate;
+    object3d->scale = scale;
+    object3d->alpha = alpha;
+    object3d->looktoCamera = lookToCamera;
+    if (texture)
     {
-        object3d->useLight = useLight;
-        object3d->position = position;
-        object3d->rotate = rotate;
-        object3d->scale = scale;
-        object3d->alpha = alpha;
-        if (texture)
-        {
-            // テクスチャ設定
-            HGLMesh* mesh = object3d->getMesh(0);
-            assert(mesh->texture == NULL);
-            mesh->texture = texture;
-            texture->setTextureMatrix(textureMatrix);
-            texture->repeatNum = textureRepeatNum;
-            object3d->draw();
-            mesh->texture = NULL;
-        }
-        else
-        {
-            object3d->draw();
-        }
+        // テクスチャ設定
+        HGLMesh* mesh = object3d->getMesh(0);
+        assert(mesh->texture == NULL);
+        mesh->texture = texture;
+        texture->setTextureMatrix(textureMatrix);
+        texture->repeatNum = textureRepeatNum;
+        
+        // 合成方法指定
+        texture->blend1 = blend1;
+        texture->blend2 = blend2;
+        
+        // 描画
+        object3d->draw();
+        mesh->texture = NULL;
+    }
+    else
+    {
+        object3d->draw();
     }
 }
 

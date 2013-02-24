@@ -16,7 +16,6 @@
 }
 @property(readwrite) HGLVector3 cameraPosition;
 @property(readwrite) HGLVector3 cameraRotate;
-@property(readwrite) float cameraRotateRadian;
 
 - (id)initWithFrame:(CGRect)frame WithRenderBlock:(void (^)())block;
 - (void)start;

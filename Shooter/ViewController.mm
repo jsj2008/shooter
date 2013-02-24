@@ -23,7 +23,7 @@
 #define ENEMY_NUM 20
 #define BULLET_NUM 2000
 #define ZPOS_DIFF 0.1 // Z軸上でずらす量
-#define FPS 20
+#define FPS 40
 
 @interface ViewController()
 {
@@ -35,6 +35,7 @@
     HGLTexture* _e_robo2Tex;
     HGLTexture* _waveringTex;
     HGLTexture* _spaceTex;
+    HGLTexture* _starTex;
     
     HGLVector3 _cameraPosition;
     
@@ -44,7 +45,7 @@
     float fireAspect;
     
     // game objects
-    HGActor* _player;
+    HGFighter* _player;
     
     std::vector<HGBullet*> _bullets;
     std::vector<HGBullet*> _bulletsInActive;
@@ -60,8 +61,6 @@
     PadView* _leftPadView;
     PadView* _rightPadView;
     
-    // 描画順を制御する
-    float _fighterZ; // 機体用
 #warning 弾用のZ軸変数
     
 }
@@ -107,51 +106,45 @@
 #warning 後でdelete
     // initialize utility program
     initSpriteIndexTable();
+    HGLoadData();
     
     // loading data
     _baseRectObj3d = HGLObjLoader::load(@"rect");
     //_droidObj3d = HGLObjLoader::load(@"droid");
     _e_robo2Tex = HGLTexture::createTextureWithAsset("e_robo2.png");
     _waveringTex = HGLTexture::createTextureWithAsset("divine.png");
-    _waveringTex->useAsAlphaMap(true);
+    _waveringTex->isAlphaMap = 1.0;
     _spaceTex = HGLTexture::createTextureWithAsset("space.png");
+    _starTex = HGLTexture::createTextureWithAsset("star.png");
     
     // create players
     _player = new HGFighter();
+    _player->init(FIGHTER_N1);
     _player->setObject3D(_baseRectObj3d, _e_robo2Tex);
     _player->position.set(0, 0, 1);
     _player->setAspect(0);
-    _fighterZ -= ZPOS_DIFF;
     fire = false;
     
     // create enemies
-    _fighterZ = -0.5;
     for (int i = 0; i < ENEMY_NUM; ++i)
     {
+#ifdef TEST_3DOBJ
         HGActor* t;
-        if (1)
-        //if (i % 2 == 0)
-        {
-            t = new HGFighter();
-            t->setObject3D(_baseRectObj3d, _e_robo2Tex);
-        }
-        else
-        {
-            t = new HGActor();
-            t->setObject3D(_droidObj3d);
-            t->rotate.x = 45;
-        }
+        t = new HGActor();
+        t->setObject3D(_droidObj3d);
+        t->rotate.x = 45;
+#else
+        HGFighter* t;
+        t = new HGFighter();
+        t->setObject3D(_baseRectObj3d, _e_robo2Tex);
+        t->init(FIGHTER_N1);
+#endif
         t->position.x = (i*2) + -2;
         t->position.y = 1;
-        t->position.z = _fighterZ;
+        t->position.z = 0;
         t->setAspect(90);
         t->setMoveAspect(90);
         t->setVelocity(0.05);
-        _fighterZ += ZPOS_DIFF;
-        if (_fighterZ >= 0)
-        {
-            _fighterZ = -0.5;
-        }
         _enemies.push_back(t);
     }
     
@@ -174,6 +167,7 @@
             t->scale.set(100, 100, 100);
             t->position.set(i * 100 - 250, j * 100 - 250, -1);
             t->textureRepeatNum = 10;
+            t->lookToCamera = false;
             _background.push_back(t);
         }
     }
@@ -207,7 +201,7 @@
                 if (!fire) _player->setAspect(degree);
                 _player->setMoveAspect(degree);
             }
-            _player->setVelocity(0.6*power);
+            _player->setVelocity(1.0*power);
             
         }] autorelease];
         [_glview addSubview:_leftPadView];
@@ -250,18 +244,20 @@
     if (!fire) return;
     NSDate* nowDt = [NSDate date];
     NSTimeInterval now = [nowDt timeIntervalSince1970];
-    if (now - lastFireTime < 0.3) return;
+    if (now - lastFireTime < 0.05) return;
     lastFireTime = now;
     if (_bulletsInActive.size() == 0) return;
     HGBullet* t = _bulletsInActive.back();
     t->setObject3D(_baseRectObj3d, _waveringTex);
+    t->blurTexture = _starTex;
     t->position.x = _player->position.x;
     t->position.y = _player->position.y;
     t->position.z = 0.5;
     t->setMoveAspect(fireAspect);
-    t->setVelocity(0.8);
-    t->scale.set(0.5, 0.5, 0.5);
+    t->setVelocity(0.3);
+    t->scale.set(0.3, 0.3, 0.3);
     t->color = {1.0, 1.0, 1.0};
+    t->init(BULLET_N1);
     _bulletsInActive.pop_back();
     _bullets.push_back(t);
     
@@ -304,8 +300,8 @@
 {
     @synchronized(self)
     {
-        _glview.cameraRotateRadian = -15 * M_PI/180;
-        _glview.cameraRotate = HGLVector3(1, 0, 0);
+        glDisable(GL_DEPTH_TEST); // 2D Gameではスプライトの重なりができなくなるのでOFF
+        _glview.cameraRotate = HGLVector3(-25 * M_PI/180, 0, 0);
         _glview.cameraPosition = _cameraPosition;
         [_glview updateCamera];
         

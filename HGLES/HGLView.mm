@@ -51,7 +51,6 @@
 
 @synthesize cameraPosition;
 @synthesize cameraRotate;
-@synthesize cameraRotateRadian;
 
 - (id)initWithFrame:(CGRect)frame WithRenderBlock:(void (^)())block
 {
@@ -180,8 +179,12 @@
 - (void)updateCamera
 {
     // camera setting
+    HGLES::cameraPosition = self.cameraPosition;
+    HGLES::cameraRotate = self.cameraRotate;
     HGLES::mvMatrix = GLKMatrix4Identity;
-    HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, self.cameraRotateRadian, self.cameraRotate.x, self.cameraRotate.y, self.cameraRotate.z);
+    HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, self.cameraRotate.x, 1, 0, 0);
+    HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, self.cameraRotate.y, 0, 1, 0);
+    HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, self.cameraRotate.z, 0, 0, 1);
     HGLES::mvMatrix = GLKMatrix4Translate(HGLES::mvMatrix, self.cameraPosition.x, self.cameraPosition.y, self.cameraPosition.z);
 }
 

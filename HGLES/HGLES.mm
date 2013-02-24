@@ -8,6 +8,7 @@
 
 #import "HGLES.h"
 #import "HGLTypes.h"
+#import "HGLVector3.h"
 #import <GLKit/GLKit.h>
 #include <OpenGLES/ES2/gl.h>
 #include <OpenGLES/ES2/glext.h>
@@ -58,6 +59,10 @@ Position HGLES::lightPos;
 
 float HGLES::viewWidth;
 float HGLES::viewHeight;
+
+// カメラ
+HGLVector3 HGLES::cameraPosition;
+HGLVector3 HGLES::cameraRotate;
 
 void HGLES::pushMatrix()
 {

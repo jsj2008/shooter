@@ -22,15 +22,16 @@ public:
     ~HGLTexture();
     GLKMatrix4 getTextureMatrix(int x, int y, int w, int h);
     void setTextureMatrix(GLKMatrix4 mat);
-    void useAsAlphaMap(bool p);
     Color color;
     float repeatNum;
+    unsigned int blend1;
+    unsigned int blend2;
+    float isAlphaMap;
     
 private:
     GLuint textureId;
     size_t width;
     size_t height;
     GLKMatrix4 textureMatrix;
-    float isAlphaMap;
     void setTextureArea(int textureW,int textureH, int x, int y, int w, int h);
 };

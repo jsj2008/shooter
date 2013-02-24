@@ -12,6 +12,7 @@
 
 struct Color;
 struct Position;
+class HGLVector3;
 class HGLES
 {
 public:
@@ -67,6 +68,9 @@ public:
     
     static float viewWidth;
     static float viewHeight;
+    
+    static HGLVector3 cameraPosition;
+    static HGLVector3 cameraRotate;
     
 private:
     static void compileShaders();
