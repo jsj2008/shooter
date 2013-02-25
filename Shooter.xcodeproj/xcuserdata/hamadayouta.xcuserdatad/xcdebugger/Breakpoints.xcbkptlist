@@ -333,11 +333,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Shooter/ViewController.mm"
-         timestampString = "383409165.809899"
+         timestampString = "383414834.625278"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "193"
-         endingLineNumber = "193"
+         startingLineNumber = "178"
+         endingLineNumber = "178"
          landmarkName = "-setupGame"
          landmarkType = "5">
       </FileBreakpoint>
@@ -450,11 +450,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Shooter/ViewController.mm"
-         timestampString = "383409165.809899"
+         timestampString = "383414834.625278"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "198"
-         endingLineNumber = "198"
+         startingLineNumber = "183"
+         endingLineNumber = "183"
          landmarkName = "-setupGame"
          landmarkType = "5">
       </FileBreakpoint>
@@ -463,25 +463,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Shooter/ViewController.mm"
-         timestampString = "383409165.809899"
+         timestampString = "383414834.625278"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "201"
-         endingLineNumber = "201"
+         startingLineNumber = "186"
+         endingLineNumber = "186"
          landmarkName = "-setupGame"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "Shooter/ViewController.mm"
-         timestampString = "383409165.809899"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "275"
-         endingLineNumber = "275"
-         landmarkName = "-game_main"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -489,11 +476,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Game/HGActor.mm"
-         timestampString = "383409846.916518"
+         timestampString = "383412957.06752"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "148"
-         endingLineNumber = "148"
+         startingLineNumber = "91"
+         endingLineNumber = "91"
          landmarkName = "HGActor::move()"
          landmarkType = "5">
       </FileBreakpoint>
@@ -502,11 +489,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Game/HGActor.mm"
-         timestampString = "383409846.916518"
+         timestampString = "383412957.06752"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "127"
-         endingLineNumber = "127"
+         startingLineNumber = "70"
+         endingLineNumber = "70"
          landmarkName = "HGActor::setVelocity(float inVelocity)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -515,11 +502,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Game/HGActor.mm"
-         timestampString = "383409846.916518"
+         timestampString = "383412957.06752"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "150"
-         endingLineNumber = "150"
+         startingLineNumber = "93"
+         endingLineNumber = "93"
          landmarkName = "HGActor::move()"
          landmarkType = "5">
       </FileBreakpoint>
@@ -528,11 +515,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Game/HGActor.mm"
-         timestampString = "383409846.916518"
+         timestampString = "383412957.06752"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "151"
-         endingLineNumber = "151"
+         startingLineNumber = "94"
+         endingLineNumber = "94"
          landmarkName = "HGActor::move()"
          landmarkType = "5">
       </FileBreakpoint>
@@ -541,24 +528,24 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Shooter/ViewController.mm"
-         timestampString = "383409165.809899"
+         timestampString = "383415573.790668"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "298"
-         endingLineNumber = "298"
-         landmarkName = "@implementation ViewController"
-         landmarkType = "3">
+         startingLineNumber = "305"
+         endingLineNumber = "305"
+         landmarkName = "-render"
+         landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HGLES/HGLView.mm"
-         timestampString = "383377458.377333"
+         timestampString = "383415552.224559"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "183"
-         endingLineNumber = "183"
+         startingLineNumber = "187"
+         endingLineNumber = "187"
          landmarkName = "-updateCamera"
          landmarkType = "5">
       </FileBreakpoint>
@@ -567,63 +554,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Game/HGActor.mm"
-         timestampString = "383409846.916518"
+         timestampString = "383412957.06752"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "26"
-         endingLineNumber = "26"
-         landmarkName = "HGActor::~HGActor()"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "Game/HGActor.mm"
-         timestampString = "383409846.916518"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "25"
-         endingLineNumber = "25"
-         landmarkName = "HGActor::~HGActor()"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "Game/HGActor.mm"
-         timestampString = "383409846.916518"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "28"
-         endingLineNumber = "28"
-         landmarkName = "HGActor::~HGActor()"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "Game/HGActor.mm"
-         timestampString = "383409846.916518"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "27"
-         endingLineNumber = "27"
-         landmarkName = "HGActor::~HGActor()"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "Game/HGActor.mm"
-         timestampString = "383409846.916518"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "154"
-         endingLineNumber = "154"
+         startingLineNumber = "97"
+         endingLineNumber = "97"
          landmarkName = "HGActor::move()"
          landmarkType = "5">
       </FileBreakpoint>
@@ -645,11 +580,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Shooter/ViewController.mm"
-         timestampString = "383409165.809899"
+         timestampString = "383414834.625278"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "230"
-         endingLineNumber = "230"
+         startingLineNumber = "215"
+         endingLineNumber = "215"
          landmarkName = "@implementation ViewController"
          landmarkType = "3">
       </FileBreakpoint>
@@ -658,11 +593,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Shooter/ViewController.mm"
-         timestampString = "383409165.809899"
+         timestampString = "383414834.625278"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "231"
-         endingLineNumber = "231"
+         startingLineNumber = "216"
+         endingLineNumber = "216"
          landmarkName = "-startFire"
          landmarkType = "5">
       </FileBreakpoint>
@@ -683,25 +618,12 @@
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "Game/HGBullet.mm"
-         timestampString = "383391823.922136"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "21"
-         endingLineNumber = "21"
-         landmarkName = "HGBullet::init(HG_BULLET_TYPE type)"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
          filePath = "Game/HGActor.mm"
-         timestampString = "383409846.916518"
+         timestampString = "383412957.06752"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "49"
-         endingLineNumber = "49"
+         startingLineNumber = "45"
+         endingLineNumber = "45"
          landmarkName = "HGActor::draw(t_draw* p)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -736,11 +658,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Game/HGFighter.mm"
-         timestampString = "383407135.541225"
+         timestampString = "383411399.151307"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "41"
-         endingLineNumber = "41"
+         startingLineNumber = "60"
+         endingLineNumber = "60"
          landmarkName = "HGFighter::N1Draw()"
          landmarkType = "5">
       </FileBreakpoint>
@@ -755,6 +677,84 @@
          startingLineNumber = "24"
          endingLineNumber = "24"
          landmarkName = "HGBackground::draw()"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "Game/HGFighter.mm"
+         timestampString = "383411458.900751"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "27"
+         endingLineNumber = "27"
+         landmarkName = "HGFighter::init(HG_FIGHTER_TYPE type)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "Game/HGFighter.mm"
+         timestampString = "383411459.670748"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "28"
+         endingLineNumber = "28"
+         landmarkName = "HGFighter::init(HG_FIGHTER_TYPE type)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "Shooter/ViewController.mm"
+         timestampString = "383414834.625278"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "256"
+         endingLineNumber = "256"
+         landmarkName = "-game_main"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "Shooter/ViewController.mm"
+         timestampString = "383415573.790668"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "311"
+         endingLineNumber = "311"
+         landmarkName = "-render"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "HGLES/HGLView.mm"
+         timestampString = "383415552.224559"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "211"
+         endingLineNumber = "211"
+         landmarkName = "-render:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "HGLES/HGLView.mm"
+         timestampString = "383415552.224559"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "216"
+         endingLineNumber = "216"
+         landmarkName = "-render:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

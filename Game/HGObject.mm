@@ -5,7 +5,6 @@ typedef HGActor base;
 
 HGObject::HGObject()
 {
-    base();
 }
 
 // 種類ごとに関数ポインタを設定
@@ -31,7 +30,6 @@ void HGObject::Space1Draw()
 {
     s_draw1.position = position;
     s_draw1.scale = scale;
-    s_draw1.textureMatrix = textureMatrix;
     HGActor::draw(&s_draw1);
 }
 

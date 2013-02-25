@@ -24,20 +24,12 @@
 #define ENEMY_NUM 20
 #define BULLET_NUM 2000
 #define ZPOS_DIFF 0.1 // Z軸上でずらす量
-#define FPS 40
+#define FPS 20
 
 @interface ViewController()
 {
     
     HGLView* _glview;
-    HGLObject3D* _baseRectObj3d;
-    HGLObject3D* _droidObj3d;
-#warning TODO: あとでテーブル化
-    HGLTexture* _e_robo2Tex;
-    HGLTexture* _waveringTex;
-    HGLTexture* _spaceTex;
-    HGLTexture* _starTex;
-    
     HGLVector3 _cameraPosition;
     
     // flag
@@ -50,9 +42,7 @@
     
     std::vector<HGBullet*> _bullets;
     std::vector<HGBullet*> _bulletsInActive;
-    
     std::vector<HGFighter*> _enemies;
-    
     std::vector<HGObject*> _background;
     
     // game's main thread
@@ -109,19 +99,9 @@
     initSpriteIndexTable();
     HGLoadData();
     
-    // loading data
-    _baseRectObj3d = HGLObjLoader::load(@"rect");
-    //_droidObj3d = HGLObjLoader::load(@"droid");
-    _e_robo2Tex = HGLTexture::createTextureWithAsset("e_robo2.png");
-    _waveringTex = HGLTexture::createTextureWithAsset("divine.png");
-    _waveringTex->isAlphaMap = 1.0;
-    _spaceTex = HGLTexture::createTextureWithAsset("space.png");
-    _starTex = HGLTexture::createTextureWithAsset("star.png");
-    
     // create players
     _player = new HGFighter();
     _player->init(HG_FIGHTER_N1);
-    _player->setObject3D(_baseRectObj3d, _e_robo2Tex);
     _player->position.set(0, 0, 1);
     _player->setAspect(0);
     fire = false;
@@ -129,17 +109,9 @@
     // create enemies
     for (int i = 0; i < ENEMY_NUM; ++i)
     {
-#ifdef TEST_3DOBJ
-        HGActor* t;
-        t = new HGActor();
-        t->setObject3D(_droidObj3d);
-        t->rotate.x = 45;
-#else
         HGFighter* t;
         t = new HGFighter();
-        t->setObject3D(_baseRectObj3d, _e_robo2Tex);
         t->init(HG_FIGHTER_N1);
-#endif
         t->position.x = (i*2) + -2;
         t->position.y = 1;
         t->position.z = 0;
@@ -164,7 +136,6 @@
         for (int j = 0; j < 5; ++j)
         {
             HGObject* t = new HGObject();
-            t->setObject3D(_baseRectObj3d, _spaceTex);
             t->init(HG_OBJECT_SPACE1);
             t->scale.set(100, 100, 100);
             t->position.set(i * 100 - 250, j * 100 - 250, -1);
@@ -173,16 +144,30 @@
     }
     
     // camera
-    _cameraPosition = HGLVector3(0,0,-30);
+    _cameraPosition = HGLVector3(0,0,-20);
     
     // creating game thread
     _game_queue = dispatch_queue_create(DISPATCH_QUEUE_PRIORITY_DEFAULT, NULL);
     dispatch_async(_game_queue, ^{
+        NSDate* nowDt;
+        NSTimeInterval start;
+        NSTimeInterval end;
+        float base_sleep = 1.0/FPS;
+        float sleep;
         while (1)
         {
+            nowDt = [NSDate date];
+            start = [nowDt timeIntervalSince1970];
             [self game_main];
-#warning 処理落ち対策
-            [NSThread sleepForTimeInterval:(1.0/FPS)];
+            nowDt = [NSDate date];
+            end = [nowDt timeIntervalSince1970];
+            sleep = base_sleep - (end - start);
+            NSLog(@"%ld:%f", _bullets.size(), sleep);
+            if (sleep > 0)
+            {
+                [NSThread sleepForTimeInterval:sleep];
+            }
+            
         }
     });
     
@@ -244,20 +229,22 @@
     if (!fire) return;
     NSDate* nowDt = [NSDate date];
     NSTimeInterval now = [nowDt timeIntervalSince1970];
-    if (now - lastFireTime < 0.05) return;
+    if (now - lastFireTime < 0.1) return;
     lastFireTime = now;
     if (_bulletsInActive.size() == 0) return;
     HGBullet* t = _bulletsInActive.back();
-    t->setObject3D(_baseRectObj3d, _waveringTex);
-    t->blurTexture = _starTex;
     t->position.x = _player->position.x;
     t->position.y = _player->position.y;
     t->position.z = 0.5;
     t->setMoveAspect(fireAspect);
-    t->setVelocity(0.3);
-    t->scale.set(0.3, 0.3, 0.3);
-    t->color = {1.0, 1.0, 1.0};
-    t->init(HG_BULLET_N1);
+    if ((int)now % 2==0)
+    {
+        t->init(HG_BULLET_N2);
+    }
+    else
+    {
+        t->init(HG_BULLET_N1);
+    }
     _bulletsInActive.pop_back();
     _bullets.push_back(t);
     
@@ -269,29 +256,30 @@
     @synchronized(self)
     {
         _player->move();
+        
         [self fire];
-        
-        // move enemies
-        for (std::vector<HGFighter*>::iterator itr = _enemies.begin(); itr != _enemies.end(); ++itr)
-        {
-            HGFighter* a = *itr;
-            a->move();
-        }
-        
-        // move bullets
-        for (std::vector<HGBullet*>::iterator itr = _bullets.begin(); itr != _bullets.end(); ++itr)
-        {
-            HGBullet* a = *itr;
-            a->move();
-        }
         
         // カメラ位置
         _cameraPosition.x = _player->position.x * -1;
         _cameraPosition.y = _player->position.y * -1 + 13.5;
-        
-        // 描画
-        [_glview draw];
     }
+    
+    // move enemies
+    for (std::vector<HGFighter*>::iterator itr = _enemies.begin(); itr != _enemies.end(); ++itr)
+    {
+        HGFighter* a = *itr;
+        a->move();
+    }
+    
+    // move bullets
+    for (std::vector<HGBullet*>::iterator itr = _bullets.begin(); itr != _bullets.end(); ++itr)
+    {
+        HGBullet* a = *itr;
+        a->move();
+    }
+    
+    // 描画
+    [_glview draw];
 }
 
 
@@ -325,10 +313,9 @@
             HGBullet* a = *itr;
             a->draw();
         }
-        
+    
         // draw player
         _player->draw();
-        
     }
 }
 

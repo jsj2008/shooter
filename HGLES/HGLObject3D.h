@@ -23,7 +23,7 @@ public:
     HGLVector3 position; // 位置
     HGLVector3 rotate  ; // 回転
     HGLVector3 scale   ; // 拡大縮小
-    bool useLight; // 光源を使用するか
+    float useLight; // 光源を使用するか
     float alpha; // アルファ値
     bool looktoCamera; // 常にカメラに向く
     

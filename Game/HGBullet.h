@@ -1,7 +1,8 @@
 #import "HGLTypes.h"
 
 enum HG_BULLET_TYPE {
-    HG_BULLET_N1
+    HG_BULLET_N1,
+    HG_BULLET_N2
 };
 
 class HGActor;
@@ -13,7 +14,6 @@ public:
     void draw();
     void init(HG_BULLET_TYPE type);
     HGLTexture* blurTexture;
-private:
     
     // 描画用関数
     void (HGBullet::*pDrawFunc)();
@@ -24,5 +24,7 @@ private:
     // 種類別関数群
     void N1Draw();
     void N1Init();
+    void N2Draw();
+    void N2Init();
     
 };

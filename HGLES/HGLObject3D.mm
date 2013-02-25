@@ -19,7 +19,7 @@ HGLObject3D::HGLObject3D()
     position = HGLVector3();
     rotate   = HGLVector3();
     scale    = HGLVector3(1, 1, 1);
-    useLight = false;
+    useLight = 0.0;
     looktoCamera = false;
     alpha = 1.0;
 }
@@ -45,7 +45,7 @@ HGLMesh* HGLObject3D::getMesh(int index)
 void HGLObject3D::draw()
 {
     // 光源使用有無設定
-    glUniform1f(HGLES::uUseLight, useLight?1.0:0.0);
+    glUniform1f(HGLES::uUseLight, useLight);
     
     // アルファ値設定
     glUniform1f(HGLES::uAlpha, alpha);

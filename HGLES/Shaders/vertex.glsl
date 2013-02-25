@@ -37,6 +37,13 @@ void main(void) { // 4
 
     gl_Position = uMvpMatrix * aPosition;
 
+    // UV
+    if (uUseTexture > 0.0)
+    {
+        vUV = vec2(uTexMatrix*vec4(aUV, 0.0, 1.0));
+    }
+
+/*
     // Color
     if (uUseLight > 0.0)
     {
@@ -60,13 +67,8 @@ void main(void) { // 4
     }
     else
     {
+    */
         vColor = uColor;
-    }
-
-    // UV
-    if (uUseTexture > 0.0)
-    {
-        vUV = vec2(uTexMatrix*vec4(aUV, 0.0, 1.0));
-    }
+    //}
 
 }

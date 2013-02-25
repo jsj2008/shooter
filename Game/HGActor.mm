@@ -7,25 +7,22 @@
 
 using namespace std;
 
-#warning 後で移すと思う
+#warning 改善
 std::map<std::string, HGLObject3D*> HGActor::object3DTable;
 std::map<std::string, HGLTexture*> HGActor::textureTable;
 void HGLoadData()
 {
     HGActor::object3DTable["rect"] = HGLObjLoader::load(@"rect");
-    HGActor::object3DTable["droid"] = HGLObjLoader::load(@"droid");
+    //HGActor::object3DTable["droid"] = HGLObjLoader::load(@"droid");
     HGActor::textureTable["e_robo2.png"] = HGLTexture::createTextureWithAsset("e_robo2.png");
     HGActor::textureTable["divine.png"] = HGLTexture::createTextureWithAsset("divine.png");
     HGActor::textureTable["space.png"] = HGLTexture::createTextureWithAsset("space.png");
     HGActor::textureTable["star.png"] = HGLTexture::createTextureWithAsset("star.png");
+    HGActor::textureTable["x6.png"] = HGLTexture::createTextureWithAsset("x6.png");
 }
 
 HGActor::~HGActor()
 {
-    if (object3d)
-    {
-        delete object3d;
-    }
 }
 
 // サブクラスから呼ばれる
@@ -34,7 +31,7 @@ void HGActor::draw(t_draw* p)
     drawCounter++;
     
     HGLObject3D* object3d = p->object3D;
-    object3d->useLight = false; // 2Dのため
+    object3d->useLight = p->useLight;
     object3d->position = p->position;
     object3d->rotate = p->rotate;
     object3d->scale = p->scale;
@@ -66,28 +63,6 @@ void HGActor::draw(t_draw* p)
         // 描画
         object3d->draw();
     }
-}
-
-void HGActor::setObject3D(HGLObject3D* obj, HGLTexture* tex)
-{
-    object3d = obj;
-    HGLMesh* mesh = object3d->getMesh(0);
-    // textureが指定されている場合
-    if (tex)
-    {
-        texture = tex;
-        assert(mesh->texture == NULL);
-    }
-    else
-    {
-        texture = mesh->texture;
-    }
-    textureMatrix = GLKMatrix4Identity;
-}
-
-void HGActor::setObject3D(HGLObject3D* obj)
-{
-    setObject3D(obj, NULL);
 }
 
 void HGActor::setVelocity(float inVelocity)

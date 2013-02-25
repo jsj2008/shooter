@@ -37,6 +37,8 @@
     
     // FPS管理用
     NSTimeInterval lastDrawTime;
+    int frameSkip;
+    float sleep;
     
     // 光源設定
     Color HGLES::ambient;
@@ -63,7 +65,9 @@
         self.cameraPosition = HGLVector3(0, 0, 0);
         self.cameraRotate = HGLVector3(0, 0, 0);
         lastDrawTime = 0;
+        frameSkip = 0;
         isRenderRequired = false;
+        sleep = 1.0/FPS;
         
         // setup gl
         [self setupLayer];
@@ -201,10 +205,10 @@
 - (void)render:(CADisplayLink*)displayLink {
     // FPS計算
     NSDate* nowDate = [NSDate date];
-    NSTimeInterval now = [nowDate timeIntervalSince1970];
+    NSTimeInterval start = [nowDate timeIntervalSince1970];
     if (lastDrawTime > 0)
     {
-        if (now - lastDrawTime < (1.0 / FPS))
+        if (start - lastDrawTime < sleep)
         {
 #if IS_DEBUG && 0
             NSLog(@"frame skip");
@@ -217,7 +221,16 @@
     {
         return;
     }
+    if (frameSkip)
+    {
+        frameSkip--;
+#if IS_DEBUG
+        NSLog(@"frame skip2");
+#endif
+        return;
+    }
     isRenderRequired = false;
+    lastDrawTime = start;
     
     [self initFrame];
     if (render)
@@ -227,7 +240,13 @@
     }
     [self showBuffer];
     
-    lastDrawTime = now;
+    NSTimeInterval end = [[NSDate date] timeIntervalSince1970];
+    NSTimeInterval diff = end - start;
+    float a = diff / sleep;
+    if (a >= 1.0)
+    {
+        frameSkip = (int)(a+0.5);
+    }
 }
 
 @end

@@ -1,6 +1,7 @@
 
 enum HG_FIGHTER_TYPE {
-    HG_FIGHTER_N1
+    HG_FIGHTER_N1,
+    HG_DROID
 };
 
 class HGActor;
@@ -11,8 +12,6 @@ public:
     void draw();
     void init(HG_FIGHTER_TYPE type);
     
-private:
-    
     // 描画用関数
     void (HGFighter::*pDrawFunc)();
     
@@ -21,6 +20,10 @@ private:
     
     // 種類別関数群
     void N1Draw();
+    void DroidDraw();
+    
     void N1Init();
+    void DroidInit();
+    
     
 };
