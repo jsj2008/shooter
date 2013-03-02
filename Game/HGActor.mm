@@ -2,6 +2,7 @@
 #import "HGLMesh.h"
 #import "HGLMaterial.h"
 #import "HGLObjLoader.h"
+#import "HGLGraphics2D.h"
 #import <map>
 #import <string>
 
@@ -25,7 +26,9 @@ HGActor::~HGActor()
 {
 }
 
+
 // サブクラスから呼ばれる
+/*
 void HGActor::draw(t_draw* p)
 {
     drawCounter++;
@@ -49,6 +52,39 @@ void HGActor::draw(t_draw* p)
         // 合成方法指定
         t->blend1 = p->blend1;
         t->blend2 = p->blend2;
+        
+        HGLMesh* mesh = object3d->getMesh(0);
+        assert(mesh->texture == NULL);
+        mesh->texture = t;
+    
+        // 描画
+        object3d->draw();
+        mesh->texture = NULL;
+    }
+    else
+    {
+        // 描画
+        object3d->draw();
+    }
+}*/
+
+
+// サブクラスから呼ばれる
+void HGActor::draw(t_hgl2d* p)
+{
+    HGLObject3D* object3d = HGActor::object3DTable["rect"];
+    object3d->useLight = 0;
+    object3d->position = p->position;
+    object3d->rotate = p->rotate;
+    object3d->scale = p->scale;
+    object3d->alpha = p->alpha;
+    object3d->paralell = p->paralell;
+    
+    // テクスチャ設定
+    if (p->texture)
+    {
+        HGLTexture* t = p->texture;
+        t->color = p->color;
         
         HGLMesh* mesh = object3d->getMesh(0);
         assert(mesh->texture == NULL);
@@ -88,6 +124,7 @@ void HGActor::setMoveAspect(float degree)
 
 void HGActor::update()
 {
+    updateCount++;
     if (velocity)
     {
         position.x += acceleration.x;

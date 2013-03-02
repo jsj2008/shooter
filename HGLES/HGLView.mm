@@ -21,6 +21,7 @@
 #import "HGLTypes.h"
 #import "HGLObjLoader.h"
 #import "HGLVector3.h"
+#import "HGLGraphics2D.h"
 
 #define TEST_GL_VIEW 0
 
@@ -76,6 +77,7 @@
         [self setupDepthBuffer];
         [self setupRenderBuffer];
         [self setupFrameBuffer];
+        HGLGraphics2D::setup();
         
         // シェーダのデフォルト値をセットする
         [self setDefault];

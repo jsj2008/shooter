@@ -1,3 +1,4 @@
+#import "HGLGraphics2D.h"
 
 enum HG_FIGHTER_TYPE {
     HG_FIGHTER_N1,
@@ -19,13 +20,13 @@ public:
     // 初期化用関数
     void (HGFighter::*pInitFunc)();
     
-    
     // 種類別関数群
     void N1Draw();
     void DroidDraw();
     
     void N1Init();
     void DroidInit();
-    
+private:
+    t_hgl2d anime1;
     
 };

@@ -33,17 +33,20 @@ void HGObject::draw()
 // --------------------------------------------------
 void HGObject::Space1Draw()
 {
-    s_draw1.position = position;
-    s_draw1.scale = scale;
-    HGActor::draw(&s_draw1);
+    anime1.position = position;
+    anime1.scale = scale;
+    HGLGraphics2D::draw(&anime1);
 }
 
 void HGObject::Space1Init()
 {
-    s_draw1.object3D = object3DTable["rect"];
-    s_draw1.texture = textureTable["space.png"];
-    s_draw1.textureRepeatNum = 10;
-    s_draw1.lookToCamera = false;
+    if (anime1.texture)
+    {
+        delete anime1.texture; anime1.texture = NULL;
+    }
+    anime1.texture = HGLTexture::createTextureWithAsset("space.png");
+    anime1.texture->repeatNum = 10;
+    anime1.paralell = 0;
 }
 
 

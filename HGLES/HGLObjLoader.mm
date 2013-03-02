@@ -96,6 +96,7 @@ HGLObject3D* HGLObjLoader::load(NSString* name)
         {
             uvs.push_back({
                 s2f(&(words)[1]),
+#warning 本当に正しいのか確認する
                 1.0f - s2f(&(words)[2])
             });
         }
@@ -191,12 +192,12 @@ void HGLObjLoader::addIndex(std::string* index_str)
     }
     Position p = positions[i1];
     UV uv = {0,0};
-    if (uvs.size() > i2)
+    if (uvs.size() >= i2)
     {
         uv = uvs[i2];
     }
     Normal n = {0, 0, 0};
-    if (normals.size() > i3)
+    if (normals.size() >= i3)
     {
         n = normals[i3];
     }

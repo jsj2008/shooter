@@ -37,11 +37,13 @@ public:
     unsigned int blend2;
     float isAlphaMap;
     
+    size_t width;
+    size_t height;
+    size_t sprWidth;
+    size_t sprHeight;
 private:
     static std::map<std::string, t_hgl_tex_cache> textureIds;
     GLuint textureId;
-    size_t width;
-    size_t height;
     GLKMatrix4 textureMatrix;
     void setTextureArea(int textureW,int textureH, int x, int y, int w, int h);
 };

@@ -1,3 +1,4 @@
+#import "HGLGraphics2D.h"
 
 enum HG_OBJECT_TYPE {
     HG_OBJECT_SPACE1
@@ -24,4 +25,6 @@ private:
     void Space1Draw();
     void Space1Init();
     
+    t_hgl2d anime1;
+
 };

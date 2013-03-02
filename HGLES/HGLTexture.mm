@@ -24,6 +24,7 @@ HGLTexture* HGLTexture::createTextureWithAsset(std::string name)
 {
     HGLTexture* tex = new HGLTexture();
     if (textureIds.find(name) == textureIds.end())
+    //if (1)
     {
         
         glEnable(GL_TEXTURE_2D);
@@ -40,7 +41,8 @@ HGLTexture* HGLTexture::createTextureWithAsset(std::string name)
         image = [UIImage imageNamed:[NSString stringWithCString:name.c_str() encoding:NSUTF8StringEncoding]].CGImage;
         width = CGImageGetWidth(image);
         height = CGImageGetHeight(image);
-        tex->width = width; tex->height = height;
+        tex->sprWidth = tex->width = width;
+        tex->sprHeight = tex->height = height;
         
         if(image) {
             spriteData = (GLubyte *) malloc(width * height * 4); // 32bit color
@@ -75,7 +77,8 @@ HGLTexture* HGLTexture::createTextureWithAsset(std::string name)
     {
         t_hgl_tex_cache* org = &textureIds[name];
         tex->textureId = org->textureId;
-        tex->width = org->width; tex->height = org->height;
+        tex->sprWidth = tex->width = org->width;
+        tex->sprHeight = tex->height = org->height;
     }
     
     return tex;
@@ -135,25 +138,25 @@ void HGLTexture::setTextureArea(int textureW,int textureH, int x, int y, int w, 
 
 void HGLTexture::bind()
 {
-   if (textureId)
+    //if (textureId != -1)
+    //{
+    // テクスチャ使用フラグ
+    glEnable(GL_TEXTURE_2D);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, textureId);
+    glBlendFunc(blend1, blend2);
+    glUniform1f(HGLES::uTexSlot, 0);
+    glUniform1f(HGLES::uUseTexture, 1.0);
+    glUniform1f(HGLES::uUseAlphaMap, isAlphaMap);
+    glUniform1f(HGLES::uTextureRepeatNum, repeatNum);
+    
+    // テクスチャ行列
+    glUniformMatrix4fv(HGLES::uTexMatrixSlot, 1, 0, textureMatrix.m);
+    if (isAlphaMap)
     {
-        // テクスチャ使用フラグ
-        glEnable(GL_TEXTURE_2D);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, textureId);
-        glBlendFunc(blend1, blend2);
-        glUniform1f(HGLES::uTexSlot, 0);
-        glUniform1f(HGLES::uUseTexture, 1.0);
-        glUniform1f(HGLES::uUseAlphaMap, isAlphaMap);
-        glUniform1f(HGLES::uTextureRepeatNum, repeatNum);
-        
-        // テクスチャ行列
-        glUniformMatrix4fv(HGLES::uTexMatrixSlot, 1, 0, textureMatrix.m);
-        if (isAlphaMap)
-        {
-            glUniform4fv(HGLES::uColor, 1, (GLfloat*)(&color));
-        }
+        glUniform4fv(HGLES::uColor, 1, (GLfloat*)(&color));
     }
+    //}
 }
 
 void HGLTexture::unbind()
@@ -166,10 +169,12 @@ void HGLTexture::unbind()
 
 HGLTexture::~HGLTexture()
 {
+#warning 再使用するので削除しない
+    /*
     if (textureId)
     {
         glDeleteTextures(1, &textureId);
         textureId = 0;
-    }
+    }*/
 }
 

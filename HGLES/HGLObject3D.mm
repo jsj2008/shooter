@@ -20,7 +20,7 @@ HGLObject3D::HGLObject3D()
     rotate   = HGLVector3();
     scale    = HGLVector3(1, 1, 1);
     useLight = 0.0;
-    looktoCamera = false;
+    paralell = false;
     alpha = 1.0;
 }
 
@@ -53,7 +53,7 @@ void HGLObject3D::draw()
     // モデルビュー変換
     HGLES::pushMatrix();
     HGLES::mvMatrix = GLKMatrix4Translate(HGLES::mvMatrix, position.x, position.y, position.z);
-    if (looktoCamera)
+    if (paralell)
     {
         HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, HGLES::cameraRotate.x*-1, 1, 0, 0);
         HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, HGLES::cameraRotate.y*-1, 0, 1, 0);

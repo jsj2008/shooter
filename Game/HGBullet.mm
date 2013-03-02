@@ -13,7 +13,7 @@ typedef struct s_hg_bullet_type
 t_hg_bullet_type hg_bullet_table[] =
 {
     {&HGBullet::N1Init, &HGBullet::N1Draw},
-    {&HGBullet::N2Init, &HGBullet::N2Draw},
+    //{&HGBullet::N2Init, &HGBullet::N2Draw},
 };
 
 void HGBullet::update()
@@ -50,23 +50,25 @@ void HGBullet::draw()
 
 void HGBullet::N1Draw()
 {
-    if (drawCounter % 10 <= 5)
+    if (updateCount % 10 <= 5)
     {
-        s_draw1.scale.x = scale.x + 0.8;
-        s_draw1.scale.y = scale.x + 0.8;
-        s_draw1.scale.z = scale.x + 0.8;
+        anime1.scale.x = scale.x + 0.8;
+        anime1.scale.y = scale.x + 0.8;
+        anime1.scale.z = scale.x + 0.8;
     }
     else
     {
-        s_draw1.scale.x = scale.x + 1.0;
-        s_draw1.scale.y = scale.x + 1.0;
-        s_draw1.scale.z = scale.x + 1.0;
+        anime1.scale.x = scale.x + 1.0;
+        anime1.scale.y = scale.x + 1.0;
+        anime1.scale.z = scale.x + 1.0;
     }
-    s_draw1.position = position;
-    HGActor::draw(&s_draw1);
+    anime1.position = position;
+    HGLGraphics2D::draw(&anime1);
+    //base::draw(&anime1);
     
-    s_draw2.position = position;
-    HGActor::draw(&s_draw2);
+    anime2.position = position;
+    HGLGraphics2D::draw(&anime2);
+    //base::draw(&anime2);
 }
 
 void HGBullet::N1Init()
@@ -75,43 +77,52 @@ void HGBullet::N1Init()
     scale.set(0.3, 0.3, 0.3);
     color = {1.0, 1.0, 1.0};
     
-    s_draw1.texture = textureTable["star.png"];
-    s_draw1.object3D = object3DTable["rect"];
-    s_draw1.position = position;
-    s_draw1.scale = scale;
-    s_draw1.scale.x += 0.8;
-    s_draw1.scale.y += 0.8;
-    s_draw1.scale.z += 0.8;
-    s_draw1.alpha = 0.8;
-    s_draw1.color = {0.5, 0.5, 1.0, 1.0};
-    s_draw1.isAlphaMap = true;
-    s_draw1.blend1 = GL_ALPHA;
-    s_draw1.blend2 = GL_ALPHA;
+    if (anime1.texture)
+    {
+        //delete anime1.texture; anime1.texture = NULL;
+    }
+    anime1.texture = HGLTexture::createTextureWithAsset("star.png");
+    anime1.position = position;
+    anime1.scale = scale;
+    anime1.scale.x += 0.8;
+    anime1.scale.y += 0.8;
+    anime1.scale.z += 0.8;
+    anime1.alpha = 0.8;
+    anime1.color = {0.5, 0.5, 1.0, 1.0};
+    anime1.texture->color = {0.5, 0.5, 1.0, 1.0};
+    anime1.texture->isAlphaMap = 1;
+    anime1.texture->blend1 = GL_ALPHA;
+    anime1.texture->blend2 = GL_ALPHA;
     
-    s_draw2.texture = textureTable["divine.png"];
-    s_draw2.object3D = object3DTable["rect"];
-    s_draw2.position = position;
-    s_draw2.scale = scale;
-    s_draw2.alpha = 1;
-    s_draw2.color = {1,1,1,1};
-    s_draw2.isAlphaMap = true;
-    s_draw2.blend1 = GL_ALPHA;
-    s_draw2.blend2 = GL_ALPHA;
+    if (anime2.texture)
+    {
+        //delete anime2.texture; anime2.texture = NULL;
+    }
+    anime2.texture = HGLTexture::createTextureWithAsset("divine.png");
+    anime2.position = position;
+    anime2.scale = scale;
+    anime2.alpha = 1;
+    anime2.texture->color = {1,1,1,1};
+    anime2.color = {1,1,1,1};
+    anime2.texture->isAlphaMap = 1;
+    anime2.texture->blend1 = GL_ALPHA;
+    anime2.texture->blend2 = GL_ALPHA;
 }
 
+/*
 void HGBullet::N2Draw()
 {
-    s_draw2.rotate.z += 0.45;
-    s_draw3.rotate.z += 0.45;
+    anime2.rotate.z += 0.45;
+    anime3.rotate.z += 0.45;
     
-    s_draw1.position = position;
-    HGActor::draw(&s_draw1);
+    anime1.position = position;
+    HGActor::draw(&anime1);
     
-    s_draw2.position = position;
-    HGActor::draw(&s_draw2);
+    anime2.position = position;
+    HGActor::draw(&anime2);
     
-    s_draw3.position = position;
-    HGActor::draw(&s_draw3);
+    anime3.position = position;
+    HGActor::draw(&anime3);
 }
 
 void HGBullet::N2Init()
@@ -120,41 +131,41 @@ void HGBullet::N2Init()
     scale.set(1.2, 1.2, 1.2);
     color = {1.0, 1.0, 1.0};
     
-    s_draw1.texture = textureTable["star.png"];
-    s_draw1.object3D = object3DTable["rect"];
-    s_draw1.position = position;
-    s_draw1.scale = scale;
-    s_draw1.scale.x -= 0.1;
-    s_draw1.scale.y -= 0.1;
-    s_draw1.scale.z -= 0.1;
-    s_draw1.alpha = 0.7;
-    s_draw1.color = {0.9, 0.7, 0.7, 1.0};
-    s_draw1.isAlphaMap = true;
-    s_draw1.blend1 = GL_ALPHA;
-    s_draw1.blend2 = GL_ALPHA;
+    anime1.texture = textureTable["star.png"];
+    anime1.object3D = object3DTable["rect"];
+    anime1.position = position;
+    anime1.scale = scale;
+    anime1.scale.x -= 0.1;
+    anime1.scale.y -= 0.1;
+    anime1.scale.z -= 0.1;
+    anime1.alpha = 0.7;
+    anime1.color = {0.9, 0.7, 0.7, 1.0};
+    anime1.isAlphaMap = true;
+    anime1.blend1 = GL_ALPHA;
+    anime1.blend2 = GL_ALPHA;
     
-    s_draw2.texture = textureTable["x6.png"];
-    s_draw2.object3D = object3DTable["rect"];
-    s_draw2.position = position;
-    s_draw2.scale = scale;
-    s_draw2.alpha = 1;
-    s_draw2.color = {1.0, 0.0, 0.0, 1.0};
-    s_draw2.isAlphaMap = true;
-    s_draw2.blend1 = GL_ALPHA;
-    s_draw2.blend2 = GL_ALPHA;
+    anime2.texture = textureTable["x6.png"];
+    anime2.object3D = object3DTable["rect"];
+    anime2.position = position;
+    anime2.scale = scale;
+    anime2.alpha = 1;
+    anime2.color = {1.0, 0.0, 0.0, 1.0};
+    anime2.isAlphaMap = true;
+    anime2.blend1 = GL_ALPHA;
+    anime2.blend2 = GL_ALPHA;
     
-    s_draw3.texture = textureTable["x6.png"];
-    s_draw3.object3D = object3DTable["rect"];
-    s_draw3.position = position;
-    s_draw3.scale = scale;
-    s_draw3.scale.x -= 0.05;
-    s_draw3.scale.y -= 0.05;
-    s_draw3.scale.z -= 0.05;
-    s_draw3.alpha = 1;
-    s_draw3.color = {1.0, 0.9, 0.9, 1.0};
-    s_draw3.isAlphaMap = true;
-    s_draw3.blend1 = GL_ALPHA;
-    s_draw3.blend2 = GL_ONE;
-}
+    anime3.texture = textureTable["x6.png"];
+    anime3.object3D = object3DTable["rect"];
+    anime3.position = position;
+    anime3.scale = scale;
+    anime3.scale.x -= 0.05;
+    anime3.scale.y -= 0.05;
+    anime3.scale.z -= 0.05;
+    anime3.alpha = 1;
+    anime3.color = {1.0, 0.9, 0.9, 1.0};
+    anime3.isAlphaMap = true;
+    anime3.blend1 = GL_ALPHA;
+    anime3.blend2 = GL_ONE;
+}*/
 
 

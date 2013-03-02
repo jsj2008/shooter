@@ -237,7 +237,8 @@
     t->position.y = _player->position.y;
     t->position.z = 0.5;
     t->setMoveAspect(fireAspect);
-    if ((int)now % 2==0)
+    
+    if (0)
     {
         t->init(HG_BULLET_N2);
     }

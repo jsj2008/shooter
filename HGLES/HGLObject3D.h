@@ -25,7 +25,7 @@ public:
     HGLVector3 scale   ; // 拡大縮小
     float useLight; // 光源を使用するか
     float alpha; // アルファ値
-    bool looktoCamera; // 常にカメラに向く
+    bool paralell; // 常にカメラに向く
     
 private:
     std::vector<HGLMesh*> meshlist;

@@ -9,9 +9,9 @@
 #import "HGLIndexBuffer.h"
 #import "HGLTexture.h"
 
-typedef struct t_2d
+typedef struct t_hgl2d
 {
-    t_2d():
+    t_hgl2d():
     texture(NULL),
     scale(1,1,1),
     position(0,0,0),
@@ -27,13 +27,13 @@ typedef struct t_2d
     float paralell; // cameraに並行
     float alpha; // alpha値
     Color color; // アルファマップの色指定
-} t_2d;
+} t_hgl2d;
 
 class HGLGraphics2D
 {
 public:
     static void setup();
-    static void draw(t_2d* t);
+    static void draw(const t_hgl2d* t);
     
 private:
     static HGLVertexBuffer* vertexBuffer;

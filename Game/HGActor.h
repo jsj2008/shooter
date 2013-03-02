@@ -1,10 +1,11 @@
 #import "HGLObject3D.h"
 #import "HGLVector3.h"
 #import "HGLTexture.h"
+#import "HGLGraphics2D.h"
 #import <map>
 #import <string>
 
-
+/*
 typedef struct t_draw {
     t_draw():
         object3D(NULL),
@@ -41,6 +42,7 @@ typedef struct t_draw {
     short textureH;
     short textureRepeatNum;
 } t_draw;
+*/
 
 // 3dやテクスチャなどのデータを読み込む
 #warning 後で適切な場所に移すことを検討
@@ -58,7 +60,7 @@ public:
         rotate(0,0,0),
         position(0,0,0),
         acceleration(0,0,0),
-        drawCounter(1)
+        updateCount(0)
         {}
     
     virtual void draw() = 0;
@@ -66,6 +68,7 @@ public:
     void setVelocity(float velocity);
     virtual void setAspect(float degree);
     void setMoveAspect(float degree);
+    void draw(t_hgl2d* p);
     
     ~HGActor();
     
@@ -76,18 +79,15 @@ public:
     float aspect; // degree
     float radian;
     float moveAspect; // radian
-    unsigned int drawCounter;
+    unsigned int updateCount;
     
 #warning 後で適切な場所に移すことを検討
     static std::map<std::string, HGLObject3D*> object3DTable;
     static std::map<std::string, HGLTexture*> textureTable;
     
 protected:
-    t_draw s_draw1;
-    t_draw s_draw2;
-    t_draw s_draw3;
     HGLVector3 acceleration; // 加速
     
-    void draw(t_draw* p);
+    //void draw(t_draw* p);
     
 };

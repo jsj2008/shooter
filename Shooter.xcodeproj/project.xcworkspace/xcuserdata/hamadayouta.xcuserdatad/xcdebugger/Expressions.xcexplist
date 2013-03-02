@@ -17,27 +17,18 @@
          contextName = "split(std::__1::vector&lt;std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;, std::__1::allocator&lt;std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; &gt; &gt;*, std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; const*, std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;):GLUtil.mm">
       </ContextState>
       <ContextState
-         contextName = "Material::bind():Material.mm">
-      </ContextState>
-      <ContextState
          contextName = "IndexBuffer::IndexBuffer(unsigned char const*, int):IndexBuffer.mm">
          <PersistentStrings>
-            <PersistentString
-               value = "sizeof(Vertex)">
-            </PersistentString>
             <PersistentString
                value = "indices[1]">
             </PersistentString>
             <PersistentString
                value = "sizeof(Index)">
             </PersistentString>
+            <PersistentString
+               value = "sizeof(Vertex)">
+            </PersistentString>
          </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "HGLMesh::draw():HGLMesh.mm">
-      </ContextState>
-      <ContextState
-         contextName = "HGLIndexBuffer::draw():HGLIndexBuffer.mm">
       </ContextState>
       <ContextState
          contextName = "HGLIndexBuffer::HGLIndexBuffer(unsigned short const*, int):HGLIndexBuffer.mm">
@@ -48,15 +39,13 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "GLES::compileShaders():GLES.mm">
-         <PersistentStrings>
-            <PersistentString
-               value = "aNormalSlot">
-            </PersistentString>
-            <PersistentString
-               value = "aPositionSlot">
-            </PersistentString>
-         </PersistentStrings>
+         contextName = "HGLIndexBuffer::draw():HGLIndexBuffer.mm">
+      </ContextState>
+      <ContextState
+         contextName = "HGLMesh::draw():HGLMesh.mm">
+      </ContextState>
+      <ContextState
+         contextName = "Material::bind():Material.mm">
       </ContextState>
       <ContextState
          contextName = "ObjLoader::addMeshTo(Object3D*, std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;):ObjLoader.mm">
@@ -68,6 +57,17 @@
       </ContextState>
       <ContextState
          contextName = "IndexBuffer::draw():IndexBuffer.mm">
+      </ContextState>
+      <ContextState
+         contextName = "GLES::compileShaders():GLES.mm">
+         <PersistentStrings>
+            <PersistentString
+               value = "aPositionSlot">
+            </PersistentString>
+            <PersistentString
+               value = "aNormalSlot">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "ObjLoader::addIndex(std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;*):ObjLoader.mm">
@@ -97,6 +97,33 @@
             </PersistentString>
             <PersistentString
                value = "sizeof(Vertex)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "HGLObjLoader::addIndex(std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;*):HGLObjLoader.mm">
+         <PersistentStrings>
+            <PersistentString
+               value = "uvs">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "HGLObjLoader::addMeshTo(HGLObject3D*, std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;):HGLObjLoader.mm">
+         <PersistentStrings>
+            <PersistentString
+               value = "indices">
+            </PersistentString>
+            <PersistentString
+               value = "vertices">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "HGLObjLoader::load(NSString*):HGLObjLoader.mm">
+         <PersistentStrings>
+            <PersistentString
+               value = "uvs">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

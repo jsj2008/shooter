@@ -21,22 +21,24 @@ void HGLGraphics2D::setup()
 {
     // 頂点バッファ、インデックスバッファ作成
     Vertex rectVertex[4] = {
-        Vertex({1,-1,0},{1,0},{0,0,1}),
-        Vertex({1,1,0},{1,1},{0,0,1}),
-        Vertex({-1,1,0},{0,1},{0,0,1}),
-        Vertex({-1,-1,0},{0,9},{0,0,1})
+        Vertex({1,-1,0},{1,1},{0,0,1}),
+        Vertex({1,1,0},{1,0},{0,0,1}),
+        Vertex({-1,1,0},{0,0},{0,0,1}),
+        Vertex({-1,-1,0},{0,1},{0,0,1})
     };
     // http://www9.plala.or.jp/sgwr-t/c/sec10-2.html
     // 配列のときは&をつけなくても先頭要素のアドレス
     vertexBuffer = new HGLVertexBuffer(rectVertex, 4);
     Index index[] = {
-        0, 1, 2, 2, 3, 0
+        0,1,2,2,3,0
     };
     indexBuffer = new HGLIndexBuffer(index, 6);
 }
 
-void HGLGraphics2D::draw(t_2d* p)
+void HGLGraphics2D::draw(const t_hgl2d* p)
 {
+    // 光源使用有無設定
+    glUniform1f(HGLES::uUseLight, 0.0);
     
     // アルファ値設定
     glUniform1f(HGLES::uAlpha, p->alpha);
@@ -61,25 +63,12 @@ void HGLGraphics2D::draw(t_2d* p)
     
     // テクスチャ設定
     HGLTexture* t = p->texture;
-    t->isAlphaMap = p->isAlphaMap;
     t->color = p->color;
-    t->repeatNum = p->textureRepeatNum; // とりあえずオブジェクト単位
-        
-    // 合成方法指定
-    t->blend1 = p->blend1;
-    t->blend2 = p->blend2;
-    
-    // スプライト
-    /*
-    if (p->isSprite)
-    {
-        t->setTextureAr
-    }*/
     
     t->bind();
-    
+    vertexBuffer->bind();
     indexBuffer->draw();
-    
+    vertexBuffer->unbind();
     t->unbind();
     
     // 行列をもとに戻しておく

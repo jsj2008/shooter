@@ -1,4 +1,5 @@
 #import "HGLTypes.h"
+#import "HGLGraphics2D.h"
 
 enum HG_BULLET_TYPE {
     HG_BULLET_N1,
@@ -27,5 +28,9 @@ public:
     void N1Init();
     void N2Draw();
     void N2Init();
+    
+private:
+    t_hgl2d anime1;
+    t_hgl2d anime2;
     
 };

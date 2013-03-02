@@ -27,10 +27,7 @@ HGLMesh::HGLMesh(HGLVertexBuffer* v, HGLIndexBuffer* i, HGLMaterial* m, HGLTextu
 void HGLMesh::draw()
 {
     if (material) material->bind();
-    if (texture)
-    {
-        texture->bind();
-    }
+    if (texture) texture->bind();
     vertexBuffer->bind();
     indexBuffer->draw();
     vertexBuffer->unbind();
