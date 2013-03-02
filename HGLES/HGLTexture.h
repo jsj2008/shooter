@@ -11,6 +11,7 @@
 #import <string>
 #import <GLKit/GLKit.h>
 #import "HGLVector3.h"
+#import <map>
 
 class HGLTexture
 {
@@ -30,6 +31,7 @@ public:
     float isAlphaMap;
     
 private:
+    static std::map<std::string, HGLTexture*> textureInstance;
     GLuint textureId;
     size_t width;
     size_t height;

@@ -246,6 +246,11 @@
     if (a >= 1.0)
     {
         frameSkip = (int)(a+0.5);
+        // 最大でも３回しかフレームスキップしない
+        if (frameSkip > 3)
+        {
+            frameSkip = 3;
+        }
     }
 }
 

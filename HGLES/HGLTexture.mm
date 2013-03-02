@@ -15,9 +15,17 @@
 #import "HGLES.h"
 #include <OpenGLES/ES2/gl.h>
 #include <OpenGLES/ES2/glext.h>
+#include <map>
+
+std::map<std::string, HGLTexture*> HGLTexture::textureInstance;
 
 HGLTexture* HGLTexture::createTextureWithAsset(std::string name)
 {
+    /*
+    if (textureInstance.find(name) != textureInstance.end())
+    {
+        return *textureInstance[name];
+    }*/
     
     glEnable(GL_TEXTURE_2D);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
