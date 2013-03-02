@@ -84,6 +84,14 @@ HGLTexture* HGLTexture::createTextureWithAsset(std::string name)
     return tex;
 }
 
+void HGLTexture::deleteTextures()
+{
+    for (std::map<std::string, t_hgl_tex_cache>::iterator itr = textureIds.begin(); itr != textureIds.end(); itr++)
+    {
+        glDeleteTextures(1, &itr->second.textureId);
+    }
+}
+
 GLKMatrix4 HGLTexture::getTextureMatrix(int x, int y, int w, int h)
 {
     //ピクセル座標をUV座標に変換
@@ -169,7 +177,7 @@ void HGLTexture::unbind()
 
 HGLTexture::~HGLTexture()
 {
-#warning 再使用するので削除しない
+    // 再使用するのでここでは削除しない
     /*
     if (textureId)
     {

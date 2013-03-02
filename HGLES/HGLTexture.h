@@ -24,6 +24,7 @@ class HGLTexture
 {
 public:
     static HGLTexture* createTextureWithAsset(std::string name);
+    static void deleteTextures();
     HGLTexture();
     void bind();
     void unbind();
