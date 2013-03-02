@@ -36,6 +36,15 @@ void HGFighter::draw()
     (this->*pDrawFunc)();
 }
 
+void HGFighter::update()
+{
+#warning 種類別に
+    base::update();
+    int spIdx = getSpriteIndex(aspect + 0.5);
+    int x = s_draw1.textureW * spIdx;
+    s_draw1.texture->setTextureArea(x, 0, 64, 64);
+}
+
 // --------------------------------------------------
 // 種類別
 // --------------------------------------------------

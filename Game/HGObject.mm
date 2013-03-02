@@ -7,6 +7,11 @@ HGObject::HGObject()
 {
 }
 
+void HGObject::update()
+{
+    base::update();
+}
+
 // 種類ごとに関数ポインタを設定
 void HGObject::init(HG_OBJECT_TYPE type)
 {

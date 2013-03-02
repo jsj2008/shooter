@@ -17,59 +17,65 @@
 #include <OpenGLES/ES2/glext.h>
 #include <map>
 
-std::map<std::string, HGLTexture*> HGLTexture::textureInstance;
+#warning メモリ解放
+std::map<std::string, t_hgl_tex_cache> HGLTexture::textureIds;
 
 HGLTexture* HGLTexture::createTextureWithAsset(std::string name)
 {
-    /*
-    if (textureInstance.find(name) != textureInstance.end())
-    {
-        return *textureInstance[name];
-    }*/
-    
-    glEnable(GL_TEXTURE_2D);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glEnable(GL_BLEND);
-    
     HGLTexture* tex = new HGLTexture();
-    glGenTextures(1, &tex->textureId);
-    
-    CGImageRef image;
-    CGContextRef spriteContext;
-    GLubyte *spriteData;
-    size_t    width, height;
-    
-    image = [UIImage imageNamed:[NSString stringWithCString:name.c_str() encoding:NSUTF8StringEncoding]].CGImage;
-    width = CGImageGetWidth(image);
-    height = CGImageGetHeight(image);
-    tex->width = width; tex->height = height;
-    
-    if(image) {
-        spriteData = (GLubyte *) malloc(width * height * 4); // 32bit color
-        spriteContext = CGBitmapContextCreate(spriteData, width, height, 8, width * 4, CGImageGetColorSpace(image), kCGImageAlphaPremultipliedLast);
+    if (textureIds.find(name) == textureIds.end())
+    {
         
-        // 一旦コメント
-        //these next two lines are necessary because the iPhone has its y-axis upside down, so everything looks flipped
-        //CGContextTranslateCTM(spriteContext, 0.0, height); //i.e., move the y-origin from the top to the bottom
-        //CGContextScaleCTM(spriteContext, 1.0, -1.0); //i.e., invert the y-axis
-        
-        CGContextDrawImage(spriteContext, CGRectMake(0.0, 0.0, (CGFloat)width, (CGFloat)height), image);
-        CGContextRelease(spriteContext);
-        glBindTexture(GL_TEXTURE_2D, tex->textureId);    // first Bind creates the texture and assigns a numeric name to it
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, spriteData);
-        free(spriteData);
-        
-        //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glEnable(GL_TEXTURE_2D);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glEnable(GL_BLEND);
-        glEnable(GL_ALPHA_TEST);
         
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glGenTextures(1, &tex->textureId);
         
+        CGImageRef image;
+        CGContextRef spriteContext;
+        GLubyte *spriteData;
+        size_t    width, height;
+        
+        image = [UIImage imageNamed:[NSString stringWithCString:name.c_str() encoding:NSUTF8StringEncoding]].CGImage;
+        width = CGImageGetWidth(image);
+        height = CGImageGetHeight(image);
+        tex->width = width; tex->height = height;
+        
+        if(image) {
+            spriteData = (GLubyte *) malloc(width * height * 4); // 32bit color
+            spriteContext = CGBitmapContextCreate(spriteData, width, height, 8, width * 4, CGImageGetColorSpace(image), kCGImageAlphaPremultipliedLast);
+            
+            // 一旦コメント
+            //these next two lines are necessary because the iPhone has its y-axis upside down, so everything looks flipped
+            //CGContextTranslateCTM(spriteContext, 0.0, height); //i.e., move the y-origin from the top to the bottom
+            //CGContextScaleCTM(spriteContext, 1.0, -1.0); //i.e., invert the y-axis
+            
+            CGContextDrawImage(spriteContext, CGRectMake(0.0, 0.0, (CGFloat)width, (CGFloat)height), image);
+            CGContextRelease(spriteContext);
+            glBindTexture(GL_TEXTURE_2D, tex->textureId);    // first Bind creates the texture and assigns a numeric name to it
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, spriteData);
+            free(spriteData);
+            
+            //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            glEnable(GL_TEXTURE_2D);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            glEnable(GL_BLEND);
+            glEnable(GL_ALPHA_TEST);
+            
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+            
+        }
+        textureIds[name] = {tex->textureId, tex->width, tex->height};
+    }
+    else
+    {
+        t_hgl_tex_cache* org = &textureIds[name];
+        tex->textureId = org->textureId;
+        tex->width = org->width; tex->height = org->height;
     }
     
     return tex;

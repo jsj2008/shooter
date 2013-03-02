@@ -86,7 +86,7 @@ void HGActor::setMoveAspect(float degree)
     moveAspect = degree * M_PI / 180;
 }
 
-void HGActor::move()
+void HGActor::update()
 {
     if (velocity)
     {

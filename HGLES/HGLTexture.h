@@ -13,6 +13,13 @@
 #import "HGLVector3.h"
 #import <map>
 
+typedef struct t_hgl_tex_cache
+{
+    GLuint textureId;
+    size_t width;
+    size_t height;
+} t_hgl_tex_cache;
+
 class HGLTexture
 {
 public:
@@ -31,7 +38,7 @@ public:
     float isAlphaMap;
     
 private:
-    static std::map<std::string, HGLTexture*> textureInstance;
+    static std::map<std::string, t_hgl_tex_cache> textureIds;
     GLuint textureId;
     size_t width;
     size_t height;

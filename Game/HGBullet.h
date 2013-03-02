@@ -12,6 +12,7 @@ public:
     HGBullet();
     Color color;
     void draw();
+    void update();
     void init(HG_BULLET_TYPE type);
     HGLTexture* blurTexture;
     

@@ -10,6 +10,7 @@ public:
     HGObject();
     void draw();
     void init(HG_OBJECT_TYPE type);
+    void update();
     
 private:
     

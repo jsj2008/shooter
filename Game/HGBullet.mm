@@ -16,6 +16,11 @@ t_hg_bullet_type hg_bullet_table[] =
     {&HGBullet::N2Init, &HGBullet::N2Draw},
 };
 
+void HGBullet::update()
+{
+    base::update();
+}
+
 HGBullet::HGBullet()
 {
     color.r = 1.0; color.g = 1.0; color.b = 1.0; color.a = 1.0;

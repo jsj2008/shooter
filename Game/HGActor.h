@@ -4,6 +4,7 @@
 #import <map>
 #import <string>
 
+
 typedef struct t_draw {
     t_draw():
         object3D(NULL),
@@ -61,7 +62,7 @@ public:
         {}
     
     virtual void draw() = 0;
-    void move();
+    virtual void update();
     void setVelocity(float velocity);
     virtual void setAspect(float degree);
     void setMoveAspect(float degree);

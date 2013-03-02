@@ -255,7 +255,7 @@
 {
     @synchronized(self)
     {
-        _player->move();
+        _player->update();
         
         [self fire];
         
@@ -268,14 +268,14 @@
     for (std::vector<HGFighter*>::iterator itr = _enemies.begin(); itr != _enemies.end(); ++itr)
     {
         HGFighter* a = *itr;
-        a->move();
+        a->update();
     }
     
     // move bullets
     for (std::vector<HGBullet*>::iterator itr = _bullets.begin(); itr != _bullets.end(); ++itr)
     {
         HGBullet* a = *itr;
-        a->move();
+        a->update();
     }
     
     // 描画
@@ -298,6 +298,7 @@
         {
             HGObject* a = *itr;
             a->draw();
+            a->update();
         }
         
         // draw enemies

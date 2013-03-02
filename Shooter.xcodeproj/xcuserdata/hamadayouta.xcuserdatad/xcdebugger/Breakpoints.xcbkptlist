@@ -481,7 +481,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "91"
          endingLineNumber = "91"
-         landmarkName = "HGActor::move()"
+         landmarkName = "HGActor::update()"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -507,7 +507,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "93"
          endingLineNumber = "93"
-         landmarkName = "HGActor::move()"
+         landmarkName = "HGActor::update()"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -520,7 +520,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "94"
          endingLineNumber = "94"
-         landmarkName = "HGActor::move()"
+         landmarkName = "HGActor::update()"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -528,11 +528,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Shooter/ViewController.mm"
-         timestampString = "383415573.790668"
+         timestampString = "383892328.772413"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "305"
-         endingLineNumber = "305"
+         startingLineNumber = "306"
+         endingLineNumber = "306"
          landmarkName = "-render"
          landmarkType = "5">
       </FileBreakpoint>
@@ -559,7 +559,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "97"
          endingLineNumber = "97"
-         landmarkName = "HGActor::move()"
+         landmarkName = "HGActor::update()"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -567,11 +567,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HGLES/HGLTexture.mm"
-         timestampString = "383404465.484929"
+         timestampString = "383892328.772413"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "140"
-         endingLineNumber = "140"
+         startingLineNumber = "154"
+         endingLineNumber = "154"
          landmarkName = "HGLTexture::bind()"
          landmarkType = "5">
       </FileBreakpoint>
@@ -632,11 +632,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HGLES/HGLTexture.mm"
-         timestampString = "383404465.484929"
+         timestampString = "383892328.772413"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "127"
-         endingLineNumber = "127"
+         startingLineNumber = "141"
+         endingLineNumber = "141"
          landmarkName = "HGLTexture::bind()"
          landmarkType = "5">
       </FileBreakpoint>
@@ -645,11 +645,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HGLES/HGLTexture.mm"
-         timestampString = "383404465.484929"
+         timestampString = "383892328.772413"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "138"
-         endingLineNumber = "138"
+         startingLineNumber = "152"
+         endingLineNumber = "152"
          landmarkName = "HGLTexture::bind()"
          landmarkType = "5">
       </FileBreakpoint>
@@ -658,11 +658,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Game/HGFighter.mm"
-         timestampString = "383411399.151307"
+         timestampString = "383892374.254081"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "60"
-         endingLineNumber = "60"
+         startingLineNumber = "64"
+         endingLineNumber = "64"
          landmarkName = "HGFighter::N1Draw()"
          landmarkType = "5">
       </FileBreakpoint>
@@ -723,11 +723,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Shooter/ViewController.mm"
-         timestampString = "383415573.790668"
+         timestampString = "383892328.772413"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "311"
-         endingLineNumber = "311"
+         startingLineNumber = "312"
+         endingLineNumber = "312"
          landmarkName = "-render"
          landmarkType = "5">
       </FileBreakpoint>
@@ -780,6 +780,19 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "24"
          endingLineNumber = "24">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "HGLES/HGLTexture.mm"
+         timestampString = "383892328.772413"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "29"
+         endingLineNumber = "29"
+         landmarkName = "HGLTexture::createTextureWithAsset(std::string name)"
+         landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
 </Bucket>
