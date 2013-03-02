@@ -33,40 +33,14 @@ uniform vec4 uColor;
 varying vec4 vColor;
 varying vec2 vUV;
 
-void main(void) { // 4
+void main(void) {
 
     gl_Position = uMvpMatrix * aPosition;
-
     // UV
     if (uUseTexture > 0.0)
     {
         vUV = vec2(uTexMatrix*vec4(aUV, 0.0, 1.0));
     }
-
-    // Color
-    if (uUseLight > 0.0)
-    {
-        // environment
-        vec4 ambient = uLightAmbient * uMaterialAmbient;
-
-        // diffuse
-        vec3 P = vec3(uMMatrix * aPosition);
-        vec3 L = normalize(uLightPos - P);
-        vec3 N = normalize(mat3(uNormalMatrix) * aNormal);
-        vec4 diffuseP = vec4(max(dot(L,N), 0.0));
-        vec4 diffuse = diffuseP * uLightDiffuse * uMaterialDiffuse;
-
-        // specular
-        vec3 S = normalize(L+vec3(0.0, 0.0, 1.0));
-        float specularP = pow(max(dot(N,S), 0.0), uMaterialShininess);
-        vec4 specular = specularP * uLightSpecular * uMaterialSpecular;
-
-        // fragment color
-        vColor = ambient + diffuse + specular;
-    }
-    else
-    {
-        vColor = uColor;
-    }
+    vColor = uColor;
 
 }
