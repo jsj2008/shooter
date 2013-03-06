@@ -18,19 +18,20 @@
 #include <map>
 
 #warning メモリ解放
-std::map<std::string, t_hgl_tex_cache> HGLTexture::textureIds;
+std::map<std::string, HGLTexture*> HGLTexture::textureIds;
 
 HGLTexture* HGLTexture::createTextureWithAsset(std::string name)
 {
-    HGLTexture* tex = new HGLTexture();
     if (textureIds.find(name) == textureIds.end())
     //if (1)
     {
+        HGLTexture* tex = new HGLTexture();
         
         glEnable(GL_TEXTURE_2D);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glEnable(GL_BLEND);
         
+#warning テクスチャを動的にロードしたい場合、必要な分のテクスチャIDを作成しておく
         glGenTextures(1, &tex->textureId);
         
         CGImageRef image;
@@ -71,24 +72,34 @@ HGLTexture* HGLTexture::createTextureWithAsset(std::string name)
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
             
         }
-        textureIds[name] = {tex->textureId, tex->width, tex->height};
+        textureIds[name] = tex;
+        return tex;
     }
     else
     {
+        return textureIds[name];
+        /*
         t_hgl_tex_cache* org = &textureIds[name];
         tex->textureId = org->textureId;
         tex->sprWidth = tex->width = org->width;
         tex->sprHeight = tex->height = org->height;
+        */
     }
     
-    return tex;
 }
 
-void HGLTexture::deleteTextures()
+HGLTexture::HGLTexture(const HGLTexture& obj)
 {
-    for (std::map<std::string, t_hgl_tex_cache>::iterator itr = textureIds.begin(); itr != textureIds.end(); itr++)
+    this->textureId = obj.textureId;
+    this->sprWidth  = this->width = obj.width;
+    this->sprHeight = this->height = obj.height;
+}
+
+void HGLTexture::deleteAllTextures()
+{
+    for (std::map<std::string, HGLTexture*>::iterator itr = textureIds.begin(); itr != textureIds.end(); itr++)
     {
-        glDeleteTextures(1, &itr->second.textureId);
+        glDeleteTextures(1, &itr->second->textureId);
     }
 }
 
@@ -118,6 +129,7 @@ HGLTexture::HGLTexture()
     textureMatrix = GLKMatrix4Identity;
     isAlphaMap = 0.0;
     color.r = 1.0; color.g = 1.0; color.b = 1.0; color.a = 1.0;
+    blendColor = {1.0, 1.0, 1.0, 1.0};
     repeatNum = 1;
     blend1 = GL_SRC_ALPHA;
     blend2 = GL_ONE_MINUS_SRC_ALPHA;
@@ -164,6 +176,7 @@ void HGLTexture::bind()
     {
         glUniform4fv(HGLES::uColor, 1, (GLfloat*)(&color));
     }
+    glUniform4fv(HGLES::uBlendColor, 1, (GLfloat*)(&blendColor));
     //}
 }
 

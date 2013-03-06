@@ -30,6 +30,7 @@ void HGBullet::init(HG_BULLET_TYPE type)
 {
     // オブジェクトの種類別の関数を設定
 #warning テーブル化
+    base::setSize(64, 64);
     pInitFunc = hg_bullet_table[type].pInitFunc;
     pDrawFunc = hg_bullet_table[type].pDrawFunc;
     
@@ -73,40 +74,40 @@ void HGBullet::N1Draw()
 
 void HGBullet::N1Init()
 {
+    base::setActorInfo(HG_TYPE_WEAPON1);
+    //base::setSize(12, 12);
+    
     setVelocity(0.3);
     scale.set(0.3, 0.3, 0.3);
     color = {1.0, 1.0, 1.0};
     
+    /*
     if (anime1.texture)
     {
         //delete anime1.texture; anime1.texture = NULL;
-    }
-    anime1.texture = HGLTexture::createTextureWithAsset("star.png");
+    }*/
+    anime1.texture = (*HGLTexture::createTextureWithAsset("star.png"));
     anime1.position = position;
     anime1.scale = scale;
-    anime1.scale.x += 0.8;
-    anime1.scale.y += 0.8;
-    anime1.scale.z += 0.8;
     anime1.alpha = 0.8;
-    anime1.color = {0.5, 0.5, 1.0, 1.0};
-    anime1.texture->color = {0.5, 0.5, 1.0, 1.0};
-    anime1.texture->isAlphaMap = 1;
-    anime1.texture->blend1 = GL_ALPHA;
-    anime1.texture->blend2 = GL_ALPHA;
+    anime1.texture.color = {0.5, 0.5, 1.0, 1.0};
+    anime1.texture.isAlphaMap = 1;
+    anime1.texture.blend1 = GL_ALPHA;
+    anime1.texture.blend2 = GL_ALPHA;
     
+    /*
     if (anime2.texture)
     {
         //delete anime2.texture; anime2.texture = NULL;
-    }
-    anime2.texture = HGLTexture::createTextureWithAsset("divine.png");
+    }*/
+    anime2.texture = *HGLTexture::createTextureWithAsset("divine.png");
     anime2.position = position;
     anime2.scale = scale;
     anime2.alpha = 1;
-    anime2.texture->color = {1,1,1,1};
-    anime2.color = {1,1,1,1};
-    anime2.texture->isAlphaMap = 1;
-    anime2.texture->blend1 = GL_ALPHA;
-    anime2.texture->blend2 = GL_ALPHA;
+    anime2.texture.color = {1,1,1,1};
+    anime2.texture.isAlphaMap = 1;
+    anime2.texture.blend1 = GL_ALPHA;
+    anime2.texture.blend2 = GL_ALPHA;
 }
 
 /*

@@ -130,13 +130,13 @@
     EAGLRenderingAPI api = kEAGLRenderingAPIOpenGLES2;
     _context = [[EAGLContext alloc] initWithAPI:api];
     if (!_context) {
-        NSLog(@"Failed to initialize OpenGLES 2.0 context");
+        LOG(@"Failed to initialize OpenGLES 2.0 context");
         exit(1);
     }
     
     // 作成したコンテキストを現在のコンテキストとして設定
     if (![EAGLContext setCurrentContext:_context]) {
-        NSLog(@"Failed to set current OpenGL context");
+        LOG(@"Failed to set current OpenGL context");
         exit(1);
     }
 }
@@ -162,7 +162,7 @@
 
 - (void)initFrame
 {
-    glClearColor(0, 104.0/255.0, 55.0/255.0, 1.0);
+    glClearColor(0.1, 0.5, 0.7, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
 }
@@ -185,13 +185,20 @@
 - (void)updateCamera
 {
     // camera setting
-    HGLES::cameraPosition = self.cameraPosition;
-    HGLES::cameraRotate = self.cameraRotate;
+    //HGLES::cameraPosition = self.cameraPosition;
+    //HGLES::cameraRotate = self.cameraRotate;
+    HGLES::cameraMatrix = GLKMatrix4Identity;
+    HGLES::cameraMatrix = GLKMatrix4Rotate(HGLES::cameraMatrix, self.cameraRotate.x, 1, 0, 0);
+    HGLES::cameraMatrix = GLKMatrix4Rotate(HGLES::cameraMatrix, self.cameraRotate.y, 0, 1, 0);
+    HGLES::cameraMatrix = GLKMatrix4Rotate(HGLES::cameraMatrix, self.cameraRotate.z, 0, 0, 1);
+    HGLES::cameraMatrix = GLKMatrix4Translate(HGLES::cameraMatrix, self.cameraPosition.x, self.cameraPosition.y, self.cameraPosition.z);
+    /*
     HGLES::mvMatrix = GLKMatrix4Identity;
     HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, self.cameraRotate.x, 1, 0, 0);
     HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, self.cameraRotate.y, 0, 1, 0);
     HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, self.cameraRotate.z, 0, 0, 1);
     HGLES::mvMatrix = GLKMatrix4Translate(HGLES::mvMatrix, self.cameraPosition.x, self.cameraPosition.y, self.cameraPosition.z);
+     */
 }
 
 - (void)showBuffer
@@ -213,7 +220,7 @@
         if (start - lastDrawTime < sleep)
         {
 #if IS_DEBUG && 0
-            NSLog(@"frame skip");
+            LOG(@"frame skip");
 #endif
             return;
         }
@@ -227,7 +234,7 @@
     {
         frameSkip--;
 #if IS_DEBUG
-        NSLog(@"frame skip2");
+        LOG(@"frame skip2");
 #endif
         return;
     }

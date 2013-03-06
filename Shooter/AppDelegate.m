@@ -7,8 +7,12 @@
 //
 
 #import "AppDelegate.h"
+#import "Common.h"
 
 #import "ViewController.h"
+#if IS_TEST_VIEW
+#import "TestViewController.h"
+#endif
 
 #import "HGLView.h"
 
@@ -37,7 +41,12 @@ HGLView* _glView;
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
+    
+#if IS_TEST_VIEW
+    self.viewController = [[[TestViewController alloc] init] autorelease];
+#else
     self.viewController = [[[ViewController alloc] init] autorelease];
+#endif
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
     return YES;

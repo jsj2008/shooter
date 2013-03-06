@@ -51,8 +51,27 @@ void HGLObject3D::draw()
     glUniform1f(HGLES::uAlpha, alpha);
     
     // モデルビュー変換
+    // 注意!
+    // 拡大した後のアフィン変換はすべて拡大が適用される。
+    // 回転した後平行移動すると平行移動の向きが変わる
+    // =====正しい順序はこうなる
+    // 行列をスタックに積む
+    // ワールド座標での平行移動
+    // ワールド座標での回転
+    // ワールド座標での拡大
+    // 以下、下記を繰り返す
+    // ...行列をスタックに積む
+    // ...ローカル座標での平行移動
+    // ...ローカル座標での回転
+    // ...ローカル座標での拡大
+    // ...自身を描画
+    // ...子を描画(再帰呼び出し)
+    // ...行列をポップする
+    // 行列をポップする
+    // =====終わり
     HGLES::pushMatrix();
     HGLES::mvMatrix = GLKMatrix4Translate(HGLES::mvMatrix, position.x, position.y, position.z);
+    HGLES::mvMatrix = GLKMatrix4Scale(HGLES::mvMatrix, scale.x, scale.y, scale.z);
     if (paralell)
     {
         HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, HGLES::cameraRotate.x*-1, 1, 0, 0);
@@ -65,7 +84,6 @@ void HGLObject3D::draw()
         HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, rotate.y, 0, 1, 0);
         HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, rotate.z, 0, 0, 1);
     }
-    HGLES::mvMatrix = GLKMatrix4Scale(HGLES::mvMatrix, scale.x, scale.y, scale.z);
     HGLES::updateMatrix();
     
     // 自分を描画

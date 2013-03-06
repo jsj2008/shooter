@@ -26,6 +26,9 @@
 		0733406216BDAE4B00DB2D34 /* teoke.obj in Resources */ = {isa = PBXBuildFile; fileRef = 0733406116BDAE4A00DB2D34 /* teoke.obj */; };
 		0733406416BDAF7800DB2D34 /* yakuimon.obj in Resources */ = {isa = PBXBuildFile; fileRef = 0733406316BDAF7800DB2D34 /* yakuimon.obj */; };
 		0733406616BDB06D00DB2D34 /* teapot.obj in Resources */ = {isa = PBXBuildFile; fileRef = 0733406516BDB06D00DB2D34 /* teapot.obj */; };
+		0744104B16E1D8D80076D7E4 /* fragment2d.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 0744104916E1D8D80076D7E4 /* fragment2d.glsl */; };
+		0744104C16E1D8D80076D7E4 /* vertex2d.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 0744104A16E1D8D80076D7E4 /* vertex2d.glsl */; };
+		0744105016E24CB00076D7E4 /* HGRect.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0744104F16E24CB00076D7E4 /* HGRect.mm */; };
 		0755991316B3D0560066A0E9 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0755991216B3D0560066A0E9 /* QuartzCore.framework */; };
 		0755992916B561490066A0E9 /* block.mtl in Resources */ = {isa = PBXBuildFile; fileRef = 0755992716B561490066A0E9 /* block.mtl */; };
 		0755992A16B561490066A0E9 /* block.obj in Resources */ = {isa = PBXBuildFile; fileRef = 0755992816B561490066A0E9 /* block.obj */; };
@@ -40,6 +43,17 @@
 		07B4245316D9F132007055DF /* star.png in Resources */ = {isa = PBXBuildFile; fileRef = 07B4245216D9F132007055DF /* star.png */; };
 		07B4245616DA5637007055DF /* HGObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07B4245516DA5637007055DF /* HGObject.mm */; };
 		07D49FF216DA683C0040D8D5 /* x6.png in Resources */ = {isa = PBXBuildFile; fileRef = 07D49FF116DA683C0040D8D5 /* x6.png */; };
+		07D5BC5916E33AEC00F0D665 /* square.png in Resources */ = {isa = PBXBuildFile; fileRef = 07D5BC5816E33AEC00F0D665 /* square.png */; };
+		07D5BC6116E386B100F0D665 /* halfsphere.obj in Resources */ = {isa = PBXBuildFile; fileRef = 07D5BC6016E386B100F0D665 /* halfsphere.obj */; };
+		07D5BC6316E3895A00F0D665 /* space2.png in Resources */ = {isa = PBXBuildFile; fileRef = 07D5BC6216E3895900F0D665 /* space2.png */; };
+		07D5BC6516E38C9D00F0D665 /* sphere.obj in Resources */ = {isa = PBXBuildFile; fileRef = 07D5BC6416E38C9D00F0D665 /* sphere.obj */; };
+		07D5BC6C16E3931D00F0D665 /* galaxy-X.png in Resources */ = {isa = PBXBuildFile; fileRef = 07D5BC6616E3931A00F0D665 /* galaxy-X.png */; };
+		07D5BC6D16E3931D00F0D665 /* galaxy-Y.png in Resources */ = {isa = PBXBuildFile; fileRef = 07D5BC6716E3931A00F0D665 /* galaxy-Y.png */; };
+		07D5BC6E16E3931D00F0D665 /* galaxy-Z.png in Resources */ = {isa = PBXBuildFile; fileRef = 07D5BC6816E3931B00F0D665 /* galaxy-Z.png */; };
+		07D5BC6F16E3931D00F0D665 /* galaxy+X.png in Resources */ = {isa = PBXBuildFile; fileRef = 07D5BC6916E3931B00F0D665 /* galaxy+X.png */; };
+		07D5BC7016E3931D00F0D665 /* galaxy+Y.png in Resources */ = {isa = PBXBuildFile; fileRef = 07D5BC6A16E3931C00F0D665 /* galaxy+Y.png */; };
+		07D5BC7116E3931D00F0D665 /* galaxy+Z.png in Resources */ = {isa = PBXBuildFile; fileRef = 07D5BC6B16E3931D00F0D665 /* galaxy+Z.png */; };
+		07D5BC7516E63B1700F0D665 /* TestViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07D5BC7416E63B1700F0D665 /* TestViewController.mm */; };
 		07E0463616886E73001F9CCE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07E0463516886E73001F9CCE /* UIKit.framework */; };
 		07E0463816886E73001F9CCE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07E0463716886E73001F9CCE /* Foundation.framework */; };
 		07E0463A16886E73001F9CCE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07E0463916886E73001F9CCE /* CoreGraphics.framework */; };
@@ -165,6 +179,10 @@
 		0733406116BDAE4A00DB2D34 /* teoke.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = teoke.obj; sourceTree = "<group>"; };
 		0733406316BDAF7800DB2D34 /* yakuimon.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = yakuimon.obj; sourceTree = "<group>"; };
 		0733406516BDB06D00DB2D34 /* teapot.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = teapot.obj; sourceTree = "<group>"; };
+		0744104916E1D8D80076D7E4 /* fragment2d.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = fragment2d.glsl; sourceTree = "<group>"; };
+		0744104A16E1D8D80076D7E4 /* vertex2d.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = vertex2d.glsl; sourceTree = "<group>"; };
+		0744104E16E24CB00076D7E4 /* HGRect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGRect.h; sourceTree = "<group>"; };
+		0744104F16E24CB00076D7E4 /* HGRect.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGRect.mm; sourceTree = "<group>"; };
 		0755991216B3D0560066A0E9 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		0755992716B561490066A0E9 /* block.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = block.mtl; sourceTree = "<group>"; };
 		0755992816B561490066A0E9 /* block.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = block.obj; sourceTree = "<group>"; };
@@ -184,6 +202,19 @@
 		07B4245416DA5637007055DF /* HGObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGObject.h; sourceTree = "<group>"; };
 		07B4245516DA5637007055DF /* HGObject.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGObject.mm; sourceTree = "<group>"; };
 		07D49FF116DA683C0040D8D5 /* x6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = x6.png; sourceTree = "<group>"; };
+		07D5BC5816E33AEC00F0D665 /* square.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = square.png; sourceTree = "<group>"; };
+		07D5BC5B16E33CF000F0D665 /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
+		07D5BC6016E386B100F0D665 /* halfsphere.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = halfsphere.obj; sourceTree = "<group>"; };
+		07D5BC6216E3895900F0D665 /* space2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = space2.png; sourceTree = "<group>"; };
+		07D5BC6416E38C9D00F0D665 /* sphere.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = sphere.obj; sourceTree = "<group>"; };
+		07D5BC6616E3931A00F0D665 /* galaxy-X.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "galaxy-X.png"; sourceTree = "<group>"; };
+		07D5BC6716E3931A00F0D665 /* galaxy-Y.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "galaxy-Y.png"; sourceTree = "<group>"; };
+		07D5BC6816E3931B00F0D665 /* galaxy-Z.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "galaxy-Z.png"; sourceTree = "<group>"; };
+		07D5BC6916E3931B00F0D665 /* galaxy+X.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "galaxy+X.png"; sourceTree = "<group>"; };
+		07D5BC6A16E3931C00F0D665 /* galaxy+Y.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "galaxy+Y.png"; sourceTree = "<group>"; };
+		07D5BC6B16E3931D00F0D665 /* galaxy+Z.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "galaxy+Z.png"; sourceTree = "<group>"; };
+		07D5BC7316E63B1700F0D665 /* TestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestViewController.h; sourceTree = "<group>"; };
+		07D5BC7416E63B1700F0D665 /* TestViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TestViewController.mm; sourceTree = "<group>"; };
 		07E0463116886E73001F9CCE /* Shooter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shooter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		07E0463516886E73001F9CCE /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		07E0463716886E73001F9CCE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -330,22 +361,36 @@
 		0755992616B561490066A0E9 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
-				07D49FF116DA683C0040D8D5 /* x6.png */,
-				07B4245216D9F132007055DF /* star.png */,
-				07B4245016D94AEC007055DF /* space.png */,
-				07B4244E16D94145007055DF /* divine.png */,
-				07B4244C16D93F86007055DF /* corona.png */,
-				07B4244A16D932E3007055DF /* wavering.png */,
-				07B4243E16D8F3FA007055DF /* rect.obj */,
+				07D5BC6616E3931A00F0D665 /* galaxy-X.png */,
+				07D5BC6716E3931A00F0D665 /* galaxy-Y.png */,
+				07D5BC6816E3931B00F0D665 /* galaxy-Z.png */,
+				07D5BC6916E3931B00F0D665 /* galaxy+X.png */,
+				07D5BC6A16E3931C00F0D665 /* galaxy+Y.png */,
+				07D5BC6B16E3931D00F0D665 /* galaxy+Z.png */,
+				07D5BC6416E38C9D00F0D665 /* sphere.obj */,
 				07E6508116C9244D00192B8B /* antaeus.bmp */,
+				071B042216C8C59400BEBAC4 /* antaeus.png */,
 				07E6508216C9244D00192B8B /* arabicnum.png */,
 				07E6508316C9244D00192B8B /* banner.png */,
 				07E6508416C9244D00192B8B /* barriar.png */,
+				0755992716B561490066A0E9 /* block.mtl */,
+				0755992816B561490066A0E9 /* block.obj */,
+				0733405716BDA1FB00DB2D34 /* box.obj */,
 				07E6508516C9244D00192B8B /* burst.png */,
 				07E6508616C9244D00192B8B /* clearedimg.png */,
 				07E6508716C9244D00192B8B /* clearedtext.png */,
 				07E6508816C9244D00192B8B /* colony1_s.png */,
+				07B4244C16D93F86007055DF /* corona.png */,
+				07B4244E16D94145007055DF /* divine.png */,
+				0700550116C760EE002BA473 /* dngn_deep_water.bmp */,
+				0700550216C760EE002BA473 /* dngn_lava.bmp */,
+				071B042016C8C24800BEBAC4 /* dngn_lava.jpg */,
+				071B041D16C8C1AB00BEBAC4 /* dngn_lava.png */,
+				0700550516C77AA0002BA473 /* dngn_rock_wall_13.png */,
 				07E6508916C9244D00192B8B /* dosei.png */,
+				070054F616C62DB4002BA473 /* droid.mtl */,
+				0733405516BDA18100DB2D34 /* droid.obj */,
+				0733405916BDA67000DB2D34 /* droid_leg.obj */,
 				07E6508A16C9244D00192B8B /* e_boss.png */,
 				07E6508B16C9244D00192B8B /* e_boss2.png */,
 				07E6508C16C9244D00192B8B /* e_boss3.png */,
@@ -365,6 +410,11 @@
 				07E6509A16C9244D00192B8B /* explode_big.png */,
 				07E6509B16C9244D00192B8B /* explode_med.png */,
 				07E6509C16C9244D00192B8B /* explode_small.png */,
+				070054F716C62DB5002BA473 /* floor.mtl */,
+				070054F816C62DB5002BA473 /* floor.obj */,
+				070054F916C62DB5002BA473 /* floor.png */,
+				07D5BC6016E386B100F0D665 /* halfsphere.obj */,
+				0733405B16BDA72900DB2D34 /* him00obj.obj */,
 				07E6509D16C9244D00192B8B /* hit_small.png */,
 				07E6509E16C9244D00192B8B /* hp.png */,
 				07E6509F16C9244D00192B8B /* icon1.png */,
@@ -396,48 +446,49 @@
 				07E650B916C9244D00192B8B /* raser2.png */,
 				07E650BA16C9244D00192B8B /* raserlong1.png */,
 				07E650BB16C9244D00192B8B /* raserlong2.png */,
+				07B4243E16D8F3FA007055DF /* rect.obj */,
 				07E650BC16C9244D00192B8B /* reportview.png */,
 				07E650BD16C9244D00192B8B /* shot1.png */,
 				07E650BE16C9244D00192B8B /* shotbig_1spr.png */,
 				07E650BF16C9244D00192B8B /* shotbig_2spr.png */,
 				07E650C016C9244D00192B8B /* smallbullet.png */,
+				07B4245016D94AEC007055DF /* space.png */,
+				07D5BC6216E3895900F0D665 /* space2.png */,
 				07E650C116C9244D00192B8B /* space5.png */,
+				07D5BC5816E33AEC00F0D665 /* square.png */,
+				07B4245216D9F132007055DF /* star.png */,
 				07E650C216C9244D00192B8B /* syouhai.png */,
 				07E650C316C9244D00192B8B /* taiyou.png */,
+				0733406516BDB06D00DB2D34 /* teapot.obj */,
+				0733406116BDAE4A00DB2D34 /* teoke.obj */,
+				0733405F16BDAD3300DB2D34 /* teshoku.obj */,
+				0733405216BD9D9100DB2D34 /* test.obj */,
 				07E650C416C9244D00192B8B /* title_1.png */,
 				07E650C516C9244D00192B8B /* titlebg.png */,
 				07E650C616C9244D00192B8B /* tobira_left.png */,
 				07E650C716C9244D00192B8B /* tobira_right.png */,
 				07E650C816C9244D00192B8B /* topmenuback.png */,
-				07E650C916C9244D00192B8B /* yesnowin1.png */,
-				071B042216C8C59400BEBAC4 /* antaeus.png */,
-				071B042016C8C24800BEBAC4 /* dngn_lava.jpg */,
-				071B041D16C8C1AB00BEBAC4 /* dngn_lava.png */,
-				0700550516C77AA0002BA473 /* dngn_rock_wall_13.png */,
-				0700550116C760EE002BA473 /* dngn_deep_water.bmp */,
-				0700550216C760EE002BA473 /* dngn_lava.bmp */,
-				070054F616C62DB4002BA473 /* droid.mtl */,
-				070054F716C62DB5002BA473 /* floor.mtl */,
-				070054F816C62DB5002BA473 /* floor.obj */,
-				070054F916C62DB5002BA473 /* floor.png */,
-				0733406516BDB06D00DB2D34 /* teapot.obj */,
+				07B4244A16D932E3007055DF /* wavering.png */,
+				07D49FF116DA683C0040D8D5 /* x6.png */,
 				0733406316BDAF7800DB2D34 /* yakuimon.obj */,
-				0733406116BDAE4A00DB2D34 /* teoke.obj */,
-				0733405F16BDAD3300DB2D34 /* teshoku.obj */,
-				0733405B16BDA72900DB2D34 /* him00obj.obj */,
-				0733405916BDA67000DB2D34 /* droid_leg.obj */,
-				0733405716BDA1FB00DB2D34 /* box.obj */,
-				0733405516BDA18100DB2D34 /* droid.obj */,
-				0733405216BD9D9100DB2D34 /* test.obj */,
-				0755992716B561490066A0E9 /* block.mtl */,
-				0755992816B561490066A0E9 /* block.obj */,
+				07E650C916C9244D00192B8B /* yesnowin1.png */,
 			);
 			path = Assets;
+			sourceTree = "<group>";
+		};
+		07D5BC7216E63B1600F0D665 /* Test */ = {
+			isa = PBXGroup;
+			children = (
+				07D5BC7316E63B1700F0D665 /* TestViewController.h */,
+				07D5BC7416E63B1700F0D665 /* TestViewController.mm */,
+			);
+			path = Test;
 			sourceTree = "<group>";
 		};
 		07E0462616886E73001F9CCE = {
 			isa = PBXGroup;
 			children = (
+				07D5BC7216E63B1600F0D665 /* Test */,
 				0755992616B561490066A0E9 /* Assets */,
 				07E0463416886E73001F9CCE /* Frameworks */,
 				07E6511316C926F100192B8B /* Game */,
@@ -471,6 +522,7 @@
 		07E0463F16886E73001F9CCE /* Shooter */ = {
 			isa = PBXGroup;
 			children = (
+				07D5BC5B16E33CF000F0D665 /* Common.h */,
 				07E6515416D0096A00192B8B /* TouchHandlerView.h */,
 				07E6515516D0096A00192B8B /* TouchHandlerView.mm */,
 				07E6515116CFA07700192B8B /* PadView.h */,
@@ -501,6 +553,8 @@
 		07E6511316C926F100192B8B /* Game */ = {
 			isa = PBXGroup;
 			children = (
+				0744104E16E24CB00076D7E4 /* HGRect.h */,
+				0744104F16E24CB00076D7E4 /* HGRect.mm */,
 				07B4245416DA5637007055DF /* HGObject.h */,
 				07B4245516DA5637007055DF /* HGObject.mm */,
 				07B4244216D91BF0007055DF /* HGBullet.h */,
@@ -553,6 +607,8 @@
 		07E6513D16CF685B00192B8B /* Shaders */ = {
 			isa = PBXGroup;
 			children = (
+				0744104916E1D8D80076D7E4 /* fragment2d.glsl */,
+				0744104A16E1D8D80076D7E4 /* vertex2d.glsl */,
 				07E6513E16CF685B00192B8B /* fragment.glsl */,
 				07E6513F16CF685B00192B8B /* vertex.glsl */,
 			);
@@ -717,6 +773,18 @@
 				07B4245116D94AEC007055DF /* space.png in Resources */,
 				07B4245316D9F132007055DF /* star.png in Resources */,
 				07D49FF216DA683C0040D8D5 /* x6.png in Resources */,
+				0744104B16E1D8D80076D7E4 /* fragment2d.glsl in Resources */,
+				0744104C16E1D8D80076D7E4 /* vertex2d.glsl in Resources */,
+				07D5BC5916E33AEC00F0D665 /* square.png in Resources */,
+				07D5BC6116E386B100F0D665 /* halfsphere.obj in Resources */,
+				07D5BC6316E3895A00F0D665 /* space2.png in Resources */,
+				07D5BC6516E38C9D00F0D665 /* sphere.obj in Resources */,
+				07D5BC6C16E3931D00F0D665 /* galaxy-X.png in Resources */,
+				07D5BC6D16E3931D00F0D665 /* galaxy-Y.png in Resources */,
+				07D5BC6E16E3931D00F0D665 /* galaxy-Z.png in Resources */,
+				07D5BC6F16E3931D00F0D665 /* galaxy+X.png in Resources */,
+				07D5BC7016E3931D00F0D665 /* galaxy+Y.png in Resources */,
+				07D5BC7116E3931D00F0D665 /* galaxy+Z.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -750,6 +818,8 @@
 				07B4244416D91BF1007055DF /* HGBullet.mm in Sources */,
 				07B4245616DA5637007055DF /* HGObject.mm in Sources */,
 				075A1EBF16E11331006DC1E7 /* HGLGraphics2D.mm in Sources */,
+				0744105016E24CB00076D7E4 /* HGRect.mm in Sources */,
+				07D5BC7516E63B1700F0D665 /* TestViewController.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

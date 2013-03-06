@@ -2,47 +2,42 @@
 #import "HGLVector3.h"
 #import "HGLTexture.h"
 #import "HGLGraphics2D.h"
-#import <map>
+#import <vector>
 #import <string>
 
-/*
-typedef struct t_draw {
-    t_draw():
-        object3D(NULL),
-        texture(NULL),
-        scale(1,1,1),
-        color({1,1,1,1}),
-        position(0,0,0),
-        rotate(0,0,0),
-        blend1(GL_SRC_ALPHA),
-        blend2(GL_ONE_MINUS_SRC_ALPHA),
-        isAlphaMap(0),
-        alpha(1),
-        lookToCamera(1),
-        useLight(false),
-        textureW(0),
-        textureH(0),
-        textureRepeatNum(1),
-        textureMatrix(GLKMatrix4Identity)
+// anime table
+enum HG_TYPE_ACTOR {
+    HG_TYPE_E_ROBO1,
+    HG_TYPE_WEAPON1,
+    HG_TYPE_MAX,
+};
+
+typedef struct t_hg_rect
+{
+    float x;
+    float y;
+    float width;
+    float height;
+    float realWidth;
+    float realHeight;
+} t_hg_rect;
+
+typedef std::vector<t_hg_rect> t_hg_rectlist;
+
+typedef struct t_hg_actorinf
+{
+    t_hg_actorinf():
+    sprWidth(0),
+    sprHeight(0)
     {}
-    HGLObject3D* object3D;
-    HGLTexture* texture;
-    HGLVector3 scale;
-    HGLVector3 position;
-    HGLVector3 rotate;
-    unsigned int blend1;
-    unsigned int blend2;
-    float isAlphaMap;
-    float alpha;
-    float useLight;
-    bool lookToCamera;
-    GLKMatrix4 textureMatrix;
-    Color color;
-    short textureW;
-    short textureH;
-    short textureRepeatNum;
-} t_draw;
-*/
+    t_hg_rectlist rectlist;
+    int sprWidth;
+    int sprHeight;
+    float realWidth;
+    float realHeight;
+} t_hg_actorinf;
+
+typedef std::vector<t_hg_actorinf> t_hg_actorinf_list;
 
 // 3dやテクスチャなどのデータを読み込む
 #warning 後で適切な場所に移すことを検討
@@ -64,11 +59,13 @@ public:
         {}
     
     virtual void draw() = 0;
+    void drawCollision();
     virtual void update();
     void setVelocity(float velocity);
     virtual void setAspect(float degree);
     void setMoveAspect(float degree);
-    void draw(t_hgl2d* p);
+    void setActorInfo(HG_TYPE_ACTOR t);
+    bool isCollideWith(HGActor* another);
     
     ~HGActor();
     
@@ -80,14 +77,14 @@ public:
     float radian;
     float moveAspect; // radian
     unsigned int updateCount;
+    t_hg_actorinf* info;
     
-#warning 後で適切な場所に移すことを検討
-    static std::map<std::string, HGLObject3D*> object3DTable;
-    static std::map<std::string, HGLTexture*> textureTable;
+    float width;
+    float height;
     
-protected:
+    void setSize(float width, float height);
+    
     HGLVector3 acceleration; // 加速
     
-    //void draw(t_draw* p);
     
 };

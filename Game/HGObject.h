@@ -1,7 +1,8 @@
 #import "HGLGraphics2D.h"
 
 enum HG_OBJECT_TYPE {
-    HG_OBJECT_SPACE1
+    HG_OBJECT_SPACE1,
+    HG_OBJECT_SPACE2,
 };
 
 class HGActor;
@@ -12,8 +13,6 @@ public:
     void draw();
     void init(HG_OBJECT_TYPE type);
     void update();
-    
-private:
     
     // 描画用関数
     void (HGObject::*pDrawFunc)();
@@ -26,5 +25,6 @@ private:
     void Space1Init();
     
     t_hgl2d anime1;
-
+    t_hgl2d anime2;
+    
 };

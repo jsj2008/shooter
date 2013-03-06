@@ -24,8 +24,9 @@ class HGLTexture
 {
 public:
     static HGLTexture* createTextureWithAsset(std::string name);
-    static void deleteTextures();
+    static void deleteAllTextures();
     HGLTexture();
+    HGLTexture(const HGLTexture& obj); // コピーコンストラクタ
     void bind();
     void unbind();
     ~HGLTexture();
@@ -33,6 +34,7 @@ public:
     void setTextureArea(int x, int y, int w, int h);
     void setTextureMatrix(GLKMatrix4 mat);
     Color color;
+    Color blendColor;
     float repeatNum;
     unsigned int blend1;
     unsigned int blend2;
@@ -43,7 +45,7 @@ public:
     size_t sprWidth;
     size_t sprHeight;
 private:
-    static std::map<std::string, t_hgl_tex_cache> textureIds;
+    static std::map<std::string, HGLTexture*> textureIds;
     GLuint textureId;
     GLKMatrix4 textureMatrix;
     void setTextureArea(int textureW,int textureH, int x, int y, int w, int h);

@@ -13,10 +13,12 @@
 #include <OpenGLES/ES2/gl.h>
 #include <OpenGLES/ES2/glext.h>
 #import <string>
+#import "HGLCommon.h"
 
 std::stack<GLKMatrix4> HGLES::matrixStack;
 
 GLKMatrix4 HGLES::mvMatrix;
+GLKMatrix4 HGLES::cameraMatrix;
 GLKMatrix4 HGLES::projectionMatrix;
 
 GLuint HGLES::aPositionSlot        ;
@@ -45,6 +47,7 @@ GLuint HGLES::uUseTexture;
 GLuint HGLES::uTextureRepeatNum;
 
 GLuint HGLES::uColor;
+GLuint HGLES::uBlendColor;
 
 GLuint HGLES::uUseAlphaMap;
 
@@ -82,17 +85,17 @@ void HGLES::initialize(float viewWidth, float viewHeight)
     HGLES::viewWidth = viewWidth;
     HGLES::viewHeight = viewHeight;
     float aspect = (float)(viewWidth / viewHeight);
-    HGLES::projectionMatrix = GLKMatrix4MakePerspective(GLKMathDegreesToRadians(65.0f), aspect, 0.1f, 100.0f);
+    HGLES::projectionMatrix = GLKMatrix4MakePerspective(GLKMathDegreesToRadians(80.0f), aspect, 0.1f, 2000.0f);
     mvMatrix = GLKMatrix4Identity;
 }
 
 void HGLES::updateMatrix()
 {
-    //glUniformMatrix4fv(HGLES::uProjectionMatrixSlot, 1, 0, HGLES::projectionMatrix.m);
+    // 視点行列にモデル行列を掛けること
+    HGLES::mvMatrix = GLKMatrix4Multiply(HGLES::cameraMatrix, HGLES::mvMatrix);
     glUniformMatrix4fv(HGLES::uModelViewMatrixSlot, 1, 0, HGLES::mvMatrix.m);
-    GLKMatrix4 mvpMatrix = GLKMatrix4Multiply(projectionMatrix, mvMatrix);
+    GLKMatrix4 mvpMatrix = GLKMatrix4Multiply(projectionMatrix, HGLES::mvMatrix);
     glUniformMatrix4fv(HGLES::uMvpMatrixSlot, 1, 0, mvpMatrix.m);
-    
     
     // モデルビュー行列の逆転置行列の指定
     GLKMatrix4 normalM = HGLES::mvMatrix;
@@ -110,7 +113,7 @@ GLuint HGLES::compileShader(NSString* shaderName, GLenum shaderType)
     NSString* GLESString = [NSString stringWithContentsOfFile:GLESPath
                                                        encoding:NSUTF8StringEncoding error:&error];
     if (!GLESString) {
-        NSLog(@"Error loading GLES: %@", error.localizedDescription);
+        LOG(@"Error loading GLES: %@", error.localizedDescription);
         exit(1);
     }
     
@@ -128,7 +131,7 @@ GLuint HGLES::compileShader(NSString* shaderName, GLenum shaderType)
         GLchar messages[256];
         glGetShaderInfoLog(GLESHandle, sizeof(messages), 0, &messages[0]);
         NSString *messageString = [NSString stringWithUTF8String:messages];
-        NSLog(@"%@", messageString);
+        LOG(@"%@", messageString);
         exit(1);
     }
     
@@ -138,8 +141,8 @@ GLuint HGLES::compileShader(NSString* shaderName, GLenum shaderType)
 
 void HGLES::compileShaders()
 {
-    GLuint vertexShader = HGLES::compileShader(@"vertex", GL_VERTEX_SHADER);
-    GLuint fragmentShader = HGLES::compileShader(@"fragment", GL_FRAGMENT_SHADER);
+    GLuint vertexShader = HGLES::compileShader(@"vertex2d", GL_VERTEX_SHADER);
+    GLuint fragmentShader = HGLES::compileShader(@"fragment2d", GL_FRAGMENT_SHADER);
     
     GLuint programHandle = glCreateProgram();
     glAttachShader(programHandle, vertexShader);
@@ -170,6 +173,7 @@ void HGLES::compileShaders()
     uTextureRepeatNum = glGetUniformLocation(programHandle, "uTextureRepeatNum");
     
     uColor = glGetUniformLocation(programHandle, "uColor");
+    uBlendColor = glGetUniformLocation(programHandle, "uBlendColor");
     
     uUseAlphaMap = glGetUniformLocation(programHandle, "uUseAlphaMap");
     
@@ -181,7 +185,7 @@ void HGLES::compileShaders()
         GLchar messages[256];
         glGetProgramInfoLog(programHandle, sizeof(messages), 0, &messages[0]);
         NSString *messageString = [NSString stringWithUTF8String:messages];
-        NSLog(@"%@", messageString);
+        LOG(@"%@", messageString);
         exit(1);
     }
     

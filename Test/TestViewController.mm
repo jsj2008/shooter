@@ -6,8 +6,7 @@
 //  Copyright (c) 2012年 hayogame. All rights reserved.
 //
 
-#import "ViewController.h"
-#import "HGLES.h"
+#import "TestViewController.h"
 #import "HGLView.h"
 #import "HGUtil.h"
 #import "HGLObject3D.h"
@@ -22,10 +21,9 @@
 #import <vector>
 #import "Common.h"
 
-#define ZPOS 0
-#define BACKGROUND_SCALE 1900
+#define ZPOS -7
 
-@interface ViewController()
+@interface TestViewController()
 {
     
     HGLView* _glview;
@@ -60,7 +58,7 @@
 }
 @end
 
-@implementation ViewController
+@implementation TestViewController
 
 - (void)dealloc
 {
@@ -143,46 +141,44 @@
     }
     
     // create background
-    for (int i = 0; i < 6; ++i)
+#define SKYBOX_SCALE 2
+    for (int i = 3; i < 3; ++i)
     {
         HGObject* t = new HGObject();
         t->init(HG_OBJECT_SPACE1);
-        t->scale.set(BACKGROUND_SCALE, BACKGROUND_SCALE, BACKGROUND_SCALE);
+        t->scale.set(SKYBOX_SCALE, SKYBOX_SCALE, SKYBOX_SCALE);
         switch (i) {
             case 0:
                 t->anime1.texture = *HGLTexture::createTextureWithAsset("galaxy-X.png");
-                t->position.set(-1*BACKGROUND_SCALE/2, 0, ZPOS);
+                t->position.set(-1*SKYBOX_SCALE/2, 0, ZPOS);
                 t->rotate.set(0, 90*M_PI/180, 0);
                 break;
             case 1:
                 t->anime1.texture = *HGLTexture::createTextureWithAsset("galaxy+X.png");
-                t->position.set(BACKGROUND_SCALE/2, 0, ZPOS);
-                t->rotate.set(0, -90*M_PI/180, 180*M_PI/180);
+                t->position.set(SKYBOX_SCALE/2, 0, ZPOS);
+                t->rotate.set(0, -90*M_PI/180, 0);
                 break;
             case 2:
                 t->anime1.texture = *HGLTexture::createTextureWithAsset("galaxy-Y.png");
-                t->position.set(0, BACKGROUND_SCALE/2, ZPOS);
-                t->rotate.set(-90*M_PI/180, 0, 0);
-                break;
+                t->position.set(0, 0, ZPOS);
+                //t->rotate.set(90*M_PI/180, 0, 0);
             case 3:
+                //
                 t->anime1.texture = *HGLTexture::createTextureWithAsset("galaxy+Y.png");
-                t->position.set(0, -BACKGROUND_SCALE/2, ZPOS);
-                t->rotate.set(90*M_PI/180, 0, 0);
-                break;
+                t->position.set(0, SKYBOX_SCALE/2, ZPOS);
+                t->rotate.set(-90*M_PI/180, 0, 0);
             case 4:
                 t->anime1.texture = *HGLTexture::createTextureWithAsset("galaxy-Z.png");
-                t->position.set(0, 0, -1*BACKGROUND_SCALE/2 + ZPOS);
-                t->rotate.set(180*M_PI/180, 0, 0);
-                break;
+                t->position.set(0, 0, -1*SKYBOX_SCALE/2 + ZPOS);
+                //t->rotate.set(-90*M_PI/180, 0, 0);
             case 5:
                 t->anime1.texture = *HGLTexture::createTextureWithAsset("galaxy+Z.png");
-                t->position.set(0, 0, 1*BACKGROUND_SCALE/2 + ZPOS);
-                t->rotate.set(180*M_PI/180, 0, 0);
+                t->position.set(0, 0, 1*SKYBOX_SCALE/2 + ZPOS);
+                //t->rotate.set(90*M_PI/180, 0, 0);
                 break;
             default:
                 break;
         }
-        t->anime1.texture.blendColor = {0.7, 0.7, 1.9, 1.0};
         _background.push_back(t);
     }
     
@@ -332,9 +328,9 @@
         
         // カメラ位置
         _cameraPosition.x = _player->position.x * -1;
-        _cameraPosition.y = _player->position.y * -1 + 3.5;
-        //_cameraPosition.y = _player->position.y * -1;
-        _cameraPosition.z = -7;
+        //_cameraPosition.y = _player->position.y * -1 + 5.5;
+        _cameraPosition.y = _player->position.y * -1;
+        _cameraPosition.z = 0;
     }
     
     // move bg
@@ -344,6 +340,7 @@
     for (std::vector<HGObject*>::reverse_iterator itr = _background.rbegin(); itr != _background.rend(); ++itr)
     {
         HGObject* a = *itr;
+        //a->rotate.x += 0.01;
         a->update();
     }
     /*
@@ -394,34 +391,32 @@ static HGLVector3 testRotate;
     @synchronized(self)
     {
         glDisable(GL_DEPTH_TEST); // 2D Gameではスプライトの重なりができなくなるのでOFF
-        _glview.cameraRotate = HGLVector3(-22 * M_PI/180, 0, 0);
-        _glview.cameraPosition = _cameraPosition;
+        //_glview.cameraRotate = HGLVector3(-22 * M_PI/180, 0, 0);
+        //test
+        /*
+        if (1)
+        {
+            testRotate.x += 0.1;
+            //testRotate.y += 0.15;
+            //testRotate.z += 0.2;
+            _glview.cameraRotate = testRotate;
+            _cameraPosition.z = -20;
+        }*/
+        
+        _glview.cameraPosition = HGLVector3(0,0,-1);
+        //_glview.cameraRotate = HGLVector3(0,0,-1);
         [_glview updateCamera];
         
         //skybox->draw();
         //skybox->position = _player->position;
         
         // draw bg
-        HGLES::pushMatrix();
-        //HGLES::mvMatrix = GLKMatrix4Scale(HGLES::mvMatrix, BACKGROUND_SCALE, BACKGROUND_SCALE, BACKGROUND_SCALE);
-        //test
-        if (1)
-        {
-            testRotate.x += 0.0001;
-            testRotate.y -= 0.0001;
-            testRotate.z += 0.0001;
-        }
-        //HGLES::mvMatrix = GLKMatrix4Translate(HGLES::mvMatrix, _player->position.x, _player->position.y, _player->position.z);
-        HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, testRotate.x, 1, 0, 0);
-        HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, testRotate.y, 0, 1, 0);
-        HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, testRotate.z, 0, 0, 1);
         for (std::vector<HGObject*>::reverse_iterator itr = _background.rbegin(); itr != _background.rend(); ++itr)
         {
             HGObject* a = *itr;
-            //a->rotate.y += 0.04;
+            a->rotate.y += 0.04;
             a->draw();
         }
-        HGLES::popMatrix();
         // draw bg
         /*
         for (std::vector<HGObject*>::reverse_iterator itr = _background.rbegin(); itr != _background.rend(); ++itr)
@@ -459,7 +454,7 @@ static HGLVector3 testRotate;
         // draw player
         _player->draw();
 #if IS_DEBUG_COLLISION
-        _player->drawCollision();
+            _player->drawCollision();
 #endif
     }
 }

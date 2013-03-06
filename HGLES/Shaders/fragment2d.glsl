@@ -4,6 +4,7 @@ precision mediump float;
 uniform float uUseTexture;
 uniform sampler2D uTex; // texture
 uniform float uTextureRepeatNum;
+uniform vec4 uBlendColor;
 
 // alphamap
 uniform float uUseAlphaMap;
@@ -29,6 +30,6 @@ void main(void) { // 2
     // no light
     else
     {
-        gl_FragColor = texture2D(uTex, vUV*uTextureRepeatNum) * vec4(1.0, 1.0, 1.0, uAlpha);
+        gl_FragColor = texture2D(uTex, vUV*uTextureRepeatNum) * vec4(uBlendColor.r, uBlendColor.g, uBlendColor.b, uAlpha);
     }
 }

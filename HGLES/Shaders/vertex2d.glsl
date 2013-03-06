@@ -36,6 +36,7 @@ varying vec2 vUV;
 void main(void) {
 
     gl_Position = uMvpMatrix * aPosition;
+    //gl_Position = aPosition * uMvpMatrix;
     // UV
     if (uUseTexture > 0.0)
     {

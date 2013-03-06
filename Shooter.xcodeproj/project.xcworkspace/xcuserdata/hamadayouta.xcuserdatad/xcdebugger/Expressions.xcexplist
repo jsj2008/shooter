@@ -3,88 +3,48 @@
    version = "1.0">
    <ContextStates>
       <ContextState
-         contextName = "ObjLoader::loadMtl(std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;*):ObjLoader.mm">
+         contextName = "HGLObjLoader::load(NSString*):HGLObjLoader.mm">
          <PersistentStrings>
             <PersistentString
-               value = "current">
+               value = "uvs">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[ViewController setupGame]:ViewController.mm">
+         <PersistentStrings>
+            <PersistentString
+               value = "_background">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "HGLObjLoader::addMeshTo(HGLObject3D*, std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;):HGLObjLoader.mm">
+         <PersistentStrings>
+            <PersistentString
+               value = "indices">
             </PersistentString>
             <PersistentString
-               value = "materials">
+               value = "vertices">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[TestViewController render]:TestViewController.mm">
+      </ContextState>
+      <ContextState
+         contextName = "HGLES::pushMatrix():HGLES.mm">
+      </ContextState>
+      <ContextState
+         contextName = "GLES::updateMatrix():GLES.mm">
+         <PersistentStrings>
+            <PersistentString
+               value = "GLES::mvMatrix">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "split(std::__1::vector&lt;std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;, std::__1::allocator&lt;std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; &gt; &gt;*, std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; const*, std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;):GLUtil.mm">
-      </ContextState>
-      <ContextState
-         contextName = "IndexBuffer::IndexBuffer(unsigned char const*, int):IndexBuffer.mm">
-         <PersistentStrings>
-            <PersistentString
-               value = "indices[1]">
-            </PersistentString>
-            <PersistentString
-               value = "sizeof(Index)">
-            </PersistentString>
-            <PersistentString
-               value = "sizeof(Vertex)">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "HGLIndexBuffer::HGLIndexBuffer(unsigned short const*, int):HGLIndexBuffer.mm">
-         <PersistentStrings>
-            <PersistentString
-               value = "indexBuffer">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "HGLIndexBuffer::draw():HGLIndexBuffer.mm">
-      </ContextState>
-      <ContextState
-         contextName = "HGLMesh::draw():HGLMesh.mm">
-      </ContextState>
-      <ContextState
-         contextName = "Material::bind():Material.mm">
-      </ContextState>
-      <ContextState
-         contextName = "ObjLoader::addMeshTo(Object3D*, std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;):ObjLoader.mm">
-         <PersistentStrings>
-            <PersistentString
-               value = "materials">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "IndexBuffer::draw():IndexBuffer.mm">
-      </ContextState>
-      <ContextState
-         contextName = "GLES::compileShaders():GLES.mm">
-         <PersistentStrings>
-            <PersistentString
-               value = "aPositionSlot">
-            </PersistentString>
-            <PersistentString
-               value = "aNormalSlot">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "ObjLoader::addIndex(std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;*):ObjLoader.mm">
-         <PersistentStrings>
-            <PersistentString
-               value = "uvs">
-            </PersistentString>
-            <PersistentString
-               value = "vertices">
-            </PersistentString>
-            <PersistentString
-               value = "indices">
-            </PersistentString>
-            <PersistentString
-               value = "m">
-            </PersistentString>
-         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "VertexBuffer::VertexBuffer(Vertex const*, int):VertexBuffer.mm">
@@ -109,7 +69,30 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "HGLObjLoader::addMeshTo(HGLObject3D*, std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;):HGLObjLoader.mm">
+         contextName = "HGLES::updateMatrix():HGLES.mm">
+      </ContextState>
+      <ContextState
+         contextName = "HGFighter::N1Draw():HGFighter.mm">
+      </ContextState>
+      <ContextState
+         contextName = "ObjLoader::addIndex(std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;*):ObjLoader.mm">
+         <PersistentStrings>
+            <PersistentString
+               value = "uvs">
+            </PersistentString>
+            <PersistentString
+               value = "vertices">
+            </PersistentString>
+            <PersistentString
+               value = "indices">
+            </PersistentString>
+            <PersistentString
+               value = "m">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ObjLoader::addMeshTo(Object3D*):ObjLoader.mm">
          <PersistentStrings>
             <PersistentString
                value = "indices">
@@ -120,15 +103,18 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "HGLObjLoader::load(NSString*):HGLObjLoader.mm">
-         <PersistentStrings>
-            <PersistentString
-               value = "uvs">
-            </PersistentString>
-         </PersistentStrings>
+         contextName = "IndexBuffer::draw():IndexBuffer.mm">
       </ContextState>
       <ContextState
-         contextName = "split(std::__1::vector&lt;std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;, std::__1::allocator&lt;std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; &gt; &gt;*, std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; const*, std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;):HayoUtil.mm">
+         contextName = "HGLoadData():HGActor.mm">
+         <PersistentStrings>
+            <PersistentString
+               value = "sizeof(t_hg_rect)">
+            </PersistentString>
+            <PersistentString
+               value = "sizeof(rects)">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "ObjLoader::load(NSString*):ObjLoader.mm">
@@ -142,21 +128,86 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "GLES::updateMatrix():GLES.mm">
+         contextName = "HGLGraphics2D::draw(t_hgl2d*):HGLGraphics2D.mm">
+      </ContextState>
+      <ContextState
+         contextName = "ObjLoader::addMeshTo(Object3D*, std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;):ObjLoader.mm">
          <PersistentStrings>
             <PersistentString
-               value = "GLES::mvMatrix">
+               value = "materials">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "ObjLoader::addMeshTo(Object3D*):ObjLoader.mm">
+         contextName = "Material::bind():Material.mm">
+      </ContextState>
+      <ContextState
+         contextName = "IndexBuffer::IndexBuffer(unsigned char const*, int):IndexBuffer.mm">
          <PersistentStrings>
             <PersistentString
-               value = "indices">
+               value = "indices[1]">
             </PersistentString>
             <PersistentString
-               value = "vertices">
+               value = "sizeof(Index)">
+            </PersistentString>
+            <PersistentString
+               value = "sizeof(Vertex)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "split(std::__1::vector&lt;std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;, std::__1::allocator&lt;std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; &gt; &gt;*, std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; const*, std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;):HayoUtil.mm">
+      </ContextState>
+      <ContextState
+         contextName = "ObjLoader::loadMtl(std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;*):ObjLoader.mm">
+         <PersistentStrings>
+            <PersistentString
+               value = "current">
+            </PersistentString>
+            <PersistentString
+               value = "materials">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "HGLMesh::draw():HGLMesh.mm">
+      </ContextState>
+      <ContextState
+         contextName = "HGLIndexBuffer::HGLIndexBuffer(unsigned short const*, int):HGLIndexBuffer.mm">
+         <PersistentStrings>
+            <PersistentString
+               value = "indexBuffer">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "GLES::compileShaders():GLES.mm">
+         <PersistentStrings>
+            <PersistentString
+               value = "aNormalSlot">
+            </PersistentString>
+            <PersistentString
+               value = "aPositionSlot">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "HGLES::popMatrix():HGLES.mm">
+      </ContextState>
+      <ContextState
+         contextName = "HGActor::drawCollision():HGActor.mm">
+      </ContextState>
+      <ContextState
+         contextName = "HGLVector3::set(float, float, float):HGLVector3.mm">
+      </ContextState>
+      <ContextState
+         contextName = "HGLIndexBuffer::draw():HGLIndexBuffer.mm">
+      </ContextState>
+      <ContextState
+         contextName = "-[ViewController render]:ViewController.mm">
+         <PersistentStrings>
+            <PersistentString
+               value = "_player">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

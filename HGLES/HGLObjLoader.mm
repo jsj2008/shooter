@@ -15,6 +15,7 @@
 #import "HGLObject3D.h"
 #import "HGLMaterial.h"
 #import "HGLTexture.h"
+#import "HGLCommon.h"
 
 #import <string>
 #import <vector>
@@ -305,7 +306,7 @@ void HGLObjLoader::loadMtl(std::string* name)
             }
         }
     } catch (...) {
-        NSLog(@"%@", @"failed to load material");
+        LOG(@"%@", @"failed to load material");
     }
     //delete s_dat;
 }

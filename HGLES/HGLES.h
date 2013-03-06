@@ -44,8 +44,10 @@ public:
     static GLuint uMaterialShininess;
     
     static GLuint uColor;
+    static GLuint uBlendColor;
     
     static GLKMatrix4 mvMatrix; // モデルビュー行列
+    static GLKMatrix4 cameraMatrix;
     static GLKMatrix4 projectionMatrix; // 射影行列
     
     // texture

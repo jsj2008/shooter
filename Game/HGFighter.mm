@@ -41,9 +41,9 @@ void HGFighter::update()
 #warning 種類別に
     base::update();
     int spIdx = getSpriteIndex(aspect + 0.5);
-    int x = anime1.texture->sprWidth * spIdx;
+    int x = anime1.texture.sprWidth * spIdx;
 #warning テクスチャオブジェクトで行うように
-    anime1.texture->setTextureArea(x, 0, anime1.texture->sprWidth, anime1.texture->sprWidth);
+    anime1.texture.setTextureArea(x, 0, anime1.texture.sprWidth, anime1.texture.sprWidth);
 }
 
 // --------------------------------------------------
@@ -51,16 +51,14 @@ void HGFighter::update()
 // --------------------------------------------------
 void HGFighter::N1Init()
 {
-    if (anime1.texture)
-    {
-        delete anime1.texture; anime1.texture = NULL;
-    }
+    base::setActorInfo(HG_TYPE_E_ROBO1);
+    //base::setSize(64, 64);
     anime1 = t_hgl2d();
-    anime1.texture = HGLTexture::createTextureWithAsset("e_robo2.png");
+    anime1.texture = (*HGLTexture::createTextureWithAsset("e_robo2.png"));
     anime1.position = position;
     anime1.scale = scale;
-    anime1.texture->sprWidth = 64;
-    anime1.texture->sprHeight = 64;
+    anime1.texture.sprWidth = 64;
+    anime1.texture.sprHeight = 64;
 }
 
 void HGFighter::N1Draw()
