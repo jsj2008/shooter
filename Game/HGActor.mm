@@ -11,10 +11,18 @@ using namespace std;
 
 namespace HGGame {
     
+    typedef struct t_rect
+    {
+        float x, y, w, h;
+    } t_rect;
+    
 #warning 改善
     // あたり判定用矩形リスト
     static t_hg_actorinf_list actor_inf_list;
     static t_hgl2di square;
+    static t_rect* HITBOX = new t_rect[1]{
+        {20, 20, 24, 24},
+    };
     
     void HGLoadData()
     {
@@ -41,7 +49,7 @@ namespace HGGame {
         square.texture.blend1 = GL_ALPHA;
         square.texture.blend2 = GL_ALPHA;
         
-        // 種類別の情報設定
+        // あたり判定
         for (int i = 0; i < HG_TYPE_MAX; ++i)
         {
             t_hg_actorinf t;

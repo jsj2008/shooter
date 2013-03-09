@@ -52,7 +52,7 @@ namespace HGGame {
         
         // create players
         _player = new HGFighter();
-        _player->init(HG_FIGHTER_N1);
+        _player->init(HG_FIGHTER);
         _player->position.set(0, 0, ZPOS);
         _player->setAspect(0);
         fire = false;
@@ -62,7 +62,7 @@ namespace HGGame {
         {
             HGFighter* t;
             t = new HGFighter();
-            t->init(HG_FIGHTER_N1);
+            t->init(HG_FIGHTER);
             t->position.x = (i*2) + -2;
             t->position.y = 1;
             t->position.z = 0;
