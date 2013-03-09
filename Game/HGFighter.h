@@ -27,6 +27,6 @@ public:
     void N1Init();
     void DroidInit();
 private:
-    t_hgl2d anime1;
+    t_hgl2di anime1;
     
 };

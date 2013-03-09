@@ -36,7 +36,7 @@ void HGLGraphics2D::initialize()
     indexBuffer = new HGLIndexBuffer(index, 6);
 }
 
-void HGLGraphics2D::draw(t_hgl2d* p)
+void HGLGraphics2D::draw(t_hgl2di* p)
 {
     // 光源使用有無設定
     glUniform1f(HGLES::uUseLight, 0.0);

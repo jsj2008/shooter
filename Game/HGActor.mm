@@ -13,7 +13,7 @@ using namespace std;
 #warning 改善
 // あたり判定用矩形リスト
 static t_hg_actorinf_list actor_inf_list;
-static t_hgl2d square;
+static t_hgl2di square;
 
 void HGLoadData()
 {
@@ -33,7 +33,7 @@ void HGLoadData()
     HGLTexture::createTextureWithAsset("galaxy+Z.png");
     
     // debug
-    square = t_hgl2d();
+    square = t_hgl2di();
     square.alpha = 0.5;
     square.texture = (*HGLTexture::createTextureWithAsset("square.png"));
     square.texture.isAlphaMap = 1;

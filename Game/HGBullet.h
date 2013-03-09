@@ -30,7 +30,7 @@ public:
     void N2Init();
     
 private:
-    t_hgl2d anime1;
-    t_hgl2d anime2;
+    t_hgl2di anime1;
+    t_hgl2di anime2;
     
 };

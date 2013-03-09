@@ -53,7 +53,7 @@ void HGFighter::N1Init()
 {
     base::setActorInfo(HG_TYPE_E_ROBO1);
     //base::setSize(64, 64);
-    anime1 = t_hgl2d();
+    anime1 = t_hgl2di();
     anime1.texture = (*HGLTexture::createTextureWithAsset("e_robo2.png"));
     anime1.position = position;
     anime1.scale = scale;

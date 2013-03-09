@@ -9,28 +9,26 @@
 #import "HGLIndexBuffer.h"
 #import "HGLTexture.h"
 
-typedef struct t_hgl2d
+typedef struct t_hgl2di
 {
-    t_hgl2d():
+    t_hgl2di():
     scale(1,1,1),
     position(0,0,0),
     rotate(0,0,0),
-    //paralell(1),
     alpha(1)
     {}
     HGLTexture texture;
     HGLVector3 scale;
     HGLVector3 position;
     HGLVector3 rotate;
-    //float paralell; // cameraに並行
-    float alpha; // alpha値
-} t_hgl2d;
+    float alpha;
+} t_hgl2di;
 
 class HGLGraphics2D
 {
 public:
     static void initialize();
-    static void draw(t_hgl2d* t);
+    static void draw(t_hgl2di* t);
     
 private:
     static HGLVertexBuffer* vertexBuffer;
