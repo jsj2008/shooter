@@ -38,43 +38,10 @@ void HGLGraphics2D::initialize()
 
 void HGLGraphics2D::draw(t_hgl2di* p)
 {
-    // 光源使用有無設定
-    glUniform1f(HGLES::uUseLight, 0.0);
-    
     // アルファ値設定
     glUniform1f(HGLES::uAlpha, p->alpha);
     
     HGLES::pushMatrix();
-    
-    /*
-     GLKMatrix4 mMatrix = GLKMatrix4Identity;
-    
-    // ワールド
-    
-    // 回転
-    mMatrix = GLKMatrix4Rotate(mMatrix, p->rotate.x, 1, 0, 0);
-    mMatrix = GLKMatrix4Rotate(mMatrix, p->rotate.y, 0, 1, 0);
-    mMatrix = GLKMatrix4Rotate(mMatrix, p->rotate.z, 0, 0, 1);
-    
-    // 平行移動
-    mMatrix = GLKMatrix4Translate(mMatrix, p->position.x, p->position.y, p->position.z);
-    
-    // 拡大
-    mMatrix = GLKMatrix4Scale(mMatrix, p->scale.x, p->scale.y, p->scale.z);
-    
-    // ビュー行列
-    GLKMatrix4 cameraMatrix = GLKMatrix4Identity;
-    cameraMatrix = GLKMatrix4Translate(cameraMatrix, 0, 0, -4);
-    
-    // モデルビュー行列
-    GLKMatrix4 mvMatrix = GLKMatrix4Multiply(cameraMatrix, mMatrix);
-    
-    // 視点行列
-    GLKMatrix4 mvpMatrix = GLKMatrix4Multiply(HGLES::projectionMatrix, mvMatrix);
-    
-    // シェーダへ
-    glUniformMatrix4fv(HGLES::uMvpMatrixSlot, 1, 0, mvpMatrix.m);
-     */
     
     // モデルビュー変換
     HGLES::mvMatrix = GLKMatrix4Translate(HGLES::mvMatrix, p->position.x, p->position.y, p->position.z);

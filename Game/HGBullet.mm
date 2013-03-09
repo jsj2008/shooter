@@ -51,41 +51,35 @@ void HGBullet::draw()
 
 void HGBullet::N1Draw()
 {
-    if (updateCount % 10 <= 5)
+    if (updateCount % 4 <= 2)
     {
-        anime1.scale.x = scale.x + 0.8;
-        anime1.scale.y = scale.x + 0.8;
-        anime1.scale.z = scale.x + 0.8;
+        anime1.scale.x = scale.x + 0.7;
+        anime1.scale.y = scale.x + 0.7;
+        anime1.scale.z = scale.x + 0.7;
+        anime1.alpha = 0.5;
     }
     else
     {
-        anime1.scale.x = scale.x + 1.0;
-        anime1.scale.y = scale.x + 1.0;
-        anime1.scale.z = scale.x + 1.0;
+        anime1.scale.x = scale.x + 0.6;
+        anime1.scale.y = scale.x + 0.6;
+        anime1.scale.z = scale.x + 0.6;
+        anime1.alpha = 0.8;
     }
     anime1.position = position;
     HGLGraphics2D::draw(&anime1);
-    //base::draw(&anime1);
     
     anime2.position = position;
     HGLGraphics2D::draw(&anime2);
-    //base::draw(&anime2);
 }
 
 void HGBullet::N1Init()
 {
     base::setActorInfo(HG_TYPE_WEAPON1);
-    //base::setSize(12, 12);
     
     setVelocity(0.3);
     scale.set(0.3, 0.3, 0.3);
     color = {1.0, 1.0, 1.0};
     
-    /*
-    if (anime1.texture)
-    {
-        //delete anime1.texture; anime1.texture = NULL;
-    }*/
     anime1.texture = (*HGLTexture::createTextureWithAsset("star.png"));
     anime1.position = position;
     anime1.scale = scale;
@@ -95,11 +89,6 @@ void HGBullet::N1Init()
     anime1.texture.blend1 = GL_ALPHA;
     anime1.texture.blend2 = GL_ALPHA;
     
-    /*
-    if (anime2.texture)
-    {
-        //delete anime2.texture; anime2.texture = NULL;
-    }*/
     anime2.texture = *HGLTexture::createTextureWithAsset("divine.png");
     anime2.position = position;
     anime2.scale = scale;
@@ -110,63 +99,5 @@ void HGBullet::N1Init()
     anime2.texture.blend2 = GL_ALPHA;
 }
 
-/*
-void HGBullet::N2Draw()
-{
-    anime2.rotate.z += 0.45;
-    anime3.rotate.z += 0.45;
-    
-    anime1.position = position;
-    HGActor::draw(&anime1);
-    
-    anime2.position = position;
-    HGActor::draw(&anime2);
-    
-    anime3.position = position;
-    HGActor::draw(&anime3);
-}
-
-void HGBullet::N2Init()
-{
-    setVelocity(1.7);
-    scale.set(1.2, 1.2, 1.2);
-    color = {1.0, 1.0, 1.0};
-    
-    anime1.texture = textureTable["star.png"];
-    anime1.object3D = object3DTable["rect"];
-    anime1.position = position;
-    anime1.scale = scale;
-    anime1.scale.x -= 0.1;
-    anime1.scale.y -= 0.1;
-    anime1.scale.z -= 0.1;
-    anime1.alpha = 0.7;
-    anime1.color = {0.9, 0.7, 0.7, 1.0};
-    anime1.isAlphaMap = true;
-    anime1.blend1 = GL_ALPHA;
-    anime1.blend2 = GL_ALPHA;
-    
-    anime2.texture = textureTable["x6.png"];
-    anime2.object3D = object3DTable["rect"];
-    anime2.position = position;
-    anime2.scale = scale;
-    anime2.alpha = 1;
-    anime2.color = {1.0, 0.0, 0.0, 1.0};
-    anime2.isAlphaMap = true;
-    anime2.blend1 = GL_ALPHA;
-    anime2.blend2 = GL_ALPHA;
-    
-    anime3.texture = textureTable["x6.png"];
-    anime3.object3D = object3DTable["rect"];
-    anime3.position = position;
-    anime3.scale = scale;
-    anime3.scale.x -= 0.05;
-    anime3.scale.y -= 0.05;
-    anime3.scale.z -= 0.05;
-    anime3.alpha = 1;
-    anime3.color = {1.0, 0.9, 0.9, 1.0};
-    anime3.isAlphaMap = true;
-    anime3.blend1 = GL_ALPHA;
-    anime3.blend2 = GL_ONE;
-}*/
 
 

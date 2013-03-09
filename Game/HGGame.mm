@@ -7,7 +7,6 @@
 #import "HGActor.h"
 #import "HGFighter.h"
 #import "HGBullet.h"
-#import "HGObject.h"
 #import "HGCommon.h"
 
 #import <vector>
@@ -25,7 +24,6 @@ namespace HGGame {
     std::vector<HGBullet*> _bullets;
     std::vector<HGBullet*> _bulletsInActive;
     std::vector<HGFighter*> _enemies;
-    std::vector<HGObject*> _background;
     std::vector<t_hgl2di*> background;
     
     HGLObject3D* skybox;
@@ -81,44 +79,6 @@ namespace HGGame {
             //if (i == 0)
             t = new HGBullet();
             _bulletsInActive.push_back(t);
-        }
-        
-        // create background
-        for (int i = 0; i < 6; ++i)
-        {
-            HGObject* t = new HGObject();
-            t->init(HG_OBJECT_SPACE1);
-            t->scale.set(BACKGROUND_SCALE, BACKGROUND_SCALE, BACKGROUND_SCALE);
-            switch (i) {
-                case 0:
-                    t->position.set(-1*BACKGROUND_SCALE/2, 0, ZPOS);
-                    t->rotate.set(0, 90*M_PI/180, 0);
-                    break;
-                case 1:
-                    t->position.set(BACKGROUND_SCALE/2, 0, ZPOS);
-                    t->rotate.set(0, -90*M_PI/180, 180*M_PI/180);
-                    break;
-                case 2:
-                    t->position.set(0, BACKGROUND_SCALE/2, ZPOS);
-                    t->rotate.set(-90*M_PI/180, 0, 0);
-                    break;
-                case 3:
-                    t->position.set(0, -BACKGROUND_SCALE/2, ZPOS);
-                    t->rotate.set(90*M_PI/180, 0, 0);
-                    break;
-                case 4:
-                    t->position.set(0, 0, -1*BACKGROUND_SCALE/2 + ZPOS);
-                    t->rotate.set(0, 0, 0);
-                    break;
-                case 5:
-                    t->position.set(0, 0, 1*BACKGROUND_SCALE/2 + ZPOS);
-                    t->rotate.set(180*M_PI/180, 0, 0);
-                    break;
-                default:
-                    break;
-            }
-            t->anime1.texture.blendColor = {3.7, 0.7, 1.9, 1.0};
-            _background.push_back(t);
         }
         
         // create background
@@ -203,13 +163,6 @@ namespace HGGame {
             }
         }
         
-        /*
-        // update background
-        for (std::vector<HGObject*>::reverse_iterator itr = _background.rbegin(); itr != _background.rend(); ++itr)
-        {
-            HGObject* a = *itr;
-            a->update();
-        }*/
         // move enemies
         for (std::vector<HGFighter*>::iterator itr = _enemies.begin(); itr != _enemies.end(); ++itr)
         {
@@ -244,6 +197,9 @@ namespace HGGame {
     void render()
     {
 #warning sync start
+        // 光源なし
+        glUniform1f(HGLES::uUseLight, 0.0);
+        
         // set camera
         _cameraPosition.x = _player->position.x * -1;
         _cameraPosition.y = _player->position.y * -1 + 3.5;
