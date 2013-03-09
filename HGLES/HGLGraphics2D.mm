@@ -18,7 +18,7 @@
 HGLVertexBuffer* HGLGraphics2D::vertexBuffer;
 HGLIndexBuffer* HGLGraphics2D::indexBuffer;
 
-void HGLGraphics2D::setup()
+void HGLGraphics2D::initialize()
 {
     // 頂点バッファ、インデックスバッファ作成
     Vertex rectVertex[4] = {
@@ -79,6 +79,7 @@ void HGLGraphics2D::draw(t_hgl2d* p)
     // モデルビュー変換
     HGLES::mvMatrix = GLKMatrix4Translate(HGLES::mvMatrix, p->position.x, p->position.y, p->position.z);
     HGLES::mvMatrix = GLKMatrix4Scale(HGLES::mvMatrix, p->scale.x, p->scale.y, p->scale.z);
+    /*
     if (p->paralell)
     {
         HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, HGLES::cameraRotate.x*-1, 1, 0, 0);
@@ -86,11 +87,11 @@ void HGLGraphics2D::draw(t_hgl2d* p)
         HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, p->rotate.z, 0, 0, 1); // zは回転を適用
     }
     else
-    {
+    {*/
         HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, p->rotate.x, 1, 0, 0);
         HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, p->rotate.y, 0, 1, 0);
         HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, p->rotate.z, 0, 0, 1);
-    }
+    //}
     HGLES::updateMatrix();
     
     p->texture.bind();

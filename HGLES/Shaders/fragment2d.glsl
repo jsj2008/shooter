@@ -23,7 +23,7 @@ void main(void) { // 2
     // alpha map
     if (uUseAlphaMap > 0.0)
     {
-        vec4 alphaMapColor = texture2D(uTex, vUV);
+        vec4 alphaMapColor = texture2D(uTex, vUV*uTextureRepeatNum);
         float alpha = alphaMapColor.r;
         gl_FragColor = vec4(vColor.r, vColor.g, vColor.b, alpha);
     }

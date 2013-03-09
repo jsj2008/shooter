@@ -52,9 +52,6 @@
 
 @implementation HGLView
 
-@synthesize cameraPosition;
-@synthesize cameraRotate;
-
 - (id)initWithFrame:(CGRect)frame WithRenderBlock:(void (^)())block
 {
     self = [super initWithFrame:frame];
@@ -63,8 +60,6 @@
         render = [block copy];
         
         // initializing valuables
-        self.cameraPosition = HGLVector3(0, 0, 0);
-        self.cameraRotate = HGLVector3(0, 0, 0);
         lastDrawTime = 0;
         frameSkip = 0;
         isRenderRequired = false;
@@ -74,10 +69,10 @@
         [self setupLayer];
         [self setupContext];
         HGLES::initialize(self.frame.size.width, self.frame.size.height);
+        HGLGraphics2D::initialize();
         [self setupDepthBuffer];
         [self setupRenderBuffer];
         [self setupFrameBuffer];
-        HGLGraphics2D::setup();
         
         // シェーダのデフォルト値をセットする
         [self setDefault];
@@ -105,7 +100,6 @@
 }
 
 #pragma mark - initialize OpenGLES 2.0
-
 - (void)setupDepthBuffer {
     glGenRenderbuffers(1, &_depthRenderBuffer);
     glBindRenderbuffer(GL_RENDERBUFFER, _depthRenderBuffer);
@@ -180,25 +174,6 @@
     glUniform3fv(HGLES::uLightPos, 1, (GLfloat*)(&lightPos));
     glUniform1f(HGLES::uUseLight, 1);
     glUniform1f(HGLES::uAlpha, 1.0);
-}
-
-- (void)updateCamera
-{
-    // camera setting
-    //HGLES::cameraPosition = self.cameraPosition;
-    //HGLES::cameraRotate = self.cameraRotate;
-    HGLES::cameraMatrix = GLKMatrix4Identity;
-    HGLES::cameraMatrix = GLKMatrix4Rotate(HGLES::cameraMatrix, self.cameraRotate.x, 1, 0, 0);
-    HGLES::cameraMatrix = GLKMatrix4Rotate(HGLES::cameraMatrix, self.cameraRotate.y, 0, 1, 0);
-    HGLES::cameraMatrix = GLKMatrix4Rotate(HGLES::cameraMatrix, self.cameraRotate.z, 0, 0, 1);
-    HGLES::cameraMatrix = GLKMatrix4Translate(HGLES::cameraMatrix, self.cameraPosition.x, self.cameraPosition.y, self.cameraPosition.z);
-    /*
-    HGLES::mvMatrix = GLKMatrix4Identity;
-    HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, self.cameraRotate.x, 1, 0, 0);
-    HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, self.cameraRotate.y, 0, 1, 0);
-    HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, self.cameraRotate.z, 0, 0, 1);
-    HGLES::mvMatrix = GLKMatrix4Translate(HGLES::mvMatrix, self.cameraPosition.x, self.cameraPosition.y, self.cameraPosition.z);
-     */
 }
 
 - (void)showBuffer

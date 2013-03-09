@@ -26,5 +26,7 @@ public:
     
     t_hgl2d anime1;
     t_hgl2d anime2;
+private:
+    float alphadiff;
     
 };

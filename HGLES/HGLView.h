@@ -14,12 +14,9 @@
 @interface HGLView : UIView
 {
 }
-@property(readwrite) HGLVector3 cameraPosition;
-@property(readwrite) HGLVector3 cameraRotate;
 
 - (id)initWithFrame:(CGRect)frame WithRenderBlock:(void (^)())block;
 - (void)start;
-- (void)updateCamera; // call this right after camera's property changed.
 - (void)draw; // request render
 
 @end

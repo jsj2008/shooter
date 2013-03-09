@@ -403,9 +403,9 @@ static HGLVector3 testRotate;
             _cameraPosition.z = -20;
         }*/
         
-        _glview.cameraPosition = HGLVector3(0,0,-1);
+        //_glview.cameraPosition = HGLVector3(0,0,-1);
         //_glview.cameraRotate = HGLVector3(0,0,-1);
-        [_glview updateCamera];
+        //[_glview updateCamera];
         
         //skybox->draw();
         //skybox->position = _player->position;

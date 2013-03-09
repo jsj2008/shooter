@@ -7,6 +7,7 @@
 #define ENEMY_NUM 20
 #define BULLET_NUM 2000
 #define FPS 20
+#define FIELD_SIZE 200
 
 // util
 #define LOG(A, ...) NSLog(@"LOG: %s:%d:%@", __PRETTY_FUNCTION__,__LINE__,[NSString stringWithFormat:A, ## __VA_ARGS__]);

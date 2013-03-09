@@ -23,13 +23,10 @@
 #import "Common.h"
 
 #define ZPOS 0
-#define BACKGROUND_SCALE 1900
+#define BACKGROUND_SCALE 300
 
 @interface ViewController()
 {
-    
-    HGLView* _glview;
-    HGLVector3 _cameraPosition;
     
     // flag
     bool fire;
@@ -43,7 +40,7 @@
     std::vector<HGBullet*> _bulletsInActive;
     std::vector<HGFighter*> _enemies;
     std::vector<HGObject*> _background;
-    //std::vector<HGObject*> _background2;
+    std::vector<HGObject*> _background2;
     
     HGLObject3D* skybox;
     
@@ -54,6 +51,12 @@
     PadView* _leftPadView;
     PadView* _rightPadView;
     
+    // OpenGL
+    HGLView* _glview;
+    
+    // camera
+    HGLVector3 _cameraPosition;
+    HGLVector3 _cameraRotate;
     
 #warning 弾用のZ軸変数
     
@@ -102,15 +105,6 @@
     initSpriteIndexTable();
     HGLoadData();
     
-    // skybox
-    /*
-    skybox = HGLObjLoader::load(@"sphere");
-    skybox->getMesh(0)->texture = HGLTexture::createTextureWithAsset("space2.png");
-    skybox->useLight = 0;
-    skybox->scale.set(80, 80, 80);
-    skybox->rotate.set(-90*M_PI/180, 0, 0);
-     */
-    
     // create players
     _player = new HGFighter();
     _player->init(HG_FIGHTER_N1);
@@ -150,39 +144,33 @@
         t->scale.set(BACKGROUND_SCALE, BACKGROUND_SCALE, BACKGROUND_SCALE);
         switch (i) {
             case 0:
-                t->anime1.texture = *HGLTexture::createTextureWithAsset("galaxy-X.png");
                 t->position.set(-1*BACKGROUND_SCALE/2, 0, ZPOS);
                 t->rotate.set(0, 90*M_PI/180, 0);
                 break;
             case 1:
-                t->anime1.texture = *HGLTexture::createTextureWithAsset("galaxy+X.png");
                 t->position.set(BACKGROUND_SCALE/2, 0, ZPOS);
                 t->rotate.set(0, -90*M_PI/180, 180*M_PI/180);
                 break;
             case 2:
-                t->anime1.texture = *HGLTexture::createTextureWithAsset("galaxy-Y.png");
                 t->position.set(0, BACKGROUND_SCALE/2, ZPOS);
                 t->rotate.set(-90*M_PI/180, 0, 0);
                 break;
             case 3:
-                t->anime1.texture = *HGLTexture::createTextureWithAsset("galaxy+Y.png");
                 t->position.set(0, -BACKGROUND_SCALE/2, ZPOS);
                 t->rotate.set(90*M_PI/180, 0, 0);
                 break;
             case 4:
-                t->anime1.texture = *HGLTexture::createTextureWithAsset("galaxy-Z.png");
                 t->position.set(0, 0, -1*BACKGROUND_SCALE/2 + ZPOS);
-                t->rotate.set(180*M_PI/180, 0, 0);
+                t->rotate.set(0, 0, 0);
                 break;
             case 5:
-                t->anime1.texture = *HGLTexture::createTextureWithAsset("galaxy+Z.png");
                 t->position.set(0, 0, 1*BACKGROUND_SCALE/2 + ZPOS);
                 t->rotate.set(180*M_PI/180, 0, 0);
                 break;
             default:
                 break;
         }
-        t->anime1.texture.blendColor = {0.7, 0.7, 1.9, 1.0};
+        t->anime1.texture.blendColor = {3.7, 0.7, 1.9, 1.0};
         _background.push_back(t);
     }
     
@@ -329,12 +317,6 @@
         _player->update();
         
         [self fire];
-        
-        // カメラ位置
-        _cameraPosition.x = _player->position.x * -1;
-        _cameraPosition.y = _player->position.y * -1 + 3.5;
-        //_cameraPosition.y = _player->position.y * -1;
-        _cameraPosition.z = -7;
     }
     
     // move bg
@@ -393,48 +375,26 @@ static HGLVector3 testRotate;
 {
     @synchronized(self)
     {
-        glDisable(GL_DEPTH_TEST); // 2D Gameではスプライトの重なりができなくなるのでOFF
-        _glview.cameraRotate = HGLVector3(-22 * M_PI/180, 0, 0);
-        _glview.cameraPosition = _cameraPosition;
-        [_glview updateCamera];
+        // set camera
+        _cameraPosition.x = _player->position.x * -1;
+        _cameraPosition.y = _player->position.y * -1 + 3.5;
+        _cameraPosition.z = -7;
+        _cameraRotate.x = -22 * M_PI/180;
+        HGLES::cameraMatrix = GLKMatrix4Identity;
+        HGLES::cameraMatrix = GLKMatrix4Rotate(HGLES::cameraMatrix, _cameraRotate.x, 1, 0, 0);
+        HGLES::cameraMatrix = GLKMatrix4Rotate(HGLES::cameraMatrix, _cameraRotate.y, 0, 1, 0);
+        HGLES::cameraMatrix = GLKMatrix4Rotate(HGLES::cameraMatrix, _cameraRotate.z, 0, 0, 1);
+        HGLES::cameraMatrix = GLKMatrix4Translate(HGLES::cameraMatrix, _cameraPosition.x, _cameraPosition.y, _cameraPosition.z);
         
-        //skybox->draw();
-        //skybox->position = _player->position;
+        // 2d
+        glDisable(GL_DEPTH_TEST);
         
         // draw bg
-        HGLES::pushMatrix();
-        //HGLES::mvMatrix = GLKMatrix4Scale(HGLES::mvMatrix, BACKGROUND_SCALE, BACKGROUND_SCALE, BACKGROUND_SCALE);
-        //test
-        if (1)
-        {
-            testRotate.x += 0.0001;
-            testRotate.y -= 0.0001;
-            testRotate.z += 0.0001;
-        }
-        //HGLES::mvMatrix = GLKMatrix4Translate(HGLES::mvMatrix, _player->position.x, _player->position.y, _player->position.z);
-        HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, testRotate.x, 1, 0, 0);
-        HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, testRotate.y, 0, 1, 0);
-        HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, testRotate.z, 0, 0, 1);
-        for (std::vector<HGObject*>::reverse_iterator itr = _background.rbegin(); itr != _background.rend(); ++itr)
-        {
-            HGObject* a = *itr;
-            //a->rotate.y += 0.04;
-            a->draw();
-        }
-        HGLES::popMatrix();
-        // draw bg
-        /*
         for (std::vector<HGObject*>::reverse_iterator itr = _background.rbegin(); itr != _background.rend(); ++itr)
         {
             HGObject* a = *itr;
             a->draw();
-        }*/
-        /*
-        for (std::vector<HGObject*>::reverse_iterator itr = _background2.rbegin(); itr != _background2.rend(); ++itr)
-        {
-            HGObject* a = *itr;
-            a->draw();
-        }*/
+        }
         
         // draw enemies
         for (std::vector<HGFighter*>::reverse_iterator itr = _enemies.rbegin(); itr != _enemies.rend(); ++itr)
