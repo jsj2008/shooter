@@ -28,7 +28,6 @@
 		0733406616BDB06D00DB2D34 /* teapot.obj in Resources */ = {isa = PBXBuildFile; fileRef = 0733406516BDB06D00DB2D34 /* teapot.obj */; };
 		0744104B16E1D8D80076D7E4 /* fragment2d.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 0744104916E1D8D80076D7E4 /* fragment2d.glsl */; };
 		0744104C16E1D8D80076D7E4 /* vertex2d.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 0744104A16E1D8D80076D7E4 /* vertex2d.glsl */; };
-		0744105016E24CB00076D7E4 /* HGRect.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0744104F16E24CB00076D7E4 /* HGRect.mm */; };
 		0755991316B3D0560066A0E9 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0755991216B3D0560066A0E9 /* QuartzCore.framework */; };
 		0755992916B561490066A0E9 /* block.mtl in Resources */ = {isa = PBXBuildFile; fileRef = 0755992716B561490066A0E9 /* block.mtl */; };
 		0755992A16B561490066A0E9 /* block.obj in Resources */ = {isa = PBXBuildFile; fileRef = 0755992816B561490066A0E9 /* block.obj */; };
@@ -180,8 +179,6 @@
 		0733406516BDB06D00DB2D34 /* teapot.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = teapot.obj; sourceTree = "<group>"; };
 		0744104916E1D8D80076D7E4 /* fragment2d.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = fragment2d.glsl; sourceTree = "<group>"; };
 		0744104A16E1D8D80076D7E4 /* vertex2d.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = vertex2d.glsl; sourceTree = "<group>"; };
-		0744104E16E24CB00076D7E4 /* HGRect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGRect.h; sourceTree = "<group>"; };
-		0744104F16E24CB00076D7E4 /* HGRect.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGRect.mm; sourceTree = "<group>"; };
 		0755991216B3D0560066A0E9 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		0755992716B561490066A0E9 /* block.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = block.mtl; sourceTree = "<group>"; };
 		0755992816B561490066A0E9 /* block.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = block.obj; sourceTree = "<group>"; };
@@ -552,8 +549,6 @@
 				07DE73D116EB18030048877C /* HGCommon.h */,
 				07DE73CE16EB16E10048877C /* HGGame.h */,
 				07DE73CF16EB16E10048877C /* HGGame.mm */,
-				0744104E16E24CB00076D7E4 /* HGRect.h */,
-				0744104F16E24CB00076D7E4 /* HGRect.mm */,
 				07B4244216D91BF0007055DF /* HGBullet.h */,
 				07B4244316D91BF1007055DF /* HGBullet.mm */,
 				07B4243916D11551007055DF /* HGFighter.h */,
@@ -814,7 +809,6 @@
 				07B4243B16D11552007055DF /* HGFighter.mm in Sources */,
 				07B4244416D91BF1007055DF /* HGBullet.mm in Sources */,
 				075A1EBF16E11331006DC1E7 /* HGLGraphics2D.mm in Sources */,
-				0744105016E24CB00076D7E4 /* HGRect.mm in Sources */,
 				07DE73D016EB16E30048877C /* HGGame.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
