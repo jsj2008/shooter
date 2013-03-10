@@ -31,12 +31,8 @@ namespace HGGame
             default:
                 break;
         }
-        this->size.w = w;
-        this->size.h = h;
-        this->realSize.w = w*SCRATE;
-        this->realSize.h = h*SCRATE;
-        this->hitbox_id = hitbox_id;
-        this->scale.set(w*SCRATE, h*SCRATE, 1);
+        t_size2d size = {(float)w, (float)h};
+        initActor(*this, size, hitbox_id);
         anime1 = hgles::t_hgl2di();
         anime1.texture = (*hgles::HGLTexture::createTextureWithAsset(img_name));
         anime1.position = position;

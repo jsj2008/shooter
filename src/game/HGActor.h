@@ -43,7 +43,7 @@ namespace HGGame {
         float realHeight;
     } t_hg_actorinf;
     */
-     
+    
     //typedef std::vector<t_hg_actorinf> t_hg_actorinf_list;
     
     // 3dやテクスチャなどのデータを読み込む
@@ -52,6 +52,8 @@ namespace HGGame {
     
     class HGActor
     {
+        friend void initActor(HGActor& actor, t_size2d &size, int &hitbox_id);
+        
     public:
         HGActor():
         velocity(0),
@@ -66,7 +68,7 @@ namespace HGGame {
         hitbox_id(-1)
         {}
         
-        static void HGActor::initialize();
+        static void initialize();
         ~HGActor();
         
         virtual void draw() = 0;
@@ -81,17 +83,23 @@ namespace HGGame {
         hgles::HGLVector3 position;
         hgles::HGLVector3 rotate;
         hgles::HGLVector3 scale;
-        
-        unsigned int updateCount;
-        float velocity; // 速度
         float aspect; // degree
         float radian;
+        unsigned int updateCount;
+        
+    private:
+        void initSize(t_size2d &size);
+        void initHitbox(int hitbox_id);
+        
+        // property
+        hgles::HGLVector3 acceleration; // 加速
+        float velocity; // 速度
         float moveAspect; // radian
         int hitbox_id;
-        
         t_size2d size;
         t_size2d realSize;
-        hgles::HGLVector3 acceleration; // 加速
     };
+    
+    void initActor(HGActor& actor, t_size2d &size, int &hitbox_id);
     
 }

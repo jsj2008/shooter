@@ -78,16 +78,8 @@ namespace HGGame {
     void HGBullet::N1Init()
     {
         int hitbox_id = 1;
-        int w = 12;
-        int h = 12;
-        
-        //setSize(w, h);
-        this->size.w = w;
-        this->size.h = h;
-        this->realSize.w = w*SCRATE;
-        this->realSize.h = h*SCRATE;
-        this->hitbox_id = hitbox_id;
-        this->scale.set(w*SCRATE, h*SCRATE, 1);
+        t_size2d size = {12, 12};
+        initActor(*this, size, hitbox_id);
         
         setVelocity(0.3);
         scale.set(0.3, 0.3, 0.3);

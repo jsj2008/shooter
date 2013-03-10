@@ -163,5 +163,26 @@ namespace HGGame {
             position.z += acceleration.z;
         }
     }
-
+    
+    void HGActor::initHitbox(int hitbox_id)
+    {
+        this->hitbox_id = hitbox_id;
+    }
+    
+    void HGActor::initSize(t_size2d &size)
+    {
+        this->size.w = size.w;
+        this->size.h = size.h;
+        this->realSize.w = size.w*SCRATE;
+        this->realSize.h = size.h*SCRATE;
+        this->hitbox_id = hitbox_id;
+        this->scale.set(size.w*SCRATE, size.h*SCRATE, 1);
+    }
+    
+    void initActor(HGActor& actor, t_size2d &size, int &hitbox_id)
+    {
+        actor.initSize(size);
+        actor.initHitbox(hitbox_id);
+    }
+    
 }
