@@ -471,17 +471,9 @@
 			path = Assets;
 			sourceTree = "<group>";
 		};
-		07D5BC7216E63B1600F0D665 /* Test */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Test;
-			sourceTree = "<group>";
-		};
 		07E0462616886E73001F9CCE = {
 			isa = PBXGroup;
 			children = (
-				07D5BC7216E63B1600F0D665 /* Test */,
 				0755992616B561490066A0E9 /* Assets */,
 				07E0463416886E73001F9CCE /* Frameworks */,
 				07E6511316C926F100192B8B /* Game */,

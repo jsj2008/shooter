@@ -3,6 +3,10 @@
 #import "HGUtil.h"
 #import "HGCommon.h"
 
+#import <string>
+
+using namespace std;
+
 namespace HGGame
 {
     
@@ -12,28 +16,33 @@ namespace HGGame
     {
     }
     
-    // 種類ごとに関数ポインタを設定
     void HGFighter::init(HG_FIGHTER_TYPE type)
     {
-#warning テーブル化
+        string img_name;
+        int hitbox_id = 0;
+        int w = 0;
+        int h = 0;
         switch (type) {
             case HG_FIGHTER:
-                width = 64;
-                height = 64;
-                scale.set(width*SCRATE, height*SCRATE, 1);
+                img_name = "e_robo2.png";
+                hitbox_id = 0;
+                w = h = 64;
                 break;
             default:
                 break;
         }
-        base::setActorInfo(HG_TYPE_E_ROBO1);
-        setSize(width, height);
-        
+        this->size.w = w;
+        this->size.h = h;
+        this->realSize.w = w*SCRATE;
+        this->realSize.h = h*SCRATE;
+        this->hitbox_id = hitbox_id;
+        this->scale.set(w*SCRATE, h*SCRATE, 1);
         anime1 = t_hgl2di();
-        anime1.texture = (*HGLTexture::createTextureWithAsset("e_robo2.png"));
+        anime1.texture = (*HGLTexture::createTextureWithAsset(img_name));
         anime1.position = position;
         anime1.scale = scale;
-        anime1.texture.sprWidth = info->sprWidth;
-        anime1.texture.sprHeight = info->sprHeight;
+        anime1.texture.sprWidth = w;
+        anime1.texture.sprHeight = h;
     }
     
     void HGFighter::draw()
@@ -44,7 +53,6 @@ namespace HGGame
     
     void HGFighter::update()
     {
-#warning 種類別に
         base::update();
         int spIdx = getSpriteIndex(aspect + 0.5);
         int x = anime1.texture.sprWidth * spIdx;

@@ -1,6 +1,7 @@
 #import "HGActor.h"
 #import "HGBullet.h"
 #import "HGUtil.h"
+#import "HGCommon.h"
 
 namespace HGGame {
 
@@ -32,7 +33,7 @@ namespace HGGame {
     {
         // オブジェクトの種類別の関数を設定
 #warning テーブル化
-        base::setSize(64, 64);
+        //base::setSize(64, 64);
         pInitFunc = hg_bullet_table[type].pInitFunc;
         pDrawFunc = hg_bullet_table[type].pDrawFunc;
         
@@ -76,7 +77,17 @@ namespace HGGame {
     
     void HGBullet::N1Init()
     {
-        base::setActorInfo(HG_TYPE_WEAPON1);
+        int hitbox_id = 1;
+        int w = 12;
+        int h = 12;
+        
+        //setSize(w, h);
+        this->size.w = w;
+        this->size.h = h;
+        this->realSize.w = w*SCRATE;
+        this->realSize.h = h*SCRATE;
+        this->hitbox_id = hitbox_id;
+        this->scale.set(w*SCRATE, h*SCRATE, 1);
         
         setVelocity(0.3);
         scale.set(0.3, 0.3, 0.3);

@@ -1,4 +1,4 @@
-#define IS_DEBUG_COLLISION 0
+#define IS_DEBUG_COLLISION 1
 
 // game define
 #define ENEMY_NUM 20

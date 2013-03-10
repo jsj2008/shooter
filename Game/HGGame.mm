@@ -48,7 +48,7 @@ namespace HGGame {
 #warning 後でdelete
         // initialize utility program
         initSpriteIndexTable();
-        HGLoadData();
+        HGActor::initialize();
         
         // create players
         _player = new HGFighter();
@@ -119,10 +119,8 @@ namespace HGGame {
             background.push_back(t);
         }
         
-        // camera
-        _cameraPosition = HGLVector3(0,0,0);
-        
     }
+    
     
     void update(t_keystate* keystate)
     {

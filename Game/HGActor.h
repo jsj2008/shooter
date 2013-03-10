@@ -7,25 +7,29 @@
 
 namespace HGGame {
     
-    // anime table
-    enum HG_TYPE_ACTOR {
-        HG_TYPE_E_ROBO1,
-        HG_TYPE_WEAPON1,
-        HG_TYPE_MAX,
-    };
-    
-    typedef struct t_hg_rect
+    typedef struct t_rect
     {
-        float x;
-        float y;
-        float width;
-        float height;
-        float realWidth;
-        float realHeight;
-    } t_hg_rect;
+        /*
+        t_rect(float x, float y, float w, float h):
+            x(x),
+            y(y),
+            w(w),
+            h(h) {}*/
+        float x, y, w, h;
+    } t_rect;
     
-    typedef std::vector<t_hg_rect> t_hg_rectlist;
+    typedef struct t_size2d
+    {
+        float w, h;
+    } t_size2d;
     
+    typedef std::vector<t_rect> t_hitboxes;
+    
+    static std::vector<std::vector<t_rect>> HITBOX_LIST;
+    
+    //typedef std::vector<t_hg_rect> t_hg_rectlist;
+    
+    /*
     typedef struct t_hg_actorinf
     {
         t_hg_actorinf():
@@ -38,8 +42,9 @@ namespace HGGame {
         float realWidth;
         float realHeight;
     } t_hg_actorinf;
-    
-    typedef std::vector<t_hg_actorinf> t_hg_actorinf_list;
+    */
+     
+    //typedef std::vector<t_hg_actorinf> t_hg_actorinf_list;
     
     // 3dやテクスチャなどのデータを読み込む
 #warning 後で適切な場所に移すことを検討
@@ -57,38 +62,36 @@ namespace HGGame {
         rotate(0,0,0),
         position(0,0,0),
         acceleration(0,0,0),
-        updateCount(0)
+        updateCount(0),
+        hitbox_id(-1)
         {}
         
-        virtual void draw() = 0;
-        void drawCollision();
-        virtual void update();
-        void setVelocity(float velocity);
-        virtual void setAspect(float degree);
-        void setMoveAspect(float degree);
-        void setActorInfo(HG_TYPE_ACTOR t);
-        bool isCollideWith(HGActor* another);
-        
+        static void HGActor::initialize();
         ~HGActor();
         
+        virtual void draw() = 0;
+        virtual void update();
+        void drawCollision();
+        void setVelocity(float velocity);
+        void setMoveAspect(float degree);
+        bool isCollideWith(HGActor* another);
+        void setAspect(float degree);
+        
+        // property
         HGLVector3 position;
         HGLVector3 rotate;
         HGLVector3 scale;
+        
+        unsigned int updateCount;
         float velocity; // 速度
         float aspect; // degree
         float radian;
         float moveAspect; // radian
-        unsigned int updateCount;
-        t_hg_actorinf* info;
+        int hitbox_id;
         
-        float width;
-        float height;
-        
-        void setSize(float width, float height);
-        
+        t_size2d size;
+        t_size2d realSize;
         HGLVector3 acceleration; // 加速
-        
-        
     };
     
 }
