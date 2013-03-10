@@ -26,15 +26,10 @@
 		0733406216BDAE4B00DB2D34 /* teoke.obj in Resources */ = {isa = PBXBuildFile; fileRef = 0733406116BDAE4A00DB2D34 /* teoke.obj */; };
 		0733406416BDAF7800DB2D34 /* yakuimon.obj in Resources */ = {isa = PBXBuildFile; fileRef = 0733406316BDAF7800DB2D34 /* yakuimon.obj */; };
 		0733406616BDB06D00DB2D34 /* teapot.obj in Resources */ = {isa = PBXBuildFile; fileRef = 0733406516BDB06D00DB2D34 /* teapot.obj */; };
-		0744104B16E1D8D80076D7E4 /* fragment2d.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 0744104916E1D8D80076D7E4 /* fragment2d.glsl */; };
-		0744104C16E1D8D80076D7E4 /* vertex2d.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 0744104A16E1D8D80076D7E4 /* vertex2d.glsl */; };
 		0755991316B3D0560066A0E9 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0755991216B3D0560066A0E9 /* QuartzCore.framework */; };
 		0755992916B561490066A0E9 /* block.mtl in Resources */ = {isa = PBXBuildFile; fileRef = 0755992716B561490066A0E9 /* block.mtl */; };
 		0755992A16B561490066A0E9 /* block.obj in Resources */ = {isa = PBXBuildFile; fileRef = 0755992816B561490066A0E9 /* block.obj */; };
-		075A1EBF16E11331006DC1E7 /* HGLGraphics2D.mm in Sources */ = {isa = PBXBuildFile; fileRef = 075A1EBE16E11331006DC1E7 /* HGLGraphics2D.mm */; };
-		07B4243B16D11552007055DF /* HGFighter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07B4243A16D11551007055DF /* HGFighter.mm */; };
 		07B4243F16D8F3FA007055DF /* rect.obj in Resources */ = {isa = PBXBuildFile; fileRef = 07B4243E16D8F3FA007055DF /* rect.obj */; };
-		07B4244416D91BF1007055DF /* HGBullet.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07B4244316D91BF1007055DF /* HGBullet.mm */; };
 		07B4244B16D932E3007055DF /* wavering.png in Resources */ = {isa = PBXBuildFile; fileRef = 07B4244A16D932E3007055DF /* wavering.png */; };
 		07B4244D16D93F86007055DF /* corona.png in Resources */ = {isa = PBXBuildFile; fileRef = 07B4244C16D93F86007055DF /* corona.png */; };
 		07B4244F16D94145007055DF /* divine.png in Resources */ = {isa = PBXBuildFile; fileRef = 07B4244E16D94145007055DF /* divine.png */; };
@@ -51,19 +46,44 @@
 		07D5BC6F16E3931D00F0D665 /* galaxy+X.png in Resources */ = {isa = PBXBuildFile; fileRef = 07D5BC6916E3931B00F0D665 /* galaxy+X.png */; };
 		07D5BC7016E3931D00F0D665 /* galaxy+Y.png in Resources */ = {isa = PBXBuildFile; fileRef = 07D5BC6A16E3931C00F0D665 /* galaxy+Y.png */; };
 		07D5BC7116E3931D00F0D665 /* galaxy+Z.png in Resources */ = {isa = PBXBuildFile; fileRef = 07D5BC6B16E3931D00F0D665 /* galaxy+Z.png */; };
-		07DE73D016EB16E30048877C /* HGGame.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07DE73CF16EB16E10048877C /* HGGame.mm */; };
+		07DE748816EC368F0048877C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 07DE746216EC368F0048877C /* AppDelegate.m */; };
+		07DE748D16EC368F0048877C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 07DE746916EC368F0048877C /* main.m */; };
+		07DE748E16EC368F0048877C /* PadView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07DE746B16EC368F0048877C /* PadView.mm */; };
+		07DE749016EC368F0048877C /* TouchHandlerView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07DE746F16EC368F0048877C /* TouchHandlerView.mm */; };
+		07DE749116EC368F0048877C /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07DE747116EC368F0048877C /* ViewController.mm */; };
+		07DE749A16EC372B0048877C /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 07DE749316EC372B0048877C /* Default-568h@2x.png */; };
+		07DE749B16EC372B0048877C /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 07DE749416EC372B0048877C /* Default.png */; };
+		07DE749C16EC372B0048877C /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 07DE749516EC372B0048877C /* Default@2x.png */; };
+		07DE749D16EC372B0048877C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 07DE749616EC372B0048877C /* InfoPlist.strings */; };
+		07DE749E16EC372B0048877C /* Shooter-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 07DE749816EC372B0048877C /* Shooter-Info.plist */; };
+		07DE74A616EC38780048877C /* smart_ptr.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07DE74A516EC38780048877C /* smart_ptr.mm */; };
+		07DE74C816EC38A40048877C /* HGLES.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07DE74AA16EC38A40048877C /* HGLES.mm */; };
+		07DE74C916EC38A40048877C /* HGLGraphics2D.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07DE74AC16EC38A40048877C /* HGLGraphics2D.mm */; };
+		07DE74CA16EC38A40048877C /* HGLIndexBuffer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07DE74AE16EC38A40048877C /* HGLIndexBuffer.mm */; };
+		07DE74CB16EC38A40048877C /* HGLMaterial.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07DE74B016EC38A40048877C /* HGLMaterial.mm */; };
+		07DE74CC16EC38A40048877C /* HGLMesh.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07DE74B216EC38A40048877C /* HGLMesh.mm */; };
+		07DE74CD16EC38A40048877C /* HGLObject3D.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07DE74B416EC38A40048877C /* HGLObject3D.mm */; };
+		07DE74CE16EC38A40048877C /* HGLObjLoader.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07DE74B616EC38A40048877C /* HGLObjLoader.mm */; };
+		07DE74CF16EC38A40048877C /* HGLTexture.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07DE74B816EC38A40048877C /* HGLTexture.mm */; };
+		07DE74D016EC38A40048877C /* HGLTypes.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07DE74BA16EC38A40048877C /* HGLTypes.mm */; };
+		07DE74D116EC38A40048877C /* HGLUtil.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07DE74BC16EC38A40048877C /* HGLUtil.mm */; };
+		07DE74D216EC38A40048877C /* HGLVector3.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07DE74BE16EC38A40048877C /* HGLVector3.mm */; };
+		07DE74D316EC38A40048877C /* HGLVertexBuffer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07DE74C016EC38A40048877C /* HGLVertexBuffer.mm */; };
+		07DE74D416EC38A40048877C /* HGLView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07DE74C216EC38A40048877C /* HGLView.mm */; };
+		07DE74D516EC38A40048877C /* fragment.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 07DE74C416EC38A40048877C /* fragment.glsl */; };
+		07DE74D616EC38A40048877C /* fragment2d.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 07DE74C516EC38A40048877C /* fragment2d.glsl */; };
+		07DE74D716EC38A40048877C /* vertex.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 07DE74C616EC38A40048877C /* vertex.glsl */; };
+		07DE74D816EC38A40048877C /* vertex2d.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 07DE74C716EC38A40048877C /* vertex2d.glsl */; };
+		07DE74E516EC38B80048877C /* HGActor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07DE74DB16EC38B80048877C /* HGActor.mm */; };
+		07DE74E616EC38B80048877C /* HGBullet.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07DE74DD16EC38B80048877C /* HGBullet.mm */; };
+		07DE74E716EC38B80048877C /* HGFighter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07DE74E016EC38B80048877C /* HGFighter.mm */; };
+		07DE74E816EC38B80048877C /* HGGame.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07DE74E216EC38B80048877C /* HGGame.mm */; };
+		07DE74E916EC38B80048877C /* HGUtil.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07DE74E416EC38B80048877C /* HGUtil.mm */; };
 		07E0463616886E73001F9CCE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07E0463516886E73001F9CCE /* UIKit.framework */; };
 		07E0463816886E73001F9CCE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07E0463716886E73001F9CCE /* Foundation.framework */; };
 		07E0463A16886E73001F9CCE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07E0463916886E73001F9CCE /* CoreGraphics.framework */; };
 		07E0463C16886E73001F9CCE /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07E0463B16886E73001F9CCE /* GLKit.framework */; };
 		07E0463E16886E73001F9CCE /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07E0463D16886E73001F9CCE /* OpenGLES.framework */; };
-		07E0464416886E73001F9CCE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 07E0464216886E73001F9CCE /* InfoPlist.strings */; };
-		07E0464616886E73001F9CCE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E0464516886E73001F9CCE /* main.m */; };
-		07E0464A16886E73001F9CCE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E0464916886E73001F9CCE /* AppDelegate.m */; };
-		07E0464C16886E73001F9CCE /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 07E0464B16886E73001F9CCE /* Default.png */; };
-		07E0464E16886E73001F9CCE /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 07E0464D16886E73001F9CCE /* Default@2x.png */; };
-		07E0465016886E73001F9CCE /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 07E0464F16886E73001F9CCE /* Default-568h@2x.png */; };
-		07E0465716886E73001F9CCE /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07E0465616886E73001F9CCE /* ViewController.mm */; };
 		07E650CA16C9244D00192B8B /* antaeus.bmp in Resources */ = {isa = PBXBuildFile; fileRef = 07E6508116C9244D00192B8B /* antaeus.bmp */; };
 		07E650CB16C9244D00192B8B /* arabicnum.png in Resources */ = {isa = PBXBuildFile; fileRef = 07E6508216C9244D00192B8B /* arabicnum.png */; };
 		07E650CC16C9244D00192B8B /* banner.png in Resources */ = {isa = PBXBuildFile; fileRef = 07E6508316C9244D00192B8B /* banner.png */; };
@@ -137,24 +157,6 @@
 		07E6511016C9244D00192B8B /* tobira_right.png in Resources */ = {isa = PBXBuildFile; fileRef = 07E650C716C9244D00192B8B /* tobira_right.png */; };
 		07E6511116C9244D00192B8B /* topmenuback.png in Resources */ = {isa = PBXBuildFile; fileRef = 07E650C816C9244D00192B8B /* topmenuback.png */; };
 		07E6511216C9244D00192B8B /* yesnowin1.png in Resources */ = {isa = PBXBuildFile; fileRef = 07E650C916C9244D00192B8B /* yesnowin1.png */; };
-		07E6511616C926F200192B8B /* HGActor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07E6511516C926F200192B8B /* HGActor.mm */; };
-		07E6514016CF685B00192B8B /* HGLES.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07E6512616CF685B00192B8B /* HGLES.mm */; };
-		07E6514116CF685B00192B8B /* HGLIndexBuffer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07E6512816CF685B00192B8B /* HGLIndexBuffer.mm */; };
-		07E6514216CF685B00192B8B /* HGLMaterial.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07E6512A16CF685B00192B8B /* HGLMaterial.mm */; };
-		07E6514316CF685B00192B8B /* HGLMesh.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07E6512C16CF685B00192B8B /* HGLMesh.mm */; };
-		07E6514416CF685B00192B8B /* HGLObject3D.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07E6512E16CF685B00192B8B /* HGLObject3D.mm */; };
-		07E6514516CF685B00192B8B /* HGLObjLoader.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07E6513016CF685B00192B8B /* HGLObjLoader.mm */; };
-		07E6514616CF685B00192B8B /* HGLTexture.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07E6513216CF685B00192B8B /* HGLTexture.mm */; };
-		07E6514716CF685B00192B8B /* HGLTypes.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07E6513416CF685B00192B8B /* HGLTypes.mm */; };
-		07E6514816CF685B00192B8B /* HGLUtil.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07E6513616CF685B00192B8B /* HGLUtil.mm */; };
-		07E6514916CF685B00192B8B /* HGLVector3.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07E6513816CF685B00192B8B /* HGLVector3.mm */; };
-		07E6514A16CF685B00192B8B /* HGLVertexBuffer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07E6513A16CF685B00192B8B /* HGLVertexBuffer.mm */; };
-		07E6514B16CF685B00192B8B /* HGLView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07E6513C16CF685B00192B8B /* HGLView.mm */; };
-		07E6514C16CF685B00192B8B /* fragment.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 07E6513E16CF685B00192B8B /* fragment.glsl */; };
-		07E6514D16CF685B00192B8B /* vertex.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 07E6513F16CF685B00192B8B /* vertex.glsl */; };
-		07E6515016CF9C5600192B8B /* HGUtil.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07E6514F16CF9C5600192B8B /* HGUtil.mm */; };
-		07E6515316CFA07700192B8B /* PadView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07E6515216CFA07700192B8B /* PadView.mm */; };
-		07E6515616D0096B00192B8B /* TouchHandlerView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07E6515516D0096A00192B8B /* TouchHandlerView.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -177,19 +179,10 @@
 		0733406116BDAE4A00DB2D34 /* teoke.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = teoke.obj; sourceTree = "<group>"; };
 		0733406316BDAF7800DB2D34 /* yakuimon.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = yakuimon.obj; sourceTree = "<group>"; };
 		0733406516BDB06D00DB2D34 /* teapot.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = teapot.obj; sourceTree = "<group>"; };
-		0744104916E1D8D80076D7E4 /* fragment2d.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = fragment2d.glsl; sourceTree = "<group>"; };
-		0744104A16E1D8D80076D7E4 /* vertex2d.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = vertex2d.glsl; sourceTree = "<group>"; };
 		0755991216B3D0560066A0E9 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		0755992716B561490066A0E9 /* block.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = block.mtl; sourceTree = "<group>"; };
 		0755992816B561490066A0E9 /* block.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = block.obj; sourceTree = "<group>"; };
-		075A1EBD16E11331006DC1E7 /* HGLGraphics2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGLGraphics2D.h; sourceTree = "<group>"; };
-		075A1EBE16E11331006DC1E7 /* HGLGraphics2D.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGLGraphics2D.mm; sourceTree = "<group>"; };
-		07B4243916D11551007055DF /* HGFighter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGFighter.h; sourceTree = "<group>"; };
-		07B4243A16D11551007055DF /* HGFighter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGFighter.mm; sourceTree = "<group>"; };
-		07B4243D16D8926E007055DF /* HGLCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGLCommon.h; sourceTree = "<group>"; };
 		07B4243E16D8F3FA007055DF /* rect.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = rect.obj; sourceTree = "<group>"; };
-		07B4244216D91BF0007055DF /* HGBullet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGBullet.h; sourceTree = "<group>"; };
-		07B4244316D91BF1007055DF /* HGBullet.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGBullet.mm; sourceTree = "<group>"; };
 		07B4244A16D932E3007055DF /* wavering.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wavering.png; sourceTree = "<group>"; };
 		07B4244C16D93F86007055DF /* corona.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = corona.png; sourceTree = "<group>"; };
 		07B4244E16D94145007055DF /* divine.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = divine.png; sourceTree = "<group>"; };
@@ -197,7 +190,6 @@
 		07B4245216D9F132007055DF /* star.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = star.png; sourceTree = "<group>"; };
 		07D49FF116DA683C0040D8D5 /* x6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = x6.png; sourceTree = "<group>"; };
 		07D5BC5816E33AEC00F0D665 /* square.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = square.png; sourceTree = "<group>"; };
-		07D5BC5B16E33CF000F0D665 /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
 		07D5BC6016E386B100F0D665 /* halfsphere.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = halfsphere.obj; sourceTree = "<group>"; };
 		07D5BC6216E3895900F0D665 /* space2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = space2.png; sourceTree = "<group>"; };
 		07D5BC6416E38C9D00F0D665 /* sphere.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = sphere.obj; sourceTree = "<group>"; };
@@ -207,26 +199,72 @@
 		07D5BC6916E3931B00F0D665 /* galaxy+X.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "galaxy+X.png"; sourceTree = "<group>"; };
 		07D5BC6A16E3931C00F0D665 /* galaxy+Y.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "galaxy+Y.png"; sourceTree = "<group>"; };
 		07D5BC6B16E3931D00F0D665 /* galaxy+Z.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "galaxy+Z.png"; sourceTree = "<group>"; };
-		07DE73CE16EB16E10048877C /* HGGame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGGame.h; sourceTree = "<group>"; };
-		07DE73CF16EB16E10048877C /* HGGame.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGGame.mm; sourceTree = "<group>"; };
-		07DE73D116EB18030048877C /* HGCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGCommon.h; sourceTree = "<group>"; };
+		07DE746116EC368F0048877C /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		07DE746216EC368F0048877C /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		07DE746316EC368F0048877C /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
+		07DE746916EC368F0048877C /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		07DE746A16EC368F0048877C /* PadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PadView.h; sourceTree = "<group>"; };
+		07DE746B16EC368F0048877C /* PadView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PadView.mm; sourceTree = "<group>"; };
+		07DE746E16EC368F0048877C /* TouchHandlerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouchHandlerView.h; sourceTree = "<group>"; };
+		07DE746F16EC368F0048877C /* TouchHandlerView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TouchHandlerView.mm; sourceTree = "<group>"; };
+		07DE747016EC368F0048877C /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		07DE747116EC368F0048877C /* ViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ViewController.mm; sourceTree = "<group>"; };
+		07DE749316EC372B0048877C /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		07DE749416EC372B0048877C /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		07DE749516EC372B0048877C /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		07DE749716EC372B0048877C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		07DE749816EC372B0048877C /* Shooter-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Shooter-Info.plist"; sourceTree = "<group>"; };
+		07DE749916EC372B0048877C /* Shooter-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Shooter-Prefix.pch"; sourceTree = "<group>"; };
+		07DE74A416EC38780048877C /* smart_ptr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = smart_ptr.h; sourceTree = "<group>"; };
+		07DE74A516EC38780048877C /* smart_ptr.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = smart_ptr.mm; sourceTree = "<group>"; };
+		07DE74A816EC38A40048877C /* HGLCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGLCommon.h; sourceTree = "<group>"; };
+		07DE74A916EC38A40048877C /* HGLES.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGLES.h; sourceTree = "<group>"; };
+		07DE74AA16EC38A40048877C /* HGLES.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGLES.mm; sourceTree = "<group>"; };
+		07DE74AB16EC38A40048877C /* HGLGraphics2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGLGraphics2D.h; sourceTree = "<group>"; };
+		07DE74AC16EC38A40048877C /* HGLGraphics2D.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGLGraphics2D.mm; sourceTree = "<group>"; };
+		07DE74AD16EC38A40048877C /* HGLIndexBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGLIndexBuffer.h; sourceTree = "<group>"; };
+		07DE74AE16EC38A40048877C /* HGLIndexBuffer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGLIndexBuffer.mm; sourceTree = "<group>"; };
+		07DE74AF16EC38A40048877C /* HGLMaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGLMaterial.h; sourceTree = "<group>"; };
+		07DE74B016EC38A40048877C /* HGLMaterial.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGLMaterial.mm; sourceTree = "<group>"; };
+		07DE74B116EC38A40048877C /* HGLMesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGLMesh.h; sourceTree = "<group>"; };
+		07DE74B216EC38A40048877C /* HGLMesh.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGLMesh.mm; sourceTree = "<group>"; };
+		07DE74B316EC38A40048877C /* HGLObject3D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGLObject3D.h; sourceTree = "<group>"; };
+		07DE74B416EC38A40048877C /* HGLObject3D.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGLObject3D.mm; sourceTree = "<group>"; };
+		07DE74B516EC38A40048877C /* HGLObjLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGLObjLoader.h; sourceTree = "<group>"; };
+		07DE74B616EC38A40048877C /* HGLObjLoader.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGLObjLoader.mm; sourceTree = "<group>"; };
+		07DE74B716EC38A40048877C /* HGLTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGLTexture.h; sourceTree = "<group>"; };
+		07DE74B816EC38A40048877C /* HGLTexture.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGLTexture.mm; sourceTree = "<group>"; };
+		07DE74B916EC38A40048877C /* HGLTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGLTypes.h; sourceTree = "<group>"; };
+		07DE74BA16EC38A40048877C /* HGLTypes.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGLTypes.mm; sourceTree = "<group>"; };
+		07DE74BB16EC38A40048877C /* HGLUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGLUtil.h; sourceTree = "<group>"; };
+		07DE74BC16EC38A40048877C /* HGLUtil.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGLUtil.mm; sourceTree = "<group>"; };
+		07DE74BD16EC38A40048877C /* HGLVector3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGLVector3.h; sourceTree = "<group>"; };
+		07DE74BE16EC38A40048877C /* HGLVector3.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGLVector3.mm; sourceTree = "<group>"; };
+		07DE74BF16EC38A40048877C /* HGLVertexBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGLVertexBuffer.h; sourceTree = "<group>"; };
+		07DE74C016EC38A40048877C /* HGLVertexBuffer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGLVertexBuffer.mm; sourceTree = "<group>"; };
+		07DE74C116EC38A40048877C /* HGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGLView.h; sourceTree = "<group>"; };
+		07DE74C216EC38A40048877C /* HGLView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGLView.mm; sourceTree = "<group>"; };
+		07DE74C416EC38A40048877C /* fragment.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = fragment.glsl; sourceTree = "<group>"; };
+		07DE74C516EC38A40048877C /* fragment2d.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = fragment2d.glsl; sourceTree = "<group>"; };
+		07DE74C616EC38A40048877C /* vertex.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = vertex.glsl; sourceTree = "<group>"; };
+		07DE74C716EC38A40048877C /* vertex2d.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = vertex2d.glsl; sourceTree = "<group>"; };
+		07DE74DA16EC38B80048877C /* HGActor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGActor.h; sourceTree = "<group>"; };
+		07DE74DB16EC38B80048877C /* HGActor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGActor.mm; sourceTree = "<group>"; };
+		07DE74DC16EC38B80048877C /* HGBullet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGBullet.h; sourceTree = "<group>"; };
+		07DE74DD16EC38B80048877C /* HGBullet.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGBullet.mm; sourceTree = "<group>"; };
+		07DE74DE16EC38B80048877C /* HGCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGCommon.h; sourceTree = "<group>"; };
+		07DE74DF16EC38B80048877C /* HGFighter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGFighter.h; sourceTree = "<group>"; };
+		07DE74E016EC38B80048877C /* HGFighter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGFighter.mm; sourceTree = "<group>"; };
+		07DE74E116EC38B80048877C /* HGGame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGGame.h; sourceTree = "<group>"; };
+		07DE74E216EC38B80048877C /* HGGame.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGGame.mm; sourceTree = "<group>"; };
+		07DE74E316EC38B80048877C /* HGUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGUtil.h; sourceTree = "<group>"; };
+		07DE74E416EC38B80048877C /* HGUtil.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGUtil.mm; sourceTree = "<group>"; };
 		07E0463116886E73001F9CCE /* Shooter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shooter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		07E0463516886E73001F9CCE /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		07E0463716886E73001F9CCE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		07E0463916886E73001F9CCE /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		07E0463B16886E73001F9CCE /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		07E0463D16886E73001F9CCE /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
-		07E0464116886E73001F9CCE /* Shooter-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Shooter-Info.plist"; sourceTree = "<group>"; };
-		07E0464316886E73001F9CCE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		07E0464516886E73001F9CCE /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		07E0464716886E73001F9CCE /* Shooter-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Shooter-Prefix.pch"; sourceTree = "<group>"; };
-		07E0464816886E73001F9CCE /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		07E0464916886E73001F9CCE /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		07E0464B16886E73001F9CCE /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
-		07E0464D16886E73001F9CCE /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
-		07E0464F16886E73001F9CCE /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		07E0465516886E73001F9CCE /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		07E0465616886E73001F9CCE /* ViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ViewController.mm; sourceTree = "<group>"; };
 		07E6508116C9244D00192B8B /* antaeus.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = antaeus.bmp; sourceTree = "<group>"; };
 		07E6508216C9244D00192B8B /* arabicnum.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arabicnum.png; sourceTree = "<group>"; };
 		07E6508316C9244D00192B8B /* banner.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = banner.png; sourceTree = "<group>"; };
@@ -300,40 +338,6 @@
 		07E650C716C9244D00192B8B /* tobira_right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tobira_right.png; sourceTree = "<group>"; };
 		07E650C816C9244D00192B8B /* topmenuback.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = topmenuback.png; sourceTree = "<group>"; };
 		07E650C916C9244D00192B8B /* yesnowin1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yesnowin1.png; sourceTree = "<group>"; };
-		07E6511416C926F200192B8B /* HGActor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGActor.h; sourceTree = "<group>"; };
-		07E6511516C926F200192B8B /* HGActor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGActor.mm; sourceTree = "<group>"; };
-		07E6512516CF685B00192B8B /* HGLES.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGLES.h; sourceTree = "<group>"; };
-		07E6512616CF685B00192B8B /* HGLES.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGLES.mm; sourceTree = "<group>"; };
-		07E6512716CF685B00192B8B /* HGLIndexBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGLIndexBuffer.h; sourceTree = "<group>"; };
-		07E6512816CF685B00192B8B /* HGLIndexBuffer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGLIndexBuffer.mm; sourceTree = "<group>"; };
-		07E6512916CF685B00192B8B /* HGLMaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGLMaterial.h; sourceTree = "<group>"; };
-		07E6512A16CF685B00192B8B /* HGLMaterial.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGLMaterial.mm; sourceTree = "<group>"; };
-		07E6512B16CF685B00192B8B /* HGLMesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGLMesh.h; sourceTree = "<group>"; };
-		07E6512C16CF685B00192B8B /* HGLMesh.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGLMesh.mm; sourceTree = "<group>"; };
-		07E6512D16CF685B00192B8B /* HGLObject3D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGLObject3D.h; sourceTree = "<group>"; };
-		07E6512E16CF685B00192B8B /* HGLObject3D.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGLObject3D.mm; sourceTree = "<group>"; };
-		07E6512F16CF685B00192B8B /* HGLObjLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGLObjLoader.h; sourceTree = "<group>"; };
-		07E6513016CF685B00192B8B /* HGLObjLoader.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGLObjLoader.mm; sourceTree = "<group>"; };
-		07E6513116CF685B00192B8B /* HGLTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGLTexture.h; sourceTree = "<group>"; };
-		07E6513216CF685B00192B8B /* HGLTexture.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGLTexture.mm; sourceTree = "<group>"; };
-		07E6513316CF685B00192B8B /* HGLTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGLTypes.h; sourceTree = "<group>"; };
-		07E6513416CF685B00192B8B /* HGLTypes.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGLTypes.mm; sourceTree = "<group>"; };
-		07E6513516CF685B00192B8B /* HGLUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGLUtil.h; sourceTree = "<group>"; };
-		07E6513616CF685B00192B8B /* HGLUtil.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGLUtil.mm; sourceTree = "<group>"; };
-		07E6513716CF685B00192B8B /* HGLVector3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGLVector3.h; sourceTree = "<group>"; };
-		07E6513816CF685B00192B8B /* HGLVector3.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGLVector3.mm; sourceTree = "<group>"; };
-		07E6513916CF685B00192B8B /* HGLVertexBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGLVertexBuffer.h; sourceTree = "<group>"; };
-		07E6513A16CF685B00192B8B /* HGLVertexBuffer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGLVertexBuffer.mm; sourceTree = "<group>"; };
-		07E6513B16CF685B00192B8B /* HGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGLView.h; sourceTree = "<group>"; };
-		07E6513C16CF685B00192B8B /* HGLView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGLView.mm; sourceTree = "<group>"; };
-		07E6513E16CF685B00192B8B /* fragment.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = fragment.glsl; sourceTree = "<group>"; };
-		07E6513F16CF685B00192B8B /* vertex.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = vertex.glsl; sourceTree = "<group>"; };
-		07E6514E16CF9C5600192B8B /* HGUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGUtil.h; sourceTree = "<group>"; };
-		07E6514F16CF9C5600192B8B /* HGUtil.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGUtil.mm; sourceTree = "<group>"; };
-		07E6515116CFA07700192B8B /* PadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PadView.h; sourceTree = "<group>"; };
-		07E6515216CFA07700192B8B /* PadView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PadView.mm; sourceTree = "<group>"; };
-		07E6515416D0096A00192B8B /* TouchHandlerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouchHandlerView.h; sourceTree = "<group>"; };
-		07E6515516D0096A00192B8B /* TouchHandlerView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TouchHandlerView.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -471,15 +475,128 @@
 			path = Assets;
 			sourceTree = "<group>";
 		};
+		07DE743216EC368F0048877C /* src */ = {
+			isa = PBXGroup;
+			children = (
+				07DE74D916EC38B80048877C /* game */,
+				07DE74A716EC38A40048877C /* hgles */,
+				07DE74A316EC38780048877C /* hstd */,
+				07DE746016EC368F0048877C /* Shooter */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		07DE746016EC368F0048877C /* Shooter */ = {
+			isa = PBXGroup;
+			children = (
+				07DE746116EC368F0048877C /* AppDelegate.h */,
+				07DE746216EC368F0048877C /* AppDelegate.m */,
+				07DE746316EC368F0048877C /* Common.h */,
+				07DE746916EC368F0048877C /* main.m */,
+				07DE746A16EC368F0048877C /* PadView.h */,
+				07DE746B16EC368F0048877C /* PadView.mm */,
+				07DE746E16EC368F0048877C /* TouchHandlerView.h */,
+				07DE746F16EC368F0048877C /* TouchHandlerView.mm */,
+				07DE747016EC368F0048877C /* ViewController.h */,
+				07DE747116EC368F0048877C /* ViewController.mm */,
+			);
+			path = Shooter;
+			sourceTree = "<group>";
+		};
+		07DE749216EC372B0048877C /* SupportingFiles */ = {
+			isa = PBXGroup;
+			children = (
+				07DE749316EC372B0048877C /* Default-568h@2x.png */,
+				07DE749416EC372B0048877C /* Default.png */,
+				07DE749516EC372B0048877C /* Default@2x.png */,
+				07DE749616EC372B0048877C /* InfoPlist.strings */,
+				07DE749816EC372B0048877C /* Shooter-Info.plist */,
+				07DE749916EC372B0048877C /* Shooter-Prefix.pch */,
+			);
+			path = SupportingFiles;
+			sourceTree = "<group>";
+		};
+		07DE74A316EC38780048877C /* hstd */ = {
+			isa = PBXGroup;
+			children = (
+				07DE74A416EC38780048877C /* smart_ptr.h */,
+				07DE74A516EC38780048877C /* smart_ptr.mm */,
+			);
+			path = hstd;
+			sourceTree = "<group>";
+		};
+		07DE74A716EC38A40048877C /* hgles */ = {
+			isa = PBXGroup;
+			children = (
+				07DE74A816EC38A40048877C /* HGLCommon.h */,
+				07DE74A916EC38A40048877C /* HGLES.h */,
+				07DE74AA16EC38A40048877C /* HGLES.mm */,
+				07DE74AB16EC38A40048877C /* HGLGraphics2D.h */,
+				07DE74AC16EC38A40048877C /* HGLGraphics2D.mm */,
+				07DE74AD16EC38A40048877C /* HGLIndexBuffer.h */,
+				07DE74AE16EC38A40048877C /* HGLIndexBuffer.mm */,
+				07DE74AF16EC38A40048877C /* HGLMaterial.h */,
+				07DE74B016EC38A40048877C /* HGLMaterial.mm */,
+				07DE74B116EC38A40048877C /* HGLMesh.h */,
+				07DE74B216EC38A40048877C /* HGLMesh.mm */,
+				07DE74B316EC38A40048877C /* HGLObject3D.h */,
+				07DE74B416EC38A40048877C /* HGLObject3D.mm */,
+				07DE74B516EC38A40048877C /* HGLObjLoader.h */,
+				07DE74B616EC38A40048877C /* HGLObjLoader.mm */,
+				07DE74B716EC38A40048877C /* HGLTexture.h */,
+				07DE74B816EC38A40048877C /* HGLTexture.mm */,
+				07DE74B916EC38A40048877C /* HGLTypes.h */,
+				07DE74BA16EC38A40048877C /* HGLTypes.mm */,
+				07DE74BB16EC38A40048877C /* HGLUtil.h */,
+				07DE74BC16EC38A40048877C /* HGLUtil.mm */,
+				07DE74BD16EC38A40048877C /* HGLVector3.h */,
+				07DE74BE16EC38A40048877C /* HGLVector3.mm */,
+				07DE74BF16EC38A40048877C /* HGLVertexBuffer.h */,
+				07DE74C016EC38A40048877C /* HGLVertexBuffer.mm */,
+				07DE74C116EC38A40048877C /* HGLView.h */,
+				07DE74C216EC38A40048877C /* HGLView.mm */,
+				07DE74C316EC38A40048877C /* Shaders */,
+			);
+			path = hgles;
+			sourceTree = "<group>";
+		};
+		07DE74C316EC38A40048877C /* Shaders */ = {
+			isa = PBXGroup;
+			children = (
+				07DE74C416EC38A40048877C /* fragment.glsl */,
+				07DE74C516EC38A40048877C /* fragment2d.glsl */,
+				07DE74C616EC38A40048877C /* vertex.glsl */,
+				07DE74C716EC38A40048877C /* vertex2d.glsl */,
+			);
+			path = Shaders;
+			sourceTree = "<group>";
+		};
+		07DE74D916EC38B80048877C /* game */ = {
+			isa = PBXGroup;
+			children = (
+				07DE74DA16EC38B80048877C /* HGActor.h */,
+				07DE74DB16EC38B80048877C /* HGActor.mm */,
+				07DE74DC16EC38B80048877C /* HGBullet.h */,
+				07DE74DD16EC38B80048877C /* HGBullet.mm */,
+				07DE74DE16EC38B80048877C /* HGCommon.h */,
+				07DE74DF16EC38B80048877C /* HGFighter.h */,
+				07DE74E016EC38B80048877C /* HGFighter.mm */,
+				07DE74E116EC38B80048877C /* HGGame.h */,
+				07DE74E216EC38B80048877C /* HGGame.mm */,
+				07DE74E316EC38B80048877C /* HGUtil.h */,
+				07DE74E416EC38B80048877C /* HGUtil.mm */,
+			);
+			path = game;
+			sourceTree = "<group>";
+		};
 		07E0462616886E73001F9CCE = {
 			isa = PBXGroup;
 			children = (
 				0755992616B561490066A0E9 /* Assets */,
 				07E0463416886E73001F9CCE /* Frameworks */,
-				07E6511316C926F100192B8B /* Game */,
-				07E6512416CF685900192B8B /* HGLES */,
 				07E0463216886E73001F9CCE /* Products */,
-				07E0463F16886E73001F9CCE /* Shooter */,
+				07DE743216EC368F0048877C /* src */,
+				07DE749216EC372B0048877C /* SupportingFiles */,
 			);
 			sourceTree = "<group>";
 		};
@@ -502,101 +619,6 @@
 				07E0463D16886E73001F9CCE /* OpenGLES.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		07E0463F16886E73001F9CCE /* Shooter */ = {
-			isa = PBXGroup;
-			children = (
-				07D5BC5B16E33CF000F0D665 /* Common.h */,
-				07E6515416D0096A00192B8B /* TouchHandlerView.h */,
-				07E6515516D0096A00192B8B /* TouchHandlerView.mm */,
-				07E6515116CFA07700192B8B /* PadView.h */,
-				07E6515216CFA07700192B8B /* PadView.mm */,
-				07E0464816886E73001F9CCE /* AppDelegate.h */,
-				07E0464916886E73001F9CCE /* AppDelegate.m */,
-				07E0465516886E73001F9CCE /* ViewController.h */,
-				07E0465616886E73001F9CCE /* ViewController.mm */,
-				07E0464016886E73001F9CCE /* Supporting Files */,
-			);
-			path = Shooter;
-			sourceTree = "<group>";
-		};
-		07E0464016886E73001F9CCE /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				07E0464116886E73001F9CCE /* Shooter-Info.plist */,
-				07E0464216886E73001F9CCE /* InfoPlist.strings */,
-				07E0464516886E73001F9CCE /* main.m */,
-				07E0464716886E73001F9CCE /* Shooter-Prefix.pch */,
-				07E0464B16886E73001F9CCE /* Default.png */,
-				07E0464D16886E73001F9CCE /* Default@2x.png */,
-				07E0464F16886E73001F9CCE /* Default-568h@2x.png */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		07E6511316C926F100192B8B /* Game */ = {
-			isa = PBXGroup;
-			children = (
-				07DE73D116EB18030048877C /* HGCommon.h */,
-				07DE73CE16EB16E10048877C /* HGGame.h */,
-				07DE73CF16EB16E10048877C /* HGGame.mm */,
-				07B4244216D91BF0007055DF /* HGBullet.h */,
-				07B4244316D91BF1007055DF /* HGBullet.mm */,
-				07B4243916D11551007055DF /* HGFighter.h */,
-				07B4243A16D11551007055DF /* HGFighter.mm */,
-				07E6514E16CF9C5600192B8B /* HGUtil.h */,
-				07E6514F16CF9C5600192B8B /* HGUtil.mm */,
-				07E6511416C926F200192B8B /* HGActor.h */,
-				07E6511516C926F200192B8B /* HGActor.mm */,
-			);
-			path = Game;
-			sourceTree = "<group>";
-		};
-		07E6512416CF685900192B8B /* HGLES */ = {
-			isa = PBXGroup;
-			children = (
-				075A1EBD16E11331006DC1E7 /* HGLGraphics2D.h */,
-				075A1EBE16E11331006DC1E7 /* HGLGraphics2D.mm */,
-				07B4243D16D8926E007055DF /* HGLCommon.h */,
-				07E6512516CF685B00192B8B /* HGLES.h */,
-				07E6512616CF685B00192B8B /* HGLES.mm */,
-				07E6512716CF685B00192B8B /* HGLIndexBuffer.h */,
-				07E6512816CF685B00192B8B /* HGLIndexBuffer.mm */,
-				07E6512916CF685B00192B8B /* HGLMaterial.h */,
-				07E6512A16CF685B00192B8B /* HGLMaterial.mm */,
-				07E6512B16CF685B00192B8B /* HGLMesh.h */,
-				07E6512C16CF685B00192B8B /* HGLMesh.mm */,
-				07E6512D16CF685B00192B8B /* HGLObject3D.h */,
-				07E6512E16CF685B00192B8B /* HGLObject3D.mm */,
-				07E6512F16CF685B00192B8B /* HGLObjLoader.h */,
-				07E6513016CF685B00192B8B /* HGLObjLoader.mm */,
-				07E6513116CF685B00192B8B /* HGLTexture.h */,
-				07E6513216CF685B00192B8B /* HGLTexture.mm */,
-				07E6513316CF685B00192B8B /* HGLTypes.h */,
-				07E6513416CF685B00192B8B /* HGLTypes.mm */,
-				07E6513516CF685B00192B8B /* HGLUtil.h */,
-				07E6513616CF685B00192B8B /* HGLUtil.mm */,
-				07E6513716CF685B00192B8B /* HGLVector3.h */,
-				07E6513816CF685B00192B8B /* HGLVector3.mm */,
-				07E6513916CF685B00192B8B /* HGLVertexBuffer.h */,
-				07E6513A16CF685B00192B8B /* HGLVertexBuffer.mm */,
-				07E6513B16CF685B00192B8B /* HGLView.h */,
-				07E6513C16CF685B00192B8B /* HGLView.mm */,
-				07E6513D16CF685B00192B8B /* Shaders */,
-			);
-			path = HGLES;
-			sourceTree = "<group>";
-		};
-		07E6513D16CF685B00192B8B /* Shaders */ = {
-			isa = PBXGroup;
-			children = (
-				0744104916E1D8D80076D7E4 /* fragment2d.glsl */,
-				0744104A16E1D8D80076D7E4 /* vertex2d.glsl */,
-				07E6513E16CF685B00192B8B /* fragment.glsl */,
-				07E6513F16CF685B00192B8B /* vertex.glsl */,
-			);
-			path = Shaders;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -650,10 +672,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				07E0464416886E73001F9CCE /* InfoPlist.strings in Resources */,
-				07E0464C16886E73001F9CCE /* Default.png in Resources */,
-				07E0464E16886E73001F9CCE /* Default@2x.png in Resources */,
-				07E0465016886E73001F9CCE /* Default-568h@2x.png in Resources */,
 				0755992916B561490066A0E9 /* block.mtl in Resources */,
 				0755992A16B561490066A0E9 /* block.obj in Resources */,
 				0733405316BD9D9100DB2D34 /* test.obj in Resources */,
@@ -748,8 +766,6 @@
 				07E6511016C9244D00192B8B /* tobira_right.png in Resources */,
 				07E6511116C9244D00192B8B /* topmenuback.png in Resources */,
 				07E6511216C9244D00192B8B /* yesnowin1.png in Resources */,
-				07E6514C16CF685B00192B8B /* fragment.glsl in Resources */,
-				07E6514D16CF685B00192B8B /* vertex.glsl in Resources */,
 				07B4243F16D8F3FA007055DF /* rect.obj in Resources */,
 				07B4244B16D932E3007055DF /* wavering.png in Resources */,
 				07B4244D16D93F86007055DF /* corona.png in Resources */,
@@ -757,8 +773,6 @@
 				07B4245116D94AEC007055DF /* space.png in Resources */,
 				07B4245316D9F132007055DF /* star.png in Resources */,
 				07D49FF216DA683C0040D8D5 /* x6.png in Resources */,
-				0744104B16E1D8D80076D7E4 /* fragment2d.glsl in Resources */,
-				0744104C16E1D8D80076D7E4 /* vertex2d.glsl in Resources */,
 				07D5BC5916E33AEC00F0D665 /* square.png in Resources */,
 				07D5BC6116E386B100F0D665 /* halfsphere.obj in Resources */,
 				07D5BC6316E3895A00F0D665 /* space2.png in Resources */,
@@ -769,6 +783,15 @@
 				07D5BC6F16E3931D00F0D665 /* galaxy+X.png in Resources */,
 				07D5BC7016E3931D00F0D665 /* galaxy+Y.png in Resources */,
 				07D5BC7116E3931D00F0D665 /* galaxy+Z.png in Resources */,
+				07DE749A16EC372B0048877C /* Default-568h@2x.png in Resources */,
+				07DE749B16EC372B0048877C /* Default.png in Resources */,
+				07DE749C16EC372B0048877C /* Default@2x.png in Resources */,
+				07DE749D16EC372B0048877C /* InfoPlist.strings in Resources */,
+				07DE749E16EC372B0048877C /* Shooter-Info.plist in Resources */,
+				07DE74D516EC38A40048877C /* fragment.glsl in Resources */,
+				07DE74D616EC38A40048877C /* fragment2d.glsl in Resources */,
+				07DE74D716EC38A40048877C /* vertex.glsl in Resources */,
+				07DE74D816EC38A40048877C /* vertex2d.glsl in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -779,39 +802,40 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				07E0464616886E73001F9CCE /* main.m in Sources */,
-				07E0464A16886E73001F9CCE /* AppDelegate.m in Sources */,
-				07E0465716886E73001F9CCE /* ViewController.mm in Sources */,
-				07E6511616C926F200192B8B /* HGActor.mm in Sources */,
-				07E6514016CF685B00192B8B /* HGLES.mm in Sources */,
-				07E6514116CF685B00192B8B /* HGLIndexBuffer.mm in Sources */,
-				07E6514216CF685B00192B8B /* HGLMaterial.mm in Sources */,
-				07E6514316CF685B00192B8B /* HGLMesh.mm in Sources */,
-				07E6514416CF685B00192B8B /* HGLObject3D.mm in Sources */,
-				07E6514516CF685B00192B8B /* HGLObjLoader.mm in Sources */,
-				07E6514616CF685B00192B8B /* HGLTexture.mm in Sources */,
-				07E6514716CF685B00192B8B /* HGLTypes.mm in Sources */,
-				07E6514816CF685B00192B8B /* HGLUtil.mm in Sources */,
-				07E6514916CF685B00192B8B /* HGLVector3.mm in Sources */,
-				07E6514A16CF685B00192B8B /* HGLVertexBuffer.mm in Sources */,
-				07E6514B16CF685B00192B8B /* HGLView.mm in Sources */,
-				07E6515016CF9C5600192B8B /* HGUtil.mm in Sources */,
-				07E6515316CFA07700192B8B /* PadView.mm in Sources */,
-				07E6515616D0096B00192B8B /* TouchHandlerView.mm in Sources */,
-				07B4243B16D11552007055DF /* HGFighter.mm in Sources */,
-				07B4244416D91BF1007055DF /* HGBullet.mm in Sources */,
-				075A1EBF16E11331006DC1E7 /* HGLGraphics2D.mm in Sources */,
-				07DE73D016EB16E30048877C /* HGGame.mm in Sources */,
+				07DE748816EC368F0048877C /* AppDelegate.m in Sources */,
+				07DE748D16EC368F0048877C /* main.m in Sources */,
+				07DE748E16EC368F0048877C /* PadView.mm in Sources */,
+				07DE749016EC368F0048877C /* TouchHandlerView.mm in Sources */,
+				07DE749116EC368F0048877C /* ViewController.mm in Sources */,
+				07DE74A616EC38780048877C /* smart_ptr.mm in Sources */,
+				07DE74C816EC38A40048877C /* HGLES.mm in Sources */,
+				07DE74C916EC38A40048877C /* HGLGraphics2D.mm in Sources */,
+				07DE74CA16EC38A40048877C /* HGLIndexBuffer.mm in Sources */,
+				07DE74CB16EC38A40048877C /* HGLMaterial.mm in Sources */,
+				07DE74CC16EC38A40048877C /* HGLMesh.mm in Sources */,
+				07DE74CD16EC38A40048877C /* HGLObject3D.mm in Sources */,
+				07DE74CE16EC38A40048877C /* HGLObjLoader.mm in Sources */,
+				07DE74CF16EC38A40048877C /* HGLTexture.mm in Sources */,
+				07DE74D016EC38A40048877C /* HGLTypes.mm in Sources */,
+				07DE74D116EC38A40048877C /* HGLUtil.mm in Sources */,
+				07DE74D216EC38A40048877C /* HGLVector3.mm in Sources */,
+				07DE74D316EC38A40048877C /* HGLVertexBuffer.mm in Sources */,
+				07DE74D416EC38A40048877C /* HGLView.mm in Sources */,
+				07DE74E516EC38B80048877C /* HGActor.mm in Sources */,
+				07DE74E616EC38B80048877C /* HGBullet.mm in Sources */,
+				07DE74E716EC38B80048877C /* HGFighter.mm in Sources */,
+				07DE74E816EC38B80048877C /* HGGame.mm in Sources */,
+				07DE74E916EC38B80048877C /* HGUtil.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		07E0464216886E73001F9CCE /* InfoPlist.strings */ = {
+		07DE749616EC372B0048877C /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				07E0464316886E73001F9CCE /* en */,
+				07DE749716EC372B0048877C /* en */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -876,8 +900,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Shooter/Shooter-Prefix.pch";
-				INFOPLIST_FILE = "Shooter/Shooter-Info.plist";
+				GCC_PREFIX_HEADER = "SupportingFiles/Shooter-Prefix.pch";
+				INFOPLIST_FILE = "SupportingFiles/Shooter-Info.plist";
 				PRODUCT_NAME = Shooter;
 				WRAPPER_EXTENSION = app;
 			};
@@ -887,8 +911,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Shooter/Shooter-Prefix.pch";
-				INFOPLIST_FILE = "Shooter/Shooter-Info.plist";
+				GCC_PREFIX_HEADER = "SupportingFiles/Shooter-Prefix.pch";
+				INFOPLIST_FILE = "SupportingFiles/Shooter-Info.plist";
 				PRODUCT_NAME = Shooter;
 				WRAPPER_EXTENSION = app;
 			};
