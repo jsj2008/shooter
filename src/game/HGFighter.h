@@ -12,6 +12,7 @@ namespace HGGame
     {
     public:
         HGFighter();
+        ~HGFighter();
         void draw();
         void init(HG_FIGHTER_TYPE type);
         void update();

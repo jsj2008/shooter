@@ -29,6 +29,11 @@ namespace HGGame {
         color.r = 1.0; color.g = 1.0; color.b = 1.0; color.a = 1.0;
     }
     
+    HGBullet::~HGBullet()
+    {
+        
+    }
+    
     void HGBullet::init(HG_BULLET_TYPE type)
     {
         // オブジェクトの種類別の関数を設定

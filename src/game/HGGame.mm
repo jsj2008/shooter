@@ -48,7 +48,7 @@ namespace HGGame {
 #warning 後でdelete
         // initialize utility program
         initSpriteIndexTable();
-        HGActor::initialize();
+        initializeGame();
         
         // create players
         _player = new HGFighter();

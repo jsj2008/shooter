@@ -16,6 +16,10 @@ namespace HGGame
     {
     }
     
+    HGFighter::~HGFighter()
+    {
+    }
+    
     void HGFighter::init(HG_FIGHTER_TYPE type)
     {
         string img_name;

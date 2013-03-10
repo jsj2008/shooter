@@ -2,49 +2,11 @@
 #import "HGLVector3.h"
 #import "HGLTexture.h"
 #import "HGLGraphics2D.h"
+#import "HGCommon.h"
 #import <vector>
 #import <string>
 
 namespace HGGame {
-    
-    typedef struct t_rect
-    {
-        /*
-        t_rect(float x, float y, float w, float h):
-            x(x),
-            y(y),
-            w(w),
-            h(h) {}*/
-        float x, y, w, h;
-    } t_rect;
-    
-    typedef struct t_size2d
-    {
-        float w, h;
-    } t_size2d;
-    
-    typedef std::vector<t_rect> t_hitboxes;
-    
-    static std::vector<std::vector<t_rect>> HITBOX_LIST;
-    
-    //typedef std::vector<t_hg_rect> t_hg_rectlist;
-    
-    /*
-    typedef struct t_hg_actorinf
-    {
-        t_hg_actorinf():
-        sprWidth(0),
-        sprHeight(0)
-        {}
-        t_hg_rectlist rectlist;
-        int sprWidth;
-        int sprHeight;
-        float realWidth;
-        float realHeight;
-    } t_hg_actorinf;
-    */
-    
-    //typedef std::vector<t_hg_actorinf> t_hg_actorinf_list;
     
     // 3dやテクスチャなどのデータを読み込む
 #warning 後で適切な場所に移すことを検討
@@ -68,8 +30,7 @@ namespace HGGame {
         hitbox_id(-1)
         {}
         
-        static void initialize();
-        ~HGActor();
+        virtual ~HGActor();
         
         virtual void draw() = 0;
         virtual void update();
@@ -101,5 +62,6 @@ namespace HGGame {
     };
     
     void initActor(HGActor& actor, t_size2d &size, int &hitbox_id);
+    void initializeGame();
     
 }

@@ -13,6 +13,7 @@ namespace HGGame {
     {
     public:
         HGBullet();
+        ~HGBullet();
         hgles::Color color;
         void draw();
         void update();
