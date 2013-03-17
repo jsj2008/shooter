@@ -80,6 +80,9 @@
 		07DE74E816EC38B80048877C /* HGGame.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07DE74E216EC38B80048877C /* HGGame.mm */; };
 		07DE74E916EC38B80048877C /* HGUtil.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07DE74E416EC38B80048877C /* HGUtil.mm */; };
 		07DE74EC16EC449B0048877C /* HGCollision.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07DE74EB16EC449A0048877C /* HGCollision.mm */; };
+		07DE74F416F5FA400048877C /* HGExplode.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07DE74F316F5FA3F0048877C /* HGExplode.mm */; };
+		07DE74F716F613020048877C /* HGHit.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07DE74F616F613000048877C /* HGHit.mm */; };
+		07DE74F916F61D310048877C /* sun.png in Resources */ = {isa = PBXBuildFile; fileRef = 07DE74F816F61D2E0048877C /* sun.png */; };
 		07E0463616886E73001F9CCE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07E0463516886E73001F9CCE /* UIKit.framework */; };
 		07E0463816886E73001F9CCE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07E0463716886E73001F9CCE /* Foundation.framework */; };
 		07E0463A16886E73001F9CCE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07E0463916886E73001F9CCE /* CoreGraphics.framework */; };
@@ -262,6 +265,11 @@
 		07DE74E416EC38B80048877C /* HGUtil.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGUtil.mm; sourceTree = "<group>"; };
 		07DE74EA16EC449A0048877C /* HGCollision.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGCollision.h; sourceTree = "<group>"; };
 		07DE74EB16EC449A0048877C /* HGCollision.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGCollision.mm; sourceTree = "<group>"; };
+		07DE74F216F5FA3E0048877C /* HGExplode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGExplode.h; sourceTree = "<group>"; };
+		07DE74F316F5FA3F0048877C /* HGExplode.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGExplode.mm; sourceTree = "<group>"; };
+		07DE74F516F613000048877C /* HGHit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGHit.h; sourceTree = "<group>"; };
+		07DE74F616F613000048877C /* HGHit.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGHit.mm; sourceTree = "<group>"; };
+		07DE74F816F61D2E0048877C /* sun.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sun.png; sourceTree = "<group>"; };
 		07E0463116886E73001F9CCE /* Shooter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shooter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		07E0463516886E73001F9CCE /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		07E0463716886E73001F9CCE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -363,6 +371,7 @@
 		0755992616B561490066A0E9 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				07DE74F816F61D2E0048877C /* sun.png */,
 				07D5BC6616E3931A00F0D665 /* galaxy-X.png */,
 				07D5BC6716E3931A00F0D665 /* galaxy-Y.png */,
 				07D5BC6816E3931B00F0D665 /* galaxy-Z.png */,
@@ -577,6 +586,10 @@
 		07DE74D916EC38B80048877C /* game */ = {
 			isa = PBXGroup;
 			children = (
+				07DE74F516F613000048877C /* HGHit.h */,
+				07DE74F616F613000048877C /* HGHit.mm */,
+				07DE74F216F5FA3E0048877C /* HGExplode.h */,
+				07DE74F316F5FA3F0048877C /* HGExplode.mm */,
 				07DE74EA16EC449A0048877C /* HGCollision.h */,
 				07DE74EB16EC449A0048877C /* HGCollision.mm */,
 				07DE74DA16EC38B80048877C /* HGActor.h */,
@@ -797,6 +810,7 @@
 				07DE74D616EC38A40048877C /* fragment2d.glsl in Resources */,
 				07DE74D716EC38A40048877C /* vertex.glsl in Resources */,
 				07DE74D816EC38A40048877C /* vertex2d.glsl in Resources */,
+				07DE74F916F61D310048877C /* sun.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -832,6 +846,8 @@
 				07DE74E816EC38B80048877C /* HGGame.mm in Sources */,
 				07DE74E916EC38B80048877C /* HGUtil.mm in Sources */,
 				07DE74EC16EC449B0048877C /* HGCollision.mm in Sources */,
+				07DE74F416F5FA400048877C /* HGExplode.mm in Sources */,
+				07DE74F716F613020048877C /* HGHit.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

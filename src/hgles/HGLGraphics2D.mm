@@ -90,6 +90,7 @@ namespace hgles {
         HGLES::mvMatrix = GLKMatrix4Scale(HGLES::mvMatrix, scale->x, scale->y, scale->z);
         HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, HGLES::cameraRotate.x*-1, 1, 0, 0);
         HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, HGLES::cameraRotate.y*-1, 0, 1, 0);
+        HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, HGLES::cameraRotate.z*-1, 0, 0, 1);
         
         HGLES::updateMatrix();
         

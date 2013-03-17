@@ -17,7 +17,6 @@ namespace HGGame {
     
     static hgles::t_hgl2di square; // 矩形描画用
     
-    
     void initializeCollision()
     {
         square = hgles::t_hgl2di();

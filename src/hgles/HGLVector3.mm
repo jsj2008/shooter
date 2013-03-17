@@ -77,6 +77,13 @@ namespace hgles {
         this->z += p;
     }
     
+    void HGLVector3::multiply(float p)
+    {
+        this->x *= p;
+        this->y *= p;
+        this->z *= p;
+    }
+    
     void HGLVector3::add(const HGLVector3* v0, const HGLVector3* v1)
     {
         this->x = v0->x + v1->x;

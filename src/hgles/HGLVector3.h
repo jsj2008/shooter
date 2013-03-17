@@ -25,6 +25,8 @@ namespace hgles {
         void add(const HGLVector3* v0, const HGLVector3* v1); // 和
         void add(float p); // 和
         void sub(const HGLVector3* v0, const HGLVector3* v1); // 差
+        
+        void multiply(float p);
         float length(); // ベクトルの長さ
         void normalize(); // 長さの正規化
         bool equals(const HGLVector3* v); // 比較

@@ -27,6 +27,7 @@ namespace hgles {
     std::vector<GLuint> unusedTextures;
     std::vector<GLuint> activeTextures;
     
+    /*
     void initializeTextureIds()
     {
         glEnable(GL_TEXTURE_2D);
@@ -90,7 +91,7 @@ namespace hgles {
                 
             }
         }
-    }
+    }*/
     
     HGLTexture* HGLTexture::createTextureWithAsset(std::string name)
     {

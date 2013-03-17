@@ -16,6 +16,8 @@ namespace HGGame
         void draw();
         void init(HG_FIGHTER_TYPE type);
         void update();
+        int life;
+        int explodeCount;
         
     private:
         hgles::HGLTexture texture;

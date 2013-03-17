@@ -13,5 +13,5 @@ namespace HGGame {
     bool isIntersect(const hgles::HGLVector3* position1, const t_size2d* size1, int hitbox_id1,
                      const hgles::HGLVector3* position2, const t_size2d* size2, int hitbox_id2);
     void drawHitbox(const hgles::HGLVector3* position1, const t_size2d* size1, int hitbox_id1, const hgles::HGLVector3* rotate);
-    
+
 }

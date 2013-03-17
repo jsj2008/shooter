@@ -90,7 +90,7 @@ namespace hgles {
         float aspect = (float)(viewWidth / viewHeight);
         HGLES::projectionMatrix = GLKMatrix4MakePerspective(GLKMathDegreesToRadians(80.0f), aspect, 0.1f, 2000.0f);
         mvMatrix = GLKMatrix4Identity;
-        initializeTextureIds();
+        //initializeTextureIds();
     }
     
     void HGLES::updateMatrix()

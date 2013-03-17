@@ -19,6 +19,7 @@ namespace HGGame {
     void HGActor::init()
     {
         hitbox_id = -1;
+        isActive = true;
     }
     
     void HGActor::setVelocity(float inVelocity)

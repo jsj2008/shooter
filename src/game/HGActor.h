@@ -45,6 +45,7 @@ namespace HGGame {
         hgles::HGLVector3 scale;
         float aspect; // degree
         float radian;
+        bool isActive;
     protected:
         void init();
         

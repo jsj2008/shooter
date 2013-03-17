@@ -25,12 +25,14 @@ namespace HGGame
         base::init();
         int hitbox_id = 0;
         t_size2d size;
+        explodeCount = 500;
         switch (type) {
             case HG_FIGHTER:
                 textureName = "e_robo2.png";
                 hitbox_id = 0;
                 size.w = 64;
                 size.h = 64;
+                life = 5;
                 break;
             default:
                 break;

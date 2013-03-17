@@ -22,7 +22,7 @@ namespace hgles {
         size_t height;
     } t_hgl_tex_cache;
     
-    void initializeTextureIds();
+    //void initializeTextureIds();
     
     class HGLTexture
     {

@@ -25,7 +25,8 @@ void main(void) { // 2
     {
         vec4 alphaMapColor = texture2D(uTex, vUV*uTextureRepeatNum);
         float alpha = alphaMapColor.r;
-        gl_FragColor = vec4(vColor.r, vColor.g, vColor.b, alpha*uAlpha);
+        alpha = (alpha * uAlpha);
+        gl_FragColor = vec4(vColor.r, vColor.g, vColor.b, alpha);
     }
     // no light
     else

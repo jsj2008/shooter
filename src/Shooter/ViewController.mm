@@ -54,7 +54,10 @@
     CGRect frame = [[UIScreen mainScreen] bounds];
     _glview = [[HGLView alloc] initWithFrame:frame WithRenderBlock:^{
         //[_glview setCurrentContext];
-        HGGame::render();
+        @synchronized(self)
+        {
+            HGGame::render();
+        }
     }];
     self.view = _glview;
     
@@ -85,7 +88,10 @@
             start = [nowDt timeIntervalSince1970];
             {
                 // calling game's main process
-                HGGame::update(&keystate);
+                @synchronized(self)
+                {
+                    HGGame::update(&keystate);
+                }
                 [_glview draw];
             }
             nowDt = [NSDate date];
