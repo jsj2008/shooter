@@ -38,6 +38,69 @@ namespace hgles {
         indexBuffer = new HGLIndexBuffer(index, 6);
     }
     
+    /*
+    typedef struct t_hgl2di
+    {
+        t_hgl2di():
+        scale(1,1,1),
+        position(0,0,0),
+        rotate(0,0,0),
+        alpha(1)
+        {}
+        HGLTexture texture;
+        HGLVector3 scale;
+        HGLVector3 position;
+        HGLVector3 rotate;
+        float alpha;
+    } t_hgl2di;
+    */
+    
+    void HGLGraphics2D::drawLike3d(HGLVector3* position,
+                         HGLVector3* scale,
+                         HGLVector3* rotate,
+                         HGLTexture* texture)
+    {
+        HGLES::pushMatrix();
+        
+        HGLES::mvMatrix = GLKMatrix4Translate(HGLES::mvMatrix, position->x, position->y, position->z);
+        HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, rotate->x, 1, 0, 0);
+        HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, rotate->y, 0, 1, 0);
+        HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, rotate->z, 0, 0, 1);
+        
+        HGLES::updateMatrix();
+        
+        texture->bind();
+        vertexBuffer->bind();
+        indexBuffer->draw();
+        vertexBuffer->unbind();
+        texture->unbind();
+       
+        HGLES::popMatrix();
+    }
+        
+    void HGLGraphics2D::draw(HGLVector3* position,
+                             HGLVector3* scale,
+                             HGLTexture* texture)
+    {
+        HGLES::pushMatrix();
+        
+        HGLES::mvMatrix = GLKMatrix4Translate(HGLES::mvMatrix, position->x, position->y, position->z);
+        HGLES::mvMatrix = GLKMatrix4Scale(HGLES::mvMatrix, scale->x, scale->y, scale->z);
+        HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, HGLES::cameraRotate.x*-1, 1, 0, 0);
+        HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, HGLES::cameraRotate.y*-1, 0, 1, 0);
+        
+        HGLES::updateMatrix();
+        
+        texture->bind();
+        vertexBuffer->bind();
+        indexBuffer->draw();
+        vertexBuffer->unbind();
+        texture->unbind();
+       
+        HGLES::popMatrix();
+        
+    }
+    
     void HGLGraphics2D::draw(t_hgl2di* p)
     {
         // アルファ値設定

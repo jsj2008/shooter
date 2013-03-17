@@ -35,6 +35,7 @@ namespace HGGame {
     private:
         hgles::t_hgl2di anime1;
         hgles::t_hgl2di anime2;
+        bool isInit;
         
     };
     

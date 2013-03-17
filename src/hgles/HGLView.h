@@ -19,4 +19,6 @@
 - (void)start;
 - (void)draw; // request render
 
+- (void)setCurrentContext;
+
 @end

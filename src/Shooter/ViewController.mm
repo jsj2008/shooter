@@ -53,6 +53,7 @@
     // 最初にこれを行う必要がある
     CGRect frame = [[UIScreen mainScreen] bounds];
     _glview = [[HGLView alloc] initWithFrame:frame WithRenderBlock:^{
+        //[_glview setCurrentContext];
         HGGame::render();
     }];
     self.view = _glview;

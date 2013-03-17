@@ -47,6 +47,8 @@ namespace HGGame {
         float aspect; // degree
         float radian;
         unsigned int updateCount;
+    protected:
+        void init();
         
     private:
         void initSize(t_size2d &size);

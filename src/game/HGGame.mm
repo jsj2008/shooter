@@ -3,6 +3,7 @@
 #import "HGUtil.h"
 #import "HGLObject3D.h"
 #import "HGLObjLoader.h"
+#import "HGLTexture.h"
 #import "HGLVector3.h"
 #import "HGActor.h"
 #import "HGFighter.h"
@@ -160,7 +161,7 @@ namespace HGGame {
                 }
             }
         }
-        
+
         // move enemies
         for (std::vector<HGFighter*>::iterator itr = _enemies.begin(); itr != _enemies.end(); ++itr)
         {
@@ -236,6 +237,7 @@ namespace HGGame {
         }
         
         // draw bullets
+        
         for (std::vector<HGBullet*>::reverse_iterator itr = _bullets.rbegin(); itr != _bullets.rend(); ++itr)
         {
             HGBullet* a = *itr;

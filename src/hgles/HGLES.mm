@@ -9,6 +9,7 @@
 #import "HGLES.h"
 #import "HGLTypes.h"
 #import "HGLVector3.h"
+#import "HGLTexture.h"
 #import <GLKit/GLKit.h>
 #include <OpenGLES/ES2/gl.h>
 #include <OpenGLES/ES2/glext.h>
@@ -89,6 +90,7 @@ namespace hgles {
         float aspect = (float)(viewWidth / viewHeight);
         HGLES::projectionMatrix = GLKMatrix4MakePerspective(GLKMathDegreesToRadians(80.0f), aspect, 0.1f, 2000.0f);
         mvMatrix = GLKMatrix4Identity;
+        initializeTextureIds();
     }
     
     void HGLES::updateMatrix()

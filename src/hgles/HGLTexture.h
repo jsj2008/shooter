@@ -22,6 +22,8 @@ namespace hgles {
         size_t height;
     } t_hgl_tex_cache;
     
+    void initializeTextureIds();
+    
     class HGLTexture
     {
     public:
@@ -50,6 +52,7 @@ namespace hgles {
         static std::map<std::string, HGLTexture*> textureIds;
         GLuint textureId;
         GLKMatrix4 textureMatrix;
+        std::string textureName;
         void setTextureArea(int textureW,int textureH, int x, int y, int w, int h);
     };
 }

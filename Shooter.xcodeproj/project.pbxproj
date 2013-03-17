@@ -79,6 +79,7 @@
 		07DE74E716EC38B80048877C /* HGFighter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07DE74E016EC38B80048877C /* HGFighter.mm */; };
 		07DE74E816EC38B80048877C /* HGGame.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07DE74E216EC38B80048877C /* HGGame.mm */; };
 		07DE74E916EC38B80048877C /* HGUtil.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07DE74E416EC38B80048877C /* HGUtil.mm */; };
+		07DE74EC16EC449B0048877C /* HGCollision.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07DE74EB16EC449A0048877C /* HGCollision.mm */; };
 		07E0463616886E73001F9CCE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07E0463516886E73001F9CCE /* UIKit.framework */; };
 		07E0463816886E73001F9CCE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07E0463716886E73001F9CCE /* Foundation.framework */; };
 		07E0463A16886E73001F9CCE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07E0463916886E73001F9CCE /* CoreGraphics.framework */; };
@@ -259,6 +260,8 @@
 		07DE74E216EC38B80048877C /* HGGame.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGGame.mm; sourceTree = "<group>"; };
 		07DE74E316EC38B80048877C /* HGUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGUtil.h; sourceTree = "<group>"; };
 		07DE74E416EC38B80048877C /* HGUtil.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGUtil.mm; sourceTree = "<group>"; };
+		07DE74EA16EC449A0048877C /* HGCollision.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGCollision.h; sourceTree = "<group>"; };
+		07DE74EB16EC449A0048877C /* HGCollision.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGCollision.mm; sourceTree = "<group>"; };
 		07E0463116886E73001F9CCE /* Shooter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shooter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		07E0463516886E73001F9CCE /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		07E0463716886E73001F9CCE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -574,6 +577,8 @@
 		07DE74D916EC38B80048877C /* game */ = {
 			isa = PBXGroup;
 			children = (
+				07DE74EA16EC449A0048877C /* HGCollision.h */,
+				07DE74EB16EC449A0048877C /* HGCollision.mm */,
 				07DE74DA16EC38B80048877C /* HGActor.h */,
 				07DE74DB16EC38B80048877C /* HGActor.mm */,
 				07DE74DC16EC38B80048877C /* HGBullet.h */,
@@ -826,6 +831,7 @@
 				07DE74E716EC38B80048877C /* HGFighter.mm in Sources */,
 				07DE74E816EC38B80048877C /* HGGame.mm in Sources */,
 				07DE74E916EC38B80048877C /* HGUtil.mm in Sources */,
+				07DE74EC16EC449B0048877C /* HGCollision.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -18,8 +18,12 @@ namespace HGGame
         void update();
         
     private:
-        hgles::t_hgl2di anime1;
+        hgles::HGLTexture texture;
+        HG_FIGHTER_TYPE type;
         
+        bool isTextureInit;
+        std::string textureName;
+        t_size2d sprSize;
     };
     
 }

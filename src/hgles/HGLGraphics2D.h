@@ -32,6 +32,15 @@ namespace hgles {
         static void initialize();
         static void draw(t_hgl2di* t);
         
+        static void drawLike3d(HGLVector3* position,
+                         HGLVector3* scale,
+                         HGLVector3* rotate,
+                         HGLTexture* texture);
+        
+        static void draw(HGLVector3* position,
+                         HGLVector3* scale,
+                         HGLTexture* texture);
+        
     private:
         static HGLVertexBuffer* vertexBuffer;
         static HGLIndexBuffer* indexBuffer;

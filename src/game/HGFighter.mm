@@ -22,42 +22,43 @@ namespace HGGame
     
     void HGFighter::init(HG_FIGHTER_TYPE type)
     {
-        string img_name;
+        base::init();
         int hitbox_id = 0;
-        int w = 0;
-        int h = 0;
+        t_size2d size;
         switch (type) {
             case HG_FIGHTER:
-                img_name = "e_robo2.png";
+                textureName = "e_robo2.png";
                 hitbox_id = 0;
-                w = h = 64;
+                size.w = 64;
+                size.h = 64;
                 break;
             default:
                 break;
         }
-        t_size2d size = {(float)w, (float)h};
-        initActor(*this, size, hitbox_id);
-        anime1 = hgles::t_hgl2di();
-        anime1.texture = (*hgles::HGLTexture::createTextureWithAsset(img_name));
-        anime1.position = position;
-        anime1.scale = scale;
-        anime1.texture.sprWidth = w;
-        anime1.texture.sprHeight = h;
+        this->type = type;
+        sprSize = size;
+        isTextureInit = false;
+        initActor(*this, sprSize, hitbox_id);
     }
     
     void HGFighter::draw()
     {
-        anime1.position = position;
-        hgles::HGLGraphics2D::draw(&anime1);
+        if (!isTextureInit)
+        {
+            texture = (*hgles::HGLTexture::createTextureWithAsset(textureName));
+            texture.sprWidth = sprSize.w;
+            texture.sprHeight = sprSize.h;
+            isTextureInit = true;
+        }
+        int spIdx = getSpriteIndex(aspect + 0.5);
+        int x = texture.sprWidth * spIdx;
+        texture.setTextureArea(x, 0, texture.sprWidth, texture.sprWidth);
+        hgles::HGLGraphics2D::draw(&position, &scale, &texture);
     }
     
     void HGFighter::update()
     {
         base::update();
-        int spIdx = getSpriteIndex(aspect + 0.5);
-        int x = anime1.texture.sprWidth * spIdx;
-#warning テクスチャオブジェクトで行うように
-        anime1.texture.setTextureArea(x, 0, anime1.texture.sprWidth, anime1.texture.sprWidth);
     }
     
 

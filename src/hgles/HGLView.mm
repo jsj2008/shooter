@@ -137,6 +137,14 @@ using namespace hgles;
     }
 }
 
+- (void)setCurrentContext
+{
+    if (![EAGLContext setCurrentContext:_context]) {
+        LOG(@"Failed to set current OpenGL context");
+        exit(1);
+    }
+}
+
 // @see http://www.opengl.org/wiki/Renderbuffer_Object
 - (void)setupRenderBuffer
 {

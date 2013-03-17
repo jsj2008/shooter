@@ -16,6 +16,11 @@ namespace HGGame {
     {
     }
     
+    void HGActor::init()
+    {
+        updateCount = 0;
+    }
+    
     void HGActor::setVelocity(float inVelocity)
     {
         velocity = inVelocity;
@@ -84,6 +89,7 @@ namespace HGGame {
         initializeCollision();
         
         // 画像ロード
+        /*
         hgles::HGLTexture::createTextureWithAsset("e_robo2.png");
         hgles::HGLTexture::createTextureWithAsset("divine.png");
         hgles::HGLTexture::createTextureWithAsset("space.png");
@@ -97,6 +103,7 @@ namespace HGGame {
         hgles::HGLTexture::createTextureWithAsset("galaxy+X.png");
         hgles::HGLTexture::createTextureWithAsset("galaxy+Y.png");
         hgles::HGLTexture::createTextureWithAsset("galaxy+Z.png");
+         */
         
     }
     
