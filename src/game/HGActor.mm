@@ -18,7 +18,7 @@ namespace HGGame {
     
     void HGActor::init()
     {
-        updateCount = 0;
+        hitbox_id = -1;
     }
     
     void HGActor::setVelocity(float inVelocity)
@@ -54,7 +54,6 @@ namespace HGGame {
     
     void HGActor::update()
     {
-        updateCount++;
         if (velocity)
         {
             position.x += acceleration.x;
@@ -82,29 +81,6 @@ namespace HGGame {
     {
         actor.initSize(size);
         actor.initHitbox(hitbox_id);
-    }
-    
-    void initializeGame()
-    {
-        initializeCollision();
-        
-        // 画像ロード
-        /*
-        hgles::HGLTexture::createTextureWithAsset("e_robo2.png");
-        hgles::HGLTexture::createTextureWithAsset("divine.png");
-        hgles::HGLTexture::createTextureWithAsset("space.png");
-        hgles::HGLTexture::createTextureWithAsset("space2.png");
-        hgles::HGLTexture::createTextureWithAsset("star.png");
-        hgles::HGLTexture::createTextureWithAsset("x6.png");
-        hgles::HGLTexture::createTextureWithAsset("square.png");
-        hgles::HGLTexture::createTextureWithAsset("galaxy-X.png");
-        hgles::HGLTexture::createTextureWithAsset("galaxy-Y.png");
-        hgles::HGLTexture::createTextureWithAsset("galaxy-Z.png");
-        hgles::HGLTexture::createTextureWithAsset("galaxy+X.png");
-        hgles::HGLTexture::createTextureWithAsset("galaxy+Y.png");
-        hgles::HGLTexture::createTextureWithAsset("galaxy+Z.png");
-         */
-        
     }
     
 }

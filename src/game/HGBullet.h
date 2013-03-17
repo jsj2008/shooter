@@ -14,7 +14,6 @@ namespace HGGame {
     public:
         HGBullet();
         ~HGBullet();
-        hgles::Color color;
         void draw();
         void update();
         void init(HG_BULLET_TYPE type);
@@ -28,15 +27,18 @@ namespace HGGame {
         
         // 種類別関数群
         void N1Draw();
-        void N1Init();
         void N2Draw();
         void N2Init();
         
     private:
         hgles::t_hgl2di anime1;
         hgles::t_hgl2di anime2;
-        bool isInit;
+        HG_BULLET_TYPE type;
         
+        bool isTextureInit;
+        hgles::HGLTexture core;
+        hgles::HGLTexture glow;
+        int updateCount;
     };
     
 }

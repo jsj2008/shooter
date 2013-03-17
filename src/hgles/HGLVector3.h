@@ -23,6 +23,7 @@ namespace hgles {
         HGLVector3* cross(const HGLVector3* v, HGLVector3* result); // 外積
         void cross(float x, float y, float z); // 外積
         void add(const HGLVector3* v0, const HGLVector3* v1); // 和
+        void add(float p); // 和
         void sub(const HGLVector3* v0, const HGLVector3* v1); // 差
         float length(); // ベクトルの長さ
         void normalize(); // 長さの正規化

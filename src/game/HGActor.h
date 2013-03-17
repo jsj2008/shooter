@@ -26,7 +26,6 @@ namespace HGGame {
         rotate(0,0,0),
         position(0,0,0),
         acceleration(0,0,0),
-        updateCount(0),
         hitbox_id(-1)
         {}
         
@@ -46,7 +45,6 @@ namespace HGGame {
         hgles::HGLVector3 scale;
         float aspect; // degree
         float radian;
-        unsigned int updateCount;
     protected:
         void init();
         
@@ -64,6 +62,5 @@ namespace HGGame {
     };
     
     void initActor(HGActor& actor, t_size2d &size, int &hitbox_id);
-    void initializeGame();
     
 }

@@ -9,6 +9,7 @@
 #import "HGFighter.h"
 #import "HGBullet.h"
 #import "HGCommon.h"
+#import "HGCollision.h"
 
 #import <vector>
 
@@ -49,7 +50,7 @@ namespace HGGame {
 #warning 後でdelete
         // initialize utility program
         initSpriteIndexTable();
-        initializeGame();
+        initializeCollision();
         
         // create players
         _player = new HGFighter();

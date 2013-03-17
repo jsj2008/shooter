@@ -60,6 +60,7 @@ namespace hgles {
                          HGLVector3* rotate,
                          HGLTexture* texture)
     {
+        glUniform1f(HGLES::uAlpha, texture->color.a);
         HGLES::pushMatrix();
         
         HGLES::mvMatrix = GLKMatrix4Translate(HGLES::mvMatrix, position->x, position->y, position->z);
@@ -82,6 +83,7 @@ namespace hgles {
                              HGLVector3* scale,
                              HGLTexture* texture)
     {
+        glUniform1f(HGLES::uAlpha, texture->color.a);
         HGLES::pushMatrix();
         
         HGLES::mvMatrix = GLKMatrix4Translate(HGLES::mvMatrix, position->x, position->y, position->z);

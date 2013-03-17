@@ -7,26 +7,14 @@ namespace HGGame {
 
     typedef HGActor base;
     
-    typedef struct s_hg_bullet_type
-    {
-        void (HGBullet::*pInitFunc)();
-        void (HGBullet::*pDrawFunc)();
-    } t_hg_bullet_type;
-    
-    t_hg_bullet_type hg_bullet_table[] =
-    {
-        {&HGBullet::N1Init, &HGBullet::N1Draw},
-        //{&HGBullet::N2Init, &HGBullet::N2Draw},
-    };
-    
     void HGBullet::update()
     {
         base::update();
+        updateCount++;
     }
     
     HGBullet::HGBullet()
     {
-        color.r = 1.0; color.g = 1.0; color.b = 1.0; color.a = 1.0;
     }
     
     HGBullet::~HGBullet()
@@ -37,85 +25,65 @@ namespace HGGame {
     void HGBullet::init(HG_BULLET_TYPE type)
     {
         base::init();
-        // オブジェクトの種類別の関数を設定
-#warning テーブル化
-        //base::setSize(64, 64);
-        pInitFunc = hg_bullet_table[type].pInitFunc;
-        pDrawFunc = hg_bullet_table[type].pDrawFunc;
-        
-        // 初期化
-        (this->*pInitFunc)();
+        int hitbox_id = 0;
+        t_size2d size;
+        switch (type) {
+            case HG_BULLET_N1:
+                hitbox_id = 1;
+                size.w = 12;
+                size.h = 12;
+                setVelocity(0.3);
+                scale.set(0.3, 0.3, 0.3);
+                break;
+            default:
+                assert(0);
+        }
+        this->type = type;
+        isTextureInit = false;
+        initActor(*this, size, hitbox_id);
+        updateCount = 0;
     }
     
     void HGBullet::draw()
     {
-        // 関数ポインタを呼び出す
-        (this->*pDrawFunc)();
+        switch (type) {
+            case HG_BULLET_N1:
+            {
+                if (!isTextureInit)
+                {
+                    core = *hgles::HGLTexture::createTextureWithAsset("divine.png");
+                    core.color = {1,1,1,1};
+                    core.isAlphaMap = 1;
+                    core.blend1 = GL_ALPHA;
+                    core.blend2 = GL_ALPHA;
+                    
+                    glow = *hgles::HGLTexture::createTextureWithAsset("star.png");
+                    glow.color = {0.5, 0.5, 1.0, 0.8};
+                    glow.isAlphaMap = 1;
+                    glow.blend1 = GL_ALPHA;
+                    glow.blend2 = GL_ALPHA;
+                }
+                hgles::HGLVector3 glowScale = scale;
+                if (updateCount % 4 <= 2)
+                {
+                    glowScale.add(0.7);
+                    glow.color.a = 0.5;
+                }
+                else
+                {
+                    glowScale.add(0.6);
+                    glow.color.a = 0.8;
+                }
+                hgles::HGLGraphics2D::draw(&position, &glowScale, &glow);
+                hgles::HGLGraphics2D::draw(&position, &scale, &core);
+                break;
+            }
+            default:
+                assert(0);
+        }
+        isTextureInit = true;
     }
     
-    
-    // ==================================================
-    // 種類別の関数
-    // ==================================================
-    
-    void HGBullet::N1Draw()
-    {
-        if (isInit)
-        {
-            anime1.texture = (*hgles::HGLTexture::createTextureWithAsset("star.png"));
-            anime2.texture = *hgles::HGLTexture::createTextureWithAsset("divine.png");
-            //anime1.texture = (*hgles::HGLTexture::createTextureWithAsset("star.png"));
-            anime1.position = position;
-            anime1.scale = scale;
-            anime1.alpha = 0.8;
-            anime1.texture.color = {0.5, 0.5, 1.0, 1.0};
-            anime1.texture.isAlphaMap = 1;
-            anime1.texture.blend1 = GL_ALPHA;
-            anime1.texture.blend2 = GL_ALPHA;
-            
-            //anime2.texture = *hgles::HGLTexture::createTextureWithAsset("divine.png");
-            anime2.position = position;
-            anime2.scale = scale;
-            anime2.alpha = 1;
-            anime2.texture.color = {1,1,1,1};
-            anime2.texture.isAlphaMap = 1;
-            anime2.texture.blend1 = GL_ALPHA;
-            anime2.texture.blend2 = GL_ALPHA;
-            isInit = false;
-        }
-        if (updateCount % 4 <= 2)
-        {
-            anime1.scale.x = scale.x + 0.7;
-            anime1.scale.y = scale.x + 0.7;
-            anime1.scale.z = scale.x + 0.7;
-            anime1.alpha = 0.5;
-        }
-        else
-        {
-            anime1.scale.x = scale.x + 0.6;
-            anime1.scale.y = scale.x + 0.6;
-            anime1.scale.z = scale.x + 0.6;
-            anime1.alpha = 0.8;
-        }
-        anime1.position = position;
-        hgles::HGLGraphics2D::draw(&anime1);
-        
-        anime2.position = position;
-        hgles::HGLGraphics2D::draw(&anime2);
-    }
-    
-    void HGBullet::N1Init()
-    {
-        int hitbox_id = 1;
-        t_size2d size = {12, 12};
-        initActor(*this, size, hitbox_id);
-        
-        setVelocity(0.3);
-        scale.set(0.3, 0.3, 0.3);
-        color = {1.0, 1.0, 1.0};
-        
-        isInit = true;
-    }
     
 
 }
