@@ -6,9 +6,7 @@
 
 namespace HGGame {
 
-    namespace actor {
-        
-        typedef HGActor base;
+    typedef HGActor base;
     
     void HGExplode::update()
     {
@@ -27,13 +25,8 @@ namespace HGGame {
     
     void HGExplode::init()
     {
-        base::init();
-        t_size2d size;
-        int r = rand(128, 160);
-        size.w = r;
-        size.h = r;
-        int hitbox_id = -1;
-        initActor(*this, size, hitbox_id);
+        float r = rand(128, 160);
+        initActor(*this, {r, r}, -1);
         updateCount = 0;
         isTextureInit = false;
     }
@@ -53,7 +46,7 @@ namespace HGGame {
             glow.blend2 = GL_ALPHA;
             
             glowScale = scale;
-            glowScale.add(1.6);
+            glowScale.add(3.6);
             
             isTextureInit = true;
         }
@@ -73,7 +66,7 @@ namespace HGGame {
         
     }
     
-    }
+    
 
 }
 

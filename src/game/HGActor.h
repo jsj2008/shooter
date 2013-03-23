@@ -8,63 +8,86 @@
 
 namespace HGGame {
     
-    namespace actor {
-        // 3dやテクスチャなどのデータを読み込む
+    // 3dやテクスチャなどのデータを読み込む
 #warning 後で適切な場所に移すことを検討
-        void HGLoadData();
+    void HGLoadData();
+    
+    class HGActor
+    {
+        friend void initActor(HGActor& actor, t_size2d size, int hitbox_id);
         
-        class HGActor
-        {
-            friend void initActor(HGActor& actor, t_size2d &size, int &hitbox_id);
-            
-        public:
-            HGActor():
-            velocity(0),
-            aspect(0),
-            radian(0),
-            moveAspect(0),
-            scale(1,1,1),
-            rotate(0,0,0),
-            position(0,0,0),
-            acceleration(0,0,0),
-            hitbox_id(-1)
-            {}
-            
-            virtual ~HGActor();
-            
-            virtual void draw() = 0;
-            virtual void update();
-            void drawCollision();
-            void setVelocity(float velocity);
-            void setMoveAspect(float degree);
-            bool isCollideWith(HGActor* another);
-            void setAspect(float degree);
-            hgles::HGLVector3 getRandomRealPosition();
-            
-            // property
-            hgles::HGLVector3 position;
-            hgles::HGLVector3 rotate;
-            hgles::HGLVector3 scale;
-            float aspect; // degree
-            float radian;
-            bool isActive;
-        protected:
-            void init();
-            
-        private:
-            void initSize(t_size2d &size);
-            void initHitbox(int hitbox_id);
-            
-            // property
-            hgles::HGLVector3 acceleration; // 加速
-            float velocity; // 速度
-            float moveAspect; // radian
-            int hitbox_id;
-            t_size2d size;
-            t_size2d realSize;
-        };
+    public:
+        HGActor():
+        velocity(0),
+        degree(0),
+        radian(0),
+        moveRadian(0),
+        scale(1,1,1),
+        rotate(0,0,0),
+        position(0,0,0),
+        acceleration(0,0,0),
+        hitbox_id(-1)
+        {}
         
-        void initActor(HGActor& actor, t_size2d &size, int &hitbox_id);
-    }
+        virtual ~HGActor();
+        virtual void draw() = 0;
+        virtual void update();
+        
+        // あたり判定を描画する
+        void drawCollision();
+        
+        // 速度を設定する
+        void setVelocity(float velocity);
+        
+        // 移動角度を設定する
+        void setMoveDirectionWithDegree(float degree);
+        void setMoveDirectionWithRadian(float radian);
+        
+        // 衝突しているかを返す
+        bool isCollideWith(HGActor* another);
+        
+        // 向きを設定する(移動の向きとは無関係)
+        void setDirectionWithDegree(float degree);
+        void setDirectionWithRadian(float radian);
+        
+        // 自分の領域の中のランダムな点を返す
+        hgles::HGLVector3 getRandomRealPosition();
+        
+        // 指定のactorに対する(平面xy上の)角度を返す
+        float getDirectionByDegree(HGActor* target);
+        
+        // 位置
+        hgles::HGLVector3 position;
+        // 回転(描画のみに関係)
+        hgles::HGLVector3 rotate;
+        // 拡大率
+        hgles::HGLVector3 scale;
+        
+        // 向き
+        float degree;
+        float radian;
+        
+        // 使用フラグ
+        bool isActive;
+    protected:
+        // 大きさ(架空のサイズ)
+        t_size2d size;
+        // 大きさ(3D上の実際の大きさ)
+        t_size2d realSize;
+        
+    private:
+        void initSize(t_size2d &size); // 初期化
+        void initHitbox(int hitbox_id); // あたり判定初期化
+        
+        hgles::HGLVector3 acceleration; // 加速
+        float velocity; // 速度
+        // 移動角度
+        float moveRadian;
+        // あたり判定ID
+        int hitbox_id;
+    };
+    
+    // 初期化関数
+    void initActor(HGActor& actor, t_size2d size, int hitbox_id);
     
 }

@@ -1,4 +1,4 @@
-#define IS_DEBUG_COLLISION 0
+#define IS_DEBUG_COLLISION 1
 
 // game define
 #define ENEMY_NUM 20
@@ -24,5 +24,11 @@ namespace HGGame {
     {
         float w, h;
     } t_size2d;
+    
+    typedef struct t_pos2d
+    {
+        float x, y;
+    } t_pos2d;
+    
     
 }

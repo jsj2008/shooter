@@ -10,9 +10,11 @@ namespace HGGame {
         t_rect hitbox;
     } t_hitbox;
     
+    // x, y, w, h
     static t_hitbox _HITBOX_LIST[] = {
-        {0, {20, 20, 24, 24}},
+        {0, {10, 10, 44, 44}},
         {1, {-6, -6, 24, 24}},
+        {2, {20, 20, 88, 88}},
     };
     
     static hgles::t_hgl2di square; // 矩形描画用

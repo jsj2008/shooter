@@ -9,6 +9,8 @@
 #import "HGLVector3.h"
 #import "HGActor.h"
 #import "HGFighter.h"
+#import "HGCPU.h"
+#import "HGPlayer.h"
 #import "HGBullet.h"
 #import "HGCommon.h"
 #import "HGCollision.h"
@@ -22,21 +24,20 @@ namespace HGGame {
     class RemoveActor
     {
     public:
-        bool operator()(actor::HGActor* a) const { return !a->isActive; }
+        bool operator()(HGActor* a) const { return !a->isActive; }
     };
     
     // flag
     bool fire;
-    NSTimeInterval lastFireTime;
-    float fireAspect;
+    double lastFireTime;
+    float fireDegree;
     
     // game objects
-    actor::HGFighter* _player;
+    HGPlayer* _player;
     
-    using namespace actor;
     std::vector<HGBullet*> _bullets;
     std::vector<HGBullet*> _bulletsInActive;
-    std::vector<actor::HGFighter*> _enemies;
+    std::vector<HGFighter*> _enemies;
     std::vector<hgles::t_hgl2di*> background;
     std::vector<hgles::t_hgl2di*> barriar;
     std::vector<hgles::t_hgl2di*> nebula;
@@ -47,6 +48,9 @@ namespace HGGame {
     hgles::HGLVector3 _cameraRotate;
     
     unsigned int updateCount;
+    
+    // now
+    double now_time;
     
     //pthread_mutex_t	mutex;  // MUTEX
     
@@ -60,10 +64,36 @@ namespace HGGame {
     {
         if (power > 0)
         {
-            if (!fire) _player->setAspect(degree);
-            _player->setMoveAspect(degree);
+            if (!fire) _player->setDirectionWithDegree(degree);
+            _player->setMoveDirectionWithDegree(degree);
         }
         _player->setVelocity(0.4*power);
+    }
+    
+    double getNowTime()
+    {
+        return now_time;
+    }
+    
+    HGBullet* getBullet()
+    {
+        if (_bulletsInActive.size() > 0)
+        {
+            HGBullet* t = _bulletsInActive.back();
+            t->position.x = _player->position.x;
+            t->position.y = _player->position.y;
+            t->position.z = _player->position.z;
+            t->setMoveDirectionWithDegree(fireDegree);
+            t->init(HG_BULLET_N1);
+            _bulletsInActive.pop_back();
+            _bullets.push_back(t);
+            return t;
+        }
+        else
+        {
+            LOG(@"no inactive bullet!!!");
+            return NULL;
+        }
     }
     
     void initialize()
@@ -74,24 +104,26 @@ namespace HGGame {
         initializeCollision();
         
         // create players
-        _player = new actor::HGFighter();
-        _player->init(actor::HG_FIGHTER);
+        _player = new HGPlayer();
+        _player->init(HG_FIGHTER);
         _player->position.set(0, 0, ZPOS);
-        _player->setAspect(0);
+        _player->setDirectionWithDegree(0);
         fire = false;
         
         // create enemies
         for (int i = 0; i < ENEMY_NUM; ++i)
         {
-            actor::HGFighter* t;
-            t = new actor::HGFighter();
-            t->init(actor::HG_FIGHTER);
+            HGCPU* t;
+            t = new HGCPU();
+            t->init(HG_FIGHTER);
             t->position.x = (i*2) + -2;
             t->position.y = 1;
             t->position.z = 0;
-            t->setAspect(90);
-            t->setMoveAspect(90);
+            t->setDirectionWithDegree(90);
+            t->setMoveDirectionWithDegree(90);
             t->setVelocity(0.1);
+#warning 仮
+            t->target = _player;
             _enemies.push_back(t);
         }
         
@@ -188,6 +220,11 @@ namespace HGGame {
     {
         //pthread_mutex_lock(&mutex); // スレッド保護
         //try {
+        
+            // 現在時間の更新
+            NSDate* nowDt = [NSDate date];
+            now_time = [nowDt timeIntervalSince1970];
+        
             ++updateCount;
         
             {
@@ -199,7 +236,7 @@ namespace HGGame {
             if (keystate->fire)
             {
                 fire = true;
-                fireAspect = _player->aspect;
+                fireDegree = _player->degree;
             }
             else
             {
@@ -208,8 +245,9 @@ namespace HGGame {
             
             if (fire)
             {
-                NSDate* nowDt = [NSDate date];
-                NSTimeInterval now = [nowDt timeIntervalSince1970];
+                _player->fire();
+                /*
+                double now = getNowTime();
                 if (now - lastFireTime > 0.3)
                 {
                     lastFireTime = now;
@@ -219,12 +257,12 @@ namespace HGGame {
                         t->position.x = _player->position.x;
                         t->position.y = _player->position.y;
                         t->position.z = _player->position.z;
-                        t->setMoveAspect(fireAspect);
+                        t->setMoveDirectionWithDegree(fireDegree);
                         t->init(HG_BULLET_N1);
                         _bulletsInActive.pop_back();
                         _bullets.push_back(t);
                     }
-                }
+                }*/
             }
             
             
@@ -282,7 +320,7 @@ namespace HGGame {
                             a->isActive = false;
                             createEffect(EFFECT_EXPLODE_NORMAL, &a->position);
                         }
-                        else if (a->explodeCount%100 == 0)
+                        else if (a->explodeCount%150 == 0)
                         {
                             hgles::HGLVector3 pos = a->getRandomRealPosition();
                             createEffect(EFFECT_EXPLODE_NORMAL, &pos);
@@ -352,15 +390,13 @@ namespace HGGame {
             
             // set camera
             _cameraPosition.x = _player->position.x * -1;
-            _cameraPosition.y = _player->position.y * -1 + 3.5;
+            _cameraPosition.y = _player->position.y * -1 + 4.5;
             _cameraPosition.z = -7;
-            _cameraRotate.x = -22 * M_PI/180;
-            hgles::HGLES::cameraMatrix = GLKMatrix4Identity;
-            hgles::HGLES::cameraMatrix = GLKMatrix4Rotate(hgles::HGLES::cameraMatrix, _cameraRotate.x, 1, 0, 0);
-            hgles::HGLES::cameraMatrix = GLKMatrix4Rotate(hgles::HGLES::cameraMatrix, _cameraRotate.y, 0, 1, 0);
-            hgles::HGLES::cameraMatrix = GLKMatrix4Rotate(hgles::HGLES::cameraMatrix, _cameraRotate.z, 0, 0, 1);
-            hgles::HGLES::cameraMatrix = GLKMatrix4Translate(hgles::HGLES::cameraMatrix, _cameraPosition.x, _cameraPosition.y, _cameraPosition.z);
-            
+            _cameraRotate.x = -28 * M_PI/180;
+            hgles::HGLES::cameraPosition = _cameraPosition;
+            hgles::HGLES::cameraRotate = _cameraRotate;
+            hgles::HGLES::updateCameraMatrix();
+        
             // 2d
             glDisable(GL_DEPTH_TEST);
             

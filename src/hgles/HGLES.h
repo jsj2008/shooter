@@ -23,6 +23,8 @@ namespace hgles {
         
         static void pushMatrix();
         static void popMatrix();
+        
+        static void updateCameraMatrix();
         static void updateMatrix(); // シェーダ変数に現在の行列を渡す
         
         static GLuint aPositionSlot        ;

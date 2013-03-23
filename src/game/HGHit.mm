@@ -7,7 +7,6 @@
 #define HIT_TYPE_1 1
 
 namespace HGGame {
-    namespace actor {
 
     typedef HGActor base;
     
@@ -28,13 +27,8 @@ namespace HGGame {
     
     void HGHit::init()
     {
-        base::init();
-        t_size2d size;
-        int r = rand(80, 128);
-        size.w = r;
-        size.h = r;
-        int hitbox_id = -1;
-        initActor(*this, size, hitbox_id);
+        float r = rand(80, 128);
+        initActor(*this, {r, r}, -1);
         updateCount = 0;
         isTextureInit = false;
         double rotateZ = rand(0, 360);
@@ -84,7 +78,7 @@ namespace HGGame {
         
     }
 
-    }
+    
 
 }
 

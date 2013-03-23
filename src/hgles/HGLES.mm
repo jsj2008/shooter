@@ -93,6 +93,15 @@ namespace hgles {
         //initializeTextureIds();
     }
     
+    void HGLES::updateCameraMatrix()
+    {
+        HGLES::cameraMatrix = GLKMatrix4Identity;
+        HGLES::cameraMatrix = GLKMatrix4Rotate(hgles::HGLES::cameraMatrix, cameraRotate.x, 1, 0, 0);
+        HGLES::cameraMatrix = GLKMatrix4Rotate(hgles::HGLES::cameraMatrix, cameraRotate.y, 0, 1, 0);
+        HGLES::cameraMatrix = GLKMatrix4Rotate(hgles::HGLES::cameraMatrix, cameraRotate.z, 0, 0, 1);
+        HGLES::cameraMatrix = GLKMatrix4Translate(hgles::HGLES::cameraMatrix, cameraPosition.x, cameraPosition.y, cameraPosition.z);
+    }
+    
     void HGLES::updateMatrix()
     {
         // 視点行列にモデル行列を掛けること

@@ -3,7 +3,6 @@
 #import "HGActor.h"
 
 namespace HGGame {
-    namespace actor {
     
     class HGHitAnime : public HGActor
     {
@@ -23,5 +22,4 @@ namespace HGGame {
         hgles::HGLVector3 bombScale;
     };
     
-    }
 }

@@ -4,7 +4,6 @@
 
 namespace HGGame {
     
-    namespace actor {
     class HGHit : public HGActor
     {
     public:
@@ -23,5 +22,4 @@ namespace HGGame {
         hgles::HGLVector3 bombScale;
     };
     
-    }
 }
