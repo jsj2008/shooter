@@ -81,6 +81,7 @@ namespace hgles {
         
     void HGLGraphics2D::draw(HGLVector3* position,
                              HGLVector3* scale,
+                             HGLVector3* rotate,
                              HGLTexture* texture)
     {
         glUniform1f(HGLES::uAlpha, texture->color.a);
@@ -90,7 +91,7 @@ namespace hgles {
         HGLES::mvMatrix = GLKMatrix4Scale(HGLES::mvMatrix, scale->x, scale->y, scale->z);
         HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, HGLES::cameraRotate.x*-1, 1, 0, 0);
         HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, HGLES::cameraRotate.y*-1, 0, 1, 0);
-        HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, HGLES::cameraRotate.z*-1, 0, 0, 1);
+        HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, rotate->z, 0, 0, 1);
         
         HGLES::updateMatrix();
         
@@ -114,19 +115,9 @@ namespace hgles {
         // モデルビュー変換
         HGLES::mvMatrix = GLKMatrix4Translate(HGLES::mvMatrix, p->position.x, p->position.y, p->position.z);
         HGLES::mvMatrix = GLKMatrix4Scale(HGLES::mvMatrix, p->scale.x, p->scale.y, p->scale.z);
-        /*
-         if (p->paralell)
-         {
-         HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, HGLES::cameraRotate.x*-1, 1, 0, 0);
-         HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, HGLES::cameraRotate.y*-1, 0, 1, 0);
-         HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, p->rotate.z, 0, 0, 1); // zは回転を適用
-         }
-         else
-         {*/
         HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, p->rotate.x, 1, 0, 0);
         HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, p->rotate.y, 0, 1, 0);
         HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, p->rotate.z, 0, 0, 1);
-        //}
         HGLES::updateMatrix();
         
         p->texture.bind();

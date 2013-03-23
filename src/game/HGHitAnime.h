@@ -3,13 +3,13 @@
 #import "HGActor.h"
 
 namespace HGGame {
-    
     namespace actor {
-    class HGHit : public HGActor
+    
+    class HGHitAnime : public HGActor
     {
     public:
-        HGHit();
-        ~HGHit();
+        HGHitAnime();
+        ~HGHitAnime();
         void draw();
         void update();
         void init();

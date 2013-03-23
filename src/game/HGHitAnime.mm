@@ -1,5 +1,5 @@
 #import "HGActor.h"
-#import "HGHit.h"
+#import "HGHitAnime.h"
 #import "HGUtil.h"
 #import "HGCommon.h"
 #import "HGGame.h"
@@ -8,25 +8,25 @@
 
 namespace HGGame {
     namespace actor {
-
+        
     typedef HGActor base;
     
-    void HGHit::update()
+    void HGHitAnime::update()
     {
         base::update();
         updateCount++;
     }
     
-    HGHit::HGHit()
+    HGHitAnime::HGHitAnime()
     {
     }
     
-    HGHit::~HGHit()
+    HGHitAnime::~HGHitAnime()
     {
         
     }
     
-    void HGHit::init()
+    void HGHitAnime::init()
     {
         base::init();
         t_size2d size;
@@ -41,15 +41,13 @@ namespace HGGame {
         rotate.z = rotateZ * M_PI/180;
     }
     
-    void HGHit::draw()
+    void HGHitAnime::draw()
     {
         if (!isTextureInit)
         {
-            bomb = (*hgles::HGLTexture::createTextureWithAsset("corona.png"));
-            bomb.color = {1.0, 1.0, 1.0, 1.0};
-            bomb.isAlphaMap = 1;
-            bomb.blend1 = GL_ALPHA;
-            bomb.blend2 = GL_ALPHA;
+            bomb = (*hgles::HGLTexture::createTextureWithAsset("hit_small.png"));
+            bomb.sprWidth = 64;
+            bomb.sprHeight = 64;
             
             glow = *hgles::HGLTexture::createTextureWithAsset("star.png");
             glow.color = {1.0, 1.0, 1, 1};
@@ -60,27 +58,20 @@ namespace HGGame {
             isTextureInit = true;
         }
         int index = updateCount;
-        if (index < 3)
+        if (index >= 8)
         {
-            scale.multiply(1.3);
-        }
-        else
-        {
-            scale.multiply(0.6);
-            if (scale.x <= 0.70)
-            {
 #warning 仮
-                return;
-            }
+            return;
         }
-        rotate.z += 0.1;
-        
-        glowScale = scale;
-        glowScale.multiply(0.8);
-        hgles::HGLGraphics2D::draw(&position, &glowScale, &rotate, &glow);
-        
-        
+        if (index >= 5)
+        {
+            bomb.color.a *= 0.5;
+        }
+        int x = bomb.sprWidth * index;
+        bomb.setTextureArea(x, 0, bomb.sprWidth, bomb.sprWidth);
         hgles::HGLGraphics2D::draw(&position, &scale, &rotate, &bomb);
+        
+        hgles::HGLGraphics2D::draw(&position, &glowScale, &rotate, &glow);
         
     }
 

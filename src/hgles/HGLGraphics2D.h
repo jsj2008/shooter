@@ -39,6 +39,7 @@ namespace hgles {
         
         static void draw(HGLVector3* position,
                          HGLVector3* scale,
+                         HGLVector3* rotate,
                          HGLTexture* texture);
         
     private:

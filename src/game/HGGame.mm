@@ -12,6 +12,7 @@
 #import "HGBullet.h"
 #import "HGCommon.h"
 #import "HGCollision.h"
+#import "HGHitAnime.h"
 
 #import <vector>
 #import <mutex>
@@ -21,7 +22,7 @@ namespace HGGame {
     class RemoveActor
     {
     public:
-        bool operator()(HGActor* a) const { return !a->isActive; }
+        bool operator()(actor::HGActor* a) const { return !a->isActive; }
     };
     
     // flag
@@ -30,19 +31,22 @@ namespace HGGame {
     float fireAspect;
     
     // game objects
-    HGFighter* _player;
+    actor::HGFighter* _player;
     
+    using namespace actor;
     std::vector<HGBullet*> _bullets;
     std::vector<HGBullet*> _bulletsInActive;
-    std::vector<HGFighter*> _enemies;
+    std::vector<actor::HGFighter*> _enemies;
     std::vector<hgles::t_hgl2di*> background;
+    std::vector<hgles::t_hgl2di*> barriar;
+    std::vector<hgles::t_hgl2di*> nebula;
     std::vector<HGActor*> _effects;
-    
-    hgles::HGLObject3D* skybox;
     
     // camera
     hgles::HGLVector3 _cameraPosition;
     hgles::HGLVector3 _cameraRotate;
+    
+    unsigned int updateCount;
     
     //pthread_mutex_t	mutex;  // MUTEX
     
@@ -65,12 +69,13 @@ namespace HGGame {
     void initialize()
     {
         srand((unsigned int)time(NULL));
+        updateCount = 0;
         initSpriteIndexTable();
         initializeCollision();
         
         // create players
-        _player = new HGFighter();
-        _player->init(HG_FIGHTER);
+        _player = new actor::HGFighter();
+        _player->init(actor::HG_FIGHTER);
         _player->position.set(0, 0, ZPOS);
         _player->setAspect(0);
         fire = false;
@@ -78,9 +83,9 @@ namespace HGGame {
         // create enemies
         for (int i = 0; i < ENEMY_NUM; ++i)
         {
-            HGFighter* t;
-            t = new HGFighter();
-            t->init(HG_FIGHTER);
+            actor::HGFighter* t;
+            t = new actor::HGFighter();
+            t->init(actor::HG_FIGHTER);
             t->position.x = (i*2) + -2;
             t->position.y = 1;
             t->position.z = 0;
@@ -99,8 +104,9 @@ namespace HGGame {
             _bulletsInActive.push_back(t);
         }
         
+        
         // create background
-        for (int i = 0; i < 6; ++i)
+        for (int i = 0; i < 5; ++i)
         {
             hgles::t_hgl2di* t = new hgles::t_hgl2di();
             t->texture = *hgles::HGLTexture::createTextureWithAsset("space.png");
@@ -127,14 +133,52 @@ namespace HGGame {
                     t->position.set(0, 0, -1*BACKGROUND_SCALE/2 + ZPOS);
                     t->rotate.set(0, 0, 0);
                     break;
+                    /*
                 case 5:
                     t->position.set(0, 0, 1*BACKGROUND_SCALE/2 + ZPOS);
                     t->rotate.set(180*M_PI/180, 0, 0);
-                    break;
+                    break;*/
                 default:
                     break;
             }
             background.push_back(t);
+        }
+        
+        // create deep sky
+        for (int i = 0; i < 4; ++i)
+        {
+            hgles::t_hgl2di* t = new hgles::t_hgl2di();
+            t->texture = *hgles::HGLTexture::createTextureWithAsset("space_a.png");
+            t->texture.repeatNum = 1;
+            t->texture.blendColor = {2.0, 2.0, 2.0, 1.0};
+            t->scale.set(500, 500, 300);
+            int x = rand(0, 20) * (rand(0, 1)?-1:1);
+            int y = rand(0, 20) * (rand(0, 1)?-1:1);
+            int rz = rand(0, 360) * (rand(0, 1)?-1:1);
+            t->position.set(x, y, -200 + ZPOS + i * 20);
+            t->rotate.set(0, 0, rz*M_PI/180);
+            nebula.push_back(t);
+        }
+        
+        
+        // create nebula
+        for (int i = 0; i < 1; ++i)
+        {
+            int SIZE = rand(500, 650);
+            hgles::t_hgl2di* t = new hgles::t_hgl2di();
+            t->texture = *hgles::HGLTexture::createTextureWithAsset("proc_sheet_nebula.png");
+            t->texture.repeatNum = 1;
+            t->texture.color = {1.0, 1.0, 1.0, 0.6};
+            t->texture.blendColor = {0.7, 0.7, 0.7, 0.6};
+            t->texture.sprWidth = 256;
+            t->texture.sprHeight = 256;
+            t->texture.setTextureArea(rand(0,4)*256, rand(0,4)*256, 256, 256);
+            t->scale.set(SIZE, SIZE, SIZE);
+            int x = rand(0, STAGE_SCALE);
+            int y = rand(0, STAGE_SCALE);
+            t->position.set(x, y, -1*BACKGROUND_SCALE/2 + ZPOS);
+            t->rotate.set(0, 0, rand(0, 360)*M_PI/180);
+            nebula.push_back(t);
         }
         
     }
@@ -144,7 +188,8 @@ namespace HGGame {
     {
         //pthread_mutex_lock(&mutex); // スレッド保護
         //try {
-            
+            ++updateCount;
+        
             {
 #warning sync start
                 _player->update();
@@ -215,6 +260,7 @@ namespace HGGame {
                     {
                         if (a->isCollideWith(b))
                         {
+                            b->isActive = false;
 #warning 仮
                             a->life--;
                             if (a->life == 0)
@@ -236,9 +282,10 @@ namespace HGGame {
                             a->isActive = false;
                             createEffect(EFFECT_EXPLODE_NORMAL, &a->position);
                         }
-                        else if (rand(1, 60) == 60)
+                        else if (a->explodeCount%100 == 0)
                         {
-                            createEffect(EFFECT_EXPLODE_NORMAL, &a->position);
+                            hgles::HGLVector3 pos = a->getRandomRealPosition();
+                            createEffect(EFFECT_EXPLODE_NORMAL, &pos);
                         }
                         
                         
@@ -273,7 +320,7 @@ namespace HGGame {
         switch (type) {
             case EFFECT_HIT_NORMAL:
             {
-                HGHit* ex = new HGHit();
+                HGHitAnime* ex = new HGHitAnime();
                 ex->init();
                 ex->position = *position;
                 _effects.push_back((HGActor*)ex);
@@ -324,12 +371,25 @@ namespace HGGame {
              HGObject* a = *itr;
              a->draw();
              }*/
+        
+            hgles::HGLES::pushMatrix();
+            hgles::HGLES::mvMatrix = GLKMatrix4Rotate(hgles::HGLES::mvMatrix, hgles::HGLES::cameraRotate.x*-1, 1, 0, 0);
+            hgles::HGLES::mvMatrix = GLKMatrix4Rotate(hgles::HGLES::mvMatrix, hgles::HGLES::cameraRotate.y*-1, 0, 1, 0);
+        
             // draw bg
             for (std::vector<hgles::t_hgl2di*>::reverse_iterator itr = background.rbegin(); itr != background.rend(); ++itr)
             {
                 hgles::HGLGraphics2D::draw(*itr);
             }
-            
+        
+            // draw nebula
+            for (std::vector<hgles::t_hgl2di*>::reverse_iterator itr = nebula.rbegin(); itr != nebula.rend(); ++itr)
+            {
+                hgles::HGLGraphics2D::draw(*itr);
+            }
+        
+            hgles::HGLES::popMatrix();
+        
             // draw enemies
             for (std::vector<HGFighter*>::reverse_iterator itr = _enemies.rbegin(); itr != _enemies.rend(); ++itr)
             {

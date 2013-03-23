@@ -9,59 +9,61 @@ using namespace std;
 
 namespace HGGame
 {
-    
-    typedef HGActor base;
-    
-    HGFighter::HGFighter()
+    namespace actor
     {
-    }
-    
-    HGFighter::~HGFighter()
-    {
-    }
-    
-    void HGFighter::init(HG_FIGHTER_TYPE type)
-    {
-        base::init();
-        int hitbox_id = 0;
-        t_size2d size;
-        explodeCount = 500;
-        switch (type) {
-            case HG_FIGHTER:
-                textureName = "e_robo2.png";
-                hitbox_id = 0;
-                size.w = 64;
-                size.h = 64;
-                life = 5;
-                break;
-            default:
-                break;
-        }
-        this->type = type;
-        sprSize = size;
-        isTextureInit = false;
-        initActor(*this, sprSize, hitbox_id);
-    }
-    
-    void HGFighter::draw()
-    {
-        if (!isTextureInit)
+        
+        typedef HGActor base;
+        
+        HGFighter::HGFighter()
         {
-            texture = (*hgles::HGLTexture::createTextureWithAsset(textureName));
-            texture.sprWidth = sprSize.w;
-            texture.sprHeight = sprSize.h;
-            isTextureInit = true;
         }
-        int spIdx = getSpriteIndex(aspect + 0.5);
-        int x = texture.sprWidth * spIdx;
-        texture.setTextureArea(x, 0, texture.sprWidth, texture.sprWidth);
-        hgles::HGLGraphics2D::draw(&position, &scale, &texture);
+        
+        HGFighter::~HGFighter()
+        {
+        }
+        
+        void HGFighter::init(HG_FIGHTER_TYPE type)
+        {
+            base::init();
+            int hitbox_id = 0;
+            t_size2d size;
+            explodeCount = 200;
+            switch (type) {
+                case HG_FIGHTER:
+                    textureName = "e_robo2.png";
+                    hitbox_id = 0;
+                    size.w = 64;
+                    size.h = 64;
+                    life = 5;
+                    break;
+                default:
+                    break;
+            }
+            this->type = type;
+            sprSize = size;
+            isTextureInit = false;
+            initActor(*this, sprSize, hitbox_id);
+        }
+        
+        void HGFighter::draw()
+        {
+            if (!isTextureInit)
+            {
+                texture = (*hgles::HGLTexture::createTextureWithAsset(textureName));
+                texture.sprWidth = sprSize.w;
+                texture.sprHeight = sprSize.h;
+                isTextureInit = true;
+            }
+            int spIdx = getSpriteIndex(aspect + 0.5);
+            int x = texture.sprWidth * spIdx;
+            texture.setTextureArea(x, 0, texture.sprWidth, texture.sprWidth);
+            hgles::HGLGraphics2D::draw(&position, &scale, &rotate,  &texture);
+        }
+        
+        void HGFighter::update()
+        {
+            base::update();
+        }
     }
-    
-    void HGFighter::update()
-    {
-        base::update();
-    }
-    
 
 }

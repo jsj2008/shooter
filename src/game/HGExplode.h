@@ -3,6 +3,7 @@
 #import "HGActor.h"
 
 namespace HGGame {
+    namespace actor {
     
     class HGExplode : public HGActor
     {
@@ -21,5 +22,5 @@ namespace HGGame {
         int updateCount;
         hgles::HGLVector3 glowScale;
     };
-    
+    }
 }

@@ -6,7 +6,9 @@
 
 namespace HGGame {
 
-    typedef HGActor base;
+    namespace actor {
+        
+        typedef HGActor base;
     
     void HGExplode::update()
     {
@@ -64,14 +66,14 @@ namespace HGGame {
         
         int x = bomb.sprWidth * index;
         bomb.setTextureArea(x, 0, bomb.sprWidth, bomb.sprWidth);
-        hgles::HGLGraphics2D::draw(&position, &scale, &bomb);
+        hgles::HGLGraphics2D::draw(&position, &scale, &rotate, &bomb);
         
         glowScale.multiply(0.7);
-        hgles::HGLGraphics2D::draw(&position, &glowScale, &glow);
+        hgles::HGLGraphics2D::draw(&position, &glowScale, &rotate, &glow);
         
     }
     
-    
+    }
 
 }
 
