@@ -26,7 +26,7 @@ namespace HGGame {
     }
         
     // 発射
-    void HGWeapon::fire(hgles::HGLVector3 &shooter_pos, hgles::HGLVector3 &shooter_rotate, float shootDirectionRadian)
+    void HGWeapon::fire(hgles::HGLVector3 &shooter_pos, hgles::HGLVector3 &shooter_rotate, float shootDirectionRadian, WHICH_SIDE side)
     {
         double now = getNowTime();
         if (now - lastFireTime < fireInterval)
@@ -38,7 +38,7 @@ namespace HGGame {
         switch (type) {
             case WEAPON_LIFLE:
             {
-                HGBullet* t = getBullet();
+                HGBullet* t = getBullet(side);
                 if (t == NULL) {
                     return;
                 }
@@ -46,9 +46,10 @@ namespace HGGame {
                 t->position.y = shooter_pos.y + sin(shooter_rotate.z)*relativePosition.y;
                 t->position.z = shooter_pos.z;
                 t->setMoveDirectionWithRadian(directionRadian);
-                t->init(HG_BULLET_N1);
+                t->init(HG_BULLET_N1, side);
                 t->setMoveDirectionWithRadian(shootDirectionRadian);
-                t->setVelocity(0.75);
+                t->setVelocity(0.55);
+                t->range = 30;
                 break;
             }
             default:

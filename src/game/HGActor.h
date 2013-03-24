@@ -29,7 +29,7 @@ namespace HGGame {
         hitbox_id(-1)
         {}
         
-        virtual ~HGActor();
+        virtual ~HGActor(){}
         virtual void draw() = 0;
         virtual void update();
         
@@ -69,18 +69,19 @@ namespace HGGame {
         
         // 使用フラグ
         bool isActive;
-    protected:
         // 大きさ(架空のサイズ)
         t_size2d size;
         // 大きさ(3D上の実際の大きさ)
         t_size2d realSize;
+    protected:
+        
+        float velocity; // 速度
         
     private:
         void initSize(t_size2d &size); // 初期化
         void initHitbox(int hitbox_id); // あたり判定初期化
         
         hgles::HGLVector3 acceleration; // 加速
-        float velocity; // 速度
         // 移動角度
         float moveRadian;
         // あたり判定ID

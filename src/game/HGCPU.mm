@@ -14,13 +14,11 @@ namespace HGGame
     
     HGCPU::~HGCPU()
     {
-        base::~HGFighter();
     }
     
-    void HGCPU::init(HG_FIGHTER_TYPE type)
+    void HGCPU::init(HG_FIGHTER_TYPE type, WHICH_SIDE side)
     {
-        base::init(type);
-        explodeCount = 200;
+        base::init(type, side);
         target = NULL;
         destination.set(0, 0, 0);
     }
@@ -61,12 +59,15 @@ namespace HGGame
             }
         }
         
-        // タゲの方向へ移動する
-        float deg = atan2f(destination.x - position.x, destination.y - position.y);
-        base::setMoveDirectionWithDegree(deg*180*M_PI - 90);
-        
         // 攻撃する
-        fire();
+        if (target && target->life > 0)
+        {
+            fire();
+        }
+        
+        // タゲの方向へ移動する
+        float rad = atan2f(destination.x - position.x, destination.y - position.y);
+        base::setMoveDirectionWithDegree(rad*180/M_PI - 90);
         
         base::update();
     }
@@ -78,10 +79,41 @@ namespace HGGame
             // 遠距離
             float rad = rand(1, 359)*180/M_PI;
 #warning 150は適当すぎるかも
-            float viaX = (target->position.x + 400*SCRATE*cos(rad));
-            float viaY = (target->position.y + 400*SCRATE*sin(rad));
+            float viaX = (target->position.x + 1000*SCRATE*cos(rad));
+            float viaY = (target->position.y + 1000*SCRATE*sin(rad));
             destination.x = viaX;
             destination.y = viaY;
+        }
+        else
+        {
+            float rad = rand(1, 359)*180/M_PI;
+            float viaX = (position.x + 3000*SCRATE*cos(rad));
+            float viaY = (position.y + 3000*SCRATE*sin(rad));
+            destination.x = viaX;
+            destination.y = viaY;
+            
+            float r = atan2f(viaX - position.x, viaY - position.y) ;
+            float d = r * 180/M_PI - 90;
+            base::setDirectionWithDegree(d);
+        }
+        
+        // フィールド外チェック
+        t_size2d* field_size = get_size_of_field();
+        if (destination.x + realSize.w/2 > field_size->w)
+        {
+            destination.x = field_size->w - realSize.w/2;
+        }
+        if (destination.y + realSize.h/2 > field_size->h)
+        {
+            destination.y = field_size->h - realSize.h/2;
+        }
+        if (destination.x - realSize.w/2 < 0)
+        {
+            destination.x = realSize.w/2;
+        }
+        if (destination.y - realSize.h/2 < 0)
+        {
+            destination.y = realSize.h/2;
         }
     }
     

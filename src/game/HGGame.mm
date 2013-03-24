@@ -17,7 +17,8 @@
 #import "HGHitAnime.h"
 
 #import <vector>
-#import <mutex>
+#import <map>
+//#import <mutex>
 
 namespace HGGame {
     
@@ -35,9 +36,15 @@ namespace HGGame {
     // game objects
     HGPlayer* _player;
     
+    typedef std::vector<HGActor*> T_ACTOR_VEC;
+    typedef std::vector<HGActor*>* T_ACTOR_VEC_PTR;
+    
     std::vector<HGBullet*> _bullets;
     std::vector<HGBullet*> _bulletsInActive;
+    std::vector<HGBullet*> _enemyBullets;
+    std::vector<HGBullet*> _enemyBulletsInActive;
     std::vector<HGFighter*> _enemies;
+    std::vector<HGFighter*> _friends;
     std::vector<hgles::t_hgl2di*> background;
     std::vector<hgles::t_hgl2di*> barriar;
     std::vector<hgles::t_hgl2di*> nebula;
@@ -52,6 +59,25 @@ namespace HGGame {
     // now
     double now_time;
     
+    // center of field
+    t_pos2d center_of_field;
+    
+    // size of field
+    t_size2d size_of_field;
+    
+    // フィールド
+    hgles::t_hgl2di* field;
+    float field_alpha_diff = -0.05;
+    hgles::Color field_color_diff = {0.02, 0.05, 0.02, 1};
+    
+    // あたり判定
+#define COL_FLD_SPLIT_NUM 5 
+    typedef std::map<int, std::vector<HGActor*>> T_COL_LIST;
+    typedef std::map<int, std::vector<HGActor*>>* T_COL_LIST_PTR;
+    T_COL_LIST col_bullets;
+    T_COL_LIST col_enemyBullets;
+    t_size2d size_of_cell = {FIELD_SIZE/COL_FLD_SPLIT_NUM, FIELD_SIZE/COL_FLD_SPLIT_NUM};
+    
     //pthread_mutex_t	mutex;  // MUTEX
     
     int rand(int from, int to)
@@ -62,12 +88,15 @@ namespace HGGame {
     
     void onMoveLeftPad(int degree, float power)
     {
-        if (power > 0)
+        if (_player)
         {
-            if (!fire) _player->setDirectionWithDegree(degree);
-            _player->setMoveDirectionWithDegree(degree);
+            if (power > 0)
+            {
+                if (!fire) _player->setDirectionWithDegree(degree);
+                _player->setMoveDirectionWithDegree(degree);
+            }
+            _player->setVelocityWithPower(power);
         }
-        _player->setVelocity(0.4*power);
     }
     
     double getNowTime()
@@ -75,25 +104,126 @@ namespace HGGame {
         return now_time;
     }
     
-    HGBullet* getBullet()
+    HGBullet* getBullet(WHICH_SIDE side)
     {
-        if (_bulletsInActive.size() > 0)
-        {
-            HGBullet* t = _bulletsInActive.back();
-            t->position.x = _player->position.x;
-            t->position.y = _player->position.y;
-            t->position.z = _player->position.z;
-            t->setMoveDirectionWithDegree(fireDegree);
-            t->init(HG_BULLET_N1);
-            _bulletsInActive.pop_back();
-            _bullets.push_back(t);
-            return t;
+        switch (side) {
+            case FRIEND_SIDE:
+                if (_bulletsInActive.size() > 0)
+                {
+                    HGBullet* t = _bulletsInActive.back();
+                    _bulletsInActive.pop_back();
+                    _bullets.push_back(t);
+                    return t;
+                }
+                return NULL;
+            case ENEMY_SIDE:
+                if (_enemyBulletsInActive.size() > 0)
+                {
+                    HGBullet* t = _enemyBulletsInActive.back();
+                    _enemyBulletsInActive.pop_back();
+                    _enemyBullets.push_back(t);
+                    return t;
+                }
+                return NULL;
+            default:
+                assert(0);
         }
-        else
+    }
+    
+    bool is_out_of_field(hgles::HGLVector3* position, t_size2d* size)
+    {
+        t_size2d* field_size = get_size_of_field();
+        if (position->x + size->w/2 > field_size->w)
         {
-            LOG(@"no inactive bullet!!!");
-            return NULL;
+            return true;
         }
+        if (position->y + size->h/2 > field_size->h)
+        {
+            return true;
+        }
+        if (position->x - size->w/2 < 0)
+        {
+            return true;
+        }
+        if (position->y - size->h/2 < 0)
+        {
+            return true;
+        }
+        return false;
+    }
+    
+    t_size2d* get_size_of_field()
+    {
+        return &size_of_field;
+    }
+    
+    t_pos2d* get_center_of_field()
+    {
+        return &center_of_field;
+    }
+    
+    int get_cell_of_pointer(t_pos2d* s)
+    {
+        if (s->x < 0 || s->y < 0) return -1;
+        if (s->x > size_of_field.w || s->y > size_of_field.h) return -1;
+        int wx = (int)(s->x / size_of_cell.w);
+        int wy = (int)(s->y / size_of_cell.h);
+        return wx + wy * COL_FLD_SPLIT_NUM;
+    }
+    
+    void registerActorToColList(HGActor* actor, T_COL_LIST_PTR col_list)
+    {
+        t_size2d* size = &actor->realSize;
+        t_pos2d tmp_pos = {actor->position.x, actor->position.y};
+        tmp_pos.x -= size->w/2;
+        tmp_pos.y -= size->h/2;
+        while (1)
+        {
+            int num = get_cell_of_pointer(&tmp_pos);
+            if (num > 0)
+            {
+                (*col_list)[num].push_back(actor);
+            }
+            tmp_pos.x += size_of_cell.w;
+            if (tmp_pos.x > actor->position.x + size->w/2)
+            {
+                tmp_pos.y += size_of_cell.h;
+                if (tmp_pos.y > actor->position.y + size->h/2)
+                {
+                    break;
+                }
+            }
+        }
+    }
+    
+    void registerActorToColListForSmall(HGActor* actor, T_COL_LIST_PTR col_list)
+    {
+        t_pos2d tmp_pos = {actor->position.x, actor->position.y};
+        int num = get_cell_of_pointer(&tmp_pos);
+        if (num >= 0)
+        {
+            (*col_list)[num].push_back(actor);
+        }
+    }
+    
+    void getCellList(HGActor* actor, std::vector<int>* list)
+    {
+        t_size2d* size = &actor->realSize;
+        t_pos2d tmp_pos = {actor->position.x, actor->position.y};
+        while (1)
+        {
+            list->push_back(get_cell_of_pointer(&tmp_pos));
+            tmp_pos.x += size_of_cell.w;
+            if (tmp_pos.x > actor->position.x + size->w/2)
+            {
+                tmp_pos.y += size_of_cell.h;
+                if (tmp_pos.y > actor->position.y + size->h/2)
+                {
+                    break;
+                }
+            }
+        }
+        
     }
     
     void initialize()
@@ -102,26 +232,26 @@ namespace HGGame {
         updateCount = 0;
         initSpriteIndexTable();
         initializeCollision();
+        size_of_field = {FIELD_SIZE, FIELD_SIZE};
+        center_of_field = {FIELD_SIZE/2, FIELD_SIZE/2};
         
         // create players
         _player = new HGPlayer();
-        _player->init(HG_FIGHTER);
-        _player->position.set(0, 0, ZPOS);
+        _player->init(HG_FIGHTER, FRIEND_SIDE);
+        _player->position.set(center_of_field.x, center_of_field.y, ZPOS);
         _player->setDirectionWithDegree(0);
         fire = false;
+        _friends.push_back(_player);
         
         // create enemies
         for (int i = 0; i < ENEMY_NUM; ++i)
         {
             HGCPU* t;
             t = new HGCPU();
-            t->init(HG_FIGHTER);
-            t->position.x = (i*2) + -2;
-            t->position.y = 1;
-            t->position.z = 0;
-            t->setDirectionWithDegree(90);
-            t->setMoveDirectionWithDegree(90);
-            t->setVelocity(0.1);
+            t->init(HG_FIGHTER, ENEMY_SIDE);
+            t->position.x = (i*2) + -2 + center_of_field.x;
+            t->position.y = 1 + center_of_field.y;
+            t->position.z = ZPOS;
 #warning 仮
             t->target = _player;
             _enemies.push_back(t);
@@ -131,11 +261,17 @@ namespace HGGame {
         for (int i = 0; i < BULLET_NUM; ++i)
         {
             HGBullet* t;
-            //if (i == 0)
             t = new HGBullet();
             _bulletsInActive.push_back(t);
         }
         
+        // create bullets
+        for (int i = 0; i < ENEMY_BULLET_NUM; ++i)
+        {
+            HGBullet* t;
+            t = new HGBullet();
+            _enemyBulletsInActive.push_back(t);
+        }
         
         // create background
         for (int i = 0; i < 5; ++i)
@@ -146,23 +282,23 @@ namespace HGGame {
             t->scale.set(BACKGROUND_SCALE, BACKGROUND_SCALE, BACKGROUND_SCALE);
             switch (i) {
                 case 0:
-                    t->position.set(-1*BACKGROUND_SCALE/2, 0, ZPOS);
+                    t->position.set(-1*BACKGROUND_SCALE/2+center_of_field.x, center_of_field.y, ZPOS);
                     t->rotate.set(0, 90*M_PI/180, 0);
                     break;
                 case 1:
-                    t->position.set(BACKGROUND_SCALE/2, 0, ZPOS);
+                    t->position.set(BACKGROUND_SCALE/2+center_of_field.x, center_of_field.y, ZPOS);
                     t->rotate.set(0, -90*M_PI/180, 180*M_PI/180);
                     break;
                 case 2:
-                    t->position.set(0, BACKGROUND_SCALE/2, ZPOS);
+                    t->position.set(center_of_field.x, BACKGROUND_SCALE/2+center_of_field.y, ZPOS);
                     t->rotate.set(-90*M_PI/180, 0, 0);
                     break;
                 case 3:
-                    t->position.set(0, -BACKGROUND_SCALE/2, ZPOS);
+                    t->position.set(center_of_field.x, -BACKGROUND_SCALE/2+center_of_field.y, ZPOS);
                     t->rotate.set(90*M_PI/180, 0, 0);
                     break;
                 case 4:
-                    t->position.set(0, 0, -1*BACKGROUND_SCALE/2 + ZPOS);
+                    t->position.set(center_of_field.x, center_of_field.y, -1*BACKGROUND_SCALE/2 + ZPOS);
                     t->rotate.set(0, 0, 0);
                     break;
                     /*
@@ -177,7 +313,7 @@ namespace HGGame {
         }
         
         // create deep sky
-        for (int i = 0; i < 4; ++i)
+        for (int i = 0; i < 2; ++i)
         {
             hgles::t_hgl2di* t = new hgles::t_hgl2di();
             t->texture = *hgles::HGLTexture::createTextureWithAsset("space_a.png");
@@ -187,7 +323,7 @@ namespace HGGame {
             int x = rand(0, 20) * (rand(0, 1)?-1:1);
             int y = rand(0, 20) * (rand(0, 1)?-1:1);
             int rz = rand(0, 360) * (rand(0, 1)?-1:1);
-            t->position.set(x, y, -200 + ZPOS + i * 20);
+            t->position.set(x+center_of_field.x, y+center_of_field.y, -200 + ZPOS + i * 20);
             t->rotate.set(0, 0, rz*M_PI/180);
             nebula.push_back(t);
         }
@@ -208,10 +344,18 @@ namespace HGGame {
             t->scale.set(SIZE, SIZE, SIZE);
             int x = rand(0, STAGE_SCALE);
             int y = rand(0, STAGE_SCALE);
-            t->position.set(x, y, -1*BACKGROUND_SCALE/2 + ZPOS);
+            t->position.set(x+center_of_field.x, y+center_of_field.y, -1*BACKGROUND_SCALE/2 + ZPOS);
             t->rotate.set(0, 0, rand(0, 360)*M_PI/180);
             nebula.push_back(t);
         }
+        
+        // フィールド境界
+        field = new hgles::t_hgl2di();
+        field->texture = *hgles::HGLTexture::createTextureWithAsset("rect.png");
+        field->texture.blendColor = {2.0, 2.0, 2.0, 1.0};
+        field->texture.color = {1,1,1,1};
+        field->scale.set(FIELD_SIZE*2, FIELD_SIZE*2, 1);
+        field->position.set(center_of_field.x, center_of_field.y, ZPOS);
         
     }
     
@@ -222,17 +366,16 @@ namespace HGGame {
         //try {
         
             // 現在時間の更新
-            NSDate* nowDt = [NSDate date];
-            now_time = [nowDt timeIntervalSince1970];
+        NSDate* nowDt = [NSDate date];
+        now_time = [nowDt timeIntervalSince1970];
+        ++updateCount;
         
-            ++updateCount;
+        // あたり判定
+        col_bullets.clear();
+        col_enemyBullets.clear();
         
-            {
-#warning sync start
-                _player->update();
-#warning sync end
-            }
-            
+        if (_player)
+        {
             if (keystate->fire)
             {
                 fire = true;
@@ -243,111 +386,265 @@ namespace HGGame {
                 fire = false;
             }
             
-            if (fire)
+            if (fire && _player->isActive)
             {
                 _player->fire();
-                /*
-                double now = getNowTime();
-                if (now - lastFireTime > 0.3)
+            }
+        }
+        
+        // move friends
+        for (std::vector<HGFighter*>::iterator itr = _friends.begin(); itr != _friends.end(); ++itr)
+        {
+            HGFighter* a = *itr;
+            a->update();
+            
+#warning hgfighterに移動
+            if (a->life <= 0)
+            {
+                a->explodeCount--;
+                if (a->explodeCount == 0)
                 {
-                    lastFireTime = now;
-                    if (_bulletsInActive.size() > 0)
-                    {
-                        HGBullet* t = _bulletsInActive.back();
-                        t->position.x = _player->position.x;
-                        t->position.y = _player->position.y;
-                        t->position.z = _player->position.z;
-                        t->setMoveDirectionWithDegree(fireDegree);
-                        t->init(HG_BULLET_N1);
-                        _bulletsInActive.pop_back();
-                        _bullets.push_back(t);
-                    }
-                }*/
-            }
-            
-            
-            // move enemies
-            for (std::vector<HGFighter*>::iterator itr = _enemies.begin(); itr != _enemies.end(); ++itr)
-            {
-                HGFighter* a = *itr;
-                a->update();
-            }
-            
-            // move bullets
-            for (std::vector<HGBullet*>::iterator itr = _bullets.begin(); itr != _bullets.end(); ++itr)
-            {
-                HGBullet* a = *itr;
-                a->update();
-            }
-            
-            // update effects
-            for (std::vector<HGActor*>::reverse_iterator itr = _effects.rbegin(); itr != _effects.rend(); ++itr)
-            {
-                HGActor* a = *itr;
-                a->update();
-            }
-            
-            // collision check (enemy with bullet)
-            for (std::vector<HGFighter*>::iterator itr = _enemies.begin(); itr != _enemies.end(); ++itr)
-            {
-                HGFighter* a = *itr;
-                for (std::vector<HGBullet*>::iterator itr2 = _bullets.begin(); itr2 != _bullets.end(); ++itr2)
+                    a->isActive = false;
+                    createEffect(EFFECT_EXPLODE_NORMAL, &a->position);
+                }
+                else if (a->explodeCount%3 == 0)
                 {
-                    HGBullet* b = *itr2;
-                    if (a->life > 0)
+                    hgles::HGLVector3 pos = a->getRandomRealPosition();
+                    createEffect(EFFECT_EXPLODE_NORMAL, &pos);
+                }
+            }
+        }
+        
+        // move enemies
+        for (std::vector<HGFighter*>::iterator itr = _enemies.begin(); itr != _enemies.end(); ++itr)
+        {
+            HGFighter* a = *itr;
+            a->update();
+            
+#warning hgfighterに移動
+            if (a->life <= 0)
+            {
+                a->explodeCount--;
+                if (a->explodeCount == 0)
+                {
+                    a->isActive = false;
+                    createEffect(EFFECT_EXPLODE_NORMAL, &a->position);
+                }
+                else if (a->explodeCount%3 == 0)
+                {
+                    hgles::HGLVector3 pos = a->getRandomRealPosition();
+                    createEffect(EFFECT_EXPLODE_NORMAL, &pos);
+                }
+            }
+        }
+        
+        // move bullets
+        for (std::vector<HGBullet*>::iterator itr = _bullets.begin(); itr != _bullets.end(); ++itr)
+        {
+            HGBullet* a = *itr;
+            a->update();
+            registerActorToColListForSmall(a, &col_bullets);
+        }
+        
+        // move bullets
+        for (std::vector<HGBullet*>::iterator itr = _enemyBullets.begin(); itr != _enemyBullets.end(); ++itr)
+        {
+            HGBullet* a = *itr;
+            a->update();
+            registerActorToColListForSmall(a, &col_enemyBullets);
+        }
+        
+        // update effects
+        for (std::vector<HGActor*>::reverse_iterator itr = _effects.rbegin(); itr != _effects.rend(); ++itr)
+        {
+            HGActor* a = *itr;
+            a->update();
+        }
+        
+        //////////////
+        // あたり判定
+        //////////////
+        
+        // collision check (enemy with bullet)
+        std::vector<int> tmp_colcell_list;
+        for (std::vector<HGFighter*>::iterator itr = _enemies.begin(); itr != _enemies.end(); ++itr)
+        {
+            HGFighter* a = *itr;
+            if (a->life <= 0)
+            {
+                continue;
+            }
+            
+            tmp_colcell_list.clear();
+            getCellList(a, &tmp_colcell_list);
+            for (std::vector<int>::iterator itr2 = tmp_colcell_list.begin(); itr2 != tmp_colcell_list.end(); ++itr2)
+            {
+                int num = *itr2;
+                T_ACTOR_VEC_PTR bullets = &col_bullets[num];
+                for (T_ACTOR_VEC::iterator itr3 = bullets->begin(); itr3 != bullets->end(); ++itr3)
+                {
+                    HGBullet* b = (HGBullet*)*itr3;
+                    if (a->isCollideWith(b))
                     {
-                        if (a->isCollideWith(b))
-                        {
-                            b->isActive = false;
+                        b->isActive = false;
 #warning 仮
-                            a->life--;
-                            if (a->life == 0)
-                            {
-                                createEffect(EFFECT_EXPLODE_NORMAL, &a->position);
-                            }
-                            else
-                            {
-                                createEffect(EFFECT_HIT_NORMAL, &a->position);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        
-                        a->explodeCount--;
-                        if (a->explodeCount == 0)
+                        a->life--;
+                        if (a->life == 0)
                         {
-                            a->isActive = false;
                             createEffect(EFFECT_EXPLODE_NORMAL, &a->position);
                         }
-                        else if (a->explodeCount%150 == 0)
+                        else
                         {
-                            hgles::HGLVector3 pos = a->getRandomRealPosition();
-                            createEffect(EFFECT_EXPLODE_NORMAL, &pos);
+                            createEffect(EFFECT_HIT_NORMAL, &a->position);
                         }
-                        
-                        
                     }
                 }
+            }
+            
+        }
+        
+        // collision check (friends with bullet)
+        for (std::vector<HGFighter*>::iterator itr = _friends.begin(); itr != _friends.end(); ++itr)
+        {
+            HGFighter* a = *itr;
+            
+            if (a->life <= 0)
+            {
+                continue;
+            }
+            
+            tmp_colcell_list.clear();
+            getCellList(a, &tmp_colcell_list);
+            for (std::vector<int>::iterator itr2 = tmp_colcell_list.begin(); itr2 != tmp_colcell_list.end(); ++itr2)
+            {
+                int num = *itr2;
+                T_ACTOR_VEC_PTR bullets = &col_enemyBullets[num];
                 
+                for (T_ACTOR_VEC::iterator itr3 = bullets->begin(); itr3 != bullets->end(); ++itr3)
+                {
+                    HGBullet* b = (HGBullet*)*itr3;
+                    if (a->isCollideWith(b))
+                    {
+                        b->isActive = false;
+#warning 仮
+                        a->life--;
+                        if (a->life == 0)
+                        {
+                            createEffect(EFFECT_EXPLODE_NORMAL, &a->position);
+                        }
+                        else
+                        {
+                            createEffect(EFFECT_HIT_NORMAL, &a->position);
+                        }
+                    }
+                }
             }
+            
+        }
         
-            // 不要となったものを削除
-            {
-                std::vector<HGBullet*>::iterator end_it = remove_if( _bullets.begin(), _bullets.end(), RemoveActor() );
-                _bullets.erase( end_it, _bullets.end() );
-            }
+        //////////////
+        // フィールドの境界設定
+        //////////////
         
+        field->texture.color.a += field_alpha_diff;
+        if (field->texture.color.a < 0.2)
+        {
+            field_alpha_diff *= -1;
+            field->texture.color.a = 0.2;
+        }
+        if (field->texture.color.a > 1)
+        {
+            field_alpha_diff *= -1;
+            field->texture.color.a = 1;
+        }
+        field->texture.blendColor.r += field_color_diff.r;
+        field->texture.blendColor.g += field_color_diff.g;
+        field->texture.blendColor.b += field_color_diff.b;
+        if (field->texture.blendColor.b > 2)
+        {
+            field->texture.blendColor.b = 2;
+            field_color_diff.r *= -1;
+            field_color_diff.g *= -1;
+            field_color_diff.b *= -1;
+        }
+        else if (field->texture.blendColor.b < 0.5)
+        {
+            field->texture.blendColor.b  = 0.5;
+            field_color_diff.r *= -1;
+            field_color_diff.g *= -1;
+            field_color_diff.b *= -1;
+        }
+        
+        //////////////
+        // 不要オブジェクト削除
+        //////////////
+        {
+            for (std::vector<HGBullet*>::iterator itr = _bullets.begin(); itr != _bullets.end(); ++itr)
             {
-                std::vector<HGFighter*>::iterator end_it = remove_if( _enemies.begin(), _enemies.end(), RemoveActor() );
-                _enemies.erase( end_it, _enemies.end() );
+                if (!(*itr)->isActive)
+                {
+                    _bulletsInActive.push_back(*itr);
+                }
             }
+            std::vector<HGBullet*>::iterator end_it = remove_if( _bullets.begin(), _bullets.end(), RemoveActor() );
+            _bullets.erase( end_it, _bullets.end() );
+        }
+        
+        {
+            for (std::vector<HGBullet*>::iterator itr = _enemyBullets.begin(); itr != _enemyBullets.end(); ++itr)
+            {
+                if (!(*itr)->isActive)
+                {
+                    _enemyBulletsInActive.push_back(*itr);
+                }
+            }
+            std::vector<HGBullet*>::iterator end_it = remove_if( _enemyBullets.begin(), _enemyBullets.end(), RemoveActor() );
+            _enemyBullets.erase( end_it, _enemyBullets.end() );
+        }
+        
+        {
+            std::vector<HGFighter*> tmp;
+            for (std::vector<HGFighter*>::iterator itr = _enemies.begin(); itr != _enemies.end(); ++itr)
+            {
+                if (!(*itr)->isActive)
+                {
+                    tmp.push_back(*itr);
+                }
+            }
+            std::vector<HGFighter*>::iterator end_it = remove_if( _enemies.begin(), _enemies.end(), RemoveActor() );
+            _enemies.erase( end_it, _enemies.end() );
+            for (std::vector<HGFighter*>::iterator itr = tmp.begin(); itr != tmp.end(); ++itr)
+            {
+                delete (*itr);
+            }
+        }
+        
+        {
+            std::vector<HGFighter*> tmp;
+            for (std::vector<HGFighter*>::iterator itr = _enemies.begin(); itr != _enemies.end(); ++itr)
+            {
+                if (!(*itr)->isActive)
+                {
+                    tmp.push_back(*itr);
+                    if (_player == *itr)
+                    {
+                        _player = NULL;
+                    }
+                }
+            }
+            std::vector<HGFighter*>::iterator end_it = remove_if( _friends.begin(), _friends.end(), RemoveActor() );
+            _friends.erase( end_it, _friends.end() );
+            for (std::vector<HGFighter*>::iterator itr = tmp.begin(); itr != tmp.end(); ++itr)
+            {
+                delete (*itr);
+            }
+        }
         
         /*
         }
         catch (...) // 全例外をキャッチ
         {
-            LOG(@"some error happed");
+            HDebug(@"some error happed");
         }
         pthread_mutex_unlock(&mutex);*/
         
@@ -385,21 +682,24 @@ namespace HGGame {
         pthread_mutex_lock(&mutex); // スレッド保護
         try {*/
             
-            // 光源なし
-            glUniform1f(hgles::HGLES::uUseLight, 0.0);
-            
-            // set camera
+        // 光源なし
+        glUniform1f(hgles::HGLES::uUseLight, 0.0);
+        
+        // set camera
+        if (_player)
+        {
             _cameraPosition.x = _player->position.x * -1;
-            _cameraPosition.y = _player->position.y * -1 + 4.5;
-            _cameraPosition.z = -7;
-            _cameraRotate.x = -28 * M_PI/180;
+            _cameraPosition.y = _player->position.y * -1;
+            _cameraPosition.z = -20;
+            //_cameraRotate.x = -28 * M_PI/180;
             hgles::HGLES::cameraPosition = _cameraPosition;
             hgles::HGLES::cameraRotate = _cameraRotate;
             hgles::HGLES::updateCameraMatrix();
+        }
         
-            // 2d
-            glDisable(GL_DEPTH_TEST);
-            
+        // 2d
+        glDisable(GL_DEPTH_TEST);
+        
             // draw bg
             /*
              for (std::vector<HGObject*>::reverse_iterator itr = _background.rbegin(); itr != _background.rend(); ++itr)
@@ -408,64 +708,78 @@ namespace HGGame {
              a->draw();
              }*/
         
-            hgles::HGLES::pushMatrix();
-            hgles::HGLES::mvMatrix = GLKMatrix4Rotate(hgles::HGLES::mvMatrix, hgles::HGLES::cameraRotate.x*-1, 1, 0, 0);
-            hgles::HGLES::mvMatrix = GLKMatrix4Rotate(hgles::HGLES::mvMatrix, hgles::HGLES::cameraRotate.y*-1, 0, 1, 0);
+        hgles::HGLES::pushMatrix();
+        hgles::HGLES::mvMatrix = GLKMatrix4Rotate(hgles::HGLES::mvMatrix, hgles::HGLES::cameraRotate.x*-1, 1, 0, 0);
+        hgles::HGLES::mvMatrix = GLKMatrix4Rotate(hgles::HGLES::mvMatrix, hgles::HGLES::cameraRotate.y*-1, 0, 1, 0);
         
-            // draw bg
-            for (std::vector<hgles::t_hgl2di*>::reverse_iterator itr = background.rbegin(); itr != background.rend(); ++itr)
-            {
-                hgles::HGLGraphics2D::draw(*itr);
-            }
+        // draw bg
+        for (std::vector<hgles::t_hgl2di*>::reverse_iterator itr = background.rbegin(); itr != background.rend(); ++itr)
+        {
+            hgles::HGLGraphics2D::draw(*itr);
+        }
         
-            // draw nebula
-            for (std::vector<hgles::t_hgl2di*>::reverse_iterator itr = nebula.rbegin(); itr != nebula.rend(); ++itr)
-            {
-                hgles::HGLGraphics2D::draw(*itr);
-            }
+        // draw nebula
+        for (std::vector<hgles::t_hgl2di*>::reverse_iterator itr = nebula.rbegin(); itr != nebula.rend(); ++itr)
+        {
+            hgles::HGLGraphics2D::draw(*itr);
+        }
         
-            hgles::HGLES::popMatrix();
+        hgles::HGLES::popMatrix();
         
-            // draw enemies
-            for (std::vector<HGFighter*>::reverse_iterator itr = _enemies.rbegin(); itr != _enemies.rend(); ++itr)
-            {
-                HGFighter* a = *itr;
-                a->draw();
+        // draw field
+        hgles::HGLGraphics2D::draw(field);
+        
+        // draw enemies
+        for (std::vector<HGFighter*>::reverse_iterator itr = _enemies.rbegin(); itr != _enemies.rend(); ++itr)
+        {
+            HGFighter* a = *itr;
+            a->draw();
 #if IS_DEBUG_COLLISION
-                a->drawCollision();
+            a->drawCollision();
 #endif
-            }
-            
-            // draw bullets
-            
-            for (std::vector<HGBullet*>::reverse_iterator itr = _bullets.rbegin(); itr != _bullets.rend(); ++itr)
-            {
-                HGBullet* a = *itr;
-                a->draw();
+        }
+        
+        // draw bullets
+        for (std::vector<HGBullet*>::reverse_iterator itr = _bullets.rbegin(); itr != _bullets.rend(); ++itr)
+        {
+            HGBullet* a = *itr;
+            a->draw();
 #if IS_DEBUG_COLLISION
-                a->drawCollision();
+            a->drawCollision();
 #endif
-            }
-            
-            // draw player
-            _player->draw();
+        }
+        
+        for (std::vector<HGBullet*>::reverse_iterator itr = _enemyBullets.rbegin(); itr != _enemyBullets.rend(); ++itr)
+        {
+            HGBullet* a = *itr;
+            a->draw();
 #if IS_DEBUG_COLLISION
-            _player->drawCollision();
+            a->drawCollision();
 #endif
-#warning sync end
-            
-            // draw effects
-            for (std::vector<HGActor*>::reverse_iterator itr = _effects.rbegin(); itr != _effects.rend(); ++itr)
-            {
-                HGActor* a = *itr;
-                a->draw();
-            }
+        }
+        
+        // draw friends
+        for (std::vector<HGFighter*>::reverse_iterator itr = _friends.rbegin(); itr != _friends.rend(); ++itr)
+        {
+            HGFighter* a = *itr;
+            a->draw();
+#if IS_DEBUG_COLLISION
+            a->drawCollision();
+#endif
+        }
+        
+        // draw effects
+        for (std::vector<HGActor*>::reverse_iterator itr = _effects.rbegin(); itr != _effects.rend(); ++itr)
+        {
+            HGActor* a = *itr;
+            a->draw();
+        }
         
         /*
         }
         catch (...) // 全例外をキャッチ
         {
-            LOG(@"some error happed");
+            HDebug(@"some error happed");
         }
         pthread_mutex_unlock(&mutex);
         */

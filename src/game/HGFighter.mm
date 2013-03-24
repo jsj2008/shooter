@@ -15,14 +15,30 @@ namespace HGGame
     {
     }
     
-    HGFighter::~HGFighter()
-    {
-        base::~HGActor();
-    }
-    
     void HGFighter::update()
     {
         base::update();
+        if (life > 0)
+        {
+            // フィールド外チェック
+            t_size2d* field_size = get_size_of_field();
+            if (position.x + realSize.w/2 > field_size->w)
+            {
+                position.x = field_size->w - realSize.w/2;
+            }
+            if (position.y + realSize.h/2 > field_size->h)
+            {
+                position.y = field_size->h - realSize.h/2;
+            }
+            if (position.x - realSize.w/2 < 0)
+            {
+                position.x = realSize.w/2;
+            }
+            if (position.y - realSize.h/2 < 0)
+            {
+                position.y = realSize.h/2;
+            }
+        }
     }
     
     void HGFighter::draw()
@@ -40,6 +56,11 @@ namespace HGGame
         if (life == 0)
         {
             texture.blendColor = {0.5,0.5,0.5,1};
+            texture.color.a -= 0.1;
+            if (texture.color.a <= 0)
+            {
+                return;
+            }
         }
         hgles::HGLGraphics2D::draw(&position, &scale, &rotate,  &texture);
     }
@@ -48,21 +69,37 @@ namespace HGGame
     {
         for (t_weapon_list::iterator ite = weapon_list.begin(); ite != weapon_list.end(); ++ite)
         {
-            (*ite).fire(position, rotate, radian);
+            (*ite).fire(position, rotate, radian, side);
         }
     }
     
-    void HGFighter::init(HG_FIGHTER_TYPE type)
+    void HGFighter::setSide(WHICH_SIDE side)
     {
-        type = type;
+        this->side = side;
+    }
+    
+    void HGFighter::init(HG_FIGHTER_TYPE type, WHICH_SIDE side)
+    {
+        this->side = side;
+        this->type = type;
         isTextureInit = false;
+        explodeCount = 15;
         switch (type) {
             case HG_FIGHTER:
             {
                 initActor(*this, {128, 128}, 2);
                 textureName = "e_robo2.png";
                 sprSize = {64,64};
-                life = 5;
+                if (side == ENEMY_SIDE)
+                {
+                    setVelocity(0.2);
+                    life = 3;
+                }
+                else
+                {
+                    setVelocity(0.5);
+                    life = 725;
+                }
                 HGWeapon w = HGWeapon();
                 w.init(WEAPON_LIFLE, {0, 0});
                 weapon_list.push_back(w);

@@ -25,7 +25,7 @@ namespace HGGame {
     
     void HGExplode::init()
     {
-        float r = rand(128, 160);
+        float r = rand(150, 200);
         initActor(*this, {r, r}, -1);
         updateCount = 0;
         isTextureInit = false;

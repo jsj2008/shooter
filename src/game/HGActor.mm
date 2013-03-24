@@ -12,10 +12,6 @@ using namespace std;
 
 namespace HGGame {
     
-    HGActor::~HGActor()
-    {
-    }
-    
     void HGActor::setVelocity(float inVelocity)
     {
         velocity = inVelocity;
@@ -95,6 +91,7 @@ namespace HGGame {
         this->scale.set(size.w*SCRATE, size.h*SCRATE, 1);
     }
     
+    
     hgles::HGLVector3 HGActor::getRandomRealPosition()
     {
         float fromX = this->position.x - realSize.w/2;
@@ -112,6 +109,6 @@ namespace HGGame {
         actor.initHitbox(hitbox_id);
     }
     
-    
+
     
 }

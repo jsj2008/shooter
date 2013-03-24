@@ -3,6 +3,7 @@
 #import "HGLGraphics2D.h"
 #import "HGActor.h"
 #import "HGWeapon.h"
+#import "HGGame.h"
 #import <vector>
 
 namespace HGGame
@@ -22,16 +23,19 @@ namespace HGGame
         int explodeCount;
         HG_FIGHTER_TYPE type;
         
-        virtual void init(HG_FIGHTER_TYPE type);
+        virtual void init(HG_FIGHTER_TYPE type, WHICH_SIDE side);
         virtual void draw();
         virtual void update();
-        virtual ~HGFighter();
+        virtual ~HGFighter(){}
         
         // 攻撃する
         void fire();
         
+        void setSide(WHICH_SIDE side);
+        
     private:
         t_weapon_list weapon_list;
+        WHICH_SIDE side;
         
     private:
         hgles::HGLTexture texture;

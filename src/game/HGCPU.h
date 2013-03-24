@@ -10,11 +10,11 @@ namespace HGGame
         ~HGCPU();
         
         // override
-        void init(HG_FIGHTER_TYPE type);
+        void init(HG_FIGHTER_TYPE type, WHICH_SIDE side);
         void update();
         
         // ターゲット
-        HGActor* target;
+        HGFighter* target;
         
         // 移動目的地
         hgles::HGLVector3 destination;

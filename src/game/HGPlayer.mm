@@ -13,18 +13,22 @@ namespace HGGame
     
     HGPlayer::~HGPlayer()
     {
-        base::~HGFighter();
     }
     
-    void HGPlayer::init(HG_FIGHTER_TYPE type)
+    void HGPlayer::init(HG_FIGHTER_TYPE type, WHICH_SIDE side)
     {
-        base::init(type);
-        explodeCount = 200;
+        base::init(type, side);
+        maxVelocity = velocity;
     }
     
     void HGPlayer::update()
     {
         base::update();
+    }
+    
+    void HGPlayer::setVelocityWithPower(float power)
+    {
+        setVelocity(maxVelocity*power);
     }
     
 
