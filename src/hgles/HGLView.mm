@@ -204,9 +204,6 @@ using namespace hgles;
     {
         if (start - lastDrawTime < sleep)
         {
-#if IS_DEBUG && 0
-            LOG(@"frame skip");
-#endif
             return;
         }
     }
@@ -218,9 +215,6 @@ using namespace hgles;
     if (frameSkip)
     {
         frameSkip--;
-#if IS_DEBUG
-        LOG(@"frame skip2");
-#endif
         return;
     }
     isRenderRequired = false;

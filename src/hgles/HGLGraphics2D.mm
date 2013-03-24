@@ -107,9 +107,6 @@ namespace hgles {
     
     void HGLGraphics2D::draw(t_hgl2di* p)
     {
-        // アルファ値設定
-        glUniform1f(HGLES::uAlpha, p->alpha);
-        
         HGLES::pushMatrix();
         
         // モデルビュー変換

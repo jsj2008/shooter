@@ -125,17 +125,13 @@ namespace hgles {
                 CGContextDrawImage(spriteContext, CGRectMake(0.0, 0.0, (CGFloat)width, (CGFloat)height), image);
                 CGContextRelease(spriteContext);
                 
-                NSLog(@"%d", glGetError());
                 glBindTexture(GL_TEXTURE_2D, tex->textureId);    // first Bind creates the texture and assigns a numeric name to it
-                NSLog(@"%d", glGetError());
                 glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
                 glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
                 
                 glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, spriteData);
-                NSLog(@"%d", glGetError());
-                NSLog(@"%d", glGetError());
                 
                 free(spriteData);
                 
@@ -240,7 +236,7 @@ namespace hgles {
         glUniform1f(HGLES::uUseTexture, 1.0);
         glUniform1f(HGLES::uUseAlphaMap, isAlphaMap);
         glUniform1f(HGLES::uTextureRepeatNum, repeatNum);
-        glUniform1f(HGLES::uAlpha, 1);
+        glUniform1f(HGLES::uAlpha, color.a);
         
         // テクスチャ行列
         glUniformMatrix4fv(HGLES::uTexMatrixSlot, 1, 0, textureMatrix.m);

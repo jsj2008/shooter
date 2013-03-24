@@ -26,9 +26,15 @@
 		0733406216BDAE4B00DB2D34 /* teoke.obj in Resources */ = {isa = PBXBuildFile; fileRef = 0733406116BDAE4A00DB2D34 /* teoke.obj */; };
 		0733406416BDAF7800DB2D34 /* yakuimon.obj in Resources */ = {isa = PBXBuildFile; fileRef = 0733406316BDAF7800DB2D34 /* yakuimon.obj */; };
 		0733406616BDB06D00DB2D34 /* teapot.obj in Resources */ = {isa = PBXBuildFile; fileRef = 0733406516BDB06D00DB2D34 /* teapot.obj */; };
+		07436B0B16FA072C002BA1C9 /* deep_sky.png in Resources */ = {isa = PBXBuildFile; fileRef = 07436B0A16FA072C002BA1C9 /* deep_sky.png */; };
+		07436B0D16FA0FD9002BA1C9 /* space_a.png in Resources */ = {isa = PBXBuildFile; fileRef = 07436B0C16FA0FD9002BA1C9 /* space_a.png */; };
+		07436B1016FD647F002BA1C9 /* HGCPU.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07436B0F16FD647F002BA1C9 /* HGCPU.mm */; };
+		07436B1316FD6D76002BA1C9 /* HGPlayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07436B1216FD6D76002BA1C9 /* HGPlayer.mm */; };
+		07436B1616FDA691002BA1C9 /* HGWeapon.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07436B1516FDA691002BA1C9 /* HGWeapon.mm */; };
 		0755991316B3D0560066A0E9 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0755991216B3D0560066A0E9 /* QuartzCore.framework */; };
 		0755992916B561490066A0E9 /* block.mtl in Resources */ = {isa = PBXBuildFile; fileRef = 0755992716B561490066A0E9 /* block.mtl */; };
 		0755992A16B561490066A0E9 /* block.obj in Resources */ = {isa = PBXBuildFile; fileRef = 0755992816B561490066A0E9 /* block.obj */; };
+		079FAE5916FEC262009B8BA6 /* rect.png in Resources */ = {isa = PBXBuildFile; fileRef = 079FAE5816FEC262009B8BA6 /* rect.png */; };
 		07B4243F16D8F3FA007055DF /* rect.obj in Resources */ = {isa = PBXBuildFile; fileRef = 07B4243E16D8F3FA007055DF /* rect.obj */; };
 		07B4244B16D932E3007055DF /* wavering.png in Resources */ = {isa = PBXBuildFile; fileRef = 07B4244A16D932E3007055DF /* wavering.png */; };
 		07B4244D16D93F86007055DF /* corona.png in Resources */ = {isa = PBXBuildFile; fileRef = 07B4244C16D93F86007055DF /* corona.png */; };
@@ -83,6 +89,13 @@
 		07DE74F416F5FA400048877C /* HGExplode.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07DE74F316F5FA3F0048877C /* HGExplode.mm */; };
 		07DE74F716F613020048877C /* HGHit.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07DE74F616F613000048877C /* HGHit.mm */; };
 		07DE74F916F61D310048877C /* sun.png in Resources */ = {isa = PBXBuildFile; fileRef = 07DE74F816F61D2E0048877C /* sun.png */; };
+		07DE74FB16F76EFE0048877C /* hit.png in Resources */ = {isa = PBXBuildFile; fileRef = 07DE74FA16F76EFC0048877C /* hit.png */; };
+		07DE74FD16F953E50048877C /* explode_small2.png in Resources */ = {isa = PBXBuildFile; fileRef = 07DE74FC16F953E30048877C /* explode_small2.png */; };
+		07DE74FF16F954650048877C /* hit2blur.png in Resources */ = {isa = PBXBuildFile; fileRef = 07DE74FE16F954620048877C /* hit2blur.png */; };
+		07DE750116F95BF50048877C /* pearl.png in Resources */ = {isa = PBXBuildFile; fileRef = 07DE750016F95BF40048877C /* pearl.png */; };
+		07DE750416F98AEA0048877C /* HGHitAnime.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07DE750316F98AE80048877C /* HGHitAnime.mm */; };
+		07DE750616F98FDE0048877C /* gold_energy.png in Resources */ = {isa = PBXBuildFile; fileRef = 07DE750516F98FDB0048877C /* gold_energy.png */; };
+		07DE750816F993930048877C /* proc_sheet_nebula.png in Resources */ = {isa = PBXBuildFile; fileRef = 07DE750716F993910048877C /* proc_sheet_nebula.png */; };
 		07E0463616886E73001F9CCE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07E0463516886E73001F9CCE /* UIKit.framework */; };
 		07E0463816886E73001F9CCE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07E0463716886E73001F9CCE /* Foundation.framework */; };
 		07E0463A16886E73001F9CCE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07E0463916886E73001F9CCE /* CoreGraphics.framework */; };
@@ -183,9 +196,19 @@
 		0733406116BDAE4A00DB2D34 /* teoke.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = teoke.obj; sourceTree = "<group>"; };
 		0733406316BDAF7800DB2D34 /* yakuimon.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = yakuimon.obj; sourceTree = "<group>"; };
 		0733406516BDB06D00DB2D34 /* teapot.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = teapot.obj; sourceTree = "<group>"; };
+		07339E1C16FF18700057041F /* ColTrees.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColTrees.h; sourceTree = "<group>"; };
+		07436B0A16FA072C002BA1C9 /* deep_sky.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = deep_sky.png; sourceTree = "<group>"; };
+		07436B0C16FA0FD9002BA1C9 /* space_a.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = space_a.png; sourceTree = "<group>"; };
+		07436B0E16FD647F002BA1C9 /* HGCPU.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGCPU.h; sourceTree = "<group>"; };
+		07436B0F16FD647F002BA1C9 /* HGCPU.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGCPU.mm; sourceTree = "<group>"; };
+		07436B1116FD6D76002BA1C9 /* HGPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGPlayer.h; sourceTree = "<group>"; };
+		07436B1216FD6D76002BA1C9 /* HGPlayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGPlayer.mm; sourceTree = "<group>"; };
+		07436B1416FDA691002BA1C9 /* HGWeapon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGWeapon.h; sourceTree = "<group>"; };
+		07436B1516FDA691002BA1C9 /* HGWeapon.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGWeapon.mm; sourceTree = "<group>"; };
 		0755991216B3D0560066A0E9 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		0755992716B561490066A0E9 /* block.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = block.mtl; sourceTree = "<group>"; };
 		0755992816B561490066A0E9 /* block.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = block.obj; sourceTree = "<group>"; };
+		079FAE5816FEC262009B8BA6 /* rect.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rect.png; sourceTree = "<group>"; };
 		07B4243E16D8F3FA007055DF /* rect.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = rect.obj; sourceTree = "<group>"; };
 		07B4244A16D932E3007055DF /* wavering.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wavering.png; sourceTree = "<group>"; };
 		07B4244C16D93F86007055DF /* corona.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = corona.png; sourceTree = "<group>"; };
@@ -270,6 +293,14 @@
 		07DE74F516F613000048877C /* HGHit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGHit.h; sourceTree = "<group>"; };
 		07DE74F616F613000048877C /* HGHit.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGHit.mm; sourceTree = "<group>"; };
 		07DE74F816F61D2E0048877C /* sun.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sun.png; sourceTree = "<group>"; };
+		07DE74FA16F76EFC0048877C /* hit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hit.png; sourceTree = "<group>"; };
+		07DE74FC16F953E30048877C /* explode_small2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = explode_small2.png; sourceTree = "<group>"; };
+		07DE74FE16F954620048877C /* hit2blur.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hit2blur.png; sourceTree = "<group>"; };
+		07DE750016F95BF40048877C /* pearl.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pearl.png; sourceTree = "<group>"; };
+		07DE750216F98AE60048877C /* HGHitAnime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGHitAnime.h; sourceTree = "<group>"; };
+		07DE750316F98AE80048877C /* HGHitAnime.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGHitAnime.mm; sourceTree = "<group>"; };
+		07DE750516F98FDB0048877C /* gold_energy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gold_energy.png; sourceTree = "<group>"; };
+		07DE750716F993910048877C /* proc_sheet_nebula.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = proc_sheet_nebula.png; sourceTree = "<group>"; };
 		07E0463116886E73001F9CCE /* Shooter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shooter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		07E0463516886E73001F9CCE /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		07E0463716886E73001F9CCE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -371,14 +402,9 @@
 		0755992616B561490066A0E9 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
-				07DE74F816F61D2E0048877C /* sun.png */,
-				07D5BC6616E3931A00F0D665 /* galaxy-X.png */,
-				07D5BC6716E3931A00F0D665 /* galaxy-Y.png */,
-				07D5BC6816E3931B00F0D665 /* galaxy-Z.png */,
-				07D5BC6916E3931B00F0D665 /* galaxy+X.png */,
-				07D5BC6A16E3931C00F0D665 /* galaxy+Y.png */,
-				07D5BC6B16E3931D00F0D665 /* galaxy+Z.png */,
-				07D5BC6416E38C9D00F0D665 /* sphere.obj */,
+				079FAE5816FEC262009B8BA6 /* rect.png */,
+				07436B0C16FA0FD9002BA1C9 /* space_a.png */,
+				07436B0A16FA072C002BA1C9 /* deep_sky.png */,
 				07E6508116C9244D00192B8B /* antaeus.bmp */,
 				071B042216C8C59400BEBAC4 /* antaeus.png */,
 				07E6508216C9244D00192B8B /* arabicnum.png */,
@@ -421,11 +447,21 @@
 				07E6509A16C9244D00192B8B /* explode_big.png */,
 				07E6509B16C9244D00192B8B /* explode_med.png */,
 				07E6509C16C9244D00192B8B /* explode_small.png */,
+				07DE74FC16F953E30048877C /* explode_small2.png */,
 				070054F716C62DB5002BA473 /* floor.mtl */,
 				070054F816C62DB5002BA473 /* floor.obj */,
 				070054F916C62DB5002BA473 /* floor.png */,
+				07D5BC6916E3931B00F0D665 /* galaxy+X.png */,
+				07D5BC6A16E3931C00F0D665 /* galaxy+Y.png */,
+				07D5BC6B16E3931D00F0D665 /* galaxy+Z.png */,
+				07D5BC6616E3931A00F0D665 /* galaxy-X.png */,
+				07D5BC6716E3931A00F0D665 /* galaxy-Y.png */,
+				07D5BC6816E3931B00F0D665 /* galaxy-Z.png */,
+				07DE750516F98FDB0048877C /* gold_energy.png */,
 				07D5BC6016E386B100F0D665 /* halfsphere.obj */,
 				0733405B16BDA72900DB2D34 /* him00obj.obj */,
+				07DE74FA16F76EFC0048877C /* hit.png */,
+				07DE74FE16F954620048877C /* hit2blur.png */,
 				07E6509D16C9244D00192B8B /* hit_small.png */,
 				07E6509E16C9244D00192B8B /* hp.png */,
 				07E6509F16C9244D00192B8B /* icon1.png */,
@@ -452,6 +488,8 @@
 				07E650B416C9244D00192B8B /* p_robo9.png */,
 				07E650B516C9244D00192B8B /* p_ship1.png */,
 				07E650B616C9244D00192B8B /* pbit_1.png */,
+				07DE750016F95BF40048877C /* pearl.png */,
+				07DE750716F993910048877C /* proc_sheet_nebula.png */,
 				07E650B716C9244D00192B8B /* rader.png */,
 				07E650B816C9244D00192B8B /* raser1.png */,
 				07E650B916C9244D00192B8B /* raser2.png */,
@@ -466,8 +504,10 @@
 				07B4245016D94AEC007055DF /* space.png */,
 				07D5BC6216E3895900F0D665 /* space2.png */,
 				07E650C116C9244D00192B8B /* space5.png */,
+				07D5BC6416E38C9D00F0D665 /* sphere.obj */,
 				07D5BC5816E33AEC00F0D665 /* square.png */,
 				07B4245216D9F132007055DF /* star.png */,
+				07DE74F816F61D2E0048877C /* sun.png */,
 				07E650C216C9244D00192B8B /* syouhai.png */,
 				07E650C316C9244D00192B8B /* taiyou.png */,
 				0733406516BDB06D00DB2D34 /* teapot.obj */,
@@ -586,23 +626,32 @@
 		07DE74D916EC38B80048877C /* game */ = {
 			isa = PBXGroup;
 			children = (
-				07DE74F516F613000048877C /* HGHit.h */,
-				07DE74F616F613000048877C /* HGHit.mm */,
-				07DE74F216F5FA3E0048877C /* HGExplode.h */,
-				07DE74F316F5FA3F0048877C /* HGExplode.mm */,
-				07DE74EA16EC449A0048877C /* HGCollision.h */,
-				07DE74EB16EC449A0048877C /* HGCollision.mm */,
+				07339E1C16FF18700057041F /* ColTrees.h */,
 				07DE74DA16EC38B80048877C /* HGActor.h */,
 				07DE74DB16EC38B80048877C /* HGActor.mm */,
 				07DE74DC16EC38B80048877C /* HGBullet.h */,
 				07DE74DD16EC38B80048877C /* HGBullet.mm */,
+				07DE74EA16EC449A0048877C /* HGCollision.h */,
+				07DE74EB16EC449A0048877C /* HGCollision.mm */,
 				07DE74DE16EC38B80048877C /* HGCommon.h */,
+				07436B0E16FD647F002BA1C9 /* HGCPU.h */,
+				07436B0F16FD647F002BA1C9 /* HGCPU.mm */,
+				07DE74F216F5FA3E0048877C /* HGExplode.h */,
+				07DE74F316F5FA3F0048877C /* HGExplode.mm */,
 				07DE74DF16EC38B80048877C /* HGFighter.h */,
 				07DE74E016EC38B80048877C /* HGFighter.mm */,
 				07DE74E116EC38B80048877C /* HGGame.h */,
 				07DE74E216EC38B80048877C /* HGGame.mm */,
+				07DE74F516F613000048877C /* HGHit.h */,
+				07DE74F616F613000048877C /* HGHit.mm */,
+				07DE750216F98AE60048877C /* HGHitAnime.h */,
+				07DE750316F98AE80048877C /* HGHitAnime.mm */,
+				07436B1116FD6D76002BA1C9 /* HGPlayer.h */,
+				07436B1216FD6D76002BA1C9 /* HGPlayer.mm */,
 				07DE74E316EC38B80048877C /* HGUtil.h */,
 				07DE74E416EC38B80048877C /* HGUtil.mm */,
+				07436B1416FDA691002BA1C9 /* HGWeapon.h */,
+				07436B1516FDA691002BA1C9 /* HGWeapon.mm */,
 			);
 			path = game;
 			sourceTree = "<group>";
@@ -811,6 +860,15 @@
 				07DE74D716EC38A40048877C /* vertex.glsl in Resources */,
 				07DE74D816EC38A40048877C /* vertex2d.glsl in Resources */,
 				07DE74F916F61D310048877C /* sun.png in Resources */,
+				07DE74FB16F76EFE0048877C /* hit.png in Resources */,
+				07DE74FD16F953E50048877C /* explode_small2.png in Resources */,
+				07DE74FF16F954650048877C /* hit2blur.png in Resources */,
+				07DE750116F95BF50048877C /* pearl.png in Resources */,
+				07DE750616F98FDE0048877C /* gold_energy.png in Resources */,
+				07DE750816F993930048877C /* proc_sheet_nebula.png in Resources */,
+				07436B0B16FA072C002BA1C9 /* deep_sky.png in Resources */,
+				07436B0D16FA0FD9002BA1C9 /* space_a.png in Resources */,
+				079FAE5916FEC262009B8BA6 /* rect.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -848,6 +906,10 @@
 				07DE74EC16EC449B0048877C /* HGCollision.mm in Sources */,
 				07DE74F416F5FA400048877C /* HGExplode.mm in Sources */,
 				07DE74F716F613020048877C /* HGHit.mm in Sources */,
+				07DE750416F98AEA0048877C /* HGHitAnime.mm in Sources */,
+				07436B1016FD647F002BA1C9 /* HGCPU.mm in Sources */,
+				07436B1316FD6D76002BA1C9 /* HGPlayer.mm in Sources */,
+				07436B1616FDA691002BA1C9 /* HGWeapon.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

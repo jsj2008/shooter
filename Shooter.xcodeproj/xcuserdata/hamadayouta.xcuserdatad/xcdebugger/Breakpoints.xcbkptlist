@@ -7,87 +7,26 @@
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "src/hgles/HGLES.h"
-         timestampString = "384580481.025945"
+         filePath = "src/game/HGGame.mm"
+         timestampString = "385826856.451932"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "15"
-         endingLineNumber = "15">
+         startingLineNumber = "244"
+         endingLineNumber = "244"
+         landmarkName = "initialize()"
+         landmarkType = "7">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "src/game/HGActor.mm"
-         timestampString = "385226365.385962"
+         filePath = "src/game/HGFighter.mm"
+         timestampString = "385828511.373442"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "51"
-         endingLineNumber = "51">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "src/hgles/HGLTexture.mm"
-         timestampString = "385222433.245275"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "119"
-         endingLineNumber = "119"
-         landmarkName = "HGLTexture::createTextureWithAsset(std::string name)"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "src/hgles/HGLTexture.mm"
-         timestampString = "385222433.245275"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "100"
-         endingLineNumber = "100"
-         landmarkName = "HGLTexture::createTextureWithAsset(std::string name)"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "src/hgles/HGLTexture.mm"
-         timestampString = "385222433.245275"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "99"
-         endingLineNumber = "99"
-         landmarkName = "HGLTexture::createTextureWithAsset(std::string name)"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "src/hgles/HGLTexture.mm"
-         timestampString = "385222433.245275"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "98"
-         endingLineNumber = "98"
-         landmarkName = "HGLTexture::createTextureWithAsset(std::string name)"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "src/hgles/HGLTexture.mm"
-         timestampString = "385222433.245275"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "101"
-         endingLineNumber = "101"
-         landmarkName = "HGLTexture::createTextureWithAsset(std::string name)"
+         startingLineNumber = "93"
+         endingLineNumber = "93"
+         landmarkName = "HGFighter::init(HG_FIGHTER_TYPE type, WHICH_SIDE side)"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -95,12 +34,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/game/HGGame.mm"
-         timestampString = "385229714.403361"
+         timestampString = "385827042.013273"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "177"
-         endingLineNumber = "177"
-         landmarkName = "update(t_keystate* keystate)"
+         startingLineNumber = "245"
+         endingLineNumber = "245"
+         landmarkName = "initialize()"
          landmarkType = "7">
       </FileBreakpoint>
       <FileBreakpoint
@@ -108,11 +47,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/game/HGGame.mm"
-         timestampString = "385229714.403361"
+         timestampString = "385828361.387054"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "178"
-         endingLineNumber = "178"
+         startingLineNumber = "615"
+         endingLineNumber = "615"
          landmarkName = "update(t_keystate* keystate)"
          landmarkType = "7">
       </FileBreakpoint>
@@ -120,26 +59,26 @@
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "src/game/HGExplode.mm"
-         timestampString = "385229714.403361"
+         filePath = "src/game/HGBullet.mm"
+         timestampString = "385829304.055291"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "49"
-         endingLineNumber = "49"
-         landmarkName = "HGExplode::draw()"
+         startingLineNumber = "41"
+         endingLineNumber = "41"
+         landmarkName = "HGBullet::update()"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "src/game/HGExplode.mm"
-         timestampString = "385229714.403361"
+         filePath = "src/game/HGBullet.mm"
+         timestampString = "385829307.12067"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "58"
-         endingLineNumber = "58"
-         landmarkName = "HGExplode::draw()"
+         startingLineNumber = "38"
+         endingLineNumber = "38"
+         landmarkName = "HGBullet::update()"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

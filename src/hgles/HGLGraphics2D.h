@@ -16,14 +16,12 @@ namespace hgles {
         t_hgl2di():
         scale(1,1,1),
         position(0,0,0),
-        rotate(0,0,0),
-        alpha(1)
+        rotate(0,0,0)
         {}
         HGLTexture texture;
         HGLVector3 scale;
         HGLVector3 position;
         HGLVector3 rotate;
-        float alpha;
     } t_hgl2di;
     
     class HGLGraphics2D
