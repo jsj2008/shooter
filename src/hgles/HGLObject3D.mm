@@ -72,19 +72,19 @@ namespace hgles {
         // 行列をポップする
         // =====終わり
         HGLES::pushMatrix();
-        HGLES::mvMatrix = GLKMatrix4Translate(HGLES::mvMatrix, position.x, position.y, position.z);
-        HGLES::mvMatrix = GLKMatrix4Scale(HGLES::mvMatrix, scale.x, scale.y, scale.z);
+        currentContext->mvMatrix = GLKMatrix4Translate(currentContext->mvMatrix, position.x, position.y, position.z);
+        currentContext->mvMatrix = GLKMatrix4Scale(currentContext->mvMatrix, scale.x, scale.y, scale.z);
         if (paralell)
         {
-            HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, HGLES::cameraRotate.x*-1, 1, 0, 0);
-            HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, HGLES::cameraRotate.y*-1, 0, 1, 0);
-            HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, rotate.z, 0, 0, 1); // zは回転を適用
+            currentContext->mvMatrix = GLKMatrix4Rotate(currentContext->mvMatrix, HGLES::cameraRotate.x*-1, 1, 0, 0);
+            currentContext->mvMatrix = GLKMatrix4Rotate(currentContext->mvMatrix, HGLES::cameraRotate.y*-1, 0, 1, 0);
+            currentContext->mvMatrix = GLKMatrix4Rotate(currentContext->mvMatrix, rotate.z, 0, 0, 1); // zは回転を適用
         }
         else
         {
-            HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, rotate.x, 1, 0, 0);
-            HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, rotate.y, 0, 1, 0);
-            HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, rotate.z, 0, 0, 1);
+            currentContext->mvMatrix = GLKMatrix4Rotate(currentContext->mvMatrix, rotate.x, 1, 0, 0);
+            currentContext->mvMatrix = GLKMatrix4Rotate(currentContext->mvMatrix, rotate.y, 0, 1, 0);
+            currentContext->mvMatrix = GLKMatrix4Rotate(currentContext->mvMatrix, rotate.z, 0, 0, 1);
         }
         HGLES::updateMatrix();
         

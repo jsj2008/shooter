@@ -19,6 +19,10 @@ namespace hgles {
     typedef struct t_context
     {
         std::map<std::string, HGLTexture*> textureIds;
+        std::stack<GLKMatrix4> matrixStack;
+        GLKMatrix4 mvMatrix;
+        GLKMatrix4 cameraMatrix;
+        GLKMatrix4 projectionMatrix;
     } t_context;
     
     // 現在のコンテキストを設定する
@@ -48,7 +52,6 @@ namespace hgles {
         static GLuint aNormalSlot          ;
         static GLuint aUVSlot              ;
         
-        ///static GLuint uProjectionMatrixSlot;
         static GLuint uModelViewMatrixSlot ;
         static GLuint uMvpMatrixSlot ;
         static GLuint uNormalMatrixSlot    ;
@@ -67,9 +70,9 @@ namespace hgles {
         static GLuint uColor;
         static GLuint uBlendColor;
         
-        static GLKMatrix4 mvMatrix; // モデルビュー行列
-        static GLKMatrix4 cameraMatrix;
-        static GLKMatrix4 projectionMatrix; // 射影行列
+        //static GLKMatrix4 mvMatrix; // モデルビュー行列
+        //static GLKMatrix4 cameraMatrix;
+        //static GLKMatrix4 projectionMatrix; // 射影行列
         
         // texture
         static GLuint uUseTexture;
@@ -98,7 +101,7 @@ namespace hgles {
     private:
         static void compileShaders();
         static GLuint compileShader(NSString* shaderName, GLenum shaderType);
-        static std::stack<GLKMatrix4> matrixStack; // 行列スタック
+        //static std::stack<GLKMatrix4> matrixStack; // 行列スタック
         static void setDefault();
         
     };

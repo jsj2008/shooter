@@ -816,8 +816,8 @@ namespace HGGame {
              }*/
         
         hgles::HGLES::pushMatrix();
-        hgles::HGLES::mvMatrix = GLKMatrix4Rotate(hgles::HGLES::mvMatrix, hgles::HGLES::cameraRotate.x*-1, 1, 0, 0);
-        hgles::HGLES::mvMatrix = GLKMatrix4Rotate(hgles::HGLES::mvMatrix, hgles::HGLES::cameraRotate.y*-1, 0, 1, 0);
+        hgles::currentContext->mvMatrix = GLKMatrix4Rotate(hgles::currentContext->mvMatrix, hgles::HGLES::cameraRotate.x*-1, 1, 0, 0);
+        hgles::currentContext->mvMatrix = GLKMatrix4Rotate(hgles::currentContext->mvMatrix, hgles::HGLES::cameraRotate.y*-1, 0, 1, 0);
         
         // draw bg
         for (std::vector<hgles::t_hgl2di*>::reverse_iterator itr = background.rbegin(); itr != background.rend(); ++itr)

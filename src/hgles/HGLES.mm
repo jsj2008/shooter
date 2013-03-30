@@ -9,24 +9,24 @@
 #import "HGLES.h"
 #import "HGLTypes.h"
 #import "HGLVector3.h"
-#import "HGLTexture.h"
 #import <GLKit/GLKit.h>
 #include <OpenGLES/ES2/gl.h>
 #include <OpenGLES/ES2/glext.h>
 #import <string>
 #import "HGLCommon.h"
-#import <map>
 
 namespace hgles {
     
     std::map<int, t_context> contextMap;
     int contextIdIndex = -1;
     
-    std::stack<GLKMatrix4> HGLES::matrixStack;
+    //std::stack<GLKMatrix4> HGLES::matrixStack;
     
+    /*
     GLKMatrix4 HGLES::mvMatrix;
     GLKMatrix4 HGLES::cameraMatrix;
     GLKMatrix4 HGLES::projectionMatrix;
+    */
     
     GLuint HGLES::aPositionSlot        ;
     GLuint HGLES::aNormalSlot          ;
@@ -84,13 +84,13 @@ namespace hgles {
     
     void HGLES::pushMatrix()
     {
-        matrixStack.push(mvMatrix);
+        currentContext->matrixStack.push(currentContext->mvMatrix);
     }
     
     void HGLES::popMatrix()
     {
-        mvMatrix = matrixStack.top();
-        matrixStack.pop();
+        currentContext->mvMatrix = currentContext->matrixStack.top();
+        currentContext->matrixStack.pop();
     }
     
     int HGLES::initialize(float viewWidth, float viewHeight)
@@ -98,37 +98,37 @@ namespace hgles {
         // 現在のコンテキストを作成
         contextIdIndex++;
         contextMap[contextIdIndex] = {};
+        setCurrentContext(contextIdIndex);
         glViewport(0, 0, viewWidth, viewHeight);
         compileShaders();
         HGLES::viewWidth = viewWidth;
         HGLES::viewHeight = viewHeight;
         float aspect = (float)(viewWidth / viewHeight);
-        HGLES::projectionMatrix = GLKMatrix4MakePerspective(GLKMathDegreesToRadians(80.0f), aspect, 0.1f, 2000.0f);
-        mvMatrix = GLKMatrix4Identity;
+        currentContext->projectionMatrix = GLKMatrix4MakePerspective(GLKMathDegreesToRadians(80.0f), aspect, 0.1f, 2000.0f);
+        currentContext->mvMatrix = GLKMatrix4Identity;
         
-        setCurrentContext(contextIdIndex);
         return contextIdIndex;
     }
     
     void HGLES::updateCameraMatrix()
     {
-        HGLES::cameraMatrix = GLKMatrix4Identity;
-        HGLES::cameraMatrix = GLKMatrix4Rotate(hgles::HGLES::cameraMatrix, cameraRotate.x, 1, 0, 0);
-        HGLES::cameraMatrix = GLKMatrix4Rotate(hgles::HGLES::cameraMatrix, cameraRotate.y, 0, 1, 0);
-        HGLES::cameraMatrix = GLKMatrix4Rotate(hgles::HGLES::cameraMatrix, cameraRotate.z, 0, 0, 1);
-        HGLES::cameraMatrix = GLKMatrix4Translate(hgles::HGLES::cameraMatrix, cameraPosition.x, cameraPosition.y, cameraPosition.z);
+        currentContext->cameraMatrix = GLKMatrix4Identity;
+        currentContext->cameraMatrix = GLKMatrix4Rotate(currentContext->cameraMatrix, cameraRotate.x, 1, 0, 0);
+        currentContext->cameraMatrix = GLKMatrix4Rotate(currentContext->cameraMatrix, cameraRotate.y, 0, 1, 0);
+        currentContext->cameraMatrix = GLKMatrix4Rotate(currentContext->cameraMatrix, cameraRotate.z, 0, 0, 1);
+        currentContext->cameraMatrix = GLKMatrix4Translate(currentContext->cameraMatrix, cameraPosition.x, cameraPosition.y, cameraPosition.z);
     }
     
     void HGLES::updateMatrix()
     {
         // 視点行列にモデル行列を掛けること
-        HGLES::mvMatrix = GLKMatrix4Multiply(HGLES::cameraMatrix, HGLES::mvMatrix);
-        glUniformMatrix4fv(HGLES::uModelViewMatrixSlot, 1, 0, HGLES::mvMatrix.m);
-        GLKMatrix4 mvpMatrix = GLKMatrix4Multiply(projectionMatrix, HGLES::mvMatrix);
+        currentContext->mvMatrix = GLKMatrix4Multiply(currentContext->cameraMatrix, currentContext->mvMatrix);
+        glUniformMatrix4fv(HGLES::uModelViewMatrixSlot, 1, 0, currentContext->mvMatrix.m);
+        GLKMatrix4 mvpMatrix = GLKMatrix4Multiply(currentContext->projectionMatrix, currentContext->mvMatrix);
         glUniformMatrix4fv(HGLES::uMvpMatrixSlot, 1, 0, mvpMatrix.m);
         
         // モデルビュー行列の逆転置行列の指定
-        GLKMatrix4 normalM = HGLES::mvMatrix;
+        GLKMatrix4 normalM = currentContext->mvMatrix;
         bool result = true;
         normalM = GLKMatrix4InvertAndTranspose(normalM, (bool*)&result);
         glUniformMatrix4fv(HGLES::uNormalMatrixSlot, 1, false, normalM.m);

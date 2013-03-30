@@ -63,10 +63,10 @@ namespace hgles {
         glUniform1f(HGLES::uAlpha, texture->color.a);
         HGLES::pushMatrix();
         
-        HGLES::mvMatrix = GLKMatrix4Translate(HGLES::mvMatrix, position->x, position->y, position->z);
-        HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, rotate->x, 1, 0, 0);
-        HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, rotate->y, 0, 1, 0);
-        HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, rotate->z, 0, 0, 1);
+        currentContext->mvMatrix = GLKMatrix4Translate(currentContext->mvMatrix, position->x, position->y, position->z);
+        currentContext->mvMatrix = GLKMatrix4Rotate(currentContext->mvMatrix, rotate->x, 1, 0, 0);
+        currentContext->mvMatrix = GLKMatrix4Rotate(currentContext->mvMatrix, rotate->y, 0, 1, 0);
+        currentContext->mvMatrix = GLKMatrix4Rotate(currentContext->mvMatrix, rotate->z, 0, 0, 1);
         
         HGLES::updateMatrix();
         
@@ -87,11 +87,11 @@ namespace hgles {
         glUniform1f(HGLES::uAlpha, texture->color.a);
         HGLES::pushMatrix();
         
-        HGLES::mvMatrix = GLKMatrix4Translate(HGLES::mvMatrix, position->x, position->y, position->z);
-        HGLES::mvMatrix = GLKMatrix4Scale(HGLES::mvMatrix, scale->x, scale->y, scale->z);
-        HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, HGLES::cameraRotate.x*-1, 1, 0, 0);
-        HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, HGLES::cameraRotate.y*-1, 0, 1, 0);
-        HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, rotate->z, 0, 0, 1);
+        currentContext->mvMatrix = GLKMatrix4Translate(currentContext->mvMatrix, position->x, position->y, position->z);
+        currentContext->mvMatrix = GLKMatrix4Scale(currentContext->mvMatrix, scale->x, scale->y, scale->z);
+        currentContext->mvMatrix = GLKMatrix4Rotate(currentContext->mvMatrix, HGLES::cameraRotate.x*-1, 1, 0, 0);
+        currentContext->mvMatrix = GLKMatrix4Rotate(currentContext->mvMatrix, HGLES::cameraRotate.y*-1, 0, 1, 0);
+        currentContext->mvMatrix = GLKMatrix4Rotate(currentContext->mvMatrix, rotate->z, 0, 0, 1);
         
         HGLES::updateMatrix();
         
@@ -110,11 +110,11 @@ namespace hgles {
         HGLES::pushMatrix();
         
         // モデルビュー変換
-        HGLES::mvMatrix = GLKMatrix4Translate(HGLES::mvMatrix, p->position.x, p->position.y, p->position.z);
-        HGLES::mvMatrix = GLKMatrix4Scale(HGLES::mvMatrix, p->scale.x, p->scale.y, p->scale.z);
-        HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, p->rotate.x, 1, 0, 0);
-        HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, p->rotate.y, 0, 1, 0);
-        HGLES::mvMatrix = GLKMatrix4Rotate(HGLES::mvMatrix, p->rotate.z, 0, 0, 1);
+        currentContext->mvMatrix = GLKMatrix4Translate(currentContext->mvMatrix, p->position.x, p->position.y, p->position.z);
+        currentContext->mvMatrix = GLKMatrix4Scale(currentContext->mvMatrix, p->scale.x, p->scale.y, p->scale.z);
+        currentContext->mvMatrix = GLKMatrix4Rotate(currentContext->mvMatrix, p->rotate.x, 1, 0, 0);
+        currentContext->mvMatrix = GLKMatrix4Rotate(currentContext->mvMatrix, p->rotate.y, 0, 1, 0);
+        currentContext->mvMatrix = GLKMatrix4Rotate(currentContext->mvMatrix, p->rotate.z, 0, 0, 1);
         HGLES::updateMatrix();
         
         p->texture.bind();
