@@ -1,5 +1,8 @@
+#ifndef INC_HGGAME
+#define INC_HGGAME
 #import "HGLVector3.h"
 #import "HGCommon.h"
+#import "HGFighter.h"
 
 namespace HGGame
 {
@@ -11,12 +14,6 @@ namespace HGGame
         EFFECT_HIT_NORMAL,
     } EFFECT_TYPE;
     
-    typedef enum
-    {
-        ENEMY_SIDE,
-        FRIEND_SIDE,
-    } WHICH_SIDE;
-    
     typedef struct t_keystate
     {
         int fire = 0;
@@ -26,6 +23,12 @@ namespace HGGame
     void update(t_keystate* keystate);
     void onMoveLeftPad(int degree, float power);
     void createEffect(EFFECT_TYPE type, hgles::HGLVector3* position);
+    
+    // 敵を出現させる
+    void createEnemy(HG_FIGHTER_TYPE type, float x, float y);
+    
+    // ランダムにターゲットを返す
+    HGFighter* getRandomTarget(WHICH_SIDE selfSide);
     
     // 弾を取得する
     class HGBullet;
@@ -45,4 +48,8 @@ namespace HGGame
     
     // フィールドの中にいるかを返す
     bool is_out_of_field(hgles::HGLVector3* position, t_size2d* size);
+    
+    // ライフを描画する
+    void drawLife(hgles::HGLVector3* position, t_size2d *realSize, float lifeRate);
 }
+#endif

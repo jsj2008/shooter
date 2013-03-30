@@ -27,7 +27,7 @@ namespace HGGame {
     
     void HGHit::init()
     {
-        float r = rand(80, 128);
+        float r = rand(120, 168);
         initActor(*this, {r, r}, -1);
         updateCount = 0;
         isTextureInit = false;
@@ -54,16 +54,16 @@ namespace HGGame {
             isTextureInit = true;
         }
         int index = updateCount;
-        if (index < 3)
+        if (index <= 3)
         {
-            scale.multiply(1.3);
+            scale.multiply(1.5);
         }
         else
         {
             scale.multiply(0.6);
             if (scale.x <= 0.70)
             {
-#warning 仮
+                isActive = false;
                 return;
             }
         }

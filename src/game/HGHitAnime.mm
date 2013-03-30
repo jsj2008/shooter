@@ -26,7 +26,7 @@ namespace HGGame {
     
     void HGHitAnime::init()
     {
-        float r = rand(120, 200);
+        float r = rand(180, 290);
         initActor(*this, {r, r}, -1);
         updateCount = 0;
         isTextureInit = false;
@@ -39,8 +39,7 @@ namespace HGGame {
         if (!isTextureInit)
         {
             bomb = (*hgles::HGLTexture::createTextureWithAsset("hit_small.png"));
-            bomb.sprWidth = 64;
-            bomb.sprHeight = 64;
+            sprSize = {64,64};
             
             glow = *hgles::HGLTexture::createTextureWithAsset("star.png");
             glow.color = {1.0, 1.0, 1, 1};
@@ -60,8 +59,8 @@ namespace HGGame {
         {
             bomb.color.a *= 0.5;
         }
-        int x = bomb.sprWidth * index;
-        bomb.setTextureArea(x, 0, bomb.sprWidth, bomb.sprWidth);
+        int x = sprSize.w * index;
+        bomb.setTextureArea(x, 0, sprSize.w, sprSize.h);
         hgles::HGLGraphics2D::draw(&position, &scale, &rotate, &bomb);
         
         hgles::HGLGraphics2D::draw(&position, &glowScale, &rotate, &glow);

@@ -1,3 +1,5 @@
+#ifndef INC_HGWEAPON
+#define INC_HGWEAPON
 #import "HGWeapon.h"
 #import "HGCommon.h"
 #import "HGGame.h"
@@ -12,13 +14,15 @@ namespace HGGame {
     }
     
     // 初期化
-    void HGWeapon::init(TYPE_WEAPON type, t_pos2d relative_position)
+    void HGWeapon::init(TYPE_WEAPON type, t_pos2d relative_position, HGFighter* owner, int power)
     {
         this->type = type;
+        this->owner = owner;
+        this->power = power;
         relativePosition = relative_position;
         switch (type) {
             case WEAPON_LIFLE:
-                fireInterval = 0.3;
+                fireInterval = 0.2;
                 break;
             default:
                 break;
@@ -46,10 +50,11 @@ namespace HGGame {
                 t->position.y = shooter_pos.y + sin(shooter_rotate.z)*relativePosition.y;
                 t->position.z = shooter_pos.z;
                 t->setMoveDirectionWithRadian(directionRadian);
-                t->init(HG_BULLET_N1, side);
+                t->init(HG_BULLET_N1, side, power);
                 t->setMoveDirectionWithRadian(shootDirectionRadian);
                 t->setVelocity(0.55);
-                t->range = 30;
+                t->range = 1;
+                t->owner = owner;
                 break;
             }
             default:
@@ -62,3 +67,5 @@ namespace HGGame {
         directionRadian = radian;
     }
 }
+
+#endif

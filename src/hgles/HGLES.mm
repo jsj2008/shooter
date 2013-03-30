@@ -15,8 +15,12 @@
 #include <OpenGLES/ES2/glext.h>
 #import <string>
 #import "HGLCommon.h"
+#import <map>
 
 namespace hgles {
+    
+    std::map<int, t_context> contextMap;
+    int contextIdIndex = -1;
     
     std::stack<GLKMatrix4> HGLES::matrixStack;
     
@@ -70,6 +74,14 @@ namespace hgles {
     HGLVector3 HGLES::cameraPosition;
     HGLVector3 HGLES::cameraRotate;
     
+    int currentContextId = 0;
+    t_context* currentContext = NULL;
+    void setCurrentContext(int contextId)
+    {
+        currentContextId = contextId;
+        currentContext = &contextMap[currentContextId];
+    }
+    
     void HGLES::pushMatrix()
     {
         matrixStack.push(mvMatrix);
@@ -81,8 +93,11 @@ namespace hgles {
         matrixStack.pop();
     }
     
-    void HGLES::initialize(float viewWidth, float viewHeight)
+    int HGLES::initialize(float viewWidth, float viewHeight)
     {
+        // 現在のコンテキストを作成
+        contextIdIndex++;
+        contextMap[contextIdIndex] = {};
         glViewport(0, 0, viewWidth, viewHeight);
         compileShaders();
         HGLES::viewWidth = viewWidth;
@@ -90,7 +105,9 @@ namespace hgles {
         float aspect = (float)(viewWidth / viewHeight);
         HGLES::projectionMatrix = GLKMatrix4MakePerspective(GLKMathDegreesToRadians(80.0f), aspect, 0.1f, 2000.0f);
         mvMatrix = GLKMatrix4Identity;
-        //initializeTextureIds();
+        
+        setCurrentContext(contextIdIndex);
+        return contextIdIndex;
     }
     
     void HGLES::updateCameraMatrix()

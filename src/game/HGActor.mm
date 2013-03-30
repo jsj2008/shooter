@@ -15,6 +15,10 @@ namespace HGGame {
     void HGActor::setVelocity(float inVelocity)
     {
         velocity = inVelocity;
+    }
+    
+    void HGActor::updateAccel()
+    {
         acceleration.set(
                          cos(moveRadian) * velocity,
                          sin(moveRadian) * velocity * -1, // 上下逆に
@@ -48,12 +52,14 @@ namespace HGGame {
     {
         moveRadian = degree * M_PI / 180;
         setVelocity(velocity);
+        updateAccel();
     }
     
     void HGActor::setMoveDirectionWithRadian(float radian)
     {
         moveRadian = radian;
         setVelocity(velocity);
+        updateAccel();
     }
     
     bool HGActor::isCollideWith(HGActor* another)

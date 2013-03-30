@@ -49,11 +49,10 @@
 
 - (void)viewDidLoad
 {
+    ////////////////////
     // 3d描画用ビューを初期化
-    // 最初にこれを行う必要がある
     CGRect frame = [[UIScreen mainScreen] bounds];
     _glview = [[HGLView alloc] initWithFrame:frame WithRenderBlock:^{
-        //[_glview setCurrentContext];
         @synchronized(self)
         {
             HGGame::render();
@@ -61,10 +60,14 @@
     }];
     self.view = _glview;
     
+    ////////////////////
+    // 3d以外の初期化
     _leftPadView = nil;
     _rightPadView = nil;
     [self initialize];
     
+    ////////////////////
+    // 描画開始
     [_glview start];
 }
 

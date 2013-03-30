@@ -5,6 +5,8 @@
 //  Created by 濱田 洋太 on 12/12/24.
 //  Copyright (c) 2012年 hayogame. All rights reserved.
 //
+#ifndef INC_INDEX_BUF
+#define INC_INDEX_BUF
 #import "HGLVertexBuffer.h"
 #import "HGLIndexBuffer.h"
 #import "HGLTexture.h"
@@ -46,3 +48,5 @@ namespace hgles {
         
     };
 }
+
+#endif

@@ -5,6 +5,8 @@
 //  Created by 濱田 洋太 on 12/12/24.
 //  Copyright (c) 2012年 hayogame. All rights reserved.
 //
+#ifndef __HGLTEXTURE
+#define __HGLTEXTURE
 
 #import <Foundation/Foundation.h>
 #import "HGLTypes.h"
@@ -46,13 +48,11 @@ namespace hgles {
         
         size_t width;
         size_t height;
-        size_t sprWidth;
-        size_t sprHeight;
     private:
-        static std::map<std::string, HGLTexture*> textureIds;
         GLuint textureId;
         GLKMatrix4 textureMatrix;
         std::string textureName;
         void setTextureArea(int textureW,int textureH, int x, int y, int w, int h);
     };
 }
+#endif

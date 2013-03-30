@@ -5,13 +5,28 @@
 //  Created by 濱田 洋太 on 12/12/24.
 //  Copyright (c) 2012年 hayogame. All rights reserved.
 //
+#ifndef __HGLES
+#define __HGLES
 
 #import <Foundation/Foundation.h>
 #import <GLKit/GLKit.h>
 #import <stack>
+#import <map>
+#import "HGLTexture.h"
 
 namespace hgles {
-
+    
+    typedef struct t_context
+    {
+        std::map<std::string, HGLTexture*> textureIds;
+    } t_context;
+    
+    // 現在のコンテキストを設定する
+    void setCurrentContext(int contextId);
+    
+    // 現在のコンテキスト
+    extern t_context* currentContext;
+    
     struct Color;
     struct Position;
     class HGLVector3;
@@ -19,7 +34,9 @@ namespace hgles {
     {
     public:
         
-        static void initialize(float viewWidth, float viewHeight);
+        // コンテキストIDを返す
+        static int initialize(float viewWidth, float viewHeight);
+        
         
         static void pushMatrix();
         static void popMatrix();
@@ -87,3 +104,4 @@ namespace hgles {
     };
     
 }
+#endif

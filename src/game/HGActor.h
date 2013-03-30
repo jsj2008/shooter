@@ -39,6 +39,9 @@ namespace HGGame {
         // 速度を設定する
         void setVelocity(float velocity);
         
+        // 設定された速度で移動開始する
+        void updateAccel();
+        
         // 移動角度を設定する
         void setMoveDirectionWithDegree(float degree);
         void setMoveDirectionWithRadian(float radian);

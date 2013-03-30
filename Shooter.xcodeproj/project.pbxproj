@@ -26,6 +26,11 @@
 		0733406216BDAE4B00DB2D34 /* teoke.obj in Resources */ = {isa = PBXBuildFile; fileRef = 0733406116BDAE4A00DB2D34 /* teoke.obj */; };
 		0733406416BDAF7800DB2D34 /* yakuimon.obj in Resources */ = {isa = PBXBuildFile; fileRef = 0733406316BDAF7800DB2D34 /* yakuimon.obj */; };
 		0733406616BDB06D00DB2D34 /* teapot.obj in Resources */ = {isa = PBXBuildFile; fileRef = 0733406516BDB06D00DB2D34 /* teapot.obj */; };
+		07339E20170342260057041F /* HGSpawn.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07339E1F170342250057041F /* HGSpawn.mm */; };
+		07339E22170343AE0057041F /* nova.png in Resources */ = {isa = PBXBuildFile; fileRef = 07339E21170343AC0057041F /* nova.png */; };
+		07339E24170344150057041F /* wave2.png in Resources */ = {isa = PBXBuildFile; fileRef = 07339E23170344140057041F /* wave2.png */; };
+		07339E271706C5DA0057041F /* MainViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07339E261706C5DA0057041F /* MainViewController.mm */; };
+		07339E2A1706C65E0057041F /* TitleView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07339E291706C65E0057041F /* TitleView.mm */; };
 		07436B0B16FA072C002BA1C9 /* deep_sky.png in Resources */ = {isa = PBXBuildFile; fileRef = 07436B0A16FA072C002BA1C9 /* deep_sky.png */; };
 		07436B0D16FA0FD9002BA1C9 /* space_a.png in Resources */ = {isa = PBXBuildFile; fileRef = 07436B0C16FA0FD9002BA1C9 /* space_a.png */; };
 		07436B1016FD647F002BA1C9 /* HGCPU.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07436B0F16FD647F002BA1C9 /* HGCPU.mm */; };
@@ -197,6 +202,14 @@
 		0733406316BDAF7800DB2D34 /* yakuimon.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = yakuimon.obj; sourceTree = "<group>"; };
 		0733406516BDB06D00DB2D34 /* teapot.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = teapot.obj; sourceTree = "<group>"; };
 		07339E1C16FF18700057041F /* ColTrees.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColTrees.h; sourceTree = "<group>"; };
+		07339E1E170342240057041F /* HGSpawn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGSpawn.h; sourceTree = "<group>"; };
+		07339E1F170342250057041F /* HGSpawn.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGSpawn.mm; sourceTree = "<group>"; };
+		07339E21170343AC0057041F /* nova.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nova.png; sourceTree = "<group>"; };
+		07339E23170344140057041F /* wave2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wave2.png; sourceTree = "<group>"; };
+		07339E251706C5DA0057041F /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
+		07339E261706C5DA0057041F /* MainViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MainViewController.mm; sourceTree = "<group>"; };
+		07339E281706C65E0057041F /* TitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TitleView.h; sourceTree = "<group>"; };
+		07339E291706C65E0057041F /* TitleView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TitleView.mm; sourceTree = "<group>"; };
 		07436B0A16FA072C002BA1C9 /* deep_sky.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = deep_sky.png; sourceTree = "<group>"; };
 		07436B0C16FA0FD9002BA1C9 /* space_a.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = space_a.png; sourceTree = "<group>"; };
 		07436B0E16FD647F002BA1C9 /* HGCPU.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGCPU.h; sourceTree = "<group>"; };
@@ -402,6 +415,8 @@
 		0755992616B561490066A0E9 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				07339E23170344140057041F /* wave2.png */,
+				07339E21170343AC0057041F /* nova.png */,
 				079FAE5816FEC262009B8BA6 /* rect.png */,
 				07436B0C16FA0FD9002BA1C9 /* space_a.png */,
 				07436B0A16FA072C002BA1C9 /* deep_sky.png */,
@@ -541,6 +556,10 @@
 		07DE746016EC368F0048877C /* Shooter */ = {
 			isa = PBXGroup;
 			children = (
+				07339E281706C65E0057041F /* TitleView.h */,
+				07339E291706C65E0057041F /* TitleView.mm */,
+				07339E251706C5DA0057041F /* MainViewController.h */,
+				07339E261706C5DA0057041F /* MainViewController.mm */,
 				07DE746116EC368F0048877C /* AppDelegate.h */,
 				07DE746216EC368F0048877C /* AppDelegate.m */,
 				07DE746316EC368F0048877C /* Common.h */,
@@ -626,6 +645,8 @@
 		07DE74D916EC38B80048877C /* game */ = {
 			isa = PBXGroup;
 			children = (
+				07339E1E170342240057041F /* HGSpawn.h */,
+				07339E1F170342250057041F /* HGSpawn.mm */,
 				07339E1C16FF18700057041F /* ColTrees.h */,
 				07DE74DA16EC38B80048877C /* HGActor.h */,
 				07DE74DB16EC38B80048877C /* HGActor.mm */,
@@ -869,6 +890,8 @@
 				07436B0B16FA072C002BA1C9 /* deep_sky.png in Resources */,
 				07436B0D16FA0FD9002BA1C9 /* space_a.png in Resources */,
 				079FAE5916FEC262009B8BA6 /* rect.png in Resources */,
+				07339E22170343AE0057041F /* nova.png in Resources */,
+				07339E24170344150057041F /* wave2.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -910,6 +933,9 @@
 				07436B1016FD647F002BA1C9 /* HGCPU.mm in Sources */,
 				07436B1316FD6D76002BA1C9 /* HGPlayer.mm in Sources */,
 				07436B1616FDA691002BA1C9 /* HGWeapon.mm in Sources */,
+				07339E20170342260057041F /* HGSpawn.mm in Sources */,
+				07339E271706C5DA0057041F /* MainViewController.mm in Sources */,
+				07339E2A1706C65E0057041F /* TitleView.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

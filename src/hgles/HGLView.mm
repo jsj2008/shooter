@@ -48,6 +48,8 @@ using namespace hgles;
     Color HGLES::diffuse;
     Color HGLES::specular;
     Position HGLES::lightPos;
+    // コンテキストID
+    int contextId;
     
 }
 @end
@@ -70,7 +72,8 @@ using namespace hgles;
         // setup gl
         [self setupLayer];
         [self setupContext];
-        HGLES::initialize(self.frame.size.width, self.frame.size.height);
+        contextId = HGLES::initialize(self.frame.size.width, self.frame.size.height);
+        assert(contextId >= 0);
         HGLGraphics2D::initialize();
         [self setupDepthBuffer];
         [self setupRenderBuffer];
@@ -220,6 +223,7 @@ using namespace hgles;
     isRenderRequired = false;
     lastDrawTime = start;
     
+    hgles::setCurrentContext(contextId);
     [self initFrame];
     if (render)
     {

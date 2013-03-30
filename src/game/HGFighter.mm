@@ -1,3 +1,4 @@
+#import "HGGame.h"
 #import "HGFighter.h"
 #import "HGUtil.h"
 #import "HGCommon.h"
@@ -9,6 +10,7 @@ using namespace std;
 namespace HGGame
 {
     
+    typedef std::vector<HGWeapon> t_weapon_list;
     typedef HGActor base;
     
     HGFighter::HGFighter()
@@ -46,13 +48,23 @@ namespace HGGame
         if (!isTextureInit)
         {
             texture = (*hgles::HGLTexture::createTextureWithAsset(textureName));
-            texture.sprWidth = sprSize.w;
-            texture.sprHeight = sprSize.h;
             isTextureInit = true;
         }
-        int spIdx = getSpriteIndex(degree + 0.5);
-        int x = texture.sprWidth * spIdx;
-        texture.setTextureArea(x, 0, texture.sprWidth, texture.sprWidth);
+        switch (animeType) {
+            case HG_ANIME_SPRITE:
+            {
+                int spIdx = getSpriteIndex(degree + 0.5);
+                int x = sprSize.w * spIdx + sprPos.x;
+                texture.setTextureArea(x, sprPos.y, sprSize.w, sprSize.h);
+                break;
+            }
+            case HG_NON_ANIME_SPRITE:
+                texture.setTextureArea(sprPos.x, sprPos.y, 204, 78);
+                break;
+            default:
+                assert(0);
+        }
+        
         if (life == 0)
         {
             texture.blendColor = {0.5,0.5,0.5,1};
@@ -63,6 +75,7 @@ namespace HGGame
             }
         }
         hgles::HGLGraphics2D::draw(&position, &scale, &rotate,  &texture);
+        
     }
     
     void HGFighter::fire()
@@ -78,30 +91,61 @@ namespace HGGame
         this->side = side;
     }
     
+    void HGFighter::setMaxLife(int maxlife)
+    {
+        life = maxlife;
+        this->maxlife = maxlife;
+    }
+    
     void HGFighter::init(HG_FIGHTER_TYPE type, WHICH_SIDE side)
     {
         this->side = side;
         this->type = type;
         isTextureInit = false;
         explodeCount = 15;
+        animeType = HG_ANIME_SPRITE;
         switch (type) {
-            case HG_FIGHTER:
+            case HGF_ENEMY1:
             {
                 initActor(*this, {128, 128}, 2);
                 textureName = "e_robo2.png";
                 sprSize = {64,64};
-                if (side == ENEMY_SIDE)
-                {
-                    setVelocity(0.2);
-                    life = 3;
-                }
-                else
-                {
-                    setVelocity(0.5);
-                    life = 725;
-                }
+                sprPos = {0, 0};
+                setVelocity(0.2);
+                setMaxLife(30);
                 HGWeapon w = HGWeapon();
-                w.init(WEAPON_LIFLE, {0, 0});
+                w.init(WEAPON_LIFLE, {0, 0}, this, 10);
+                weapon_list.push_back(w);
+                break;
+            }
+            case HGF_ESHIP1:
+            {
+                initActor(*this, {2040, 780}, 3);
+                textureName = "e_senkan1_4.png";
+                animeType = HG_NON_ANIME_SPRITE;
+                setVelocity(0.1);
+                setMaxLife(300);
+                sprSize = {204, 78};
+                sprPos = {0, 0};
+                HGWeapon w = HGWeapon();
+                w.init(WEAPON_LIFLE, {0, 0}, this, 8);
+                w.init(WEAPON_LIFLE, {-50*SCRATE, -50*SCRATE}, this, 8);
+                w.init(WEAPON_LIFLE, {-50*SCRATE, 50*SCRATE}, this, 8);
+                w.init(WEAPON_LIFLE, {50*SCRATE,  50*SCRATE}, this, 8);
+                w.init(WEAPON_LIFLE, {50*SCRATE, -50*SCRATE}, this, 8);
+                weapon_list.push_back(w);
+                break;
+            }
+            case HGF_PL1:
+            {
+                initActor(*this, {128, 128}, 2);
+                textureName = "p_robo1.png";
+                sprSize = {16,16};
+                sprPos = {0, 0};
+                setVelocity(0.7);
+                setMaxLife(8000);
+                HGWeapon w = HGWeapon();
+                w.init(WEAPON_LIFLE, {0, 0}, this, 10);
                 weapon_list.push_back(w);
                 break;
             }

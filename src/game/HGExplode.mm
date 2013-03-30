@@ -29,6 +29,8 @@ namespace HGGame {
         initActor(*this, {r, r}, -1);
         updateCount = 0;
         isTextureInit = false;
+        double rotateZ = rand(0, 360);
+        rotate.z = rotateZ * M_PI/180;
     }
     
     void HGExplode::draw()
@@ -36,8 +38,7 @@ namespace HGGame {
         if (!isTextureInit)
         {
             bomb = (*hgles::HGLTexture::createTextureWithAsset("explode_small.png"));
-            bomb.sprWidth = 64;
-            bomb.sprHeight = 64;
+            sprSize = {64,64};
             
             glow = *hgles::HGLTexture::createTextureWithAsset("star.png");
             glow.color = {1.0, 1.0, 1.0, 0.5};
@@ -53,12 +54,12 @@ namespace HGGame {
         int index = updateCount / 2;
         if (index >= 9)
         {
-#warning 仮
+            isActive = false;
             return;
         }
         
-        int x = bomb.sprWidth * index;
-        bomb.setTextureArea(x, 0, bomb.sprWidth, bomb.sprWidth);
+        int x = sprSize.w * index;
+        bomb.setTextureArea(x, 0, sprSize.w, sprSize.h);
         hgles::HGLGraphics2D::draw(&position, &scale, &rotate, &bomb);
         
         glowScale.multiply(0.7);

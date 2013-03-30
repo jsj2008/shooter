@@ -20,6 +20,7 @@ namespace HGGame {
         hgles::HGLTexture smoke[3];
         int updateCount;
         hgles::HGLVector3 glowScale;
+        t_size2d sprSize;
     };
     
 }

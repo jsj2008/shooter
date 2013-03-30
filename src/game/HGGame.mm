@@ -15,6 +15,7 @@
 #import "HGCommon.h"
 #import "HGCollision.h"
 #import "HGHitAnime.h"
+#import "HGSpawn.h"
 
 #import <vector>
 #import <map>
@@ -45,6 +46,7 @@ namespace HGGame {
     std::vector<HGBullet*> _enemyBulletsInActive;
     std::vector<HGFighter*> _enemies;
     std::vector<HGFighter*> _friends;
+    std::vector<HGActor*> _deleteActor; // ゲーム終了時にdeleteするリスト
     std::vector<hgles::t_hgl2di*> background;
     std::vector<hgles::t_hgl2di*> barriar;
     std::vector<hgles::t_hgl2di*> nebula;
@@ -71,7 +73,7 @@ namespace HGGame {
     hgles::Color field_color_diff = {0.02, 0.05, 0.02, 1};
     
     // あたり判定
-#define COL_FLD_SPLIT_NUM 5 
+#define COL_FLD_SPLIT_NUM 20
     typedef std::map<int, std::vector<HGActor*>> T_COL_LIST;
     typedef std::map<int, std::vector<HGActor*>>* T_COL_LIST_PTR;
     T_COL_LIST col_bullets;
@@ -80,9 +82,16 @@ namespace HGGame {
     
     //pthread_mutex_t	mutex;  // MUTEX
     
+    
+    // ライフ描画用
+    hgles::t_hgl2di* lifeRect;
+    hgles::t_hgl2di* lifeBar;
+    hgles::t_hgl2di* lifeBar2;
+    
     int rand(int from, int to)
     {
-        int r = std::rand()%(to - from);
+        assert(from != to);
+        int r = std::rand()%(to - from + 1);
         return r+from;
     }
     
@@ -102,6 +111,32 @@ namespace HGGame {
     double getNowTime()
     {
         return now_time;
+    }
+     
+    HGFighter* getRandomTarget(WHICH_SIDE selfSide)
+    {
+        int index = 0;
+        switch (selfSide) {
+            case FRIEND_SIDE:
+                if (_enemies.size() == 0)
+                {
+                    return NULL;
+                }
+                index = rand(0, _enemies.size());
+                return _enemies[index];
+                break;
+            case ENEMY_SIDE:
+                if (_friends.size() == 0)
+                {
+                    return NULL;
+                }
+                index = rand(0, _friends.size());
+                return _friends[index];
+                break;
+            default:
+                assert(0);
+        }
+        
     }
     
     HGBullet* getBullet(WHICH_SIDE side)
@@ -226,6 +261,19 @@ namespace HGGame {
         
     }
     
+    void createEnemy(HG_FIGHTER_TYPE type, float x, float y)
+    {
+        
+        HGCPU* t;
+        t = new HGCPU();
+        t->init(type, ENEMY_SIDE);
+        t->position.x = x;
+        t->position.y = y;
+        t->position.z = ZPOS;
+        _enemies.push_back(t);
+        
+    }
+    
     void initialize()
     {
         srand((unsigned int)time(NULL));
@@ -237,23 +285,31 @@ namespace HGGame {
         
         // create players
         _player = new HGPlayer();
-        _player->init(HG_FIGHTER, FRIEND_SIDE);
+        _player->init(HGF_PL1, FRIEND_SIDE);
         _player->position.set(center_of_field.x, center_of_field.y, ZPOS);
         _player->setDirectionWithDegree(0);
         fire = false;
         _friends.push_back(_player);
         
+        // create friends
+        for (int i = 0; i < 10; ++i)
+        {
+            HGCPU* f = new HGCPU();
+            f->init(HGF_PL1, FRIEND_SIDE);
+            f->position.set(center_of_field.x, center_of_field.y, ZPOS);
+            f->setDirectionWithDegree(0);
+            _friends.push_back(f);
+        }
+    
         // create enemies
         for (int i = 0; i < ENEMY_NUM; ++i)
         {
             HGCPU* t;
             t = new HGCPU();
-            t->init(HG_FIGHTER, ENEMY_SIDE);
+            t->init(HGF_ENEMY1, ENEMY_SIDE);
             t->position.x = (i*2) + -2 + center_of_field.x;
             t->position.y = 1 + center_of_field.y;
             t->position.z = ZPOS;
-#warning 仮
-            t->target = _player;
             _enemies.push_back(t);
         }
         
@@ -338,8 +394,6 @@ namespace HGGame {
             t->texture.repeatNum = 1;
             t->texture.color = {1.0, 1.0, 1.0, 0.6};
             t->texture.blendColor = {0.7, 0.7, 0.7, 0.6};
-            t->texture.sprWidth = 256;
-            t->texture.sprHeight = 256;
             t->texture.setTextureArea(rand(0,4)*256, rand(0,4)*256, 256, 256);
             t->scale.set(SIZE, SIZE, SIZE);
             int x = rand(0, STAGE_SCALE);
@@ -357,6 +411,43 @@ namespace HGGame {
         field->scale.set(FIELD_SIZE*2, FIELD_SIZE*2, 1);
         field->position.set(center_of_field.x, center_of_field.y, ZPOS);
         
+        // ライフ枠
+        lifeRect = new hgles::t_hgl2di();
+        lifeRect->texture = *hgles::HGLTexture::createTextureWithAsset("square.png");
+        lifeRect->texture.blendColor = {2,2,2,1.0};
+        lifeRect->scale.set(162*SCRATE, 27*SCRATE, 1);
+        
+        // ライフ(青)
+        lifeBar = new hgles::t_hgl2di();
+        lifeBar->texture = *hgles::HGLTexture::createTextureWithAsset("square.png");
+        lifeBar->texture.blendColor = {0.2,0.2,2,1.0};
+        lifeBar->scale.set(150*SCRATE, 15*SCRATE, 1);
+        
+        // ライフ減(赤)
+        lifeBar2 = new hgles::t_hgl2di();
+        lifeBar2->texture = *hgles::HGLTexture::createTextureWithAsset("square.png");
+        lifeBar2->texture.blendColor = {2,0.2,0.2,1.0};
+        lifeBar2->scale.set(150*SCRATE, 15*SCRATE, 1);
+        
+    }
+    
+    void drawLife(hgles::HGLVector3* position, t_size2d *realSize, float lifeRate)
+    {
+        float y = position->y - (realSize->h*0.8);
+        /*
+         lifeRect->position.set(position);
+        lifeRect->position.y = y;
+        hgles::HGLGraphics2D::draw(lifeRect);*/
+        
+        lifeBar2->position.set(position);
+        lifeBar2->position.y = y;
+        hgles::HGLGraphics2D::draw(lifeBar2);
+        
+        lifeBar->position.set(position);
+        lifeBar->position.y = y;
+        lifeBar->scale.set(150*lifeRate*SCRATE, 15*SCRATE, 1);
+        lifeBar->position.x -= 150*(1-lifeRate)*0.5*SCRATE;
+        hgles::HGLGraphics2D::draw(lifeBar);
     }
     
     
@@ -461,6 +552,27 @@ namespace HGGame {
             a->update();
         }
         
+#warning 仮
+        // ランダムに敵出現
+        if (rand(0, 1) == 1 && updateCount % 2 == 0)
+        {
+            float rad = rand(1, 359)*180/M_PI;
+            float viaX = (_player->position.x + 300*SCRATE*cos(rad));
+            float viaY = (_player->position.y + 300*SCRATE*sin(rad));
+            HGSpawn* sp = new HGSpawn();
+            if (rand(0, 7) == 0)
+            {
+                sp->init(HGF_ESHIP1);
+            }
+            else
+            {
+                sp->init(HGF_ENEMY1);
+            }
+            //sp->position.set(rand(0, size_of_field.w), rand(0, size_of_field.h), ZPOS);
+            sp->position.set(viaX, viaY, ZPOS);
+            _effects.push_back((HGActor*)sp);
+        }
+        
         //////////////
         // あたり判定
         //////////////
@@ -487,7 +599,9 @@ namespace HGGame {
                     if (a->isCollideWith(b))
                     {
                         b->isActive = false;
+                        a->damage(b->power, b->owner);
 #warning 仮
+                        /*
                         a->life--;
                         if (a->life == 0)
                         {
@@ -496,7 +610,7 @@ namespace HGGame {
                         else
                         {
                             createEffect(EFFECT_HIT_NORMAL, &a->position);
-                        }
+                        }*/
                     }
                 }
             }
@@ -526,16 +640,7 @@ namespace HGGame {
                     if (a->isCollideWith(b))
                     {
                         b->isActive = false;
-#warning 仮
-                        a->life--;
-                        if (a->life == 0)
-                        {
-                            createEffect(EFFECT_EXPLODE_NORMAL, &a->position);
-                        }
-                        else
-                        {
-                            createEffect(EFFECT_HIT_NORMAL, &a->position);
-                        }
+                        a->damage(b->power, b->owner);
                     }
                 }
             }
@@ -603,20 +708,16 @@ namespace HGGame {
         }
         
         {
-            std::vector<HGFighter*> tmp;
             for (std::vector<HGFighter*>::iterator itr = _enemies.begin(); itr != _enemies.end(); ++itr)
             {
                 if (!(*itr)->isActive)
                 {
-                    tmp.push_back(*itr);
+                    // deleteしたいが、スマートポインタにでもしないと無理
+                    _deleteActor.push_back(*itr);
                 }
             }
             std::vector<HGFighter*>::iterator end_it = remove_if( _enemies.begin(), _enemies.end(), RemoveActor() );
             _enemies.erase( end_it, _enemies.end() );
-            for (std::vector<HGFighter*>::iterator itr = tmp.begin(); itr != tmp.end(); ++itr)
-            {
-                delete (*itr);
-            }
         }
         
         {
@@ -625,7 +726,8 @@ namespace HGGame {
             {
                 if (!(*itr)->isActive)
                 {
-                    tmp.push_back(*itr);
+                    // deleteしたいが、スマートポインタにでもしないと無理
+                    _deleteActor.push_back(*itr);
                     if (_player == *itr)
                     {
                         _player = NULL;
@@ -634,19 +736,24 @@ namespace HGGame {
             }
             std::vector<HGFighter*>::iterator end_it = remove_if( _friends.begin(), _friends.end(), RemoveActor() );
             _friends.erase( end_it, _friends.end() );
-            for (std::vector<HGFighter*>::iterator itr = tmp.begin(); itr != tmp.end(); ++itr)
+        }
+        
+        {
+            std::vector<HGActor*> deleteEffects;
+            for (std::vector<HGActor*>::iterator itr = _effects.begin(); itr != _effects.end(); ++itr)
+            {
+                if (!(*itr)->isActive)
+                {
+                    deleteEffects.push_back(*itr);
+                }
+            }
+            std::vector<HGActor*>::iterator end_it = remove_if( _effects.begin(), _effects.end(), RemoveActor() );
+            _effects.erase( end_it, _effects.end() );
+            for (std::vector<HGActor*>::iterator itr = deleteEffects.begin(); itr != deleteEffects.end(); ++itr)
             {
                 delete (*itr);
             }
         }
-        
-        /*
-        }
-        catch (...) // 全例外をキャッチ
-        {
-            HDebug(@"some error happed");
-        }
-        pthread_mutex_unlock(&mutex);*/
         
     }
     
@@ -685,20 +792,20 @@ namespace HGGame {
         // 光源なし
         glUniform1f(hgles::HGLES::uUseLight, 0.0);
         
+        // 2d
+        glDisable(GL_DEPTH_TEST);
+        
         // set camera
         if (_player)
         {
             _cameraPosition.x = _player->position.x * -1;
-            _cameraPosition.y = _player->position.y * -1;
+            _cameraPosition.y = _player->position.y * -1 + 13;
             _cameraPosition.z = -20;
-            //_cameraRotate.x = -28 * M_PI/180;
+            _cameraRotate.x = -28 * M_PI/180;
             hgles::HGLES::cameraPosition = _cameraPosition;
             hgles::HGLES::cameraRotate = _cameraRotate;
             hgles::HGLES::updateCameraMatrix();
         }
-        
-        // 2d
-        glDisable(GL_DEPTH_TEST);
         
             // draw bg
             /*
@@ -766,6 +873,8 @@ namespace HGGame {
 #if IS_DEBUG_COLLISION
             a->drawCollision();
 #endif
+            // ライフ描画
+            drawLife(&a->position, &a->realSize, ((float)a->life/(float)a->maxlife));
         }
         
         // draw effects

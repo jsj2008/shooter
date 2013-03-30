@@ -3,15 +3,22 @@
 #import "HGLGraphics2D.h"
 #import "HGActor.h"
 #import "HGWeapon.h"
-#import "HGGame.h"
 #import <vector>
 
 namespace HGGame
 {
+    class HGWeapon;
     typedef std::vector<HGWeapon> t_weapon_list;
 
     enum HG_FIGHTER_TYPE {
-        HG_FIGHTER,
+        HGF_ENEMY1,
+        HGF_PL1,
+        HGF_ESHIP1,
+    };
+    
+    enum HG_ANIME_TYPE {
+        HG_ANIME_SPRITE,
+        HG_NON_ANIME_SPRITE,
     };
     
     class HGFighter : public HGActor
@@ -20,6 +27,7 @@ namespace HGGame
     public:
         HGFighter();
         int life;
+        int maxlife;
         int explodeCount;
         HG_FIGHTER_TYPE type;
         
@@ -27,21 +35,29 @@ namespace HGGame
         virtual void draw();
         virtual void update();
         virtual ~HGFighter(){}
+        // ダメージを受けるとき
+        virtual void damage(int damage, HGFighter* attacker) = 0;
+        // ターゲットを尋ねる
+        virtual HGFighter* tellTarget() = 0;
         
         // 攻撃する
         void fire();
         
         void setSide(WHICH_SIDE side);
         
+    protected:
+        WHICH_SIDE side;
     private:
         t_weapon_list weapon_list;
-        WHICH_SIDE side;
+        void setMaxLife(int maxlife);
         
     private:
         hgles::HGLTexture texture;
         t_size2d sprSize;
         bool isTextureInit;
         std::string textureName;
+        HG_ANIME_TYPE animeType;
+        t_pos2d sprPos;
         
     };
     

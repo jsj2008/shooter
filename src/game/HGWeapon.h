@@ -1,6 +1,8 @@
+#ifndef INC_HG_WEAPON
+#define INC_HG_WEAPON
 #import "HGCommon.h"
 #import "HGLVector3.h"
-#import "HGGame.h"
+#import "HGFighter.h"
 #import <vector>
 
 namespace HGGame {
@@ -10,6 +12,7 @@ namespace HGGame {
         WEAPON_LIFLE,
     } TYPE_WEAPON;
     
+    class HGFighter;
     class HGWeapon
     {
     public:
@@ -17,11 +20,13 @@ namespace HGGame {
             directionRadian(0){}
         ~HGWeapon();
         // 初期化
-        void init(TYPE_WEAPON type, t_pos2d relative_position);
+        void init(TYPE_WEAPON type, t_pos2d relative_position, HGFighter* owner, int power);
         // 発射
         void fire(hgles::HGLVector3 &shooter_pos, hgles::HGLVector3 &shooter_rotate, float shootDirectionRadian, WHICH_SIDE side);
         // 向き設定
         void setDirectionRadian(float radian);
+        // 弾の威力
+        int power;
         
     private:
         // 武器の向き
@@ -34,7 +39,10 @@ namespace HGGame {
         double fireInterval;
         // 武器種類
         TYPE_WEAPON type;
+        // 所有者
+        HGFighter* owner;
         
     };
     
 }
+#endif

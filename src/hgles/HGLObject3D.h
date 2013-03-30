@@ -5,6 +5,8 @@
 //  Created by 濱田 洋太 on 12/12/24.
 //  Copyright (c) 2012年 hayogame. All rights reserved.
 //
+#ifndef __HGLOBJ3D
+#define __HGLOBJ3D
 
 #import <Foundation/Foundation.h>
 #import "HGLMesh.h"
@@ -35,3 +37,4 @@ namespace hgles {
         
     };
 }
+#endif

@@ -32,17 +32,15 @@ namespace HGGame {
             isActive = false;
         }
         
-        range--;
-        if (range <= 10)
+        double rest = range - (getNowTime() - shotTime);
+        if (rest <= 0.1)
         {
             scale.multiply(0.1);
-            if (range <= 0)
+            if (rest <= 0)
             {
                 isActive = false;
             }
         }
-        
-        
     }
     
     HGBullet::HGBullet()
@@ -54,12 +52,14 @@ namespace HGGame {
         
     }
     
-    void HGBullet::init(HG_BULLET_TYPE type, WHICH_SIDE side)
+    void HGBullet::init(HG_BULLET_TYPE type, WHICH_SIDE side, int power)
     {
+        this->shotTime = getNowTime();
         this->type = type;
         this->side = side;
         isTextureInit = false;
         updateCount = 0;
+        this->power = power;
         switch (type) {
             case HG_BULLET_N1:
                 initActor(*this, {12,12}, 1);
@@ -86,27 +86,18 @@ namespace HGGame {
                     glow = *hgles::HGLTexture::createTextureWithAsset("star.png");
                     if (side == FRIEND_SIDE)
                     {
-                        glow.color = {0.7, 0.7, 1.0, 0.9};
+                        glow.color = {0.7, 0.7, 1.0, 0.5};
                     }
                     else
                     {
-                        glow.color = {1.0, 0.7, 0.7, 0.9};
+                        glow.color = {1.0, 0.7, 0.7, 0.5};
                     }
                     glow.isAlphaMap = 1;
                     glow.blend1 = GL_ALPHA;
                     glow.blend2 = GL_ALPHA;
                 }
                 hgles::HGLVector3 glowScale = scale;
-                if (updateCount % 4 <= 2)
-                {
-                    glowScale.add(0.7);
-                    glow.color.a = 0.5;
-                }
-                else
-                {
-                    glowScale.add(0.6);
-                    glow.color.a = 0.8;
-                }
+                glowScale.add(0.7);
                 hgles::HGLGraphics2D::draw(&position, &glowScale, &rotate, &glow);
                 hgles::HGLGraphics2D::draw(&position, &scale, &rotate, &core);
                 break;

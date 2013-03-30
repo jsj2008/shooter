@@ -23,79 +23,12 @@ namespace hgles {
 #warning メモリ解放
     const unsigned int TEXTURE_MAX_NUM = 100;
     
-    std::map<std::string, HGLTexture*> HGLTexture::textureIds;
-    std::vector<GLuint> unusedTextures;
-    std::vector<GLuint> activeTextures;
-    
-    /*
-    void initializeTextureIds()
-    {
-        glEnable(GL_TEXTURE_2D);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        glEnable(GL_BLEND);
-        
-        for (int i = 0; i < TEXTURE_MAX_NUM; i++)
-        {
-            GLuint textureId = 0;
-            glGenTextures(1, &textureId);
-            unusedTextures.push_back(textureId);
-            glBindTexture(GL_TEXTURE_2D, textureId);
-            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 64, 64, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
-            
-            
-            glEnable(GL_TEXTURE_2D);
-            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-            glEnable(GL_BLEND);
-            
-            CGImageRef image;
-            CGContextRef spriteContext;
-            GLubyte *spriteData;
-            size_t    width, height;
-            
-            image = [UIImage imageNamed:[NSString stringWithCString:"antaeus.png" encoding:NSUTF8StringEncoding]].CGImage;
-            width = CGImageGetWidth(image);
-            height = CGImageGetHeight(image);
-            
-            if(image) {
-                //spriteData = (GLubyte *) malloc(width * height * 4); // 32bit color
-                spriteData = (GLubyte*)calloc(1, width*height*4);
-                spriteContext = CGBitmapContextCreate(spriteData, width, height, 8, width * 4, CGImageGetColorSpace(image), kCGImageAlphaPremultipliedLast);
-                
-                // 一旦コメント
-                //these next two lines are necessary because the iPhone has its y-axis upside down, so everything looks flipped
-                //CGContextTranslateCTM(spriteContext, 0.0, height); //i.e., move the y-origin from the top to the bottom
-                //CGContextScaleCTM(spriteContext, 1.0, -1.0); //i.e., invert the y-axis
-                
-                CGContextDrawImage(spriteContext, CGRectMake(0.0, 0.0, (CGFloat)width, (CGFloat)height), image);
-                CGContextRelease(spriteContext);
-                glBindTexture(GL_TEXTURE_2D, textureId);    // first Bind creates the texture and assigns a numeric name to it
-                glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-                glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-                //glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, spriteData);
-                glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, spriteData); // not work
-                
-                //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-                //glEnable(GL_TEXTURE_2D);
-                //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-                //glEnable(GL_BLEND);
-                //glEnable(GL_ALPHA_TEST);
-                
-                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-                
-                free(spriteData);
-                glBindTexture(GL_TEXTURE_2D, 0);
-        
-                
-            }
-        }
-    }*/
+    //std::map<std::string, HGLTexture*> HGLTexture::textureIds;
     
     HGLTexture* HGLTexture::createTextureWithAsset(std::string name)
     {
-        if (textureIds.find(name) == textureIds.end())
+        std::map<std::string, HGLTexture*>* textureIds = &currentContext->textureIds;
+        if (textureIds->find(name) == textureIds->end())
         {
             HGLTexture* tex = new HGLTexture();
             
@@ -115,8 +48,8 @@ namespace hgles {
             image = [UIImage imageNamed:[NSString stringWithCString:name.c_str() encoding:NSUTF8StringEncoding]].CGImage;
             width = CGImageGetWidth(image);
             height = CGImageGetHeight(image);
-            tex->sprWidth = tex->width = width;
-            tex->sprHeight = tex->height = height;
+            tex->width = width;
+            tex->height = height;
             
             if(image) {
                 spriteData = (GLubyte*)calloc(1, width*height*4);
@@ -138,12 +71,12 @@ namespace hgles {
                 glBindTexture(GL_TEXTURE_2D, 0);
                 
             }
-            textureIds[name] = tex;
+            (*textureIds)[name] = tex;
             return tex;
         }
         else
         {
-            return textureIds[name];
+            return (*textureIds)[name];
         }
         
     }
@@ -151,23 +84,20 @@ namespace hgles {
     HGLTexture::HGLTexture(const HGLTexture& obj)
     {
         this->textureId = obj.textureId;
-        this->sprWidth  = this->width = obj.width;
-        this->sprHeight = this->height = obj.height;
+        this->width = obj.width;
+        this->height = obj.height;
     }
     
     void HGLTexture::deleteAllTextures()
     {
-        for (std::vector<GLuint>::iterator itr = unusedTextures.begin(); itr != unusedTextures.end(); itr++)
+        std::map<std::string, HGLTexture*>* textureIds = &currentContext->textureIds;
+        for (std::map<std::string, HGLTexture*>::iterator itr = textureIds->begin(); itr != textureIds->end(); itr++)
         {
-            glDeleteTextures(1, &(*itr));
+            HGLTexture* t = itr->second;
+            glDeleteTextures(1, &t->textureId);
+            delete t;
         }
-        for (std::vector<GLuint>::iterator itr = activeTextures.begin(); itr != activeTextures.end(); itr++)
-        {
-            glDeleteTextures(1, &(*itr));
-        }
-        unusedTextures.clear();
-        activeTextures.clear();
-        textureIds.clear();
+        textureIds->clear();
     }
     
     GLKMatrix4 HGLTexture::getTextureMatrix(int x, int y, int w, int h)

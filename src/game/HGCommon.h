@@ -1,7 +1,7 @@
 #define IS_DEBUG_COLLISION 0
 
 // game define
-#define ENEMY_NUM 100
+#define ENEMY_NUM 10
 #define BULLET_NUM 200
 #define ENEMY_BULLET_NUM 200
 #define FIELD_SIZE 100
@@ -32,5 +32,10 @@ namespace HGGame {
         float x, y;
     } t_pos2d;
     
+    typedef enum
+    {
+        ENEMY_SIDE,
+        FRIEND_SIDE,
+    } WHICH_SIDE;
     
 }

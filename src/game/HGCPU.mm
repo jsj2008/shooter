@@ -23,22 +23,51 @@ namespace HGGame
         destination.set(0, 0, 0);
     }
     
+    void HGCPU::damage(int damage, HGFighter* attacker)
+    {
+        target = attacker;
+        life -= damage;
+        if (life == 0)
+        {
+            createEffect(EFFECT_EXPLODE_NORMAL, &position);
+        }
+        else
+        {
+            createEffect(EFFECT_HIT_NORMAL, &position);
+        }
+        target = attacker;
+    }
+    
     void HGCPU::update()
     {
-        // targetがなくなっていたら消去する
-        if (target && !target->isActive)
-        {
-            target = NULL;
-        }
         if (!this->isActive)
         {
             return;
         }
-        // tgの方向を向く
         if (target)
         {
-            float w = base::getDirectionByDegree(target);
-            base::setDirectionWithDegree(w);
+            // targetがなくなっていたら消去する
+            if (!target->isActive)
+            {
+                target = NULL;
+            }
+            else
+            {
+                // tgの方向を向く
+                float w = base::getDirectionByDegree(target);
+                base::setDirectionWithDegree(w);
+                
+                // 攻撃する
+                if (target->life > 0)
+                {
+                    fire();
+                }
+            }
+        }
+        else
+        {
+            // ターゲットがなければ探す
+            target = getRandomTarget(this->side);
         }
         
         if (destination.x == 0 || destination.y == 0)
@@ -59,17 +88,20 @@ namespace HGGame
             }
         }
         
-        // 攻撃する
-        if (target && target->life > 0)
-        {
-            fire();
-        }
-        
         // タゲの方向へ移動する
         float rad = atan2f(destination.x - position.x, destination.y - position.y);
         base::setMoveDirectionWithDegree(rad*180/M_PI - 90);
         
         base::update();
+    }
+    
+    HGFighter* HGCPU::tellTarget()
+    {
+        if (target && target->isActive)
+        {
+            return target;
+        }
+        return NULL;
     }
     
     void HGCPU::decideDestination()
