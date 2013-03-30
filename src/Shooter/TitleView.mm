@@ -204,14 +204,14 @@ t_title_btn title_btn_info[] = {
 - (void)renderTitle
 {
     // 光源なし
-    glUniform1f(hgles::HGLES::uUseLight, 0.0);
+    glUniform1f(hgles::currentContext->uUseLight, 0.0);
     
     // 2d
     glDisable(GL_DEPTH_TEST);
     
     // set camera
     hgles::HGLVector3 cameraPos = hgles::HGLVector3(0, 0, -5);
-    hgles::HGLES::cameraPosition = cameraPos;
+    hgles::currentContext->cameraPosition = cameraPos;
     hgles::HGLES::updateCameraMatrix();
     
     // draw background

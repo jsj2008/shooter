@@ -17,10 +17,10 @@ namespace hgles {
     
     void HGLMaterial::bind()
     {
-        glUniform4fv(HGLES::uMaterialAmbient, 1, (float*)(&ambient));
-        glUniform4fv(HGLES::uMaterialDiffuse, 1, (float*)(&diffuse));
-        glUniform4fv(HGLES::uMaterialSpecular, 1, (float*)(&specular));
-        glUniform1f(HGLES::uMaterialShininess, shininess);
+        glUniform4fv(currentContext->uMaterialAmbient, 1, (float*)(&ambient));
+        glUniform4fv(currentContext->uMaterialDiffuse, 1, (float*)(&diffuse));
+        glUniform4fv(currentContext->uMaterialSpecular, 1, (float*)(&specular));
+        glUniform1f(currentContext->uMaterialShininess, shininess);
     }
     
     void HGLMaterial::unbind()

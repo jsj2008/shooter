@@ -47,10 +47,10 @@ namespace hgles {
     void HGLObject3D::draw()
     {
         // 光源使用有無設定
-        glUniform1f(HGLES::uUseLight, useLight);
+        glUniform1f(currentContext->uUseLight, useLight);
         
         // アルファ値設定
-        glUniform1f(HGLES::uAlpha, alpha);
+        glUniform1f(currentContext->uAlpha, alpha);
         
         // モデルビュー変換
         // 注意!
@@ -76,8 +76,8 @@ namespace hgles {
         currentContext->mvMatrix = GLKMatrix4Scale(currentContext->mvMatrix, scale.x, scale.y, scale.z);
         if (paralell)
         {
-            currentContext->mvMatrix = GLKMatrix4Rotate(currentContext->mvMatrix, HGLES::cameraRotate.x*-1, 1, 0, 0);
-            currentContext->mvMatrix = GLKMatrix4Rotate(currentContext->mvMatrix, HGLES::cameraRotate.y*-1, 0, 1, 0);
+            currentContext->mvMatrix = GLKMatrix4Rotate(currentContext->mvMatrix, currentContext->cameraRotate.x*-1, 1, 0, 0);
+            currentContext->mvMatrix = GLKMatrix4Rotate(currentContext->mvMatrix, currentContext->cameraRotate.y*-1, 0, 1, 0);
             currentContext->mvMatrix = GLKMatrix4Rotate(currentContext->mvMatrix, rotate.z, 0, 0, 1); // zは回転を適用
         }
         else

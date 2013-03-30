@@ -35,7 +35,10 @@ namespace HGGame
         {
             createEffect(EFFECT_HIT_NORMAL, &position);
         }
-        target = attacker;
+        if (attacker && attacker->isActive)
+        {
+            target = attacker;
+        }
     }
     
     void HGCPU::update()
@@ -68,6 +71,7 @@ namespace HGGame
         {
             // ターゲットがなければ探す
             target = getRandomTarget(this->side);
+            assert(target->maxlife > 0);
         }
         
         if (destination.x == 0 || destination.y == 0)
@@ -106,7 +110,7 @@ namespace HGGame
     
     void HGCPU::decideDestination()
     {
-        if (target)
+        if (target && target->isActive)
         {
             // 遠距離
             float rad = rand(1, 359)*180/M_PI;

@@ -56,6 +56,14 @@
          contextName = "HGGame::HGEnemy::update():HGEnemy.mm">
       </ContextState>
       <ContextState
+         contextName = "HGGame::getRandomTarget(HGGame::WHICH_SIDE):HGGame.mm">
+         <PersistentStrings>
+            <PersistentString
+               value = "_friends[index]">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[ViewController render]:ViewController.mm">
          <PersistentStrings>
             <PersistentString
@@ -89,6 +97,9 @@
                value = "uvs">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "hgles::HGLTexture::createTextureWithAsset(std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;):HGLTexture.mm">
       </ContextState>
       <ContextState
          contextName = "HGLObjLoader::addMeshTo(HGLObject3D*, std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;):HGLObjLoader.mm">
@@ -198,6 +209,9 @@
       </ContextState>
       <ContextState
          contextName = "HGLVector3::set(float, float, float):HGLVector3.mm">
+      </ContextState>
+      <ContextState
+         contextName = "hgles::HGLES::initialize(float, float):HGLES.mm">
       </ContextState>
       <ContextState
          contextName = "HGGame::HGWeapon::fire(hgles::HGLVector3&amp;, hgles::HGLVector3&amp;, float, HGGame::WHICH_SIDE):HGWeapon.mm">

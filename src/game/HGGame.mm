@@ -92,7 +92,10 @@ namespace HGGame {
     {
         assert(from != to);
         int r = std::rand()%(to - from + 1);
-        return r+from;
+        int ret = r+from;
+        assert(ret >= from);
+        assert(to >= ret);
+        return ret;
     }
     
     void onMoveLeftPad(int degree, float power)
@@ -122,7 +125,8 @@ namespace HGGame {
                 {
                     return NULL;
                 }
-                index = rand(0, _enemies.size());
+                index = rand(0, _enemies.size() - 1);
+                assert(_enemies[index] != NULL);
                 return _enemies[index];
                 break;
             case ENEMY_SIDE:
@@ -130,7 +134,8 @@ namespace HGGame {
                 {
                     return NULL;
                 }
-                index = rand(0, _friends.size());
+                index = rand(0, _friends.size() - 1);
+                assert(_friends[index] != NULL);
                 return _friends[index];
                 break;
             default:
@@ -790,7 +795,7 @@ namespace HGGame {
         try {*/
             
         // 光源なし
-        glUniform1f(hgles::HGLES::uUseLight, 0.0);
+        glUniform1f(hgles::currentContext->uUseLight, 0.0);
         
         // 2d
         glDisable(GL_DEPTH_TEST);
@@ -802,8 +807,8 @@ namespace HGGame {
             _cameraPosition.y = _player->position.y * -1 + 13;
             _cameraPosition.z = -20;
             _cameraRotate.x = -28 * M_PI/180;
-            hgles::HGLES::cameraPosition = _cameraPosition;
-            hgles::HGLES::cameraRotate = _cameraRotate;
+            hgles::currentContext->cameraPosition = _cameraPosition;
+            hgles::currentContext->cameraRotate = _cameraRotate;
             hgles::HGLES::updateCameraMatrix();
         }
         
@@ -816,8 +821,8 @@ namespace HGGame {
              }*/
         
         hgles::HGLES::pushMatrix();
-        hgles::currentContext->mvMatrix = GLKMatrix4Rotate(hgles::currentContext->mvMatrix, hgles::HGLES::cameraRotate.x*-1, 1, 0, 0);
-        hgles::currentContext->mvMatrix = GLKMatrix4Rotate(hgles::currentContext->mvMatrix, hgles::HGLES::cameraRotate.y*-1, 0, 1, 0);
+        hgles::currentContext->mvMatrix = GLKMatrix4Rotate(hgles::currentContext->mvMatrix, hgles::currentContext->cameraRotate.x*-1, 1, 0, 0);
+        hgles::currentContext->mvMatrix = GLKMatrix4Rotate(hgles::currentContext->mvMatrix, hgles::currentContext->cameraRotate.y*-1, 0, 1, 0);
         
         // draw bg
         for (std::vector<hgles::t_hgl2di*>::reverse_iterator itr = background.rbegin(); itr != background.rend(); ++itr)

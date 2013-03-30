@@ -18,11 +18,53 @@ namespace hgles {
     
     typedef struct t_context
     {
+        ////////////////////
+        // テクスチャIDリスト
         std::map<std::string, HGLTexture*> textureIds;
+        
+        ////////////////////
+        // モデルビュー行列
         std::stack<GLKMatrix4> matrixStack;
         GLKMatrix4 mvMatrix;
         GLKMatrix4 cameraMatrix;
         GLKMatrix4 projectionMatrix;
+        
+        ////////////////////
+        // カメラ設定
+        // 反映するにはupdateCameraMatrixを呼び出す
+        HGLVector3 cameraPosition;
+        HGLVector3 cameraRotate;
+        
+        ////////////////////
+        // シェーダ変数ポインタ
+        GLuint aPositionSlot        ;
+        GLuint aNormalSlot          ;
+        GLuint aUVSlot              ;
+        // モデルビュー行列
+        GLuint uModelViewMatrixSlot ;
+        GLuint uMvpMatrixSlot       ;
+        GLuint uNormalMatrixSlot    ;
+        // 光源
+        GLuint uLightAmbientSlot;
+        GLuint uLightDiffuseSlot;
+        GLuint uLightSpecular;
+        GLuint uLightPos;
+        GLuint uUseLight;
+        // マテリアル
+        GLuint uMaterialAmbient;
+        GLuint uMaterialDiffuse;
+        GLuint uMaterialSpecular;
+        GLuint uMaterialShininess;
+        // テクスチャ
+        GLuint uTexMatrixSlot;
+        GLuint uTexSlot;
+        GLuint uUseTexture;
+        GLuint uTextureRepeatNum;
+        // カラー
+        GLuint uColor;
+        GLuint uBlendColor;
+        GLuint uUseAlphaMap;
+        GLuint uAlpha;
     } t_context;
     
     // 現在のコンテキストを設定する
@@ -48,55 +90,8 @@ namespace hgles {
         static void updateCameraMatrix();
         static void updateMatrix(); // シェーダ変数に現在の行列を渡す
         
-        static GLuint aPositionSlot        ;
-        static GLuint aNormalSlot          ;
-        static GLuint aUVSlot              ;
-        
-        static GLuint uModelViewMatrixSlot ;
-        static GLuint uMvpMatrixSlot ;
-        static GLuint uNormalMatrixSlot    ;
-        
-        static GLuint uLightAmbientSlot;
-        static GLuint uLightDiffuseSlot;
-        static GLuint uLightSpecular;
-        static GLuint uLightPos;
-        static GLuint uUseLight;
-        
-        static GLuint uMaterialAmbient;
-        static GLuint uMaterialDiffuse;
-        static GLuint uMaterialSpecular;
-        static GLuint uMaterialShininess;
-        
-        static GLuint uColor;
-        static GLuint uBlendColor;
-        
-        //static GLKMatrix4 mvMatrix; // モデルビュー行列
-        //static GLKMatrix4 cameraMatrix;
-        //static GLKMatrix4 projectionMatrix; // 射影行列
-        
-        // texture
-        static GLuint uUseTexture;
-        static GLuint uTexMatrixSlot;
-        static GLuint uTexSlot;
-        static GLuint uTextureRepeatNum;
-        
-        // alpha of mesh
-        static GLuint uAlpha;
-        
-        // alpha map
-        static GLuint uUseAlphaMap;
-        
-        // light
-        static Color ambient;
-        static Color diffuse;
-        static Color specular;
-        static Position lightPos;
-        
         static float viewWidth;
         static float viewHeight;
-        
-        static HGLVector3 cameraPosition;
-        static HGLVector3 cameraRotate;
         
     private:
         static void compileShaders();

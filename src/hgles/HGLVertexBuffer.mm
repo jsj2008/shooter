@@ -31,20 +31,20 @@ namespace hgles {
     
     void HGLVertexBuffer::bind()
     {
-        glEnableVertexAttribArray(HGLES::aPositionSlot);
-        glEnableVertexAttribArray(HGLES::aNormalSlot);
-        glEnableVertexAttribArray(HGLES::aUVSlot);
+        glEnableVertexAttribArray(currentContext->aPositionSlot);
+        glEnableVertexAttribArray(currentContext->aNormalSlot);
+        glEnableVertexAttribArray(currentContext->aUVSlot);
         //glEnableVertexAttribArray(HGLES::aColorSlot);
         glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
         
         // 頂点
-        glVertexAttribPointer(HGLES::aPositionSlot, 3, GL_FLOAT, GL_FALSE,
+        glVertexAttribPointer(currentContext->aPositionSlot, 3, GL_FLOAT, GL_FALSE,
                               sizeof(Vertex), 0);
         // UV
-        glVertexAttribPointer(HGLES::aUVSlot, 2, GL_FLOAT, GL_FALSE,
+        glVertexAttribPointer(currentContext->aUVSlot, 2, GL_FLOAT, GL_FALSE,
                               sizeof(Vertex), (GLvoid*) (sizeof(float) * 3));
         // 法線
-        glVertexAttribPointer(HGLES::aNormalSlot, 3, GL_FLOAT, GL_FALSE,
+        glVertexAttribPointer(currentContext->aNormalSlot, 3, GL_FLOAT, GL_FALSE,
                               sizeof(Vertex), (GLvoid*) (sizeof(float) * 5));
         
     }

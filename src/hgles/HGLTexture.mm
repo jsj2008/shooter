@@ -162,26 +162,26 @@ namespace hgles {
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, textureId);
         glBlendFunc(blend1, blend2);
-        glUniform1f(HGLES::uTexSlot, 0);
-        glUniform1f(HGLES::uUseTexture, 1.0);
-        glUniform1f(HGLES::uUseAlphaMap, isAlphaMap);
-        glUniform1f(HGLES::uTextureRepeatNum, repeatNum);
-        glUniform1f(HGLES::uAlpha, color.a);
+        glUniform1f(currentContext->uTexSlot, 0);
+        glUniform1f(currentContext->uUseTexture, 1.0);
+        glUniform1f(currentContext->uUseAlphaMap, isAlphaMap);
+        glUniform1f(currentContext->uTextureRepeatNum, repeatNum);
+        glUniform1f(currentContext->uAlpha, color.a);
         
         // テクスチャ行列
-        glUniformMatrix4fv(HGLES::uTexMatrixSlot, 1, 0, textureMatrix.m);
+        glUniformMatrix4fv(currentContext->uTexMatrixSlot, 1, 0, textureMatrix.m);
         if (isAlphaMap)
         {
-            glUniform4fv(HGLES::uColor, 1, (GLfloat*)(&color));
+            glUniform4fv(currentContext->uColor, 1, (GLfloat*)(&color));
         }
-        glUniform4fv(HGLES::uBlendColor, 1, (GLfloat*)(&blendColor));
+        glUniform4fv(currentContext->uBlendColor, 1, (GLfloat*)(&blendColor));
         //}
     }
     
     void HGLTexture::unbind()
     {
-        glUniform1f(HGLES::uUseTexture, 0);
-        glUniform1f(HGLES::uUseAlphaMap, 0);
+        glUniform1f(currentContext->uUseTexture, 0);
+        glUniform1f(currentContext->uUseAlphaMap, 0);
         glDisable(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D, 0);
     }

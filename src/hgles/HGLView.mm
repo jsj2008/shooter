@@ -181,12 +181,12 @@ using namespace hgles;
     diffuse = {0.7, 0.7, 0.7, 1.0};
     specular = {1.9, 1.9, 1.9, 1.0};
     lightPos = {115.0, 115.0, 0.0};
-    glUniform4fv(HGLES::uLightAmbientSlot, 1, (GLfloat*)(&ambient));
-    glUniform4fv(HGLES::uLightDiffuseSlot, 1, (GLfloat*)(&diffuse));
-    glUniform4fv(HGLES::uLightSpecular, 1, (GLfloat*)(&specular));
-    glUniform3fv(HGLES::uLightPos, 1, (GLfloat*)(&lightPos));
-    glUniform1f(HGLES::uUseLight, 1);
-    glUniform1f(HGLES::uAlpha, 1.0);
+    glUniform4fv(currentContext->uLightAmbientSlot, 1, (GLfloat*)(&ambient));
+    glUniform4fv(currentContext->uLightDiffuseSlot, 1, (GLfloat*)(&diffuse));
+    glUniform4fv(currentContext->uLightSpecular, 1, (GLfloat*)(&specular));
+    glUniform3fv(currentContext->uLightPos, 1, (GLfloat*)(&lightPos));
+    glUniform1f(currentContext->uUseLight, 1);
+    glUniform1f(currentContext->uAlpha, 1.0);
 }
 
 - (void)showBuffer

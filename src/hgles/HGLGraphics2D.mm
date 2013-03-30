@@ -60,7 +60,7 @@ namespace hgles {
                          HGLVector3* rotate,
                          HGLTexture* texture)
     {
-        glUniform1f(HGLES::uAlpha, texture->color.a);
+        glUniform1f(currentContext->uAlpha, texture->color.a);
         HGLES::pushMatrix();
         
         currentContext->mvMatrix = GLKMatrix4Translate(currentContext->mvMatrix, position->x, position->y, position->z);
@@ -84,13 +84,13 @@ namespace hgles {
                              HGLVector3* rotate,
                              HGLTexture* texture)
     {
-        glUniform1f(HGLES::uAlpha, texture->color.a);
+        glUniform1f(currentContext->uAlpha, texture->color.a);
         HGLES::pushMatrix();
         
         currentContext->mvMatrix = GLKMatrix4Translate(currentContext->mvMatrix, position->x, position->y, position->z);
         currentContext->mvMatrix = GLKMatrix4Scale(currentContext->mvMatrix, scale->x, scale->y, scale->z);
-        currentContext->mvMatrix = GLKMatrix4Rotate(currentContext->mvMatrix, HGLES::cameraRotate.x*-1, 1, 0, 0);
-        currentContext->mvMatrix = GLKMatrix4Rotate(currentContext->mvMatrix, HGLES::cameraRotate.y*-1, 0, 1, 0);
+        currentContext->mvMatrix = GLKMatrix4Rotate(currentContext->mvMatrix, currentContext->cameraRotate.x*-1, 1, 0, 0);
+        currentContext->mvMatrix = GLKMatrix4Rotate(currentContext->mvMatrix, currentContext->cameraRotate.y*-1, 0, 1, 0);
         currentContext->mvMatrix = GLKMatrix4Rotate(currentContext->mvMatrix, rotate->z, 0, 0, 1);
         
         HGLES::updateMatrix();

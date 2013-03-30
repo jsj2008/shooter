@@ -20,59 +20,8 @@ namespace hgles {
     std::map<int, t_context> contextMap;
     int contextIdIndex = -1;
     
-    //std::stack<GLKMatrix4> HGLES::matrixStack;
-    
-    /*
-    GLKMatrix4 HGLES::mvMatrix;
-    GLKMatrix4 HGLES::cameraMatrix;
-    GLKMatrix4 HGLES::projectionMatrix;
-    */
-    
-    GLuint HGLES::aPositionSlot        ;
-    GLuint HGLES::aNormalSlot          ;
-    GLuint HGLES::aUVSlot              ;
-    
-    //GLuint HGLES::uProjectionMatrixSlot;
-    GLuint HGLES::uModelViewMatrixSlot ;
-    GLuint HGLES::uMvpMatrixSlot       ;
-    GLuint HGLES::uNormalMatrixSlot    ;
-    
-    GLuint HGLES::uLightAmbientSlot;
-    GLuint HGLES::uLightDiffuseSlot;
-    GLuint HGLES::uLightSpecular;
-    GLuint HGLES::uLightPos;
-    GLuint HGLES::uUseLight;
-    
-    GLuint HGLES::uMaterialAmbient;
-    GLuint HGLES::uMaterialDiffuse;
-    GLuint HGLES::uMaterialSpecular;
-    GLuint HGLES::uMaterialShininess;
-    
-    GLuint HGLES::uTexMatrixSlot;
-    GLuint HGLES::uTexSlot;
-    GLuint HGLES::uUseTexture;
-    GLuint HGLES::uTextureRepeatNum;
-    
-    GLuint HGLES::uColor;
-    GLuint HGLES::uBlendColor;
-    
-    GLuint HGLES::uUseAlphaMap;
-    
-    // アルファ
-    GLuint HGLES::uAlpha;
-    
-    // 光源設定
-    Color HGLES::ambient;
-    Color HGLES::diffuse;
-    Color HGLES::specular;
-    Position HGLES::lightPos;
-    
     float HGLES::viewWidth;
     float HGLES::viewHeight;
-    
-    // カメラ
-    HGLVector3 HGLES::cameraPosition;
-    HGLVector3 HGLES::cameraRotate;
     
     int currentContextId = 0;
     t_context* currentContext = NULL;
@@ -113,25 +62,25 @@ namespace hgles {
     void HGLES::updateCameraMatrix()
     {
         currentContext->cameraMatrix = GLKMatrix4Identity;
-        currentContext->cameraMatrix = GLKMatrix4Rotate(currentContext->cameraMatrix, cameraRotate.x, 1, 0, 0);
-        currentContext->cameraMatrix = GLKMatrix4Rotate(currentContext->cameraMatrix, cameraRotate.y, 0, 1, 0);
-        currentContext->cameraMatrix = GLKMatrix4Rotate(currentContext->cameraMatrix, cameraRotate.z, 0, 0, 1);
-        currentContext->cameraMatrix = GLKMatrix4Translate(currentContext->cameraMatrix, cameraPosition.x, cameraPosition.y, cameraPosition.z);
+        currentContext->cameraMatrix = GLKMatrix4Rotate(currentContext->cameraMatrix, currentContext->cameraRotate.x, 1, 0, 0);
+        currentContext->cameraMatrix = GLKMatrix4Rotate(currentContext->cameraMatrix, currentContext->cameraRotate.y, 0, 1, 0);
+        currentContext->cameraMatrix = GLKMatrix4Rotate(currentContext->cameraMatrix, currentContext->cameraRotate.z, 0, 0, 1);
+        currentContext->cameraMatrix = GLKMatrix4Translate(currentContext->cameraMatrix, currentContext->cameraPosition.x, currentContext->cameraPosition.y, currentContext->cameraPosition.z);
     }
     
     void HGLES::updateMatrix()
     {
         // 視点行列にモデル行列を掛けること
         currentContext->mvMatrix = GLKMatrix4Multiply(currentContext->cameraMatrix, currentContext->mvMatrix);
-        glUniformMatrix4fv(HGLES::uModelViewMatrixSlot, 1, 0, currentContext->mvMatrix.m);
+        glUniformMatrix4fv(currentContext->uModelViewMatrixSlot, 1, 0, currentContext->mvMatrix.m);
         GLKMatrix4 mvpMatrix = GLKMatrix4Multiply(currentContext->projectionMatrix, currentContext->mvMatrix);
-        glUniformMatrix4fv(HGLES::uMvpMatrixSlot, 1, 0, mvpMatrix.m);
+        glUniformMatrix4fv(currentContext->uMvpMatrixSlot, 1, 0, mvpMatrix.m);
         
         // モデルビュー行列の逆転置行列の指定
         GLKMatrix4 normalM = currentContext->mvMatrix;
         bool result = true;
         normalM = GLKMatrix4InvertAndTranspose(normalM, (bool*)&result);
-        glUniformMatrix4fv(HGLES::uNormalMatrixSlot, 1, false, normalM.m);
+        glUniformMatrix4fv(currentContext->uNormalMatrixSlot, 1, false, normalM.m);
     }
     
     GLuint HGLES::compileShader(NSString* shaderName, GLenum shaderType)
@@ -179,35 +128,35 @@ namespace hgles {
         glAttachShader(programHandle, fragmentShader);
         glLinkProgram(programHandle);
         
-        aPositionSlot = glGetAttribLocation(programHandle, "aPosition");
-        aNormalSlot = glGetAttribLocation(programHandle, "aNormal");
-        aUVSlot = glGetAttribLocation(programHandle, "aUV");
+        currentContext->aPositionSlot = glGetAttribLocation(programHandle, "aPosition");
+        currentContext->aNormalSlot = glGetAttribLocation(programHandle, "aNormal");
+        currentContext->aUVSlot = glGetAttribLocation(programHandle, "aUV");
         
-        uMvpMatrixSlot = glGetUniformLocation(programHandle, "uMvpMatrix");
-        uNormalMatrixSlot = glGetUniformLocation(programHandle, "uNormalMatrix");
+        currentContext->uMvpMatrixSlot = glGetUniformLocation(programHandle, "uMvpMatrix");
+        currentContext->uNormalMatrixSlot = glGetUniformLocation(programHandle, "uNormalMatrix");
         
-        uMaterialAmbient = glGetUniformLocation(programHandle, "uMaterialAmbient");
-        uMaterialDiffuse = glGetUniformLocation(programHandle, "uMaterialDiffuse");
-        uMaterialSpecular = glGetUniformLocation(programHandle, "uMaterialSpecular");
-        uMaterialShininess = glGetUniformLocation(programHandle, "uMaterialShininess");
+        currentContext->uMaterialAmbient = glGetUniformLocation(programHandle, "uMaterialAmbient");
+        currentContext->uMaterialDiffuse = glGetUniformLocation(programHandle, "uMaterialDiffuse");
+        currentContext->uMaterialSpecular = glGetUniformLocation(programHandle, "uMaterialSpecular");
+        currentContext->uMaterialShininess = glGetUniformLocation(programHandle, "uMaterialShininess");
         
-        uLightAmbientSlot = glGetUniformLocation(programHandle, "uLightAmbient");
-        uLightDiffuseSlot = glGetUniformLocation(programHandle, "uLightDiffuse");
-        uLightSpecular = glGetUniformLocation(programHandle, "uLightSpecular");
-        uLightPos = glGetUniformLocation(programHandle, "uLightPos");
-        uUseLight = glGetUniformLocation(programHandle, "uUseLight");
+        currentContext->uLightAmbientSlot = glGetUniformLocation(programHandle, "uLightAmbient");
+        currentContext->uLightDiffuseSlot = glGetUniformLocation(programHandle, "uLightDiffuse");
+        currentContext->uLightSpecular = glGetUniformLocation(programHandle, "uLightSpecular");
+        currentContext->uLightPos = glGetUniformLocation(programHandle, "uLightPos");
+        currentContext->uUseLight = glGetUniformLocation(programHandle, "uUseLight");
         
-        uTexMatrixSlot = glGetUniformLocation(programHandle, "uTexMatrix");
-        uTexSlot = glGetUniformLocation(programHandle, "uTex");
-        uUseTexture = glGetUniformLocation(programHandle, "uUseTexture");
-        uTextureRepeatNum = glGetUniformLocation(programHandle, "uTextureRepeatNum");
+        currentContext->uTexMatrixSlot = glGetUniformLocation(programHandle, "uTexMatrix");
+        currentContext->uTexSlot = glGetUniformLocation(programHandle, "uTex");
+        currentContext->uUseTexture = glGetUniformLocation(programHandle, "uUseTexture");
+        currentContext->uTextureRepeatNum = glGetUniformLocation(programHandle, "uTextureRepeatNum");
         
-        uColor = glGetUniformLocation(programHandle, "uColor");
-        uBlendColor = glGetUniformLocation(programHandle, "uBlendColor");
+        currentContext->uColor = glGetUniformLocation(programHandle, "uColor");
+        currentContext->uBlendColor = glGetUniformLocation(programHandle, "uBlendColor");
         
-        uUseAlphaMap = glGetUniformLocation(programHandle, "uUseAlphaMap");
+        currentContext->uUseAlphaMap = glGetUniformLocation(programHandle, "uUseAlphaMap");
         
-        uAlpha = glGetUniformLocation(programHandle, "uAlpha");
+        currentContext->uAlpha = glGetUniformLocation(programHandle, "uAlpha");
         
         GLint linkSuccess;
         glGetProgramiv(programHandle, GL_LINK_STATUS, &linkSuccess);
