@@ -16,7 +16,7 @@
 #import "HGCollision.h"
 #import "HGHitAnime.h"
 #import "HGSpawn.h"
-
+#import "HGUser.h"
 #import <vector>
 #import <map>
 //#import <mutex>
@@ -79,7 +79,6 @@ namespace HGGame {
     T_COL_LIST col_bullets;
     T_COL_LIST col_enemyBullets;
     t_size2d size_of_cell = {FIELD_SIZE/COL_FLD_SPLIT_NUM, FIELD_SIZE/COL_FLD_SPLIT_NUM};
-    
     //pthread_mutex_t	mutex;  // MUTEX
     
     
@@ -90,7 +89,7 @@ namespace HGGame {
     
     int rand(int from, int to)
     {
-        assert(from != to);
+        if (from == to) return from;
         int r = std::rand()%(to - from + 1);
         int ret = r+from;
         assert(ret >= from);
@@ -288,22 +287,30 @@ namespace HGGame {
         size_of_field = {FIELD_SIZE, FIELD_SIZE};
         center_of_field = {FIELD_SIZE/2, FIELD_SIZE/2};
         
-        // create players
-        _player = new HGPlayer();
-        _player->init(HGF_PL1, FRIEND_SIDE);
-        _player->position.set(center_of_field.x, center_of_field.y, ZPOS);
-        _player->setDirectionWithDegree(0);
-        fire = false;
-        _friends.push_back(_player);
-        
         // create friends
-        for (int i = 0; i < 10; ++i)
+        userinfo::t_fighter_list* flist = userinfo::current_fighter_list;
+        for (int i = 0; i < flist->size(); ++i)
         {
-            HGCPU* f = new HGCPU();
-            f->init(HGF_PL1, FRIEND_SIDE);
-            f->position.set(center_of_field.x, center_of_field.y, ZPOS);
-            f->setDirectionWithDegree(0);
-            _friends.push_back(f);
+            userinfo::t_fighter* dat = &(*flist)[i];
+            if (dat->player > 0)
+            {
+                // create players
+                _player = new HGPlayer();
+                _player->initWithData(dat, FRIEND_SIDE);
+                _player->position.set(center_of_field.x, center_of_field.y, ZPOS);
+                _player->setDirectionWithDegree(0);
+                fire = false;
+                _friends.push_back(_player);
+                
+            }
+            else if (dat->battle > 0)
+            {
+                HGCPU* f = new HGCPU();
+                f->initWithData(dat, FRIEND_SIDE);
+                f->position.set(center_of_field.x, center_of_field.y, ZPOS);
+                f->setDirectionWithDegree(0);
+                _friends.push_back(f);
+            }
         }
     
         // create enemies
@@ -389,7 +396,6 @@ namespace HGGame {
             nebula.push_back(t);
         }
         
-        
         // create nebula
         for (int i = 0; i < 1; ++i)
         {
@@ -461,7 +467,7 @@ namespace HGGame {
         //pthread_mutex_lock(&mutex); // スレッド保護
         //try {
         
-            // 現在時間の更新
+        // 現在時間の更新
         NSDate* nowDt = [NSDate date];
         now_time = [nowDt timeIntervalSince1970];
         ++updateCount;
@@ -605,17 +611,6 @@ namespace HGGame {
                     {
                         b->isActive = false;
                         a->damage(b->power, b->owner, b);
-#warning 仮
-                        /*
-                        a->life--;
-                        if (a->life == 0)
-                        {
-                            createEffect(EFFECT_EXPLODE_NORMAL, &a->position);
-                        }
-                        else
-                        {
-                            createEffect(EFFECT_HIT_NORMAL, &a->position);
-                        }*/
                     }
                 }
             }

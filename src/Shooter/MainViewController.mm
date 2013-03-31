@@ -14,6 +14,7 @@
 #import "BackgroundView.h"
 #import "MenuView.h"
 #import "TroopsView.h"
+#import "HGUser.h"
 
 @interface MainViewController()
 {
@@ -28,6 +29,7 @@
     
     // menu
     MenuView* menuView;
+    TroopsView* troopsView;
 }
 @end
 
@@ -73,6 +75,10 @@ static MainViewController* instance = nil;
 
 -(void)start
 {
+    // データロード
+    HGGame::userinfo::loadData();
+    
+    // タイトル
     [title removeFromSuperview];
     [title release];
     title = NULL;
@@ -125,8 +131,29 @@ static MainViewController* instance = nil;
         f.origin.x = f.size.width;
         menuView.frame = f;
     } completion:^(BOOL finished) {
-        TroopsView* t = [[TroopsView alloc] init];
-        [self.view addSubview:t];
+        troopsView = [[TroopsView alloc] init];
+        [self.view addSubview:troopsView];
+    }];
+}
+
++(void)HideTroops
+{
+    if (instance)
+    {
+        [instance hideTroops];
+    }
+}
+
+-(void)hideTroops
+{
+    [UIView animateWithDuration:0.2 animations:^{
+        [troopsView setAlpha:0];
+        CGRect f = menuView.frame;
+        f.origin.x = 0;
+        menuView.frame = f;
+    } completion:^(BOOL finished) {
+        [troopsView release];
+        troopsView = NULL;
     }];
 }
 

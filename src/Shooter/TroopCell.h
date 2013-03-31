@@ -5,15 +5,14 @@
 
 #import <Foundation/Foundation.h>
 
+#import "HGUser.h"
+
 @interface TroopCell : UITableViewCell
 {
-    UILabel *cardTitle;
-    UIView *cellBackground;
-    UIColor *cellColor;
-    int cardHeight;
-    int cardWidth;
 }
+@property(readwrite, atomic)HGGame::userinfo::t_fighter* data;
 
 - (void)addContent;
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier withHeight:(int)cellHeight withWidth:(int)cellWidth withCornerRadius:(int)cornerRadius withColor:(UIColor *)color;
+- (id)initWithReuseIdentifier:(NSString *)reuseIdentifier withHeight:(int)cellHeight withWidth:(int)cellWidth withData:(HGGame::userinfo::t_fighter*) indata;
+- (void)refresh;
 @end

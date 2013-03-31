@@ -16,6 +16,7 @@
 +(void)Start;
 +(void)StageStart;
 +(void)ShowTroops;
++(void)HideTroops;
 
 @end
 

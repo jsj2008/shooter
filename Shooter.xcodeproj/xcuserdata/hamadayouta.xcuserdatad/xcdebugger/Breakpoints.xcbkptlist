@@ -8,11 +8,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/game/HGGame.mm"
-         timestampString = "386355246.210761"
+         timestampString = "386433691.237271"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "297"
-         endingLineNumber = "297"
+         startingLineNumber = "292"
+         endingLineNumber = "292"
          landmarkName = "initialize()"
          landmarkType = "7">
       </FileBreakpoint>
@@ -21,24 +21,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/game/HGGame.mm"
-         timestampString = "386355246.210761"
+         timestampString = "386433691.237271"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "300"
-         endingLineNumber = "300"
-         landmarkName = "initialize()"
-         landmarkType = "7">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "src/game/HGGame.mm"
-         timestampString = "386363994.016344"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "726"
-         endingLineNumber = "726"
+         startingLineNumber = "721"
+         endingLineNumber = "721"
          landmarkName = "update(t_keystate* keystate)"
          landmarkType = "7">
       </FileBreakpoint>
@@ -47,7 +34,20 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/game/HGGame.mm"
-         timestampString = "386355246.210761"
+         timestampString = "386433691.237271"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "459"
+         endingLineNumber = "459"
+         landmarkName = "drawLife(hgles::HGLVector3* position, t_size2d *realSize, float lifeRate)"
+         landmarkType = "7">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/game/HGGame.mm"
+         timestampString = "386433691.237271"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "453"
@@ -60,24 +60,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/game/HGGame.mm"
-         timestampString = "386355246.210761"
+         timestampString = "386433691.237271"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "447"
-         endingLineNumber = "447"
-         landmarkName = "drawLife(hgles::HGLVector3* position, t_size2d *realSize, float lifeRate)"
-         landmarkType = "7">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "src/game/HGGame.mm"
-         timestampString = "386363994.016344"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "750"
-         endingLineNumber = "750"
+         startingLineNumber = "745"
+         endingLineNumber = "745"
          landmarkName = "update(t_keystate* keystate)"
          landmarkType = "7">
       </FileBreakpoint>
@@ -86,11 +73,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/game/HGGame.mm"
-         timestampString = "386355246.210761"
+         timestampString = "386433691.237271"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "562"
-         endingLineNumber = "562"
+         startingLineNumber = "568"
+         endingLineNumber = "568"
          landmarkName = "update(t_keystate* keystate)"
          landmarkType = "7">
       </FileBreakpoint>
@@ -164,7 +151,20 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/game/HGFighter.mm"
-         timestampString = "386314549.759795"
+         timestampString = "386431594.31261"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "136"
+         endingLineNumber = "136"
+         landmarkName = "HGFighter::init(HG_FIGHTER_TYPE type, WHICH_SIDE side)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/game/HGFighter.mm"
+         timestampString = "386431594.31261"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "123"
@@ -177,24 +177,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/game/HGFighter.mm"
-         timestampString = "386314165.079534"
+         timestampString = "386431594.31261"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "110"
-         endingLineNumber = "110"
-         landmarkName = "HGFighter::init(HG_FIGHTER_TYPE type, WHICH_SIDE side)"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "src/game/HGFighter.mm"
-         timestampString = "386314165.079534"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "107"
-         endingLineNumber = "107"
+         startingLineNumber = "120"
+         endingLineNumber = "120"
          landmarkName = "HGFighter::init(HG_FIGHTER_TYPE type, WHICH_SIDE side)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -216,11 +203,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/game/HGFighter.mm"
-         timestampString = "386314165.079534"
+         timestampString = "386428980.506243"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "62"
-         endingLineNumber = "62"
+         startingLineNumber = "70"
+         endingLineNumber = "70"
          landmarkName = "HGFighter::draw()"
          landmarkType = "5">
       </FileBreakpoint>
@@ -255,11 +242,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/game/HGGame.mm"
-         timestampString = "386355246.210761"
+         timestampString = "386433691.237271"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "495"
-         endingLineNumber = "495"
+         startingLineNumber = "501"
+         endingLineNumber = "501"
          landmarkName = "update(t_keystate* keystate)"
          landmarkType = "7">
       </FileBreakpoint>
@@ -281,11 +268,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/game/HGGame.mm"
-         timestampString = "386355246.210761"
+         timestampString = "386428980.506243"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "133"
-         endingLineNumber = "133"
+         startingLineNumber = "132"
+         endingLineNumber = "132"
          landmarkName = "getRandomTarget(WHICH_SIDE selfSide)"
          landmarkType = "7">
       </FileBreakpoint>
@@ -461,11 +448,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/Shooter/MainViewController.mm"
-         timestampString = "386411558.812942"
+         timestampString = "386437087.178072"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "60"
-         endingLineNumber = "60"
+         startingLineNumber = "62"
+         endingLineNumber = "62"
          landmarkName = "-init"
          landmarkType = "5">
       </FileBreakpoint>
@@ -474,11 +461,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/game/HGGame.mm"
-         timestampString = "386363292.362683"
+         timestampString = "386433691.237271"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "492"
-         endingLineNumber = "492"
+         startingLineNumber = "498"
+         endingLineNumber = "498"
          landmarkName = "update(t_keystate* keystate)"
          landmarkType = "7">
       </FileBreakpoint>
@@ -487,11 +474,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/game/HGGame.mm"
-         timestampString = "386363299.661429"
+         timestampString = "386433691.237271"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "515"
-         endingLineNumber = "515"
+         startingLineNumber = "521"
+         endingLineNumber = "521"
          landmarkName = "update(t_keystate* keystate)"
          landmarkType = "7">
       </FileBreakpoint>
@@ -500,11 +487,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/game/HGGame.mm"
-         timestampString = "386363316.873124"
+         timestampString = "386433691.237271"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "538"
-         endingLineNumber = "538"
+         startingLineNumber = "544"
+         endingLineNumber = "544"
          landmarkName = "update(t_keystate* keystate)"
          landmarkType = "7">
       </FileBreakpoint>
@@ -513,11 +500,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/game/HGGame.mm"
-         timestampString = "386363338.074938"
+         timestampString = "386433691.237271"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "546"
-         endingLineNumber = "546"
+         startingLineNumber = "552"
+         endingLineNumber = "552"
          landmarkName = "update(t_keystate* keystate)"
          landmarkType = "7">
       </FileBreakpoint>
@@ -526,11 +513,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/game/HGGame.mm"
-         timestampString = "386363994.016344"
+         timestampString = "386433691.237271"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "886"
-         endingLineNumber = "886"
+         startingLineNumber = "881"
+         endingLineNumber = "881"
          landmarkName = "render()"
          landmarkType = "7">
       </FileBreakpoint>
@@ -571,6 +558,32 @@
          startingLineNumber = "163"
          endingLineNumber = "163"
          landmarkName = "-renderThis"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/Shooter/TroopsView.mm"
+         timestampString = "386439786.594409"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "178"
+         endingLineNumber = "178"
+         landmarkName = "-tableView:cellForRowAtIndexPath:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/Shooter/TroopsView.mm"
+         timestampString = "386438786.712847"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "95"
+         endingLineNumber = "95"
+         landmarkName = "-buttonPressed:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

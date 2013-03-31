@@ -2,6 +2,7 @@
 #import "HGFighter.h"
 #import "HGUtil.h"
 #import "HGCommon.h"
+#import "HGUser.h"
 
 #import <string>
 
@@ -15,6 +16,13 @@ namespace HGGame
     
     HGFighter::HGFighter()
     {
+    }
+    
+    void HGFighter::initWithData(userinfo::t_fighter* f, WHICH_SIDE side)
+    {
+        init(f->type, side);
+        life = f->life;
+        maxlife = f->life;
     }
     
     void HGFighter::update()
@@ -95,6 +103,11 @@ namespace HGGame
     {
         life = maxlife;
         this->maxlife = maxlife;
+    }
+    
+    std::string HGFighter::getTextureName()
+    {
+        return textureName;
     }
     
     void HGFighter::init(HG_FIGHTER_TYPE type, WHICH_SIDE side)

@@ -40,13 +40,6 @@ namespace HGGame {
         {
             bomb = (*hgles::HGLTexture::createTextureWithAsset("hit_small.png"));
 #warning 見方と敵で色をかえる
-            if (rand(0, 1) == 0)
-            {
-            bomb.blendColor = {0.8,1,1.5,1};
-            }
-            else
-            {
-            }
             sprSize = {64,64};
             isTextureInit = true;
         }

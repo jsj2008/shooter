@@ -26,7 +26,7 @@ t_menu_btn menu_btn_info[] = {
         -100,
         300,
         50,
-        @"select stage"
+        @"start battle"
     },
     {
         0,

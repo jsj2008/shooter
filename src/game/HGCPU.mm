@@ -71,7 +71,6 @@ namespace HGGame
         {
             // ターゲットがなければ探す
             target = getRandomTarget(this->side);
-            assert(target->maxlife > 0);
         }
         
         if (destination.x == 0 || destination.y == 0)

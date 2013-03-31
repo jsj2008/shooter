@@ -5,57 +5,153 @@
 
 #import "TroopCell.h"
 #import <QuartzCore/QuartzCore.h>
+#import "HGCPU.h"
+
+@interface TroopCell()
+{
+    UILabel *cardTitle;
+    int cardHeight;
+    int cardWidth;
+    UIView *cellBackground;
+    HGGame::HGCPU fighter;
+    // HP
+    UILabel* life;
+    // 搭乗/出撃
+    UILabel* battle;
+}
+@end
 
 @implementation TroopCell
+@synthesize data;
 
 // Take all the attributes defined in the CardList controller and use them to initialize the cell atributes.
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier withHeight:(int)cellHeight withWidth:(int)cellWidth withCornerRadius:(int)cornerRadius withColor:(UIColor *)color
+- (id)initWithReuseIdentifier:(NSString *)reuseIdentifier withHeight:(int)cellHeight withWidth:(int)cellWidth withData:(HGGame::userinfo::t_fighter*) indata
 {
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
     if (self) {
-        
-        //Use the QuartzCore library to add rounded corners to the cards
+        self.data = nil;
         cellBackground = [[UIView alloc] initWithFrame:CGRectZero];
         [[self contentView] addSubview:cellBackground];
         cellBackground.layer.masksToBounds = YES;
-        cellBackground.layer.cornerRadius = cornerRadius;
 
-        //All the area not used by the cellBackground ends up being the separated space between the cells.
-        //We make this area clear to give a floating effect to the cards over the background image (displayed
-        //in CardListAppDelegate). We also get rid of the extra lines by setting the selectionStyle to none.
         self.backgroundColor = [UIColor clearColor];
         self.selectionStyle = UITableViewCellSelectionStyleNone;
-        
         cardWidth = cellWidth;
         cardHeight = cellHeight;
-        cellColor = color;
+        self.data = indata;
+        fighter = HGGame::HGCPU();
+        fighter.initWithData(data, HGGame::FRIEND_SIDE);
     }
     return self;
 }
 
-// Layout the card shape with the attributes passed from the CardListController.
-- (void)layoutSubviews
+- (void)refresh
 {
-    [super layoutSubviews];
-    
-    CGRect cellBackgroundFrame = CGRectMake((300.0 - cardWidth) / 2, 0.0, cardWidth, cardHeight);
-    [cellBackground setFrame:cellBackgroundFrame];
-    cellBackground.backgroundColor = cellColor;
+    // 搭乗
+    {
+        NSString* str;
+        if (data->player > 0)
+        {
+            str = [NSString stringWithFormat:@"搭乗中"];
+        }
+        else if (data->battle > 0)
+        {
+            str = [NSString stringWithFormat:@"出撃予定"];
+        }
+        else
+        {
+            str = [NSString stringWithFormat:@""];
+        }
+        [battle setFont:[UIFont fontWithName:@"Helvetica-Bold" size:15]];
+        [battle setText:str];
+    }
 }
 
 // All the content inside the card can be added here. Feel free to add text and buttons.
 - (void)addContent
 {
-    //cardTitle is a placeholder example.
-    //ADD YOUR OWN CONTENT HERE!
-    cardTitle = [[UILabel alloc] initWithFrame:CGRectZero];
+    // 名前
+    cardTitle = [[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
     [[self contentView] addSubview:cardTitle];
     [cardTitle setFrame:CGRectMake(10.0, 5.0, cardWidth - 20.0, 30.0)];
     cardTitle.textAlignment = UITextAlignmentLeft;
-    cardTitle.backgroundColor = cellColor;
+    cardTitle.backgroundColor = [UIColor clearColor];
     [cardTitle setFont:[UIFont fontWithName:@"Helvetica-Bold" size:15]];
-    cardTitle.textColor = [UIColor blackColor];
-    [cardTitle setText:@"CARD TITLE"];
+    cardTitle.textColor = [UIColor whiteColor];
+    NSString* name = [NSString stringWithCString:data->name.c_str() encoding:NSUTF8StringEncoding];
+    [cardTitle setText:name];
+    
+    // 画像
+    NSString* fighterImgName = [NSString stringWithCString:fighter.textureName.c_str() encoding:NSUTF8StringEncoding];
+    UIImage* fighterImg = [UIImage imageNamed:fighterImgName];
+    
+    CGRect crop;
+    if (fighter.animeType == HGGame::HG_ANIME_SPRITE)
+    {
+        crop = CGRectMake(fighter.sprPos.x + fighter.sprSize.w*2, fighter.sprPos.y, fighter.sprSize.w, fighter.sprSize.h);
+    }
+    else
+    {
+        crop = CGRectMake(fighter.sprPos.x, fighter.sprPos.y, fighter.sprSize.w, fighter.sprSize.h);
+    }
+    fighterImg = [self imageByCropping:fighterImg toRect:crop];
+    UIImageView* fighterImgView = [[[UIImageView alloc] initWithImage:fighterImg] autorelease];
+    [fighterImgView setFrame:CGRectMake(10, 35, fighter.sprSize.w, fighter.sprSize.h)];
+    [[self contentView] addSubview:fighterImgView];
+    
+    // 背景
+    UILabel* infobg = [[UILabel alloc] initWithFrame:CGRectMake(100, 30, cardWidth - 100, cardHeight - 35)];
+    infobg.backgroundColor = [UIColor grayColor];
+    infobg.layer.borderColor = [UIColor whiteColor].CGColor;
+    infobg.layer.cornerRadius = 10;
+    [[self contentView] addSubview:infobg];
+    
+    // HP
+    life = [[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
+    [life setFrame:CGRectMake(10.0, 5.0, 200, 35)];
+    life.textAlignment = UITextAlignmentLeft;
+    life.backgroundColor = [UIColor clearColor];
+    life.textColor = [UIColor whiteColor];
+    NSString* lifestr = [NSString stringWithFormat:@"装甲: %d/%d", fighter.life, fighter.maxlife];
+    [life setFont:[UIFont fontWithName:@"Helvetica-Bold" size:15]];
+    [life setText:lifestr];
+    [infobg addSubview:life];
+    
+    // 搭乗
+    {
+        battle = [[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
+        [battle setFrame:CGRectMake(10.0, 45.0, 200, 35)];
+        battle.textAlignment = UITextAlignmentLeft;
+        battle.backgroundColor = [UIColor clearColor];
+        battle.textColor = [UIColor whiteColor];
+        NSString* str = nil;
+        if (data->player > 0)
+        {
+            str = [NSString stringWithFormat:@"搭乗中"];
+        }
+        else if (data->battle > 0)
+        {
+            str = [NSString stringWithFormat:@"出撃予定"];
+        }
+        else
+        {
+            str = [NSString stringWithFormat:@""];
+        }
+        [battle setFont:[UIFont fontWithName:@"Helvetica-Bold" size:15]];
+        [battle setText:str];
+        [infobg addSubview:battle];
+    }
+}
+
+- (UIImage*)imageByCropping:(UIImage *)imageToCrop toRect:(CGRect)rect
+{
+    float scale = [[UIScreen mainScreen] scale];
+    CGImageRef imageRef = CGImageCreateWithImageInRect([imageToCrop CGImage], rect);
+    UIImage *clipedImage = [UIImage imageWithCGImage:imageRef
+                                               scale:scale
+                                         orientation:UIImageOrientationUp];
+    CGImageRelease(imageRef);
+    return clipedImage;
 }
 
 @end

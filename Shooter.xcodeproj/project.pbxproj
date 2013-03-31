@@ -92,7 +92,6 @@
 		07DE74E916EC38B80048877C /* HGUtil.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07DE74E416EC38B80048877C /* HGUtil.mm */; };
 		07DE74EC16EC449B0048877C /* HGCollision.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07DE74EB16EC449A0048877C /* HGCollision.mm */; };
 		07DE74F416F5FA400048877C /* HGExplode.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07DE74F316F5FA3F0048877C /* HGExplode.mm */; };
-		07DE74F716F613020048877C /* HGHit.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07DE74F616F613000048877C /* HGHit.mm */; };
 		07DE74F916F61D310048877C /* sun.png in Resources */ = {isa = PBXBuildFile; fileRef = 07DE74F816F61D2E0048877C /* sun.png */; };
 		07DE74FB16F76EFE0048877C /* hit.png in Resources */ = {isa = PBXBuildFile; fileRef = 07DE74FA16F76EFC0048877C /* hit.png */; };
 		07DE74FD16F953E50048877C /* explode_small2.png in Resources */ = {isa = PBXBuildFile; fileRef = 07DE74FC16F953E30048877C /* explode_small2.png */; };
@@ -107,6 +106,7 @@
 		07DEEBFB1708235000580C16 /* CardListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 07DEEBF11708235000580C16 /* CardListCell.m */; };
 		07DEEBFC1708235000580C16 /* CardListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07DEEBF31708235000580C16 /* CardListController.m */; };
 		07DEEC041708350300580C16 /* TroopCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 07DEEC031708350200580C16 /* TroopCell.m */; };
+		07DEEC071708606600580C16 /* HGUser.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07DEEC061708606400580C16 /* HGUser.mm */; };
 		07E0463616886E73001F9CCE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07E0463516886E73001F9CCE /* UIKit.framework */; };
 		07E0463816886E73001F9CCE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07E0463716886E73001F9CCE /* Foundation.framework */; };
 		07E0463A16886E73001F9CCE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07E0463916886E73001F9CCE /* CoreGraphics.framework */; };
@@ -309,8 +309,6 @@
 		07DE74EB16EC449A0048877C /* HGCollision.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGCollision.mm; sourceTree = "<group>"; };
 		07DE74F216F5FA3E0048877C /* HGExplode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGExplode.h; sourceTree = "<group>"; };
 		07DE74F316F5FA3F0048877C /* HGExplode.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGExplode.mm; sourceTree = "<group>"; };
-		07DE74F516F613000048877C /* HGHit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGHit.h; sourceTree = "<group>"; };
-		07DE74F616F613000048877C /* HGHit.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGHit.mm; sourceTree = "<group>"; };
 		07DE74F816F61D2E0048877C /* sun.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sun.png; sourceTree = "<group>"; };
 		07DE74FA16F76EFC0048877C /* hit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hit.png; sourceTree = "<group>"; };
 		07DE74FC16F953E30048877C /* explode_small2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = explode_small2.png; sourceTree = "<group>"; };
@@ -332,6 +330,8 @@
 		07DEEBF31708235000580C16 /* CardListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CardListController.m; sourceTree = "<group>"; };
 		07DEEC021708350200580C16 /* TroopCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TroopCell.h; sourceTree = "<group>"; };
 		07DEEC031708350200580C16 /* TroopCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TroopCell.m; sourceTree = "<group>"; };
+		07DEEC051708606400580C16 /* HGUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGUser.h; sourceTree = "<group>"; };
+		07DEEC061708606400580C16 /* HGUser.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGUser.mm; sourceTree = "<group>"; };
 		07E0463116886E73001F9CCE /* Shooter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shooter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		07E0463516886E73001F9CCE /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		07E0463716886E73001F9CCE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -672,6 +672,8 @@
 		07DE74D916EC38B80048877C /* game */ = {
 			isa = PBXGroup;
 			children = (
+				07DEEC051708606400580C16 /* HGUser.h */,
+				07DEEC061708606400580C16 /* HGUser.mm */,
 				07339E1E170342240057041F /* HGSpawn.h */,
 				07339E1F170342250057041F /* HGSpawn.mm */,
 				07339E1C16FF18700057041F /* ColTrees.h */,
@@ -690,8 +692,6 @@
 				07DE74E016EC38B80048877C /* HGFighter.mm */,
 				07DE74E116EC38B80048877C /* HGGame.h */,
 				07DE74E216EC38B80048877C /* HGGame.mm */,
-				07DE74F516F613000048877C /* HGHit.h */,
-				07DE74F616F613000048877C /* HGHit.mm */,
 				07DE750216F98AE60048877C /* HGHitAnime.h */,
 				07DE750316F98AE80048877C /* HGHitAnime.mm */,
 				07436B1116FD6D76002BA1C9 /* HGPlayer.h */,
@@ -966,7 +966,6 @@
 				07DE74E916EC38B80048877C /* HGUtil.mm in Sources */,
 				07DE74EC16EC449B0048877C /* HGCollision.mm in Sources */,
 				07DE74F416F5FA400048877C /* HGExplode.mm in Sources */,
-				07DE74F716F613020048877C /* HGHit.mm in Sources */,
 				07DE750416F98AEA0048877C /* HGHitAnime.mm in Sources */,
 				07436B1016FD647F002BA1C9 /* HGCPU.mm in Sources */,
 				07436B1316FD6D76002BA1C9 /* HGPlayer.mm in Sources */,
@@ -980,6 +979,7 @@
 				07DEEBFB1708235000580C16 /* CardListCell.m in Sources */,
 				07DEEBFC1708235000580C16 /* CardListController.m in Sources */,
 				07DEEC041708350300580C16 /* TroopCell.m in Sources */,
+				07DEEC071708606600580C16 /* HGUser.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
