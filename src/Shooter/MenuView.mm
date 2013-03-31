@@ -1,44 +1,38 @@
-#import "TitleView.h"
+#import "MenuView.h"
 #import "MainViewController.h"
 #import <QuartzCore/QuartzCore.h>
 
 #import <vector>
 
-// openGL
-#import "HGLView.h"
-#import "HGLES.h"
-#import "HGLGraphics2D.h"
-
-typedef enum TYPE_TITLE_BTN
+typedef enum TYPE_MENU_BTN
 {
-    TITLE_START_BTN,
-    TITLE_BTN_NUM
-} TYPE_BTN;
+    MENU_STAGE_BTN,
+    MENU_BTN_NUM
+} TYPE_MENU_BTN;
 
-typedef struct t_title_btn
+typedef struct t_menu_btn
 {
     float x;
     float y;
     float w;
     float h;
     NSString* btnName;
-} t_title_btn;
+} t_menu_btn;
 
-t_title_btn title_btn_info[] = {
+t_menu_btn menu_btn_info[] = {
     {
         0,
         100,
         200,
         50,
-        @"start"
+        @"stage"
     }
 };
 
-
-@interface TitleView ()
+@interface MenuView ()
 {
     
-    UIButton* _buttons[TITLE_BTN_NUM];
+    UIButton* _buttons[MENU_BTN_NUM];
     
     // OpenGL
     HGLView* _glview;
@@ -55,7 +49,7 @@ t_title_btn title_btn_info[] = {
 
 @end
 
-@implementation TitleView
+@implementation MenuView
 
 - (id)init
 {
@@ -129,9 +123,9 @@ t_title_btn title_btn_info[] = {
     
     // button
     CGPoint center = CGPointMake(self.frame.size.width/2, self.frame.size.height/2);
-    for (int i = 0; i < TITLE_BTN_NUM; ++i)
+    for (int i = 0; i < MENU_BTN_NUM; ++i)
     {
-        t_title_btn info = title_btn_info[i];
+        t_menu_btn info = menu_btn_info[i];
         UIButton* b = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [b setFrame: CGRectMake(0, 0, info.w, info.h)];
         [b setCenter:CGPointMake(center.x + info.x, center.y + info.y)];
@@ -236,7 +230,7 @@ t_title_btn title_btn_info[] = {
 - (void)buttonPressed:(UIButton*)button
 {
     switch (button.tag) {
-        case TITLE_START_BTN:
+        case MENU_STAGE_BTN:
             [self clearAll];
             [MainViewController StartShooting];
             break;

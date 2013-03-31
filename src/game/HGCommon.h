@@ -1,9 +1,9 @@
-#define IS_DEBUG_COLLISION 0
+#define IS_DEBUG_COLLISION 1
 
 // game define
 #define ENEMY_NUM 10
-#define BULLET_NUM 200
-#define ENEMY_BULLET_NUM 200
+#define BULLET_NUM 100
+#define ENEMY_BULLET_NUM 100
 #define FIELD_SIZE 100
 #define ZPOS 0
 #define BACKGROUND_SCALE 1000

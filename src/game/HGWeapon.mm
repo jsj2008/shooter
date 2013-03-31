@@ -53,7 +53,7 @@ namespace HGGame {
                 t->init(HG_BULLET_N1, side, power);
                 t->setMoveDirectionWithRadian(shootDirectionRadian);
                 t->setVelocity(0.55);
-                t->range = 1;
+                t->range = 3;
                 t->owner = owner;
                 break;
             }

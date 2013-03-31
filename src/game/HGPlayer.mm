@@ -2,6 +2,7 @@
 #import "HGUtil.h"
 #import "HGCommon.h"
 #import "HGPlayer.h"
+#import "HGBullet.h"
 
 #import <string>
 
@@ -45,13 +46,13 @@ namespace HGGame
         base::draw();
     }
     
-    void HGPlayer::damage(int damage, HGFighter* attacker)
+    void HGPlayer::damage(int damage, HGFighter* attacker, HGBullet* bullet)
     {
         target = attacker;
         life -= damage;
         if (life == 0)
         {
-            createEffect(EFFECT_EXPLODE_NORMAL, &position);
+            createEffect(EFFECT_EXPLODE_NORMAL, &bullet->position);
         }
         else
         {

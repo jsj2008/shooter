@@ -51,8 +51,9 @@
 {
     ////////////////////
     // 3d描画用ビューを初期化
-    CGRect frame = [[UIScreen mainScreen] bounds];
-    _glview = [[HGLView alloc] initWithFrame:frame WithRenderBlock:^{
+    CGRect frame = [[UIScreen mainScreen] applicationFrame];
+    CGRect viewFrame = CGRectMake(0, 0, frame.size.height, frame.size.width);
+    _glview = [[HGLView alloc] initWithFrame:viewFrame WithRenderBlock:^{
         @synchronized(self)
         {
             HGGame::render();
@@ -110,12 +111,12 @@
     
     // タッチイベント(左)
     {
-        CGRect winframe = [UIScreen mainScreen].bounds;
-        CGRect frame = winframe;
+        CGRect aframe = [UIScreen mainScreen].applicationFrame;
+        CGRect frame = CGRectMake(0, 0, aframe.size.height, aframe.size.width);
         frame.size.width = 110;
         frame.size.height = 110;
         frame.origin.x = 0;
-        frame.origin.y = winframe.size.height - frame.size.height;
+        frame.origin.y = aframe.size.width - frame.size.height;
         _leftPadView = [[[PadView alloc] initWithFrame:frame WithOnTouchBlock:^(int degree, float power) {
             HGGame::onMoveLeftPad(degree, power);
         }] autorelease];
@@ -124,12 +125,12 @@
     
     // タッチイベント(右)
     {
-        CGRect winframe = [UIScreen mainScreen].bounds;
-        CGRect frame = winframe;
+        CGRect aframe = [UIScreen mainScreen].applicationFrame;
+        CGRect frame = CGRectMake(0, 0, aframe.size.height, aframe.size.width);
         frame.size.width = 110;
         frame.size.height = 110;
-        frame.origin.x = winframe.size.width - frame.size.width;
-        frame.origin.y = winframe.size.height - frame.size.height;
+        frame.origin.x = aframe.size.height - frame.size.width;
+        frame.origin.y = aframe.size.width - frame.size.height;
         
         UIButton* fireBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         fireBtn.frame = frame;

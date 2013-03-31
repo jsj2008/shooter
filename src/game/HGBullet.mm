@@ -63,7 +63,7 @@ namespace HGGame {
         switch (type) {
             case HG_BULLET_N1:
                 initActor(*this, {12,12}, 1);
-                scale.set(0.3, 0.3, 0.3);
+                scale.set(0.5, 0.5, 0.5);
                 break;
             default:
                 assert(0);
@@ -97,7 +97,7 @@ namespace HGGame {
                     glow.blend2 = GL_ALPHA;
                 }
                 hgles::HGLVector3 glowScale = scale;
-                glowScale.add(0.7);
+                glowScale.add(1.5);
                 hgles::HGLGraphics2D::draw(&position, &glowScale, &rotate, &glow);
                 hgles::HGLGraphics2D::draw(&position, &scale, &rotate, &core);
                 break;

@@ -37,10 +37,12 @@ HGLView* _glView;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [[UIApplication sharedApplication] setStatusBarHidden:YES];
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     UINavigationController* navCon = [[UINavigationController alloc] init];
     [navCon addChildViewController:[[[MainViewController alloc] init] autorelease]];
     self.viewController = navCon;
+    [navCon setNavigationBarHidden:YES];
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
     return YES;

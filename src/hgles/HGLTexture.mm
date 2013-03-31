@@ -20,7 +20,6 @@
 
 namespace hgles {
     
-#warning メモリ解放
     const unsigned int TEXTURE_MAX_NUM = 100;
     
     //std::map<std::string, HGLTexture*> HGLTexture::textureIds;
@@ -88,6 +87,8 @@ namespace hgles {
         this->height = obj.height;
     }
     
+    ////////////////////
+    // 呼び出す際にはコンテキストに注意
     void HGLTexture::deleteAllTextures()
     {
         std::map<std::string, HGLTexture*>* textureIds = &currentContext->textureIds;
@@ -160,7 +161,12 @@ namespace hgles {
         // テクスチャ使用フラグ
         glEnable(GL_TEXTURE_2D);
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, textureId);
+        
+        if (currentContext->currentTextureId != textureId)
+        {
+            glBindTexture(GL_TEXTURE_2D, textureId);
+            currentContext->currentTextureId = textureId;
+        }
         glBlendFunc(blend1, blend2);
         glUniform1f(currentContext->uTexSlot, 0);
         glUniform1f(currentContext->uUseTexture, 1.0);
@@ -183,18 +189,12 @@ namespace hgles {
         glUniform1f(currentContext->uUseTexture, 0);
         glUniform1f(currentContext->uUseAlphaMap, 0);
         glDisable(GL_TEXTURE_2D);
-        glBindTexture(GL_TEXTURE_2D, 0);
+        //glBindTexture(GL_TEXTURE_2D, 0);
     }
     
     HGLTexture::~HGLTexture()
     {
-        // 再使用するのでここでは削除しない
-        /*
-         if (textureId)
-         {
-         glDeleteTextures(1, &textureId);
-         textureId = 0;
-         }*/
+        // 再使用するのでここではテクスチャをビデオメモリから削除しない
     }
     
 }

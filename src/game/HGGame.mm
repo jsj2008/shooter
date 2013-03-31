@@ -604,7 +604,7 @@ namespace HGGame {
                     if (a->isCollideWith(b))
                     {
                         b->isActive = false;
-                        a->damage(b->power, b->owner);
+                        a->damage(b->power, b->owner, b);
 #warning 仮
                         /*
                         a->life--;
@@ -645,7 +645,7 @@ namespace HGGame {
                     if (a->isCollideWith(b))
                     {
                         b->isActive = false;
-                        a->damage(b->power, b->owner);
+                        a->damage(b->power, b->owner, b);
                     }
                 }
             }
@@ -804,9 +804,9 @@ namespace HGGame {
         if (_player)
         {
             _cameraPosition.x = _player->position.x * -1;
-            _cameraPosition.y = _player->position.y * -1 + 13;
+            _cameraPosition.y = _player->position.y * -1 + 8;
             _cameraPosition.z = -20;
-            _cameraRotate.x = -28 * M_PI/180;
+            _cameraRotate.x = -15 * M_PI/180;
             hgles::currentContext->cameraPosition = _cameraPosition;
             hgles::currentContext->cameraRotate = _cameraRotate;
             hgles::HGLES::updateCameraMatrix();

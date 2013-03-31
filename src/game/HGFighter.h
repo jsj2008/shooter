@@ -8,6 +8,7 @@
 namespace HGGame
 {
     class HGWeapon;
+    class HGBullet;
     typedef std::vector<HGWeapon> t_weapon_list;
 
     enum HG_FIGHTER_TYPE {
@@ -36,7 +37,7 @@ namespace HGGame
         virtual void update();
         virtual ~HGFighter(){}
         // ダメージを受けるとき
-        virtual void damage(int damage, HGFighter* attacker) = 0;
+        virtual void damage(int damage, HGFighter* attacker, HGBullet* bullet) = 0;
         // ターゲットを尋ねる
         virtual HGFighter* tellTarget() = 0;
         

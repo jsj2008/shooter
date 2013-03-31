@@ -18,9 +18,13 @@ namespace hgles {
     
     typedef struct t_context
     {
+        t_context():
+        currentTextureId(-1)
+        {}
         ////////////////////
         // テクスチャIDリスト
         std::map<std::string, HGLTexture*> textureIds;
+        GLuint currentTextureId;
         
         ////////////////////
         // モデルビュー行列

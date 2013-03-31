@@ -11,11 +11,44 @@
 #import "Common.h"
 #import "TitleView.h"
 #import "AppDelegate.h"
+#import "MenuBackView.h"
+#import "MenuView.h"
+
+typedef enum TYPE_MENU_BTN
+{
+    MENU_STAGE_BTN,
+    MENU_BTN_NUM
+} TYPE_MENU_BTN;
+
+typedef struct t_menu_btn
+{
+    float x;
+    float y;
+    float w;
+    float h;
+    NSString* btnName;
+} t_menu_btn;
+
+t_menu_btn menu_btn_info[] = {
+    {
+        0,
+        100,
+        200,
+        50,
+        @"stage"
+    }
+};
 
 @interface MainViewController()
 {
     ViewController* gameViewController;
     TitleView* title;
+    
+    // button
+    UIButton* _buttons[MENU_BTN_NUM];
+    
+    // background
+    MenuBackView* menuBackView;
 }
 @end
 
@@ -34,9 +67,11 @@ static MainViewController* instance = nil;
     if (self)
     {
         instance = self;
+        menuBackView = [[MenuBackView alloc] init];
         title = [[TitleView alloc] init];
         assert(title != nil);
         [self.view addSubview:title];
+        
     }
     return self;
 }
@@ -58,6 +93,11 @@ static MainViewController* instance = nil;
     [self presentViewController:gameViewController animated:NO completion:^{
         // nothing
     }];
+}
+
+-(void)showMenu
+{
+    
 }
 
 @end

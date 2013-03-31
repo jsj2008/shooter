@@ -27,7 +27,7 @@ namespace HGGame {
     
     void HGHit::init()
     {
-        float r = rand(120, 168);
+        float r = rand(300, 400);
         initActor(*this, {r, r}, -1);
         updateCount = 0;
         isTextureInit = false;

@@ -1,3 +1,6 @@
+#ifndef INC_HG_BULLET
+#define INC_HG_BULLET
+
 #import "HGLTypes.h"
 #import "HGLGraphics2D.h"
 #import "HGActor.h"
@@ -34,3 +37,5 @@ namespace HGGame {
     };
     
 }
+
+#endif

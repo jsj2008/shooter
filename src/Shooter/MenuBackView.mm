@@ -1,4 +1,4 @@
-#import "TitleView.h"
+#import "MenuBackView.h"
 #import "MainViewController.h"
 #import <QuartzCore/QuartzCore.h>
 
@@ -9,36 +9,8 @@
 #import "HGLES.h"
 #import "HGLGraphics2D.h"
 
-typedef enum TYPE_TITLE_BTN
+@interface MenuBackView ()
 {
-    TITLE_START_BTN,
-    TITLE_BTN_NUM
-} TYPE_BTN;
-
-typedef struct t_title_btn
-{
-    float x;
-    float y;
-    float w;
-    float h;
-    NSString* btnName;
-} t_title_btn;
-
-t_title_btn title_btn_info[] = {
-    {
-        0,
-        100,
-        200,
-        50,
-        @"start"
-    }
-};
-
-
-@interface TitleView ()
-{
-    
-    UIButton* _buttons[TITLE_BTN_NUM];
     
     // OpenGL
     HGLView* _glview;
@@ -55,7 +27,7 @@ t_title_btn title_btn_info[] = {
 
 @end
 
-@implementation TitleView
+@implementation MenuBackView
 
 - (id)init
 {
@@ -87,7 +59,7 @@ t_title_btn title_btn_info[] = {
                 is3DInitialized = true;
             }
             // レンダリング
-            [self renderTitle];
+            [self render];
         }
     }];
     [self addSubview:_glview];
@@ -126,23 +98,6 @@ t_title_btn title_btn_info[] = {
             
         }
     });
-    
-    // button
-    CGPoint center = CGPointMake(self.frame.size.width/2, self.frame.size.height/2);
-    for (int i = 0; i < TITLE_BTN_NUM; ++i)
-    {
-        t_title_btn info = title_btn_info[i];
-        UIButton* b = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [b setFrame: CGRectMake(0, 0, info.w, info.h)];
-        [b setCenter:CGPointMake(center.x + info.x, center.y + info.y)];
-        [b setTag:i];
-        [b setTitle:info.btnName forState:UIControlStateNormal];
-        [b setTitle:info.btnName forState:UIControlStateDisabled];
-        [b setTitle:info.btnName forState:UIControlStateHighlighted];
-        [b setTitle:info.btnName forState:UIControlStateSelected];
-        [b addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
-        [self addSubview:b];
-    }
     
     ////////////////////
     // 描画開始
@@ -203,7 +158,7 @@ t_title_btn title_btn_info[] = {
     
 }
 
-- (void)renderTitle
+- (void)render
 {
     @synchronized(self)
     {
@@ -230,18 +185,6 @@ t_title_btn title_btn_info[] = {
         {
             hgles::HGLGraphics2D::draw(*itr);
         }
-    }
-}
-
-- (void)buttonPressed:(UIButton*)button
-{
-    switch (button.tag) {
-        case TITLE_START_BTN:
-            [self clearAll];
-            [MainViewController StartShooting];
-            break;
-        default:
-            assert(0);
     }
 }
 

@@ -23,13 +23,13 @@ namespace HGGame
         destination.set(0, 0, 0);
     }
     
-    void HGCPU::damage(int damage, HGFighter* attacker)
+    void HGCPU::damage(int damage, HGFighter* attacker, HGBullet* bullet)
     {
         target = attacker;
         life -= damage;
         if (life == 0)
         {
-            createEffect(EFFECT_EXPLODE_NORMAL, &position);
+            createEffect(EFFECT_EXPLODE_NORMAL, &bullet->position);
         }
         else
         {
