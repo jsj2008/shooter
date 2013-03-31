@@ -113,7 +113,11 @@ using namespace hgles;
 
 - (void)setupDisplayLink {
     CADisplayLink* displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(render:)];
-    [displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+    
+    // こちらだとUIScrollViewをドラッグしているときにレンダリングが止まる
+    // http://stackoverflow.com/questions/4876488/animation-in-opengl-es-view-freezes-when-uiscrollview-is-dragged-on-iphone
+    //[displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+    [displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
 }
 
 - (void)setupLayer
@@ -169,7 +173,7 @@ using namespace hgles;
 
 - (void)initFrame
 {
-    glClearColor(0.1, 0.5, 0.7, 1.0);
+    glClearColor(0.1, 0.5, 1.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
 }

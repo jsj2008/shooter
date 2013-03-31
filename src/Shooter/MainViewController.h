@@ -13,7 +13,9 @@
 {
 }
 
-+(void)StartShooting;
++(void)Start;
++(void)StageStart;
++(void)ShowTroops;
 
 @end
 

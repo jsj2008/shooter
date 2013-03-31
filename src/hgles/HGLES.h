@@ -15,12 +15,18 @@
 #import "HGLTexture.h"
 
 namespace hgles {
+    class HGLIndexBuffer;
+    class HGLVertexBuffer;
     
     typedef struct t_context
     {
         t_context():
         currentTextureId(-1)
         {}
+        ////////////////////
+        // テクスチャ描画用プリミティブ
+        HGLIndexBuffer* squareIndexBuffer;
+        HGLVertexBuffer* squareVertexBuffer;
         ////////////////////
         // テクスチャIDリスト
         std::map<std::string, HGLTexture*> textureIds;

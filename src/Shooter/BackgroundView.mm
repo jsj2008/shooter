@@ -1,4 +1,4 @@
-#import "MenuBackView.h"
+#import "BackgroundView.h"
 #import "MainViewController.h"
 #import <QuartzCore/QuartzCore.h>
 
@@ -9,7 +9,7 @@
 #import "HGLES.h"
 #import "HGLGraphics2D.h"
 
-@interface MenuBackView ()
+@interface BackgroundView ()
 {
     
     // OpenGL
@@ -27,7 +27,7 @@
 
 @end
 
-@implementation MenuBackView
+@implementation BackgroundView
 
 - (id)init
 {
@@ -59,7 +59,7 @@
                 is3DInitialized = true;
             }
             // レンダリング
-            [self render];
+            [self renderThis];
         }
     }];
     [self addSubview:_glview];
@@ -158,7 +158,7 @@
     
 }
 
-- (void)render
+- (void)renderThis
 {
     @synchronized(self)
     {
@@ -188,7 +188,7 @@
     }
 }
 
-- (void)clearAll
+- (void)clearGL
 {
     @synchronized(self)
     {

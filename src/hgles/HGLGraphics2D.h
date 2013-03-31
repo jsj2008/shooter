@@ -42,9 +42,11 @@ namespace hgles {
                          HGLVector3* rotate,
                          HGLTexture* texture);
         
+        /*
     private:
         static HGLVertexBuffer* vertexBuffer;
         static HGLIndexBuffer* indexBuffer;
+         */
         
     };
 }

@@ -11,44 +11,23 @@
 #import "Common.h"
 #import "TitleView.h"
 #import "AppDelegate.h"
-#import "MenuBackView.h"
+#import "BackgroundView.h"
 #import "MenuView.h"
-
-typedef enum TYPE_MENU_BTN
-{
-    MENU_STAGE_BTN,
-    MENU_BTN_NUM
-} TYPE_MENU_BTN;
-
-typedef struct t_menu_btn
-{
-    float x;
-    float y;
-    float w;
-    float h;
-    NSString* btnName;
-} t_menu_btn;
-
-t_menu_btn menu_btn_info[] = {
-    {
-        0,
-        100,
-        200,
-        50,
-        @"stage"
-    }
-};
+#import "TroopsView.h"
 
 @interface MainViewController()
 {
+    // shootingView
     ViewController* gameViewController;
+    
+    // title
     TitleView* title;
     
-    // button
-    UIButton* _buttons[MENU_BTN_NUM];
-    
     // background
-    MenuBackView* menuBackView;
+    BackgroundView* backgroundView;
+    
+    // menu
+    MenuView* menuView;
 }
 @end
 
@@ -66,8 +45,16 @@ static MainViewController* instance = nil;
     self = [super init];
     if (self)
     {
+        // メンバ初期化
         instance = self;
-        menuBackView = [[MenuBackView alloc] init];
+        menuView = NULL;
+        
+        // 背景
+        backgroundView = [[BackgroundView alloc] init];
+        assert(backgroundView != nil);
+        [self.view addSubview:backgroundView];
+        
+        // タイトルメニュー
         title = [[TitleView alloc] init];
         assert(title != nil);
         [self.view addSubview:title];
@@ -76,28 +63,71 @@ static MainViewController* instance = nil;
     return self;
 }
 
-+(void)StartShooting
++(void)Start
 {
     if (instance)
     {
-        [instance startShooting];
+        [instance start];
     }
 }
 
--(void)startShooting
+-(void)start
 {
-    gameViewController = [[ViewController alloc] init];
     [title removeFromSuperview];
     [title release];
     title = NULL;
+    
+    [self showMenu];
+}
+
+-(void)showMenu
+{
+    assert(menuView == NULL);
+    menuView = [[MenuView alloc] init];
+    [self.view addSubview:menuView];
+}
+
++(void)StageStart
+{
+    if (instance)
+    {
+        [instance stageStart];
+    }
+}
+
+-(void)stageStart
+{
+    // 背景終了
+    [backgroundView clearGL];
+    [backgroundView removeFromSuperview];
+    backgroundView = NULL;
+    
+    // ゲーム開始
+    gameViewController = [[ViewController alloc] init];
     [self presentViewController:gameViewController animated:NO completion:^{
         // nothing
     }];
 }
 
--(void)showMenu
++(void)ShowTroops
 {
-    
+    if (instance)
+    {
+        [instance showTroops];
+    }
+}
+
+-(void)showTroops
+{
+    // メニューをかくしてテーブルを表示
+    [UIView animateWithDuration:0.2 animations:^{
+        CGRect f = menuView.frame;
+        f.origin.x = f.size.width;
+        menuView.frame = f;
+    } completion:^(BOOL finished) {
+        TroopsView* t = [[TroopsView alloc] init];
+        [self.view addSubview:t];
+    }];
 }
 
 @end

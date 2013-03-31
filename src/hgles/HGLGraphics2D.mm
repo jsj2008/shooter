@@ -17,8 +17,8 @@
 
 namespace hgles {
     
-    HGLVertexBuffer* HGLGraphics2D::vertexBuffer;
-    HGLIndexBuffer* HGLGraphics2D::indexBuffer;
+    //HGLVertexBuffer* HGLGraphics2D::vertexBuffer;
+    //HGLIndexBuffer* HGLGraphics2D::indexBuffer;
     
     void HGLGraphics2D::initialize()
     {
@@ -31,11 +31,13 @@ namespace hgles {
         };
         // http://www9.plala.or.jp/sgwr-t/c/sec10-2.html
         // 配列のときは&をつけなくても先頭要素のアドレス
-        vertexBuffer = new HGLVertexBuffer(rectVertex, 4);
+        HGLVertexBuffer* vertexBuffer = new HGLVertexBuffer(rectVertex, 4);
+        currentContext->squareVertexBuffer = vertexBuffer;
         Index index[] = {
             0,1,2,2,3,0
         };
-        indexBuffer = new HGLIndexBuffer(index, 6);
+        HGLIndexBuffer* indexBuffer = new HGLIndexBuffer(index, 6);
+        currentContext->squareIndexBuffer = indexBuffer;
     }
     
     /*
@@ -71,9 +73,9 @@ namespace hgles {
         HGLES::updateMatrix();
         
         texture->bind();
-        vertexBuffer->bind();
-        indexBuffer->draw();
-        vertexBuffer->unbind();
+        currentContext->squareVertexBuffer->bind();
+        currentContext->squareIndexBuffer->draw();
+        currentContext->squareVertexBuffer->unbind();
         texture->unbind();
        
         HGLES::popMatrix();
@@ -96,9 +98,9 @@ namespace hgles {
         HGLES::updateMatrix();
         
         texture->bind();
-        vertexBuffer->bind();
-        indexBuffer->draw();
-        vertexBuffer->unbind();
+        currentContext->squareVertexBuffer->bind();
+        currentContext->squareIndexBuffer->draw();
+        currentContext->squareVertexBuffer->unbind();
         texture->unbind();
        
         HGLES::popMatrix();
@@ -118,9 +120,9 @@ namespace hgles {
         HGLES::updateMatrix();
         
         p->texture.bind();
-        vertexBuffer->bind();
-        indexBuffer->draw();
-        vertexBuffer->unbind();
+        currentContext->squareVertexBuffer->bind();
+        currentContext->squareIndexBuffer->draw();
+        currentContext->squareVertexBuffer->unbind();
         p->texture.unbind();
         
         // 行列をもとに戻しておく
