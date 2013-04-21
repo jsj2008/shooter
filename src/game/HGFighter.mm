@@ -156,7 +156,7 @@ namespace HGGame
                 sprSize = {16,16};
                 sprPos = {0, 0};
                 setVelocity(0.7);
-                setMaxLife(8000);
+                setMaxLife(40);
                 HGWeapon w = HGWeapon();
                 w.init(WEAPON_LIFLE, {0, 0}, this, 10);
                 weapon_list.push_back(w);

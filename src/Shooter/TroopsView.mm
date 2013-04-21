@@ -5,7 +5,7 @@
 #import <vector>
 
 #define CARD_SEPARATOR 30.0
-#define CARD_HEIGHT 115.0
+#define CARD_HEIGHT 30.0
 //#define CARD_WIDTH 300.0
 #define CARD_COLOR [UIColor whiteColor]
 #define NUMBER_OF_CARDS 5.0
@@ -187,7 +187,7 @@ t_trp_btn trp_btn_info[] = {
     HGGame::userinfo::t_fighter* data = &(*HGGame::userinfo::current_fighter_list)[indexPath.row];
     TroopCell* cell = [[TroopCell alloc] initWithReuseIdentifier:@"UITableViewCell" withHeight:CARD_HEIGHT withWidth:troopsTableView.frame.size.width withData:data];
     [cell addContent];
-    
+   
     return cell;
 }
 

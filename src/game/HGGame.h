@@ -8,6 +8,16 @@ namespace HGGame
 {
     
     // enum effect
+    typedef enum GAME_STATE
+    {
+        GAME_STATE_NONE = 0,
+        GAME_STATE_BATTLE = 1,
+        GAME_STATE_WIN = 2,
+        GAME_STATE_LOSE = 3,
+        GAME_STATE_PAUSE = 10,
+    } GAME_STATE;
+    
+    // enum effect
     typedef enum
     {
         EFFECT_EXPLODE_NORMAL,
@@ -23,6 +33,7 @@ namespace HGGame
     void update(t_keystate* keystate);
     void onMoveLeftPad(int degree, float power);
     void createEffect(EFFECT_TYPE type, hgles::HGLVector3* position);
+    void updateActors(t_keystate* keystate);
     
     // 敵を出現させる
     void createEnemy(HG_FIGHTER_TYPE type, float x, float y);

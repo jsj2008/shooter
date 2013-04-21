@@ -19,15 +19,63 @@
 #import "HGUser.h"
 #import <vector>
 #import <map>
+#import <stack>
 //#import <mutex>
+#import <boost/shared_ptr.hpp>
 
 namespace HGGame {
     
-    class RemoveActor
+    ////////////////////
+    // ステート管理
+    class BaseState
     {
     public:
-        bool operator()(HGActor* a) const { return !a->isActive; }
+        int frameCount;
+        virtual void onUpdate()
+        {
+            
+        }
+        virtual std::string getName()
+        {
+            return "BaseState";
+        }
+        void update()
+        {
+            onUpdate();
+        }
     };
+    
+    class StateManager
+    {
+    public:
+        typedef std::stack<BaseState*> stateStack;
+        stateStack stack;
+        void update()
+        {
+            if (!stack.empty())
+            {
+                BaseState* state = stack.top();
+                state->update();
+                state->frameCount++;
+            }
+        }
+        void pop()
+        {
+            assert(!stack.empty());
+            BaseState* state = stack.top();
+            HInfo(@"STATE POP : %s", state->getName().c_str());
+            stack.pop();
+            delete state;
+        }
+        void push(BaseState* state)
+        {
+            stack.push(state);
+            HInfo(@"STATE PUSH : %s", state->getName().c_str());
+        }
+    };
+    
+    ////////////////////
+    // 変数宣言
     
     // flag
     bool fire;
@@ -87,6 +135,55 @@ namespace HGGame {
     hgles::t_hgl2di* lifeBar;
     hgles::t_hgl2di* lifeBar2;
     
+    // ステート
+    StateManager stateManager = StateManager();
+    
+    // キー状態
+    t_keystate* _keystate = NULL;
+    
+                                  
+    ////////////////////
+    // 敗北ステート
+    class LoseState : public BaseState
+    {
+        void onUpdate()
+        {
+            updateActors(_keystate);
+        }
+        std::string getName()
+        {
+            return "LoseState";
+        }
+    };
+    
+    ////////////////////
+    // 通常ステート
+    class BattleState : public BaseState
+    {
+        void onUpdate()
+        {
+            updateActors(_keystate);
+            if (_player->life <= 0)
+            {
+                stateManager.pop();
+                stateManager.push(new LoseState());
+            }
+        }
+        std::string getName()
+        {
+            return "BattleState";
+        }
+    };
+    
+    
+    ////////////////////
+    // 関数
+    class RemoveActor
+    {
+    public:
+        bool operator()(HGActor* a) const { return !a->isActive; }
+    };
+    
     int rand(int from, int to)
     {
         if (from == to) return from;
@@ -113,6 +210,78 @@ namespace HGGame {
     double getNowTime()
     {
         return now_time;
+    }
+    
+    void clearAll()
+    {
+        {
+            for (std::vector<HGBullet*>::iterator itr = _bullets.begin(); itr != _bullets.end(); ++itr)
+            {
+                delete (*itr);
+            }
+            _bullets.clear();
+        }
+        
+        {
+            for (std::vector<HGBullet*>::iterator itr = _bulletsInActive.begin(); itr != _bulletsInActive.end(); ++itr)
+            {
+                delete (*itr);
+            }
+            _bulletsInActive.clear();
+        }
+        
+        {
+            for (std::vector<HGBullet*>::iterator itr = _enemyBullets.begin(); itr != _enemyBullets.end(); ++itr)
+            {
+                delete (*itr);
+            }
+            _enemyBullets.clear();
+        }
+        
+        {
+            for (std::vector<HGBullet*>::iterator itr = _enemyBulletsInActive.begin(); itr != _enemyBulletsInActive.end(); ++itr)
+            {
+                delete (*itr);
+            }
+            _enemyBulletsInActive.clear();
+        }
+        
+        {
+            for (std::vector<HGFighter*>::iterator itr = _enemies.begin(); itr != _enemies.end(); ++itr)
+            {
+                delete (*itr);
+            }
+            _enemies.clear();
+        }
+        
+        {
+            for (std::vector<HGFighter*>::iterator itr = _friends.begin(); itr != _friends.end(); ++itr)
+            {
+                delete (*itr);
+            }
+            _friends.clear();
+        }
+        
+        {
+            for (std::vector<HGActor*>::iterator itr = _deleteActor.begin(); itr != _deleteActor.end(); ++itr)
+            {
+                delete (*itr);
+            }
+            _deleteActor.clear();
+        }
+        
+        {
+            if (_player)
+            {
+                delete (_player);
+                _player = NULL;
+            }
+        }
+        
+        {
+            
+        }
+        
     }
      
     HGFighter* getRandomTarget(WHICH_SIDE selfSide)
@@ -440,6 +609,9 @@ namespace HGGame {
         lifeBar2->texture.blendColor = {2,0.2,0.2,1.0};
         lifeBar2->scale.set(150*SCRATE, 15*SCRATE, 1);
         
+        
+        stateManager = StateManager();
+        stateManager.push(new BattleState());
     }
     
     void drawLife(hgles::HGLVector3* position, t_size2d *realSize, float lifeRate)
@@ -461,9 +633,15 @@ namespace HGGame {
         hgles::HGLGraphics2D::draw(lifeBar);
     }
     
-    
     void update(t_keystate* keystate)
     {
+        _keystate = keystate;
+        stateManager.update();
+    }
+    
+    void updateActors(t_keystate* keystate)
+    {
+        
         //pthread_mutex_lock(&mutex); // スレッド保護
         //try {
         
@@ -565,6 +743,7 @@ namespace HGGame {
         
 #warning 仮
         // ランダムに敵出現
+        /*
         if (rand(0, 1) == 1 && updateCount % 2 == 0)
         {
             float rad = rand(1, 359)*180/M_PI;
@@ -582,7 +761,7 @@ namespace HGGame {
             //sp->position.set(rand(0, size_of_field.w), rand(0, size_of_field.h), ZPOS);
             sp->position.set(viaX, viaY, ZPOS);
             _effects.push_back((HGActor*)sp);
-        }
+        }*/
         
         //////////////
         // あたり判定
@@ -722,7 +901,7 @@ namespace HGGame {
         
         {
             std::vector<HGFighter*> tmp;
-            for (std::vector<HGFighter*>::iterator itr = _enemies.begin(); itr != _enemies.end(); ++itr)
+            for (std::vector<HGFighter*>::iterator itr = _friends.begin(); itr != _friends.end(); ++itr)
             {
                 if (!(*itr)->isActive)
                 {
@@ -754,7 +933,6 @@ namespace HGGame {
                 delete (*itr);
             }
         }
-        
     }
     
     void createEffect(EFFECT_TYPE type, hgles::HGLVector3* position)

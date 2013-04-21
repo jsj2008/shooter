@@ -100,27 +100,29 @@
     [[self contentView] addSubview:fighterImgView];
     
     // 背景
-    UILabel* infobg = [[UILabel alloc] initWithFrame:CGRectMake(100, 30, cardWidth - 100, cardHeight - 35)];
+    /*
+    UILabel* infobg = [[UILabel alloc] initWithFrame:CGRectMake(100, 5, cardWidth - 100, cardHeight - 5)];
     infobg.backgroundColor = [UIColor grayColor];
     infobg.layer.borderColor = [UIColor whiteColor].CGColor;
     infobg.layer.cornerRadius = 10;
     [[self contentView] addSubview:infobg];
+    */
     
     // HP
     life = [[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
-    [life setFrame:CGRectMake(10.0, 5.0, 200, 35)];
+    [life setFrame:CGRectMake(90.0, 3.0, 200, 35)];
     life.textAlignment = UITextAlignmentLeft;
     life.backgroundColor = [UIColor clearColor];
     life.textColor = [UIColor whiteColor];
     NSString* lifestr = [NSString stringWithFormat:@"装甲: %d/%d", fighter.life, fighter.maxlife];
     [life setFont:[UIFont fontWithName:@"Helvetica-Bold" size:15]];
     [life setText:lifestr];
-    [infobg addSubview:life];
+    [[self contentView] addSubview:life];
     
     // 搭乗
     {
         battle = [[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
-        [battle setFrame:CGRectMake(10.0, 45.0, 200, 35)];
+        [battle setFrame:CGRectMake(90.0, 25.0, 200, 35)];
         battle.textAlignment = UITextAlignmentLeft;
         battle.backgroundColor = [UIColor clearColor];
         battle.textColor = [UIColor whiteColor];
@@ -139,7 +141,7 @@
         }
         [battle setFont:[UIFont fontWithName:@"Helvetica-Bold" size:15]];
         [battle setText:str];
-        [infobg addSubview:battle];
+        [[self contentView] addSubview:battle];
     }
 }
 

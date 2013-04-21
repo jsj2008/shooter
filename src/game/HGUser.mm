@@ -12,7 +12,7 @@ namespace userinfo {
         current_user = new t_user();
         current_fighter_list = new t_fighter_list();
         
-        int a = 30;
+        int a = 5;
         for (int i = 0; i < a; i++)
         {
             t_fighter f;

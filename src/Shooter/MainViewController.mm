@@ -47,7 +47,6 @@ static MainViewController* instance = nil;
     self = [super init];
     if (self)
     {
-        // メンバ初期化
         instance = self;
         menuView = NULL;
         
