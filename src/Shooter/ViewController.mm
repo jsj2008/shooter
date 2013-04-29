@@ -7,7 +7,8 @@
 //
 
 #import "ViewController.h"
-#import "HGGame.h"
+//#import "HGGame.h"
+#import "HGame.h"
 #import "HGLView.h"
 #import "PadView.h"
 #import "Common.h"
@@ -25,7 +26,8 @@
     // OpenGL
     HGLView* _glview;
     
-    HGGame::t_keystate keystate;
+    //HGGame::t_keystate keystate;
+    hg::t_keyState keyState;
     
 }
 @end
@@ -56,7 +58,8 @@
     _glview = [[HGLView alloc] initWithFrame:viewFrame WithRenderBlock:^{
         @synchronized(self)
         {
-            HGGame::render();
+            //HGGame::render();
+            hg::render();
         }
     }];
     self.view = _glview;
@@ -76,7 +79,8 @@
 {
     
     // setup game
-    HGGame::initialize();
+    //HGGame::initialize();
+    hg::initialize();
     
     // creating game thread
     _game_queue = dispatch_queue_create(DISPATCH_QUEUE_PRIORITY_DEFAULT, NULL);
@@ -94,7 +98,8 @@
                 // calling game's main process
                 @synchronized(self)
                 {
-                    HGGame::update(&keystate);
+                    //HGGame::update(&keystate);
+                    hg::update(&keyState);
                 }
                 [_glview draw];
             }
@@ -118,7 +123,8 @@
         frame.origin.x = 0;
         frame.origin.y = aframe.size.width - frame.size.height;
         _leftPadView = [[[PadView alloc] initWithFrame:frame WithOnTouchBlock:^(int degree, float power) {
-            HGGame::onMoveLeftPad(degree, power);
+            //HGGame::onMoveLeftPad(degree, power);
+            hg::onMoveLeftPad(degree, power);
         }] autorelease];
         [_glview addSubview:_leftPadView];
     }
@@ -146,12 +152,14 @@
 
 - (void) startFire
 {
-    keystate.fire = 1;
+    //keystate.fire = 1;
+    keyState.fire = 1;
 }
 
 - (void) stopFire
 {
-    keystate.fire = 0;
+    //keystate.fire = 0;
+    keyState.fire = 0;
 }
 
 

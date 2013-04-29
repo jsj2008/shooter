@@ -1,2 +1,2 @@
 #define IS_DEBUG 1
-#define FPS 22
+#define FPS 30

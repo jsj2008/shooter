@@ -121,6 +121,12 @@ namespace hgles {
         textureMatrix = mat;
     }
     
+    void HGLTexture::setBlendFunc(int a, int b)
+    {
+        blend1 = a;
+        blend2 = b;
+    }
+    
     HGLTexture::HGLTexture()
     {
         textureId = 0;

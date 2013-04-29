@@ -21,7 +21,6 @@
 #import <map>
 #import <stack>
 //#import <mutex>
-#import <boost/shared_ptr.hpp>
 
 namespace HGGame {
     

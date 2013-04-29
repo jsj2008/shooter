@@ -39,6 +39,7 @@ namespace hgles {
         GLKMatrix4 getTextureMatrix(int x, int y, int w, int h);
         void setTextureArea(int x, int y, int w, int h);
         void setTextureMatrix(GLKMatrix4 mat);
+        void setBlendFunc(int a, int b);
         Color color;
         Color blendColor;
         float repeatNum;

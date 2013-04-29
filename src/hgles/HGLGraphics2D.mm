@@ -62,14 +62,14 @@ namespace hgles {
                          HGLVector3* rotate,
                          HGLTexture* texture)
     {
-        glUniform1f(currentContext->uAlpha, texture->color.a);
         HGLES::pushMatrix();
         
+        // モデルビュー変換
         currentContext->mvMatrix = GLKMatrix4Translate(currentContext->mvMatrix, position->x, position->y, position->z);
+        currentContext->mvMatrix = GLKMatrix4Scale(currentContext->mvMatrix, scale->x, scale->y, scale->z);
         currentContext->mvMatrix = GLKMatrix4Rotate(currentContext->mvMatrix, rotate->x, 1, 0, 0);
         currentContext->mvMatrix = GLKMatrix4Rotate(currentContext->mvMatrix, rotate->y, 0, 1, 0);
         currentContext->mvMatrix = GLKMatrix4Rotate(currentContext->mvMatrix, rotate->z, 0, 0, 1);
-        
         HGLES::updateMatrix();
         
         texture->bind();
@@ -77,8 +77,10 @@ namespace hgles {
         currentContext->squareIndexBuffer->draw();
         currentContext->squareVertexBuffer->unbind();
         texture->unbind();
-       
+        
+        // 行列をもとに戻しておく
         HGLES::popMatrix();
+        
     }
         
     void HGLGraphics2D::draw(HGLVector3* position,

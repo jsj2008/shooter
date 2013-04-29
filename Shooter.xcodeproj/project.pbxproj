@@ -40,6 +40,8 @@
 		0755992916B561490066A0E9 /* block.mtl in Resources */ = {isa = PBXBuildFile; fileRef = 0755992716B561490066A0E9 /* block.mtl */; };
 		0755992A16B561490066A0E9 /* block.obj in Resources */ = {isa = PBXBuildFile; fileRef = 0755992816B561490066A0E9 /* block.obj */; };
 		079FAE5916FEC262009B8BA6 /* rect.png in Resources */ = {isa = PBXBuildFile; fileRef = 079FAE5816FEC262009B8BA6 /* rect.png */; };
+		07B28FAB172430F6000ED715 /* HGame.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07B28FAA172430F6000ED715 /* HGame.mm */; };
+		07B28FAF172CE4EF000ED715 /* HGameEngine.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07B28FAE172CE4EF000ED715 /* HGameEngine.mm */; };
 		07B4243F16D8F3FA007055DF /* rect.obj in Resources */ = {isa = PBXBuildFile; fileRef = 07B4243E16D8F3FA007055DF /* rect.obj */; };
 		07B4244B16D932E3007055DF /* wavering.png in Resources */ = {isa = PBXBuildFile; fileRef = 07B4244A16D932E3007055DF /* wavering.png */; };
 		07B4244D16D93F86007055DF /* corona.png in Resources */ = {isa = PBXBuildFile; fileRef = 07B4244C16D93F86007055DF /* corona.png */; };
@@ -228,6 +230,10 @@
 		0755992716B561490066A0E9 /* block.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = block.mtl; sourceTree = "<group>"; };
 		0755992816B561490066A0E9 /* block.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = block.obj; sourceTree = "<group>"; };
 		079FAE5816FEC262009B8BA6 /* rect.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rect.png; sourceTree = "<group>"; };
+		07B28FA9172430BA000ED715 /* HGame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGame.h; sourceTree = "<group>"; };
+		07B28FAA172430F6000ED715 /* HGame.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGame.mm; sourceTree = "<group>"; };
+		07B28FAD172CE4EF000ED715 /* HGameEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGameEngine.h; sourceTree = "<group>"; };
+		07B28FAE172CE4EF000ED715 /* HGameEngine.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGameEngine.mm; sourceTree = "<group>"; };
 		07B4243E16D8F3FA007055DF /* rect.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = rect.obj; sourceTree = "<group>"; };
 		07B4244A16D932E3007055DF /* wavering.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wavering.png; sourceTree = "<group>"; };
 		07B4244C16D93F86007055DF /* corona.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = corona.png; sourceTree = "<group>"; };
@@ -560,9 +566,21 @@
 			path = Assets;
 			sourceTree = "<group>";
 		};
+		07B28FA8172430BA000ED715 /* game2 */ = {
+			isa = PBXGroup;
+			children = (
+				07B28FAD172CE4EF000ED715 /* HGameEngine.h */,
+				07B28FAE172CE4EF000ED715 /* HGameEngine.mm */,
+				07B28FAA172430F6000ED715 /* HGame.mm */,
+				07B28FA9172430BA000ED715 /* HGame.h */,
+			);
+			path = game2;
+			sourceTree = "<group>";
+		};
 		07DE743216EC368F0048877C /* src */ = {
 			isa = PBXGroup;
 			children = (
+				07B28FA8172430BA000ED715 /* game2 */,
 				07DEEBE91708234E00580C16 /* CardList */,
 				07DE74D916EC38B80048877C /* game */,
 				07DE74A716EC38A40048877C /* hgles */,
@@ -980,6 +998,8 @@
 				07DEEBFC1708235000580C16 /* CardListController.m in Sources */,
 				07DEEC041708350300580C16 /* TroopCell.m in Sources */,
 				07DEEC071708606600580C16 /* HGUser.mm in Sources */,
+				07B28FAB172430F6000ED715 /* HGame.mm in Sources */,
+				07B28FAF172CE4EF000ED715 /* HGameEngine.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
