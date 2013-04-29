@@ -496,7 +496,8 @@ namespace hg
         blend2(GL_ONE_MINUS_SRC_ALPHA),
         type(SPRITE_TYPE_NORMAL),
         color({1,1,1,1}),
-        blendColor({1,1,1,1})
+        blendColor({1,1,1,1}),
+        isAlphaMap(0)
         {
         };
         void init(std::string textureName)
@@ -532,6 +533,11 @@ namespace hg
         {
             type = t;
         }
+        void shouldRenderAsAlphaMap(bool p)
+        {
+            isAlphaMap = p?1:0;
+            isPropertyChanged = true;
+        }
         
     protected:
         void render()
@@ -552,6 +558,7 @@ namespace hg
                 texture.setBlendFunc(blend1, blend2);
                 texture.color = color;
                 texture.blendColor = blendColor;
+                texture.isAlphaMap = isAlphaMap;
             }
             switch (type)
             {
@@ -572,6 +579,7 @@ namespace hg
         bool isTextureInitialized;
         int blend1;
         int blend2;
+        int isAlphaMap;
         HGRect textureRect;
         hgles::HGLTexture texture;
         std::string textureName;

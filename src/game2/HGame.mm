@@ -28,7 +28,7 @@ namespace hg {
     class Fighter;
     class Weapon;
     class Bullet;
-    
+    class BulletMoveProcess;
     typedef boost::shared_ptr<Actor> ActorPtr;
     typedef boost::shared_ptr<Fighter> FighterPtr;
     typedef boost::shared_ptr<Weapon> WeaponPtr;
@@ -56,6 +56,7 @@ namespace hg {
     HGPoint pointOfFieldCenter(0,0);
     NodePtr layerBackground = NULL;
     NodePtr layerPlayer = NULL;
+    NodePtr layerBullet = NULL;
     ProcessOwnerPtr movePlayerProcOwner;
     KeyInfo keyInfo;
 
@@ -64,17 +65,117 @@ namespace hg {
     class Actor : public HGObject
     {
     public:
-        Actor(){};
+        Actor():
+        nodePtr(NULL),
+        pixelSize(0,0),
+        realSize(0,0),
+        isInitialized(false)
+        {
+        };
+        
+        virtual void init(NodePtr parentPtr)
+        {
+            nodePtr = NodePtr(new HGNode());
+            parentPtr->addChild(nodePtr);
+            isInitialized = true;
+        }
+        
+        void setPosition(float x, float y)
+        {
+            nodePtr->setPosition(x, y);
+        }
+        void setPositionX(float x)
+        {
+            nodePtr->setPositionX(x);
+        }
+        void setPositionY(float y)
+        {
+            nodePtr->setPositionY(y);
+        }
+        float getPositionX()
+        {
+            return nodePtr->getPositionX();
+        }
+        float getPositionY()
+        {
+            return nodePtr->getPositionY();
+        }
+        float getWidth()
+        {
+            return realSize.width;
+        }
+        float getHeight()
+        {
+            return realSize.height;
+        }
+        NodePtr getNodePtr()
+        {
+            return nodePtr;
+        }
+        void setSizeByPixel(float width, float height)
+        {
+            pixelSize.width = width;
+            pixelSize.height = height;
+            realSize.width = pixelSize.width*PIXEL_SCALE;
+            realSize.height = pixelSize.height*PIXEL_SCALE;
+        }
+        
+    protected:
+        NodePtr nodePtr;
+    private:
+        HGSize pixelSize;
+        HGSize realSize;
+        bool isInitialized;
     };
     
     ////////////////////
     // Bullet
+    typedef enum BulletType
+    {
+        BULLET_TYPE_NORMAL,
+    } BulletType;
     class Bullet : public Actor
     {
+        typedef Actor base;
     public:
-        Bullet(){}
+        Bullet():
+        base()
+        {
+            moveProcessOwner = ProcessOwnerPtr(new HGProcessOwner());
+        }
+        void init(BulletType type, int power, ActorPtr ownerPtr, float x, float y)
+        {
+            base::init(layerBullet);
+            this->power = power;
+            this->ownerPtr = ownerPtr;
+            this->type = type;
+            switch (type) {
+                case BULLET_TYPE_NORMAL:
+                {
+                    setSizeByPixel(200, 200);
+                    SpritePtr spritePtr = SpritePtr(new HGSprite());
+                    spritePtr->setType(SPRITE_TYPE_BILLBOARD);
+                    spritePtr->init("divine.png");
+                    spritePtr->setScale(getWidth(), getHeight());
+                    spritePtr->shouldRenderAsAlphaMap(true);
+                    spritePtr->setColor({1,1,1,1});
+                    spritePtr->setBlendFunc(GL_ALPHA, GL_ALPHA);
+                    spritePtr->setPosition(x, y);
+                    getNodePtr()->addChild(spritePtr);
+                    //HGProcessManager::sharedProcessManager()->addPrcoess(ProcessPtr(new BulletMoveProcess(moveProcessOwner, speed,)))
+                    break;
+                }
+                default:
+                    break;
+            }
+        }
+    private:
+        int power;
+        float speed;
+        BulletType type;
+        ActorPtr ownerPtr;
+        ProcessOwnerPtr moveProcessOwner;
     };
-    
     
     ////////////////////
     // Weapon
@@ -89,10 +190,11 @@ namespace hg {
         relativePosition(0,0),
         lastFireTime(0),
         fireInterval(0),
-        type(WEAPON_TYPE_NORMAL)
+        type(WEAPON_TYPE_NORMAL),
+        bulletType(BULLET_TYPE_NORMAL)
         {}
         
-        void init(WeaponType type, float pixelX, float pixelY)
+        void init(WeaponType type, BulletType bulletType, float pixelX, float pixelY)
         {
             switch (type) {
                 case WEAPON_TYPE_NORMAL:
@@ -102,18 +204,23 @@ namespace hg {
                 default:
                     break;
             }
+            this->type = type;
+            this->bulletType = bulletType;
             relativePosition.x = pixelX*PIXEL_SCALE;
             relativePosition.y = pixelY*PIXEL_SCALE;
         }
         
-        void fire(ActorPtr owner, float directionDegree)
+        void fire(ActorPtr ownerPtr, float directionDegree)
         {
             if (getNowTime() - lastFireTime < fireInterval)
             {
                 return;
             }
             lastFireTime = getNowTime();
-            HDebug(@"FIRE!!");
+            BulletPtr bp = BulletPtr(new Bullet());
+            float x = ownerPtr->getPositionX() + relativePosition.x;
+            float y = ownerPtr->getPositionY() + relativePosition.y;
+            bp->init(bulletType, power, ownerPtr, x, y);
         }
         
         int power;
@@ -121,6 +228,7 @@ namespace hg {
         double lastFireTime;
         double fireInterval;
         WeaponType type;
+        BulletType bulletType;
     };
     
     ////////////////////
@@ -133,21 +241,20 @@ namespace hg {
         typedef Actor base;
         
         Fighter():
-        spritePtr(NULL),
+        base(),
         textureSrcOffset(0,0),
         textureSrcSize(0,0),
         aspectDegree(0),
         speed(0),
-        pixelSize(0,0),
-        realSize(0,0),
         textureName(""),
         life(0),
         lifeMax(0)
         {
         }
         
-        void init()
+        void init(NodePtr layerParent)
         {
+            base::init(layerParent);
             
             // 種類別の初期化
             {
@@ -156,22 +263,19 @@ namespace hg {
                 textureSrcOffset.y = 0;
                 textureSrcSize.width = 16;
                 textureSrcSize.height = 16;
-                pixelSize.width = 128;
-                pixelSize.height = 128;
+                setSizeByPixel(128, 128);
                 speed = v(0.6);
                 life = lifeMax = 100;
                 WeaponPtr wp = WeaponPtr(new Weapon());
-                wp->init(WEAPON_TYPE_NORMAL, pixelSize.width/2, pixelSize.height/2);
+                wp->init(WEAPON_TYPE_NORMAL, BULLET_TYPE_NORMAL , 0, 0);
                 weaponList.push_back(wp);
             }
             
             spritePtr = SpritePtr(new HGSprite());
             spritePtr->setType(SPRITE_TYPE_BILLBOARD);
-            
-            realSize.width = pixelSize.width*PIXEL_SCALE;
-            realSize.height = pixelSize.height*PIXEL_SCALE;
             spritePtr->init(textureName);
-            spritePtr->setScale(realSize.width, realSize.height);
+            spritePtr->setScale(getWidth(), getHeight());
+            getNodePtr()->addChild(spritePtr);
             
             setAspectDegree(0);
             
@@ -203,37 +307,7 @@ namespace hg {
                     SPRITE_INDEX_TABLE[i] = index;
                 }
             }
-            layerPlayer->addChild(spritePtr);
             
-        }
-        
-        void setPosition(float x, float y)
-        {
-            spritePtr->setPosition(x, y);
-        }
-        void setPositionX(float x)
-        {
-            spritePtr->setPositionX(x);
-        }
-        void setPositionY(float y)
-        {
-            spritePtr->setPositionY(y);
-        }
-        float getPositionX()
-        {
-            return spritePtr->getPositionX();
-        }
-        float getPositionY()
-        {
-            return spritePtr->getPositionY();
-        }
-        float getWidth()
-        {
-            return realSize.width;
-        }
-        float getHeight()
-        {
-            return realSize.height;
         }
         void setAspectDegree(float degree)
         {
@@ -270,24 +344,17 @@ namespace hg {
                 (*it)->fire(thisPtr, this->aspectDegree);
             }
         }
-        
-        NodePtr getNodePtr()
-        {
-            return spritePtr;
-        }
     public:
         float speed;
         float aspectDegree;
     private:
         int life;
         int lifeMax;
-        SpritePtr spritePtr;
         HGPoint textureSrcOffset;
         HGSize textureSrcSize;
-        HGSize pixelSize;
-        HGSize realSize;
         std::string textureName;
         WeaponList weaponList;
+        SpritePtr spritePtr;
         
         int getSpriteIndex(int i)
         {
@@ -314,6 +381,66 @@ namespace hg {
         {
             return "BattleState";
         }
+    };
+    
+    ////////////////////
+    // bullet移動プロセス
+    class BulletMoveProcess : public HGProcess
+    {
+    public:
+        typedef HGProcess base;
+        BulletMoveProcess(ProcessOwnerPtr processOwnerPtr, BulletPtr inBulletPtr, float speed, float directionDegree) :
+        base(processOwnerPtr),
+        vx(0),
+        vy(0),
+        speed(speed),
+        directionDegree(directionDegree),
+        bulletPtr(inBulletPtr)
+        {
+        };
+    protected:
+        void onInit()
+        {
+            float r = toRad(keyInfo.degree);
+            vx = cos(r) * speed;
+            vy = sin(r) * speed * -1;
+        }
+        void onUpdate()
+        {
+            NodePtr n = bulletPtr->getNodePtr();
+            n->addPosition(vx, vy);
+            // フィールド外チェック
+            float x = bulletPtr->getPositionX();
+            float y = bulletPtr->getPositionY();
+            float w = bulletPtr->getWidth();
+            float h = bulletPtr->getHeight();
+            if (x + w/2 > fieldSize.width)
+            {
+                bulletPtr->setPositionX(fieldSize.width - w/2);
+            }
+            if (y + h/2 > fieldSize.height)
+            {
+                bulletPtr->setPositionY(fieldSize.height - h/2);
+            }
+            if (x - w/2 < 0)
+            {
+                bulletPtr->setPositionX(w/2);
+            }
+            if (y - h/2 < 0)
+            {
+                bulletPtr->setPositionY(h/2);
+            }
+        }
+        std::string getName()
+        {
+            return "BulletMoveProcess";
+        }
+    private:
+        BulletPtr bulletPtr;
+        float vx;
+        float vy;
+        float directionDegree;
+        float speed;
     };
     
     ////////////////////
@@ -412,9 +539,11 @@ namespace hg {
         
         // layer
         layerBackground = NodePtr(new HGNode());
-        layerPlayer = NodePtr(new HGNode());
         HGDirector::sharedDirector()->getRootNode()->addChild(layerBackground);
+        layerPlayer = NodePtr(new HGNode());
         HGDirector::sharedDirector()->getRootNode()->addChild(layerPlayer);
+        layerBullet = NodePtr(new HGNode());
+        HGDirector::sharedDirector()->getRootNode()->addChild(layerBullet);
         
         // background
         for (int i = 0; i < 5; ++i)
@@ -484,7 +613,7 @@ namespace hg {
         // player
         {
             playerPtr = FighterPtr(new Fighter());
-            playerPtr->init();
+            playerPtr->init(layerPlayer);
             playerPtr->setPosition(fieldSize.width/2, fieldSize.height/2);
             movePlayerProcOwner = ProcessOwnerPtr(new HGProcessOwner);
         }
