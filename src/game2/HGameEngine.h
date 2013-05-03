@@ -55,87 +55,13 @@ namespace hg
     public:
         const char SIGNATURE = 0xDEADC0DE;
         const char ENDMARKER = 0xDEADC0DE;
-        std::string getName()
-        {
-            return name;
-        }
-        void* alloc(size_t size)
-        {
-            size_t iRequestedBytes = size + sizeof(AllocHeader)
-                + sizeof(int); // End Marker分
-            char *pMem = (char*)malloc(iRequestedBytes);
-            AllocHeader *pHeader = (AllocHeader*)pMem;
-            pHeader->pHeap = this;
-            pHeader->iSize = size;
-            pHeader->iSignature = SIGNATURE;
-            pHeader->pNext = NULL;
-            pHeader->pPrev = NULL;
-            pHeader->referenceCount = 1;
-            if (!pFirst)
-            {
-                pFirst = pHeader;
-                pLast = pHeader;
-            }
-            else
-            {
-                pLast->pNext = pHeader;
-                pHeader->pPrev = pLast;
-            }
-            this->addAllocation(size);
-            char* pStartMemBlock = pMem + sizeof(AllocHeader);
-            int *pEndMarker = (int*)(pStartMemBlock + size);
-            *pEndMarker = ENDMARKER;
-            return pStartMemBlock;
-        }
-        void deleteAllocation(void *pMem)
-        {
-            AllocHeader *pHeader = (AllocHeader *)((char *)pMem - sizeof(AllocHeader));
-            assert(pHeader->iSignature == SIGNATURE);
-            pHeader->pHeap->removeAllocation(pHeader->iSize);
-            if (pHeader->pPrev)
-            {
-                pHeader->pPrev->pNext = pHeader->pNext;
-            }
-            if (pHeader->pNext)
-            {
-                pHeader->pNext->pPrev = pHeader->pPrev;
-            }
-            if (pFirst == pHeader)
-            {
-                pFirst = pHeader->pNext;
-            }
-            if (pLast == pHeader)
-            {
-                pLast = pHeader->pPrev;
-            }
-            int *pEndmarker = (int *)((char*)pMem + pHeader->iSize);
-            assert(*pEndmarker == ENDMARKER);
-            free(pHeader);
-        }
-        void freeAll()
-        {
-            pFirst = NULL;
-            pLast = NULL;
-            allocatedSize = 0;
-        }
-        void retain(void *pMem)
-        {
-            AllocHeader *pHeader = (AllocHeader *)((char *)pMem - sizeof(AllocHeader));
-            assert(pHeader->iSignature == SIGNATURE);
-            assert(pHeader->referenceCount >= 0);
-            pHeader->referenceCount++;
-        }
-        void release(void *pMem)
-        {
-            AllocHeader *pHeader = (AllocHeader *)((char *)pMem - sizeof(AllocHeader));
-            assert(pHeader->iSignature == SIGNATURE);
-            assert(pHeader->referenceCount > 0);
-            pHeader->referenceCount--;
-            if (pHeader->referenceCount == 0)
-            {
-                deleteAllocation(pMem);
-            }
-        }
+        std::string getName();
+        void* alloc(size_t size);
+        void deleteAllocation(void *pMem);
+        void freeAll();
+        void retain(void *pMem);
+        void release(void *pMem);
+        
     private:
         HGHeap(std::string name):
         name(name),
@@ -148,29 +74,15 @@ namespace hg
         size_t allocatedSize;
         AllocHeader* pFirst;
         AllocHeader* pLast;
-        void addAllocation(size_t size)
-        {
-            allocatedSize += size;
-        }
-        void removeAllocation(size_t size)
-        {
-            allocatedSize -= size;
-        }
+        void addAllocation(size_t size);
+        void removeAllocation(size_t size);
+        
         friend class HGHeapFactory;
     };
     class HGHeapFactory
     {
     public:
-        static HGHeap* CreateHeap(std::string name)
-        {
-            if (heapList.find(name) != heapList.end())
-            {
-                return heapList[name];
-            }
-            HGHeap* pHeap = new HGHeap(name);
-            heapList[name] = pHeap;
-            return pHeap;
-        }
+        static HGHeap* CreateHeap(std::string name);
     private:
         static std::map<std::string,HGHeap*> heapList;
     };
@@ -186,14 +98,8 @@ namespace hg
         static void* operator new(size_t size);
         static void* operator new(size_t size, std::string heapName);
         static void operator delete(void *p, size_t size);
-        void retain()
-        {
-            s_pHeap->retain(this);
-        }
-        void release()
-        {
-            s_pHeap->release(this);
-        }
+        void retain();
+        void release();
     private:
         static HGHeap* s_pHeap;
     };
@@ -203,93 +109,30 @@ namespace hg
     class HGState : public HGObject
     {
     public:
-        HGState()
-        {
-            isInitialUpdate = true;
-        }
-        
+        HGState();
         virtual void onUpdate(){}
-        virtual std::string getName()
-        {
-            return "BaseState";
-        }
+        virtual std::string getName();
         virtual void onSuspend(){}
         virtual void onResume(){}
-        void update()
-        {
-            this->onUpdate();
-            frameCount++;
-            isInitialUpdate = false;
-        }
-        void suspend()
-        {
-            this->onSuspend();
-        }
-        void resume()
-        {
-            this->onResume();
-        }
+        void update();
+        void suspend();
+        void resume();
         virtual ~HGState(){}
     private:
         int frameCount;
         bool isInitialUpdate;
     };
 
-    static HGStateManager* pStateManager = NULL;
     class HGStateManager : public HGObject
     {
     public:
         typedef std::stack<HGState*> stateStack;
         stateStack stack;
-        static HGStateManager* sharedStateManger()
-        {
-            if (!pStateManager)
-            {
-                pStateManager = new (SYSTEM_HEAP_NAME)HGStateManager();
-            }
-            return pStateManager;
-        }
-        
-        void clear()
-        {
-            while(stack.size())
-            {
-                stack.top()->release();
-                stack.pop();
-            }
-        }
-        
-        void update()
-        {
-            updateNowTime();
-            if (!stack.empty())
-            {
-                HGState* state = stack.top();
-                state->update();
-            }
-        }
-        void pop()
-        {
-            assert(!stack.empty());
-            HGState* state = stack.top();
-            HInfo(@"STATE POP : %s", state->getName().c_str());
-            stack.pop();
-            if (stack.size() > 0)
-            {
-                stack.top()->resume();
-            }
-            state->release();
-        }
-        void push(HGState* state)
-        {
-            state->retain();
-            if (stack.size() > 0)
-            {
-                stack.top()->suspend();
-            }
-            stack.push(state);
-            HInfo(@"STATE PUSH : %s", state->getName().c_str());
-        }
+        static HGStateManager* sharedStateManger();
+        void clear();
+        void update();
+        void pop();
+        void push(HGState* state);
         ~HGStateManager(){}
     private:
         HGStateManager(){};
@@ -314,34 +157,21 @@ namespace hg
         isInitialized(false)
         {
         };
-        virtual ~HGProcess()
-        {
-            if (this->pNextProcess)
-            {
-                pNextProcess->release();
-            }
-        };
-        void init(HGProcessOwner* pOwner)
+        virtual ~HGProcess();
+        inline void init(HGProcessOwner* pOwner)
         {
             this->pOwner = pOwner;
             isInitialized = true;
         }
-        void setNext(HGProcess* nextPtr)
-        {
-            assert(nextPtr);
-            nextPtr->retain();
-            pNextProcess = nextPtr;
-        }
+        void setNext(HGProcess* nextPtr);
     protected:
         int frameCount;
         bool isInitialUpdate;
         virtual void onEnd(){}
         virtual void onUpdate(){}
         virtual void onIntercept(){}
-        virtual std::string getName()
-        {
-            return "BaseProcess";
-        }
+        virtual std::string getName();
+        
     private:
         bool _isEnd;
         bool isIntercepted;
@@ -356,6 +186,7 @@ namespace hg
         {
             return _isEnd;
         }
+        
         inline void setEnd()
         {
             this->_isEnd = true;
@@ -389,7 +220,7 @@ namespace hg
         HGProcessOwner():
         pProcess(NULL)
         {}
-        void setProcess(HGProcess* pProcess)
+        inline void setProcess(HGProcess* pProcess)
         {
             this->pProcess = pProcess;
         }
@@ -418,84 +249,14 @@ namespace hg
             return hgProcessManagerPtr;
         }
         HGProcessManager(){}
-        void clear()
-        {
-#if IS_PROCESS_DEBUG
-            HDebug(@"Process Clear");
-#endif
-            for (ProcessList::iterator it = processList.begin(); it != processList.end(); ++it)
-            {
-                (*it)->release();
-            }
-            processList.clear();
-        }
-        void addPrcoess(HGProcess* pProcess)
-        {
-#if IS_PROCESS_DEBUG
-            HDebug(@"Add Process : %s", pProcess->getName().c_str());
-#endif
-            pProcess->retain();
-            HGProcessOwner* pOwner = pProcess->getOwner();
-            if (pOwner->getProcess())
-            {
-#if IS_PROCESS_DEBUG
-                HDebug(@"Process Intercepted : %s", pOwner->getProcess()->getName().c_str());
-#endif
-                HGProcess* p = pOwner->getProcess();
-                p->intercept();
-                p->setIntercepted();
-                p->setEnd();
-            }
-            pOwner->setProcess(pProcess);
-            addProcessList.push_back(pProcess);
-        }
-        void update()
-        {
-            for (ProcessList::iterator it = addProcessList.begin(); it != addProcessList.end(); ++it)
-            {
-                processList.push_back(*it);
-            }
-            addProcessList.clear();
-            for (ProcessList::iterator it = processList.begin(); it != processList.end(); ++it)
-            {
-                HGProcess* tmp = *it;
-                if (tmp->isIntercepted)
-                {
-                    // 中断された場合、nextも中断
-                    delProcessList.push_back(tmp);
-                    continue;
-                }
-                tmp->update();
-                if (tmp->isEnd())
-                {
-#if IS_PROCESS_DEBUG
-                    HDebug(@"Process Ended: %s", tmp->getName().c_str());
-#endif
-                    tmp->end();
-                    delProcessList.push_back(tmp);
-                    if (tmp->pNextProcess)
-                    {
-#if IS_PROCESS_DEBUG
-                        HDebug(@"Next Process Found : %s", tmp->pNextProcess->getName().c_str());
-#endif
-                        this->addPrcoess(tmp->pNextProcess);
-                        tmp->pNextProcess = NULL;
-                    }
-                }
-            }
-            for (ProcessList::iterator it = delProcessList.begin(); it != delProcessList.end(); ++it)
-            {
-                processList.remove(*it);
-            }
-            delProcessList.clear();
-        }
+        void clear();
+        void addPrcoess(HGProcess* pProcess);
+        void update();
     private:
         ProcessList processList;
         ProcessList addProcessList;
         ProcessList delProcessList;
-        void init()
-        {
-        }
+        void init();
     };
     
     
@@ -515,7 +276,7 @@ namespace hg
         }
         virtual ~HGNode(){}
         
-        void removeAllChildren()
+        inline void removeAllChildren()
         {
             for (Children::iterator itr = children.begin(); itr != children.end(); itr++)
             {
@@ -524,13 +285,13 @@ namespace hg
             children.clear();
         }
         
-        void removeChild(HGNode* node)
+        inline void removeChild(HGNode* node)
         {
             children.remove(node);
             node->release();
         }
         
-        void addChild(HGNode* node)
+        inline void addChild(HGNode* node)
         {
             assert(node != this);
             assert(node->parent == NULL);
@@ -539,7 +300,7 @@ namespace hg
             node->setParent(this);
         }
         
-        void setParent(HGNode* node)
+        inline void setParent(HGNode* node)
         {
             if (parent != NULL)
             {
@@ -549,25 +310,25 @@ namespace hg
             parent = node;
         }
         
-        void setScale(float scaleX, float scaleY)
+        inline void setScale(float scaleX, float scaleY)
         {
             this->scale.x = scaleX;
             this->scale.y = scaleY;
         }
         
-        void setScale(float scaleX, float scaleY, float scaleZ)
+        inline void setScale(float scaleX, float scaleY, float scaleZ)
         {
             this->scale.x = scaleX;
             this->scale.y = scaleY;
             this->scale.z = scaleZ;
         }
         
-        void setRotate(float x, float y, float z)
+        inline void setRotate(float x, float y, float z)
         {
             this->rotate.set(x, y, z);
         }
         
-        void draw(Vector& parentPosition, Vector& parentScale, Vector& parentRotate)
+        inline void draw(Vector& parentPosition, Vector& parentScale, Vector& parentRotate)
         {
             worldPosition.x = position.x + parentPosition.x;
             worldPosition.y = position.y + parentPosition.y;
@@ -589,42 +350,42 @@ namespace hg
             
         }
         
-        void addPosition(float x, float y)
+        inline void addPosition(float x, float y)
         {
             position.x += x;
             position.y += y;
         }
-        void setPosition(float x, float y)
+        inline void setPosition(float x, float y)
         {
             position.x = x;
             position.y = y;
         }
-        void setPositionX(float x)
+        inline void setPositionX(float x)
         {
             position.x = x;
         }
-        void setPositionY(float y)
+        inline void setPositionY(float y)
         {
             position.y = y;
         }
-        void setPosition(float x, float y, float z)
+        inline void setPosition(float x, float y, float z)
         {
             position.x = x;
             position.y = y;
             position.z = z;
         }
         
-        float getPositionX()
+        inline float getPositionX()
         {
             return position.x;
         }
         
-        float getPositionY()
+        inline float getPositionY()
         {
             return position.y;
         }
         
-        void setRotateZWithRadian(float radian)
+        inline void setRotateZWithRadian(float radian)
         {
             this->rotate.z = radian;
         }
@@ -671,12 +432,12 @@ namespace hg
         isAlphaMap(0)
         {
         };
-        void init(std::string textureName)
+        inline void init(std::string textureName)
         {
             this->textureName = textureName;
             isTextureInitialized = false;
         }
-        void setTextureRect(float x, float y, float w, float h)
+        inline void setTextureRect(float x, float y, float w, float h)
         {
             textureRect.point.x = x;
             textureRect.point.y = y;
@@ -684,34 +445,34 @@ namespace hg
             textureRect.size.height = h;
             isTextureRectChanged = true;
         }
-        void setBlendFunc(int a, int b)
+        inline void setBlendFunc(int a, int b)
         {
             blend1 = a;
             blend2 = b;
             isPropertyChanged = true;
         }
-        void setblendcolor(hgles::Color c)
+        inline void setblendcolor(hgles::Color c)
         {
             blendColor = c;
             isPropertyChanged = true;
         }
-        void setColor(hgles::Color c)
+        inline void setColor(hgles::Color c)
         {
             color = c;
             isPropertyChanged = true;
         }
-        void setType(SpriteType t)
+        inline void setType(SpriteType t)
         {
             type = t;
         }
-        void shouldRenderAsAlphaMap(bool p)
+        inline void shouldRenderAsAlphaMap(bool p)
         {
             isAlphaMap = p?1:0;
             isPropertyChanged = true;
         }
         
     protected:
-        void render()
+        inline void render()
         {
             if (!isTextureInitialized)
             {
@@ -774,16 +535,16 @@ namespace hg
             }
             return directorPtr;
         }
-        void drawRootNode()
+        inline void drawRootNode()
         {
             pRootNode->draw(rootPosition, rootScale, rootRotate);
         }
-        HGNode* getRootNode()
+        inline HGNode* getRootNode()
         {
             return pRootNode;
         }
     private:
-        void init()
+        inline void init()
         {
             pRootNode = new (SYSTEM_HEAP_NAME)HGNode();
             rootPosition = Vector(0,0,0);

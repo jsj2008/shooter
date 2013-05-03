@@ -39,8 +39,122 @@ namespace hg
         return nowTime;
     }
     
+    ////////////////////
+    // ヒープ
+    std::string HGHeap::getName()
+    {
+        return name;
+    }
+    void* HGHeap::alloc(size_t size)
+    {
+        size_t iRequestedBytes = size + sizeof(AllocHeader)
+        + sizeof(int); // End Marker分
+        char *pMem = (char*)malloc(iRequestedBytes);
+        AllocHeader *pHeader = (AllocHeader*)pMem;
+        pHeader->pHeap = this;
+        pHeader->iSize = size;
+        pHeader->iSignature = SIGNATURE;
+        pHeader->pNext = NULL;
+        pHeader->pPrev = NULL;
+        pHeader->referenceCount = 1;
+        if (!pFirst)
+        {
+            pFirst = pHeader;
+            pLast = pHeader;
+        }
+        else
+        {
+            pLast->pNext = pHeader;
+            pHeader->pPrev = pLast;
+        }
+        this->addAllocation(size);
+        char* pStartMemBlock = pMem + sizeof(AllocHeader);
+        int *pEndMarker = (int*)(pStartMemBlock + size);
+        *pEndMarker = ENDMARKER;
+        return pStartMemBlock;
+    }
+    void HGHeap::deleteAllocation(void *pMem)
+    {
+        AllocHeader *pHeader = (AllocHeader *)((char *)pMem - sizeof(AllocHeader));
+        assert(pHeader->iSignature == SIGNATURE);
+        pHeader->pHeap->removeAllocation(pHeader->iSize);
+        if (pHeader->pPrev)
+        {
+            pHeader->pPrev->pNext = pHeader->pNext;
+        }
+        if (pHeader->pNext)
+        {
+            pHeader->pNext->pPrev = pHeader->pPrev;
+        }
+        if (pFirst == pHeader)
+        {
+            pFirst = pHeader->pNext;
+        }
+        if (pLast == pHeader)
+        {
+            pLast = pHeader->pPrev;
+        }
+        int *pEndmarker = (int *)((char*)pMem + pHeader->iSize);
+        assert(*pEndmarker == ENDMARKER);
+        free(pHeader);
+    }
+    void HGHeap::freeAll()
+    {
+        pFirst = NULL;
+        pLast = NULL;
+        allocatedSize = 0;
+    }
+    void HGHeap::retain(void *pMem)
+    {
+        AllocHeader *pHeader = (AllocHeader *)((char *)pMem - sizeof(AllocHeader));
+        assert(pHeader->iSignature == SIGNATURE);
+        assert(pHeader->referenceCount >= 0);
+        pHeader->referenceCount++;
+    }
+    void HGHeap::release(void *pMem)
+    {
+        AllocHeader *pHeader = (AllocHeader *)((char *)pMem - sizeof(AllocHeader));
+        assert(pHeader->iSignature == SIGNATURE);
+        assert(pHeader->referenceCount > 0);
+        pHeader->referenceCount--;
+        if (pHeader->referenceCount == 0)
+        {
+            deleteAllocation(pMem);
+        }
+    }
+    void HGHeap::addAllocation(size_t size)
+    {
+        allocatedSize += size;
+    }
+    void HGHeap::removeAllocation(size_t size)
+    {
+        allocatedSize -= size;
+    }
     
     std::map<std::string,HGHeap*> HGHeapFactory::heapList;
+    HGHeap* HGHeapFactory::CreateHeap(std::string name)
+    {
+        if (heapList.find(name) != heapList.end())
+        {
+            return heapList[name];
+        }
+        HGHeap* pHeap = new HGHeap(name);
+        heapList[name] = pHeap;
+        return pHeap;
+    }
+    
+    ////////////////////
+    // 基底
+    
+    void HGObject::retain()
+    {
+        s_pHeap->retain(this);
+    }
+    void HGObject::release()
+    {
+        s_pHeap->release(this);
+    }
+    
     HGHeap* HGObject::s_pHeap = NULL;
     void* HGObject::operator new(size_t size)
     {
@@ -58,6 +172,182 @@ namespace hg
     {
         s_pHeap->deleteAllocation(p);
     }
+    
+    ////////////////////
+    // ステート管理
+    HGState::HGState()
+    {
+        isInitialUpdate = true;
+    }
+    
+    std::string HGState::getName()
+    {
+        return "BaseState";
+    }
+    void HGState::update()
+    {
+        this->onUpdate();
+        frameCount++;
+        isInitialUpdate = false;
+    }
+    void HGState::suspend()
+    {
+        this->onSuspend();
+    }
+    void HGState::resume()
+    {
+        this->onResume();
+    }
+
+    static HGStateManager* pStateManager = NULL;
+    HGStateManager* HGStateManager::sharedStateManger()
+    {
+        if (!pStateManager)
+        {
+            pStateManager = new (SYSTEM_HEAP_NAME)HGStateManager();
+        }
+        return pStateManager;
+    }
+    
+    void HGStateManager::clear()
+    {
+        while(stack.size())
+        {
+            stack.top()->release();
+            stack.pop();
+        }
+    }
+    
+    void HGStateManager::update()
+    {
+        updateNowTime();
+        if (!stack.empty())
+        {
+            HGState* state = stack.top();
+            state->update();
+        }
+    }
+    void HGStateManager::pop()
+    {
+        assert(!stack.empty());
+        HGState* state = stack.top();
+        HInfo(@"STATE POP : %s", state->getName().c_str());
+        stack.pop();
+        if (stack.size() > 0)
+        {
+            stack.top()->resume();
+        }
+        state->release();
+    }
+    void HGStateManager::push(HGState* state)
+    {
+        state->retain();
+        if (stack.size() > 0)
+        {
+            stack.top()->suspend();
+        }
+        stack.push(state);
+        HInfo(@"STATE PUSH : %s", state->getName().c_str());
+    }
+    
+    ////////////////////
+    // プロセス管理
+    
+    // プロセスクラス
+    HGProcess::~HGProcess()
+    {
+        if (this->pNextProcess)
+        {
+            pNextProcess->release();
+        }
+    };
+    void HGProcess::setNext(HGProcess* nextPtr)
+    {
+        assert(nextPtr);
+        nextPtr->retain();
+        pNextProcess = nextPtr;
+    }
+    std::string HGProcess::getName()
+    {
+        return "BaseProcess";
+    }
+    
+    // プロセス管理クラス
+        void HGProcessManager::clear()
+        {
+#if IS_PROCESS_DEBUG
+            HDebug(@"Process Clear");
+#endif
+            for (ProcessList::iterator it = processList.begin(); it != processList.end(); ++it)
+            {
+                (*it)->release();
+            }
+            processList.clear();
+        }
+    void HGProcessManager::addPrcoess(HGProcess* pProcess)
+        {
+#if IS_PROCESS_DEBUG
+            HDebug(@"Add Process : %s", pProcess->getName().c_str());
+#endif
+            pProcess->retain();
+            HGProcessOwner* pOwner = pProcess->getOwner();
+            if (pOwner->getProcess())
+            {
+#if IS_PROCESS_DEBUG
+                HDebug(@"Process Intercepted : %s", pOwner->getProcess()->getName().c_str());
+#endif
+                HGProcess* p = pOwner->getProcess();
+                p->intercept();
+                p->setIntercepted();
+                p->setEnd();
+            }
+            pOwner->setProcess(pProcess);
+            addProcessList.push_back(pProcess);
+        }
+    void HGProcessManager::update()
+        {
+            for (ProcessList::iterator it = addProcessList.begin(); it != addProcessList.end(); ++it)
+            {
+                processList.push_back(*it);
+            }
+            addProcessList.clear();
+            for (ProcessList::iterator it = processList.begin(); it != processList.end(); ++it)
+            {
+                HGProcess* tmp = *it;
+                if (tmp->isIntercepted)
+                {
+                    // 中断された場合、nextも中断
+                    delProcessList.push_back(tmp);
+                    continue;
+                }
+                tmp->update();
+                if (tmp->isEnd())
+                {
+#if IS_PROCESS_DEBUG
+                    HDebug(@"Process Ended: %s", tmp->getName().c_str());
+#endif
+                    tmp->end();
+                    delProcessList.push_back(tmp);
+                    if (tmp->pNextProcess)
+                    {
+#if IS_PROCESS_DEBUG
+                        HDebug(@"Next Process Found : %s", tmp->pNextProcess->getName().c_str());
+#endif
+                        this->addPrcoess(tmp->pNextProcess);
+                        tmp->pNextProcess = NULL;
+                    }
+                }
+            }
+            for (ProcessList::iterator it = delProcessList.begin(); it != delProcessList.end(); ++it)
+            {
+                processList.remove(*it);
+            }
+            delProcessList.clear();
+        }
+    void HGProcessManager::init()
+        {
+        }
+    
     
     
 }
