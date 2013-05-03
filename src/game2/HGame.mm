@@ -2,25 +2,15 @@
 #import <list>
 #import <stack>
 
+#import "HDefine.h"
 #import "HGLES.h"
 #import "HGLGraphics2D.h"
 
 #import "HGameEngine.h"
+#import "HActor.h"
 
 #import <boost/shared_ptr.hpp>
 #import <list>
-
-////////////////////
-// game define
-#define IS_DEBUG_COLLISION 0
-#define ENEMY_NUM 10
-#define BULLET_NUM 100
-#define ENEMY_BULLET_NUM 100
-#define FIELD_SIZE 100
-#define ZPOS 0
-#define BACKGROUND_SCALE 2000
-#define STAGE_SCALE 100
-#define PIXEL_SCALE 0.01
 
 namespace hg {
     
@@ -57,74 +47,6 @@ namespace hg {
     HGProcessOwner* pPlayerControlOwner = NULL;
     
     KeyInfo keyInfo = {};
-    
-    ////////////////////
-    // Actor
-    class Actor : public HGObject
-    {
-    public:
-        Actor():
-        pNode(NULL),
-        pixelSize(0,0),
-        realSize(0,0),
-        isInitialized(false)
-        {
-        };
-        
-        virtual void init(HGNode* pNodeParent)
-        {
-            this->pNode = new HGNode();
-            pNodeParent->addChild(this->pNode);
-            isInitialized = true;
-        }
-        
-        void setPosition(float x, float y)
-        {
-            pNode->setPosition(x, y);
-        }
-        void setPositionX(float x)
-        {
-            pNode->setPositionX(x);
-        }
-        void setPositionY(float y)
-        {
-            pNode->setPositionY(y);
-        }
-        float getPositionX()
-        {
-            return pNode->getPositionX();
-        }
-        float getPositionY()
-        {
-            return pNode->getPositionY();
-        }
-        float getWidth()
-        {
-            return realSize.width;
-        }
-        float getHeight()
-        {
-            return realSize.height;
-        }
-        HGNode* getNode()
-        {
-            return pNode;
-        }
-        void setSizeByPixel(float width, float height)
-        {
-            pixelSize.width = width;
-            pixelSize.height = height;
-            realSize.width = pixelSize.width*PIXEL_SCALE;
-            realSize.height = pixelSize.height*PIXEL_SCALE;
-        }
-        
-    protected:
-        HGNode* pNode;
-    private:
-        HGSize pixelSize;
-        HGSize realSize;
-        bool isInitialized;
-    };
     
     
     ////////////////////
