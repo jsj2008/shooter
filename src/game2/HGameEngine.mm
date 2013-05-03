@@ -39,4 +39,25 @@ namespace hg
         return nowTime;
     }
     
+    
+    std::map<std::string,HGHeap*> HGHeapFactory::heapList;
+    HGHeap* HGObject::s_pHeap = NULL;
+    void* HGObject::operator new(size_t size)
+    {
+        return operator new(size, DEFAULT_HEAP_NAME);
+    }
+    void* HGObject::operator new(size_t size, std::string heapName)
+    {
+        if (!s_pHeap)
+        {
+            s_pHeap = HGHeapFactory::CreateHeap(heapName);
+        }
+        return (HGObject*)s_pHeap->alloc(size);
+    }
+    void HGObject::operator delete(void *p, size_t size)
+    {
+        s_pHeap->deleteAllocation(p);
+    }
+    
+    
 }

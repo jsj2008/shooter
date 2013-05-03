@@ -3,8 +3,12 @@
 
 #import "HGLES.h"
 #import "HGLGraphics2D.h"
+
+#import "HTypes.h"
+
 #import <boost/shared_ptr.hpp>
 #import <list>
+#import <map>
 #include <sys/timeb.h>
 
 #define GAMEFPS 30
@@ -16,6 +20,9 @@
 namespace hg
 {
     
+    const std::string SYSTEM_HEAP_NAME = "SYSTEM HEAP";
+    const std::string DEFAULT_HEAP_NAME = "DEFAULT HEAP";
+    
     class HGNode;
     class HGSprite;
     class HGBillboardSprite;
@@ -25,54 +32,9 @@ namespace hg
     class HGProcessManager;
     class HGProcess;
     class HGProcessOwner;
-    
-    ////////////////////
-    //  typedef
-    typedef hgles::HGLVector3 Vector;
-    typedef boost::shared_ptr<HGNode> NodePtr;
-    typedef boost::shared_ptr<HGSprite> SpritePtr;
-    typedef boost::shared_ptr<HGState> StatePtr;
-    typedef boost::shared_ptr<HGProcess> ProcessPtr;
-    typedef boost::shared_ptr<HGProcessOwner> ProcessOwnerPtr;
-    
-    typedef struct t_rect
-    {
-        float x, y, w, h;
-    } t_rect;
-    
-    typedef struct t_size2d
-    {
-        float w, h;
-    } t_size2d;
-    
-    typedef struct t_pos2d
-    {
-        float x, y;
-    } t_pos2d;
-    
-    typedef struct HGPoint
-    {
-        HGPoint(float ix, float iy):x(ix), y(iy){}
-        float x, y;
-    } HGPoint;
-    
-    typedef struct HGSize
-    {
-        HGSize(float w, float h):width(w), height(h){}
-        float width, height;
-        
-    } HGSize;
-    
-    typedef struct HGRect
-    {
-        HGRect(float x, float y, float width, float height):point(0,0), size(0,0)
-        {
-            point = HGPoint(x, y);
-            size = HGSize(width, height);
-        }
-        HGPoint point;
-        HGSize size;
-    } HGRect;
+    class HGObject;
+    class HGHeap;
+    class HGHeapFactory;
     
     ////////////////////
     // 便利関数
@@ -83,14 +45,157 @@ namespace hg
     float toRad(float degree);
     void updateNowTime();
     double getNowTime();
+
+    ////////////////////
+    // メモリ管理
+    
+    // ヒープ
+    class HGHeap
+    {
+    public:
+        const char SIGNATURE = 0xDEADC0DE;
+        const char ENDMARKER = 0xDEADC0DE;
+        std::string getName()
+        {
+            return name;
+        }
+        void* alloc(size_t size)
+        {
+            size_t iRequestedBytes = size + sizeof(AllocHeader)
+                + sizeof(int); // End Marker分
+            char *pMem = (char*)malloc(iRequestedBytes);
+            AllocHeader *pHeader = (AllocHeader*)pMem;
+            pHeader->pHeap = this;
+            pHeader->iSize = size;
+            pHeader->iSignature = SIGNATURE;
+            pHeader->pNext = NULL;
+            pHeader->pPrev = NULL;
+            pHeader->referenceCount = 1;
+            if (!pFirst)
+            {
+                pFirst = pHeader;
+                pLast = pHeader;
+            }
+            else
+            {
+                pLast->pNext = pHeader;
+                pHeader->pPrev = pLast;
+            }
+            this->addAllocation(size);
+            char* pStartMemBlock = pMem + sizeof(AllocHeader);
+            int *pEndMarker = (int*)(pStartMemBlock + size);
+            *pEndMarker = ENDMARKER;
+            return pStartMemBlock;
+        }
+        void deleteAllocation(void *pMem)
+        {
+            AllocHeader *pHeader = (AllocHeader *)((char *)pMem - sizeof(AllocHeader));
+            assert(pHeader->iSignature == SIGNATURE);
+            pHeader->pHeap->removeAllocation(pHeader->iSize);
+            if (pHeader->pPrev)
+            {
+                pHeader->pPrev->pNext = pHeader->pNext;
+            }
+            if (pHeader->pNext)
+            {
+                pHeader->pNext->pPrev = pHeader->pPrev;
+            }
+            if (pFirst == pHeader)
+            {
+                pFirst = pHeader->pNext;
+            }
+            if (pLast == pHeader)
+            {
+                pLast = pHeader->pPrev;
+            }
+            int *pEndmarker = (int *)((char*)pMem + pHeader->iSize);
+            assert(*pEndmarker == ENDMARKER);
+            free(pHeader);
+        }
+        void freeAll()
+        {
+            pFirst = NULL;
+            pLast = NULL;
+            allocatedSize = 0;
+        }
+        void retain(void *pMem)
+        {
+            AllocHeader *pHeader = (AllocHeader *)((char *)pMem - sizeof(AllocHeader));
+            assert(pHeader->iSignature == SIGNATURE);
+            assert(pHeader->referenceCount >= 0);
+            pHeader->referenceCount++;
+        }
+        void release(void *pMem)
+        {
+            AllocHeader *pHeader = (AllocHeader *)((char *)pMem - sizeof(AllocHeader));
+            assert(pHeader->iSignature == SIGNATURE);
+            assert(pHeader->referenceCount > 0);
+            pHeader->referenceCount--;
+            if (pHeader->referenceCount == 0)
+            {
+                deleteAllocation(pMem);
+            }
+        }
+    private:
+        HGHeap(std::string name):
+        name(name),
+        allocatedSize(0),
+        pFirst(NULL),
+        pLast(NULL)
+        {
+        }
+        std::string name;
+        size_t allocatedSize;
+        AllocHeader* pFirst;
+        AllocHeader* pLast;
+        void addAllocation(size_t size)
+        {
+            allocatedSize += size;
+        }
+        void removeAllocation(size_t size)
+        {
+            allocatedSize -= size;
+        }
+        friend class HGHeapFactory;
+    };
+    class HGHeapFactory
+    {
+    public:
+        static HGHeap* CreateHeap(std::string name)
+        {
+            if (heapList.find(name) != heapList.end())
+            {
+                return heapList[name];
+            }
+            HGHeap* pHeap = new HGHeap(name);
+            heapList[name] = pHeap;
+            return pHeap;
+        }
+    private:
+        static std::map<std::string,HGHeap*> heapList;
+    };
     
     ////////////////////
     // 基底
     class HGObject
     {
     public:
-        HGObject(){};
+        HGObject()
+        {};
         virtual ~HGObject(void){};
+        static void* operator new(size_t size);
+        static void* operator new(size_t size, std::string heapName);
+        static void operator delete(void *p, size_t size);
+        void retain()
+        {
+            s_pHeap->retain(this);
+        }
+        void release()
+        {
+            s_pHeap->release(this);
+        }
+    private:
+        static HGHeap* s_pHeap;
     };
     
     ////////////////////
@@ -130,25 +235,26 @@ namespace hg
         bool isInitialUpdate;
     };
 
-    static HGStateManager* stateManagerPtr = NULL;
+    static HGStateManager* pStateManager = NULL;
     class HGStateManager : public HGObject
     {
     public:
-        typedef std::stack<StatePtr> stateStack;
+        typedef std::stack<HGState*> stateStack;
         stateStack stack;
         static HGStateManager* sharedStateManger()
         {
-            if (!stateManagerPtr)
+            if (!pStateManager)
             {
-                stateManagerPtr = new HGStateManager();
+                pStateManager = new (SYSTEM_HEAP_NAME)HGStateManager();
             }
-            return stateManagerPtr;
+            return pStateManager;
         }
         
         void clear()
         {
             while(stack.size())
             {
+                stack.top()->release();
                 stack.pop();
             }
         }
@@ -158,23 +264,25 @@ namespace hg
             updateNowTime();
             if (!stack.empty())
             {
-                StatePtr state = stack.top();
+                HGState* state = stack.top();
                 state->update();
             }
         }
         void pop()
         {
             assert(!stack.empty());
-            StatePtr state = stack.top();
+            HGState* state = stack.top();
             HInfo(@"STATE POP : %s", state->getName().c_str());
             stack.pop();
             if (stack.size() > 0)
             {
                 stack.top()->resume();
             }
+            state->release();
         }
-        void push(StatePtr state)
+        void push(HGState* state)
         {
+            state->retain();
             if (stack.size() > 0)
             {
                 stack.top()->suspend();
@@ -191,30 +299,42 @@ namespace hg
     // プロセス管理
     
     // プロセスクラス
-    class HGProcess
+    class HGProcess : public HGObject
     {
+        typedef HGObject base;
     public:
-        HGProcess(ProcessOwnerPtr processOwnerPtr):
-        ownerPtr(NULL),
-        nextProcessPtr(NULL),
+        HGProcess():
+        base(),
+        pOwner(NULL),
+        pNextProcess(NULL),
         frameCount(0),
-        isEnd(false),
+        _isEnd(false),
         isIntercepted(false),
-        isInitialUpdate(true)
+        isInitialUpdate(true),
+        isInitialized(false)
         {
-            ownerPtr = processOwnerPtr;
         };
-        virtual ~HGProcess(){};
-        void setNext(ProcessPtr nextPtr)
+        virtual ~HGProcess()
+        {
+            if (this->pNextProcess)
+            {
+                pNextProcess->release();
+            }
+        };
+        void init(HGProcessOwner* pOwner)
+        {
+            this->pOwner = pOwner;
+            isInitialized = true;
+        }
+        void setNext(HGProcess* nextPtr)
         {
             assert(nextPtr);
-            nextProcessPtr = nextPtr;
+            nextPtr->retain();
+            pNextProcess = nextPtr;
         }
     protected:
         int frameCount;
-        bool isEnd;
         bool isInitialUpdate;
-        virtual void onInit(){}
         virtual void onEnd(){}
         virtual void onUpdate(){}
         virtual void onIntercept(){}
@@ -223,20 +343,39 @@ namespace hg
             return "BaseProcess";
         }
     private:
+        bool _isEnd;
         bool isIntercepted;
-        ProcessOwnerPtr ownerPtr;
-        ProcessPtr nextProcessPtr;
-        void update()
+        bool isInitialized;
+        HGProcessOwner* pOwner;
+        HGProcess* pNextProcess;
+        inline HGProcessOwner* getOwner()
         {
+            return pOwner;
+        }
+        inline bool isEnd()
+        {
+            return _isEnd;
+        }
+        inline void setEnd()
+        {
+            this->_isEnd = true;
+        }
+        inline void setIntercepted()
+        {
+            this->isIntercepted = true;
+        }
+        inline void update()
+        {
+            assert(isInitialized);
             this->onUpdate();
             frameCount++;
             isInitialUpdate = false;
         }
-        void end()
+        inline void end()
         {
             this->onEnd();
         }
-        void intercept()
+        inline void intercept()
         {
             this->onIntercept();
         }
@@ -244,28 +383,36 @@ namespace hg
     };
     
     // プロセスオーナークラス
-    class HGProcessOwner
+    class HGProcessOwner : public HGObject
     {
     public:
         HGProcessOwner():
-        currentProcessPtr(NULL)
+        pProcess(NULL)
         {}
+        void setProcess(HGProcess* pProcess)
+        {
+            this->pProcess = pProcess;
+        }
+        inline HGProcess* getProcess()
+        {
+            return this->pProcess;
+        }
     private:
-        ProcessPtr currentProcessPtr;
-        friend class HGProcessManager;
+        HGProcess* pProcess;
+        
     };
     
     // プロセス管理クラス
-    typedef std::list<ProcessPtr> ProcessList;
+    typedef std::list<HGProcess*> ProcessList;
     static HGProcessManager* hgProcessManagerPtr = NULL;
-    class HGProcessManager
+    class HGProcessManager : HGObject
     {
     public:
         static inline HGProcessManager* sharedProcessManager()
         {
             if (!hgProcessManagerPtr)
             {
-                hgProcessManagerPtr = new HGProcessManager();
+                hgProcessManagerPtr = new (SYSTEM_HEAP_NAME)HGProcessManager();
                 hgProcessManagerPtr->init();
             }
             return hgProcessManagerPtr;
@@ -276,37 +423,42 @@ namespace hg
 #if IS_PROCESS_DEBUG
             HDebug(@"Process Clear");
 #endif
+            for (ProcessList::iterator it = processList.begin(); it != processList.end(); ++it)
+            {
+                (*it)->release();
+            }
             processList.clear();
         }
-        void addPrcoess(ProcessPtr processPtr)
+        void addPrcoess(HGProcess* pProcess)
         {
 #if IS_PROCESS_DEBUG
-            HDebug(@"Add Process : %s", processPtr->getName().c_str());
+            HDebug(@"Add Process : %s", pProcess->getName().c_str());
 #endif
-            ProcessOwnerPtr ownerPtr = processPtr->ownerPtr;
-            if (ownerPtr->currentProcessPtr)
+            pProcess->retain();
+            HGProcessOwner* pOwner = pProcess->getOwner();
+            if (pOwner->getProcess())
             {
 #if IS_PROCESS_DEBUG
-                HDebug(@"Process Intercepted : %s", ownerPtr->currentProcessPtr->getName().c_str());
+                HDebug(@"Process Intercepted : %s", pOwner->getProcess()->getName().c_str());
 #endif
-                ownerPtr->currentProcessPtr->intercept();
-                ownerPtr->currentProcessPtr->isIntercepted = true;
-                ownerPtr->currentProcessPtr->isEnd = true;
+                HGProcess* p = pOwner->getProcess();
+                p->intercept();
+                p->setIntercepted();
+                p->setEnd();
             }
-            ownerPtr->currentProcessPtr = processPtr;
-            addProcessList.push_back(processPtr);
+            pOwner->setProcess(pProcess);
+            addProcessList.push_back(pProcess);
         }
         void update()
         {
             for (ProcessList::iterator it = addProcessList.begin(); it != addProcessList.end(); ++it)
             {
-                (*it)->onInit();
                 processList.push_back(*it);
             }
             addProcessList.clear();
             for (ProcessList::iterator it = processList.begin(); it != processList.end(); ++it)
             {
-                ProcessPtr tmp = *it;
+                HGProcess* tmp = *it;
                 if (tmp->isIntercepted)
                 {
                     // 中断された場合、nextも中断
@@ -314,20 +466,20 @@ namespace hg
                     continue;
                 }
                 tmp->update();
-                if (tmp->isEnd)
+                if (tmp->isEnd())
                 {
 #if IS_PROCESS_DEBUG
                     HDebug(@"Process Ended: %s", tmp->getName().c_str());
 #endif
                     tmp->end();
                     delProcessList.push_back(tmp);
-                    if (tmp->nextProcessPtr)
+                    if (tmp->pNextProcess)
                     {
 #if IS_PROCESS_DEBUG
-                        HDebug(@"Next Process Found : %s", tmp->nextProcessPtr->getName().c_str());
+                        HDebug(@"Next Process Found : %s", tmp->pNextProcess->getName().c_str());
 #endif
-                        this->addPrcoess(tmp->nextProcessPtr);
-                        tmp->nextProcessPtr = NULL;
+                        this->addPrcoess(tmp->pNextProcess);
+                        tmp->pNextProcess = NULL;
                     }
                 }
             }
@@ -349,7 +501,7 @@ namespace hg
     
     ////////////////////
     // ノード
-    typedef std::list<NodePtr> Children;
+    typedef std::list<HGNode*> Children;
     class HGNode : public HGObject
     {
     public:
@@ -357,25 +509,44 @@ namespace hg
         size(0,0),
         scale(1,1,1),
         position(0,0,0),
-        rotate(0,0,0)
+        rotate(0,0,0),
+        parent(NULL)
         {
         }
         virtual ~HGNode(){}
         
         void removeAllChildren()
         {
+            for (Children::iterator itr = children.begin(); itr != children.end(); itr++)
+            {
+                (*itr)->release();
+            }
             children.clear();
         }
         
-        void removeChild(NodePtr node)
+        void removeChild(HGNode* node)
         {
             children.remove(node);
+            node->release();
         }
         
-        void addChild(NodePtr node)
+        void addChild(HGNode* node)
         {
+            assert(node != this);
+            assert(node->parent == NULL);
+            node->retain();
             children.push_back(node);
-            //node->parent = NodePtr(this);
+            node->setParent(this);
+        }
+        
+        void setParent(HGNode* node)
+        {
+            if (parent != NULL)
+            {
+                parent->release();
+            }
+            node->retain();
+            parent = node;
         }
         
         void setScale(float scaleX, float scaleY)
@@ -470,7 +641,7 @@ namespace hg
         
         HGSize size;
     private:
-        //NodePtr parent;
+        HGNode* parent;
         Children children;
     };
     
@@ -591,35 +762,35 @@ namespace hg
     ////////////////////
     // グローバルノード
     static HGDirector* directorPtr = NULL;
-    class HGDirector
+    class HGDirector : HGObject
     {
     public:
         static inline HGDirector* sharedDirector()
         {
             if (!directorPtr)
             {
-                directorPtr = new HGDirector();
+                directorPtr = new (SYSTEM_HEAP_NAME)HGDirector();
                 directorPtr->init();
             }
             return directorPtr;
         }
         void drawRootNode()
         {
-            rootNodePtr->draw(rootPosition, rootScale, rootRotate);
+            pRootNode->draw(rootPosition, rootScale, rootRotate);
         }
-        NodePtr getRootNode()
+        HGNode* getRootNode()
         {
-            return rootNodePtr;
+            return pRootNode;
         }
     private:
         void init()
         {
-            rootNodePtr = NodePtr(new HGNode());
+            pRootNode = new (SYSTEM_HEAP_NAME)HGNode();
             rootPosition = Vector(0,0,0);
             rootScale = Vector(1,1,1);
             rootRotate = Vector(0,0,0);
         }
-        NodePtr rootNodePtr;
+        HGNode* pRootNode;
         Vector rootPosition;
         Vector rootScale;
         Vector rootRotate;
