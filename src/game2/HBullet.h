@@ -11,8 +11,10 @@
 
 #include <iostream>
 #include "HActor.h"
+#include "HGameCommon.h"
 
 namespace hg {
+    
     ////////////////////
     // Bullet
     typedef enum BulletType
@@ -33,10 +35,10 @@ namespace hg {
             pOwner->release();
             pMoveOwner->release();
         }
-        inline void init(BulletType type, int power, Actor* pOwner, float x, float y, float directionDegree, HGNode* layerParent)
+        inline void init(BulletType type, int power, Actor* pOwner, float x, float y, float directionDegree)
         {
             assert(pOwner);
-            base::init(layerParent);
+            base::init(pLayerBullet);
             this->power = power;
             this->pOwner = pOwner;
             pOwner->retain();

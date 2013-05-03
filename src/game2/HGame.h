@@ -1,6 +1,6 @@
 #ifndef INC_HGGAME
 #define INC_HGGAME
-#import "HGLVector3.h"
+#include "HGLVector3.h"
 
 namespace hg
 {

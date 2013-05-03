@@ -19,5 +19,12 @@
 #define STAGE_SCALE 100
 #define PIXEL_SCALE 0.01
 
+namespace hg {
+    class HGNode;
+    
+    // global
+    extern HGNode* pLayerBullet;
+}
+
 
 #endif

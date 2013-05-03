@@ -1,17 +1,18 @@
-#import "HGame.h"
-#import <list>
-#import <stack>
+#include "HGame.h"
+#include <list>
+#include <stack>
 
-#import "HDefine.h"
-#import "HGLES.h"
-#import "HGLGraphics2D.h"
+#include "HGameCommon.h"
+#include "HGLES.h"
+#include "HGLGraphics2D.h"
 
-#import "HGameEngine.h"
-#import "HActor.h"
-#import "HBullet.h"
+#include "HGameEngine.h"
+#include "HActor.h"
+#include "HBullet.h"
+#include "HWeapon.h"
 
-#import <boost/shared_ptr.hpp>
-#import <list>
+#include <boost/shared_ptr.hpp>
+#include <list>
 
 namespace hg {
     
@@ -48,67 +49,6 @@ namespace hg {
     HGProcessOwner* pPlayerControlOwner = NULL;
     
     KeyInfo keyInfo = {};
-    
-    
-    ////////////////////
-    // Weapon
-    typedef enum WeaponType
-    {
-        WEAPON_TYPE_NORMAL,
-    } WeaponType;
-    class Weapon : public HGObject
-    {
-    public:
-        Weapon():
-        relativePosition(0,0),
-        lastFireTime(0),
-        fireInterval(0),
-        type(WEAPON_TYPE_NORMAL),
-        bulletType(BULLET_TYPE_NORMAL)
-        {}
-        
-        ~Weapon()
-        {
-            
-        }
-        
-        void init(WeaponType type, BulletType bulletType, float pixelX, float pixelY)
-        {
-            switch (type) {
-                case WEAPON_TYPE_NORMAL:
-                    fireInterval = 0.2;
-                    power = 100;
-                    break;
-                default:
-                    break;
-            }
-            this->type = type;
-            this->bulletType = bulletType;
-            relativePosition.x = pixelX*PIXEL_SCALE;
-            relativePosition.y = pixelY*PIXEL_SCALE;
-        }
-        
-        inline void fire(Actor* pOwner, float directionDegree)
-        {
-            if (getNowTime() - lastFireTime < fireInterval)
-            {
-                return;
-            }
-            lastFireTime = getNowTime();
-            Bullet* bp = new Bullet();
-            float x = pOwner->getPositionX() + relativePosition.x;
-            float y = pOwner->getPositionY() + relativePosition.y;
-            bp->init(bulletType, power, pOwner, x, y, directionDegree, pLayerBullet);
-            bp->release();
-        }
-        
-        int power;
-        HGPoint relativePosition;
-        double lastFireTime;
-        double fireInterval;
-        WeaponType type;
-        BulletType bulletType;
-    };
     
     ////////////////////
     // Fighter

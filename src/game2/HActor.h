@@ -11,7 +11,7 @@
 
 #include <iostream>
 #include "HTypes.h"
-#include "HDefine.h"
+#include "HGameCommon.h"
 #include "HGameEngine.h"
 
 namespace hg
