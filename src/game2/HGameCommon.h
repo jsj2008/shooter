@@ -9,6 +9,8 @@
 #ifndef Shooter_HDefine_h
 #define Shooter_HDefine_h
 
+#include "HGameEngine.h"
+
 #define IS_DEBUG_COLLISION 0
 #define ENEMY_NUM 10
 #define BULLET_NUM 100
@@ -22,8 +24,19 @@
 namespace hg {
     class HGNode;
     
+    // typedef
+    typedef struct KeyInfo
+    {
+        bool isFire;
+        int degree;
+        float power;
+    } KeyInfo;
+    
     // global
     extern HGNode* pLayerBullet;
+    extern KeyInfo keyInfo;
+    extern HGSize fieldSize;
+    extern HGPoint pointOfFieldCenter;
 }
 
 

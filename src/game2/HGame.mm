@@ -10,6 +10,8 @@
 #include "HActor.h"
 #include "HBullet.h"
 #include "HWeapon.h"
+#include "HFighter.h"
+#include "ControlPlayerProcess.h"
 
 #include <boost/shared_ptr.hpp>
 #include <list>
@@ -28,19 +30,11 @@ namespace hg {
         FRIEND_SIDE,
     } WHICH_SIDE;
     
-    typedef struct KeyInfo
-    {
-        bool isFire;
-        int degree;
-        float power;
-    } KeyInfo;
-    
     ////////////////////
     // 変数宣言
     Vector _cameraPosition(0,0,0);
     Vector _cameraRotate(0,0,0);
-    HGSize fieldSize(0,0);
-    HGPoint pointOfFieldCenter(0,0);
+    
     
     Fighter* pPlayer = NULL;
     HGNode* pLayerBackground = NULL;
@@ -49,153 +43,9 @@ namespace hg {
     HGProcessOwner* pPlayerControlOwner = NULL;
     
     KeyInfo keyInfo = {};
+    HGSize fieldSize(0,0);
+    HGPoint pointOfFieldCenter(0,0);
     
-    ////////////////////
-    // Fighter
-    static int SPRITE_INDEX_TABLE[359] = {};
-    typedef std::list<Weapon*> WeaponList;
-    class Fighter : public Actor
-    {
-    public:
-        typedef Actor base;
-        
-        Fighter():
-        base(),
-        textureSrcOffset(0,0),
-        textureSrcSize(0,0),
-        aspectDegree(0),
-        speed(0),
-        textureName(""),
-        life(0),
-        lifeMax(0)
-        {
-        }
-        
-        ~Fighter()
-        {
-            for (WeaponList::iterator it = weaponList.begin(); it != weaponList.end(); ++it)
-            {
-                (*it)->release();
-            }
-            weaponList.clear();
-            pSprite->release();
-        }
-        
-        void init(HGNode* layerParent)
-        {
-            base::init(layerParent);
-            
-            // 種類別の初期化
-            {
-                textureName = "p_robo1.png";
-                textureSrcOffset.x = 0;
-                textureSrcOffset.y = 0;
-                textureSrcSize.width = 16;
-                textureSrcSize.height = 16;
-                setSizeByPixel(128, 128);
-                speed = v(0.6);
-                life = lifeMax = 100;
-                Weapon* wp = new Weapon();
-                wp->init(WEAPON_TYPE_NORMAL, BULLET_TYPE_NORMAL , 0, 0);
-                weaponList.push_back(wp);
-            }
-            
-            pSprite = new HGSprite();
-            pSprite->setType(SPRITE_TYPE_BILLBOARD);
-            pSprite->init(textureName);
-            pSprite->setScale(getWidth(), getHeight());
-            getNode()->addChild(pSprite);
-            
-            setAspectDegree(0);
-            
-            // テーブル初期化
-            static bool isTableInitialized = false;
-            if (!isTableInitialized)
-            {
-                int index = 0;
-                for (int i = 0; i < 360; i++)
-                {
-                    index = 0;
-                    if (i >= 338 || i <= 23) {
-                        index = 2;
-                    } else if (i >= 23 && i <= 68) {
-                        index = 3;
-                    } else if (i >= 68 && i <= 113) {
-                        index = 4;
-                    } else if (i >= 113 && i <= 158) {
-                        index = 5;
-                    } else if (i >= 158 && i <= 203) {
-                        index = 6;
-                    } else if (i >= 203 && i <= 248) {
-                        index = 7;
-                    } else if (i >= 248 && i <= 293) {
-                        index = 0;
-                    } else if (i >= 293 && i <= 338) {
-                        index = 1;
-                    }
-                    SPRITE_INDEX_TABLE[i] = index;
-                }
-            }
-            
-        }
-        void setAspectDegree(float degree)
-        {
-            aspectDegree = degree;
-            int spIdx = getSpriteIndex(aspectDegree + 0.5);
-            int x = textureSrcSize.width * spIdx + textureSrcOffset.x;
-            pSprite->setTextureRect(x - 1, textureSrcOffset.y, textureSrcSize.width, textureSrcSize.height);
-        }
-        
-        int getLife()
-        {
-            return life;
-        }
-        
-        void setLife(int life)
-        {
-            this->life = life;
-        }
-        
-        void setMaxLife(int life)
-        {
-            this->lifeMax = life;
-        }
-        
-        float getAspectDegree()
-        {
-            return aspectDegree;
-        }
-        
-        void fire()
-        {
-            for (WeaponList::iterator it = weaponList.begin(); it != weaponList.end(); ++it)
-            {
-                (*it)->fire(this, this->aspectDegree);
-            }
-        }
-    public:
-        float speed;
-        float aspectDegree;
-    private:
-        int life;
-        int lifeMax;
-        HGPoint textureSrcOffset;
-        HGSize textureSrcSize;
-        std::string textureName;
-        WeaponList weaponList;
-        HGSprite* pSprite;
-        
-        int getSpriteIndex(int i)
-        {
-            while (i < 0)
-            {
-                i += 360;
-            }
-            i = i % 360;
-            return SPRITE_INDEX_TABLE[i];
-        }
-        
-    };
     
     ////////////////////
     // ステート
@@ -215,153 +65,6 @@ namespace hg {
         }
     };
     
-    ////////////////////
-    // bullet移動プロセス
-    class BulletMoveProcess : public HGProcess
-    {
-    public:
-        typedef HGProcess base;
-        BulletMoveProcess() :
-        base(),
-        vx(0),
-        vy(0),
-        speed(0),
-        directionDegree(0),
-        pBullet(NULL)
-        {
-        };
-        ~BulletMoveProcess()
-        {
-            pBullet->release();
-        }
-    protected:
-        void init(HGProcessOwner* pProcOwner, Bullet* inBullet, float speed, float directionDegree)
-        {
-            base::init(pProcOwner);
-            pBullet = inBullet;
-            pBullet->retain();
-            this->speed = speed;
-            this->directionDegree = directionDegree;
-            float r = toRad(keyInfo.degree);
-            vx = cos(r) * speed;
-            vy = sin(r) * speed * -1;
-        }
-        void onUpdate()
-        {
-            HGNode* n = pBullet->getNode();
-            n->addPosition(vx, vy);
-            // フィールド外チェック
-            float x = pBullet->getPositionX();
-            float y = pBullet->getPositionY();
-            float w = pBullet->getWidth();
-            float h = pBullet->getHeight();
-            if (x + w/2 > fieldSize.width)
-            {
-                pBullet->setPositionX(fieldSize.width - w/2);
-            }
-            if (y + h/2 > fieldSize.height)
-            {
-                pBullet->setPositionY(fieldSize.height - h/2);
-            }
-            if (x - w/2 < 0)
-            {
-                pBullet->setPositionX(w/2);
-            }
-            if (y - h/2 < 0)
-            {
-                pBullet->setPositionY(h/2);
-            }
-        }
-        std::string getName()
-        {
-            return "BulletMoveProcess";
-        }
-    private:
-        Bullet* pBullet;
-        float vx;
-        float vy;
-        float directionDegree;
-        float speed;
-    };
-    
-    ////////////////////
-    // 自キャラ移動プロセス
-    class PlayerControlProcess : public HGProcess
-    {
-    public:
-        typedef HGProcess base;
-        PlayerControlProcess() :
-        base(),
-        vx(0),
-        vy(0),
-        pFighter(NULL)
-        {
-        };
-        ~PlayerControlProcess()
-        {
-            pFighter->release();
-        }
-        void init(HGProcessOwner* pProcOwner, Fighter* inFighter)
-        {
-            base::init(pProcOwner);
-            pFighter = inFighter;
-            pFighter->retain();
-        }
-    protected:
-        void onUpdate()
-        {
-            if (keyInfo.power != 0)
-            {
-                pFighter->setAspectDegree(keyInfo.degree);
-            }
-            if (pFighter->getLife() > 0)
-            {
-                float speed = pFighter->speed*keyInfo.power;
-                float r = toRad(keyInfo.degree);
-                vx = cos(r) * speed;
-                vy = sin(r) * speed * -1;
-            }
-            pFighter->getNode()->addPosition(vx, vy);
-            
-            if (pFighter->getLife() > 0)
-            {
-                // フィールド外チェック
-                float x = pFighter->getPositionX();
-                float y = pFighter->getPositionY();
-                float w = pFighter->getWidth();
-                float h = pFighter->getHeight();
-                if (x + w/2 > fieldSize.width)
-                {
-                    pFighter->setPositionX(fieldSize.width - w/2);
-                }
-                if (y + h/2 > fieldSize.height)
-                {
-                    pFighter->setPositionY(fieldSize.height - h/2);
-                }
-                if (x - w/2 < 0)
-                {
-                    pFighter->setPositionX(w/2);
-                }
-                if (y - h/2 < 0)
-                {
-                    pFighter->setPositionY(h/2);
-                }
-            }
-            if (keyInfo.isFire)
-            {
-                pFighter->fire();
-            }
-            
-        }
-        std::string getName()
-        {
-            return "PlayerControlProcess";
-        }
-    private:
-        Fighter* pFighter;
-        float vx;
-        float vy;
-    };
 
     ////////////////////
     // 初期化
@@ -432,23 +135,6 @@ namespace hg {
             pLayerBackground->addChild(pSprite);
         }
         
-        // nebula
-        /* 見た目が微妙なので
-        {
-            HGSprite* pSprite = HGSprite*(new HGSprite());
-            pSprite->init("proc_sheet_nebula.png");
-            int SIZE = rand(1000, 1800);
-            pSprite->setScale(SIZE, SIZE, SIZE);
-            float x = rand(0, STAGE_SCALE) + pointOfFieldCenter.x;
-            float y = rand(0, STAGE_SCALE) + pointOfFieldCenter.y;
-            float z = -1*BACKGROUND_SCALE/2 + ZPOS;
-            pSprite->setPosition(x, y, z);
-            pSprite->setRotate(0, 0, toRad(rand(0, 360)));
-            pSprite->setTextureRect(rand(0,4)*256, rand(0,4)*256, 256, 256);
-            pSprite->setBlendFunc(GL_ONE, GL_ONE);
-            pLayerBackground->addChild(pSprite);
-        }*/
-        
         // フィールド境界
         {
             HGSprite* pSprite = new HGSprite();
@@ -469,7 +155,7 @@ namespace hg {
         
         if (pPlayer)
         {
-            PlayerControlProcess* p = new PlayerControlProcess();
+            ControlPlayerProcess* p = new ControlPlayerProcess();
             p->init(pPlayerControlOwner, pPlayer);
             HGProcessManager::sharedProcessManager()->addPrcoess(p);
         }
