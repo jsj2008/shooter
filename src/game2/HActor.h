@@ -13,6 +13,7 @@
 #include "HTypes.h"
 #include "HGameCommon.h"
 #include "HGameEngine.h"
+#include "HCollision.h"
 
 namespace hg
 {
@@ -25,17 +26,30 @@ namespace hg
         pNode(NULL),
         pixelSize(0,0),
         realSize(0,0),
-        isInitialized(false)
+        isInitialized(false),
+        _isActive(true),
+        collisionId(-1)
         {
         };
-        
+        ~Actor()
+        {
+            pNode->release();
+        }
         virtual void init(HGNode* pNodeParent)
         {
             this->pNode = new HGNode();
             pNodeParent->addChild(this->pNode);
             isInitialized = true;
         }
-        
+        virtual void setActive(bool isActive)
+        {
+            assert(_isActive != isActive);
+            this->_isActive = isActive;
+        }
+        inline bool isActive()
+        {
+            return this->_isActive;
+        }
         inline void setPosition(float x, float y)
         {
             pNode->setPosition(x, y);
@@ -47,6 +61,14 @@ namespace hg
         inline void setPositionY(float y)
         {
             pNode->setPositionY(y);
+        }
+        inline Vector& getPosition()
+        {
+            return pNode->getPosition();
+        }
+        inline HGSize& getSize()
+        {
+            return realSize;
         }
         inline float getPositionX()
         {
@@ -68,20 +90,30 @@ namespace hg
         {
             return pNode;
         }
+        inline CollisionId getCollisionId()
+        {
+            return collisionId;
+        }
         inline void setSizeByPixel(float width, float height)
         {
             pixelSize.width = width;
             pixelSize.height = height;
-            realSize.width = pixelSize.width*PIXEL_SCALE;
-            realSize.height = pixelSize.height*PIXEL_SCALE;
+            realSize.width = PXL2REAL(pixelSize.width);
+            realSize.height = PXL2REAL(pixelSize.height);
         }
         
     protected:
         HGNode* pNode;
+        inline void setCollisionId(CollisionId cid)
+        {
+            collisionId = cid;
+        }
     private:
         HGSize pixelSize;
         HGSize realSize;
         bool isInitialized;
+        bool _isActive;
+        CollisionId collisionId;
     };
     
 }

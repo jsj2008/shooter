@@ -12,6 +12,7 @@
 #include <iostream>
 #include "HGameEngine.h"
 #include "HBullet.h"
+#include "HGameCommon.h"
 
 namespace hg {
     
@@ -26,6 +27,8 @@ namespace hg {
     public:
         Weapon():
         relativePosition(0,0),
+        speed(0),
+        power(0),
         lastFireTime(0),
         fireInterval(0),
         type(WEAPON_TYPE_NORMAL),
@@ -41,6 +44,7 @@ namespace hg {
         {
             switch (type) {
                 case WEAPON_TYPE_NORMAL:
+                    speed = v(0.4);
                     fireInterval = 0.2;
                     power = 100;
                     break;
@@ -53,7 +57,7 @@ namespace hg {
             relativePosition.y = pixelY*PIXEL_SCALE;
         }
         
-        inline void fire(Actor* pOwner, float directionDegree)
+        inline void fire(Actor* pOwner, float directionDegree, SideType side)
         {
             if (getNowTime() - lastFireTime < fireInterval)
             {
@@ -63,10 +67,22 @@ namespace hg {
             Bullet* bp = new Bullet();
             float x = pOwner->getPositionX() + relativePosition.x;
             float y = pOwner->getPositionY() + relativePosition.y;
-            bp->init(bulletType, power, pOwner, x, y, directionDegree);
+            bp->init(bulletType, speed, power, pOwner, x, y, directionDegree, side);
+            switch (side) {
+                case SideTypeEnemy:
+                    enemyBulletList.addActor(bp);
+                    break;
+                case SideTypeFriend:
+                    friendBulletList.addActor(bp);
+                    break;
+                default:
+                    assert(0);
+                    break;
+            }
             bp->release();
         }
         
+        float speed;
         int power;
         HGPoint relativePosition;
         double lastFireTime;

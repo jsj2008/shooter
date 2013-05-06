@@ -12,9 +12,13 @@
 #include "HWeapon.h"
 #include "HFighter.h"
 #include "ControlPlayerProcess.h"
+#include "ControlEnemyProcess.h"
+#include "HActorList.h"
+#include "HitAnimeProcess.h"
 
 #include <boost/shared_ptr.hpp>
 #include <list>
+#include <algorithm>
 
 namespace hg {
     
@@ -24,28 +28,234 @@ namespace hg {
     class Bullet;
     class BulletMoveProcess;
     
-    typedef enum
+    ////////////////////
+    // typedef
+    
+    ////////////////////
+    // あたり判定
+    const int CELL_SPLIT_NUM = 10;
+    HGSize sizeOfCell = {FIELD_SIZE/CELL_SPLIT_NUM, FIELD_SIZE/CELL_SPLIT_NUM};
+    class CellManager : HGObject
     {
-        ENEMY_SIDE,
-        FRIEND_SIDE,
-    } WHICH_SIDE;
+    public:
+        typedef std::list<Actor*> ActorList;
+        typedef std::vector<ActorList> CellList;
+        typedef std::list<int> CellNumberList;
+        CellManager()
+        {
+            list.resize(CELL_SPLIT_NUM*CELL_SPLIT_NUM);
+        }
+        void clear()
+        {
+            //for_each(list.begin(), list.end(), Clear());
+            for (CellList::iterator it = list.begin(); it != list.end(); it++)
+            {
+                (*it).clear();
+            }
+        }
+        void addToCellList(Actor* actor)
+        {
+            HGPoint tmpPos = {actor->getPositionX(), actor->getPositionY()};
+            float halfWidth = actor->getWidth()/2;
+            float halfHeight = actor->getHeight()/2;
+            tmpPos.x -= halfWidth;
+            tmpPos.y -= halfHeight;
+            int beforeNum = -1;
+            while (1)
+            {
+                int num = getCellNumber(tmpPos);
+                if (num > 0 && num > beforeNum)
+                {
+                    list[num].push_back(actor);
+                }
+                beforeNum = num;
+                tmpPos.x += sizeOfCell.width;
+                if (tmpPos.x > actor->getPositionX() + halfWidth)
+                {
+                    if (tmpPos.y + sizeOfCell.height > actor->getPositionY() + halfHeight)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        tmpPos.x = actor->getPositionX() - halfWidth;
+                    }
+                }
+            }
+        }
+        const ActorList& getActorList(int cellNumber)
+        {
+            return list[cellNumber];
+        }
+        static void GetCellList(Actor* actor, CellNumberList &list)
+        {
+            HGPoint tmpPos = {actor->getPositionX(), actor->getPositionY()};
+            float halfWidth = actor->getWidth()/2;
+            float halfHeight = actor->getHeight()/2;
+            tmpPos.x -= halfWidth;
+            tmpPos.y -= halfHeight;
+            int beforeNum = -1;
+            while (1)
+            {
+                int num = getCellNumber(tmpPos);
+                if (num > 0 && num > beforeNum)
+                {
+                    list.push_back(num);
+                }
+                beforeNum = num;
+                tmpPos.x += sizeOfCell.width;
+                if (tmpPos.x > actor->getPositionX() + halfWidth)
+                {
+                    if (tmpPos.y + sizeOfCell.height > actor->getPositionY() + halfHeight)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        tmpPos.x = actor->getPositionX() - halfWidth;
+                    }
+                }
+            }
+        }
+    private:
+        struct Clear {
+            void operator()(ActorList cell) { cell.clear(); }
+        };
+        CellList list;
+        static int getCellNumber(HGPoint& s)
+        {
+            if (s.x < 0 || s.y < 0)
+            {
+                return -1;
+            }
+            if (s.x > sizeOfField.width || s.y > sizeOfField.height)
+            {
+                return -1;
+            }
+            int wx = (int)(s.x / sizeOfCell.width);
+            int wy = (int)(s.y / sizeOfCell.height);
+            return wx + wy * CELL_SPLIT_NUM;
+        }
+    };
     
     ////////////////////
     // 変数宣言
     Vector _cameraPosition(0,0,0);
     Vector _cameraRotate(0,0,0);
     
-    
     Fighter* pPlayer = NULL;
     HGNode* pLayerBackground = NULL;
     HGNode* pLayerPlayer = NULL;
     HGNode* pLayerBullet = NULL;
+    HGNode* pLayerEffect = NULL;
     HGProcessOwner* pPlayerControlOwner = NULL;
     
+    ActorList<Bullet> friendBulletList;
+    ActorList<Bullet> enemyBulletList;
+    ActorList<Fighter> friendFighterList;
+    ActorList<Fighter> enemyFighterList;
+    CellManager enemyBulletCellManager;
+    CellManager friendBulletCellManager;
+    
     KeyInfo keyInfo = {};
-    HGSize fieldSize(0,0);
+    HGSize sizeOfField(0,0);
     HGPoint pointOfFieldCenter(0,0);
     
+    // アニメ
+    void showHitAnimation(Actor* a)
+    {
+        HitAnimeProcess* pHitAnimeProcess = new HitAnimeProcess();
+        HGProcessOwner* pHo = new HGProcessOwner();
+        pHitAnimeProcess->init(pHo, a->getPosition(), pLayerEffect);
+        HGProcessManager::sharedProcessManager()->addPrcoess(pHitAnimeProcess);
+        pHitAnimeProcess->release();
+        pHo->release();
+    }
+    
+    // add actor to cell
+    void addActorsToCells()
+    {
+        friendBulletCellManager.clear();
+        struct AddFriendBullets
+        {
+            void operator()(Actor* actor) {friendBulletCellManager.addToCellList(actor);}
+        };
+        for_each(friendBulletList.begin(), friendBulletList.end(), AddFriendBullets());
+        
+        enemyBulletCellManager.clear();
+        struct AddEnemyBullets
+        {
+            void operator()(Actor* actor) {enemyBulletCellManager.addToCellList(actor);}
+        };
+        for_each(enemyBulletList.begin(), enemyBulletList.end(), AddEnemyBullets());
+    }
+    
+    // あたり判定
+    void checkCollisionEnemy(ActorList<Fighter>& fighterList, CellManager& bulletCellManager)
+    {
+        CollisionManager* pColMgr = CollisionManager::sharedCollisionManager();
+        for (ActorList<Fighter>::iterator it = enemyFighterList.begin(); it != enemyFighterList.end(); it++)
+        {
+            if (!(*it)->isActive() || !(*it)->getLife() > 0)
+            {
+                continue;
+            }
+            CollisionId cida = (*it)->getCollisionId();
+            Vector posa = (*it)->getPosition();
+            HGSize sizea = (*it)->getSize();
+            
+            CellManager::CellNumberList tList;
+            CellManager::GetCellList(*it, tList);
+            
+            for (CellManager::CellNumberList::iterator it = tList.begin(); it != tList.end(); it++)
+            {
+                int cellNumber = (*it);
+                CellManager::ActorList actorList = friendBulletCellManager.getActorList(cellNumber);
+                
+                for (CellManager::ActorList::iterator it = actorList.begin(); it != actorList.end(); it++)
+                {
+                    Actor* a = *it;
+                    assert(a->getCollisionId() < 5);
+                    assert(a->getCollisionId() >= 0);
+                    if (!a->isActive())
+                    {
+                        continue;
+                    }
+                    CollisionId cidb = a->getCollisionId();
+                    Vector posb = a->getPosition();
+                    HGSize sizeb = a->getSize();
+                    if (pColMgr->isIntersect(cida, posa, sizea, cidb, posb, sizeb))
+                    {
+                        showHitAnimation(a);
+                        a->setActive(false);
+                    }
+                }
+            }
+            
+        }
+    }
+    
+    void checkCollisionFriend()
+    {
+        CollisionManager* pColMgr = CollisionManager::sharedCollisionManager();
+        for (ActorList<Fighter>::iterator it = friendFighterList.begin(); it != friendFighterList.end(); it++)
+        {
+            CollisionId cida = (*it)->getCollisionId();
+            Vector posa = (*it)->getPosition();
+            HGSize sizea = (*it)->getSize();
+            for (ActorList<Bullet>::iterator itj = enemyBulletList.begin(); itj != enemyBulletList.end(); itj++)
+            {
+                CollisionId cidb = (*itj)->getCollisionId();
+                Vector posb = (*itj)->getPosition();
+                HGSize sizeb = (*itj)->getSize();
+                if (pColMgr->isIntersect(cida, posa, sizea, cidb, posb, sizeb))
+                {
+                    //HDebug(@"HIT");
+                    showHitAnimation(*it);
+                }
+            }
+        }
+    }
     
     ////////////////////
     // ステート
@@ -58,6 +268,16 @@ namespace hg {
         void onUpdate()
         {
             HGProcessManager::sharedProcessManager()->update();
+            
+            addActorsToCells();
+            checkCollisionEnemy();
+            checkCollisionFriend();
+            
+            // remove inactive actors
+            friendBulletList.removeInactiveActors();
+            enemyBulletList.removeInactiveActors();
+            friendFighterList.removeInactiveActors();
+            enemyFighterList.removeInactiveActors();
         }
         std::string getName()
         {
@@ -77,6 +297,12 @@ namespace hg {
         
         HGDirector::sharedDirector()->getRootNode()->removeAllChildren();
         
+        // list
+        friendFighterList.removeAllActor();
+        enemyFighterList.removeAllActor();
+        friendBulletList.removeAllActor();
+        enemyBulletList.removeAllActor();
+        
         // process
         HGProcessManager::sharedProcessManager()->clear();
         
@@ -84,18 +310,40 @@ namespace hg {
         HGStateManager::sharedStateManger()->clear();
         HGState* s = new BattleState();
         HGStateManager::sharedStateManger()->push(s);
+        s->release();
         
         // field size
-        fieldSize = {FIELD_SIZE, FIELD_SIZE};
-        pointOfFieldCenter = {fieldSize.width/2, fieldSize.height/2};
+        sizeOfField = {FIELD_SIZE, FIELD_SIZE};
+        pointOfFieldCenter = {sizeOfField.width/2, sizeOfField.height/2};
         
         // layer
+        if (pLayerBackground)
+        {
+            pLayerBackground->release();
+        }
         pLayerBackground = new HGNode();
         HGDirector::sharedDirector()->getRootNode()->addChild(pLayerBackground);
+        //
+        if (pLayerPlayer)
+        {
+            pLayerPlayer->release();
+        }
         pLayerPlayer = new HGNode();
         HGDirector::sharedDirector()->getRootNode()->addChild(pLayerPlayer);
+        //
+        if (pLayerBullet)
+        {
+            pLayerBullet->release();
+        }
         pLayerBullet = new HGNode();
         HGDirector::sharedDirector()->getRootNode()->addChild(pLayerBullet);
+        //
+        if (pLayerEffect)
+        {
+            pLayerEffect->release();
+        }
+        pLayerEffect = new HGNode();
+        HGDirector::sharedDirector()->getRootNode()->addChild(pLayerEffect);
         
         // background
         for (int i = 0; i < 5; ++i)
@@ -140,17 +388,23 @@ namespace hg {
             HGSprite* pSprite = new HGSprite();
             pSprite->init("rect.png");
             //pSprite->setblendcolor({2.0,2.0,2.0,1.0});
-            pSprite->setScale(fieldSize.width*2, fieldSize.height*2, 1);
+            pSprite->setScale(sizeOfField.width*2, sizeOfField.height*2, 1);
             pSprite->setPosition(pointOfFieldCenter.x, pointOfFieldCenter.y);
             pLayerBackground->addChild(pSprite);
+            pSprite->release();
         }
         
         // player
         {
+            if (pPlayer)
+            {
+                pPlayer->release();
+            }
             pPlayer = new Fighter();
-            pPlayer->init(pLayerPlayer);
-            pPlayer->setPosition(fieldSize.width/2, fieldSize.height/2);
+            pPlayer->init(pLayerPlayer, SideTypeFriend, FighterTypeRobo1);
+            pPlayer->setPosition(sizeOfField.width/2, sizeOfField.height/2);
             pPlayerControlOwner = new HGProcessOwner;
+            friendFighterList.addActor(pPlayer);
         }
         
         if (pPlayer)
@@ -158,6 +412,22 @@ namespace hg {
             ControlPlayerProcess* p = new ControlPlayerProcess();
             p->init(pPlayerControlOwner, pPlayer);
             HGProcessManager::sharedProcessManager()->addPrcoess(p);
+            p->release();
+        }
+        
+        // enemy
+        {
+            Fighter* pEnemy = new Fighter();
+            pEnemy->init(pLayerPlayer, SideTypeEnemy, FighterTypeRobo2);
+            pEnemy->setPosition(sizeOfField.width/2, sizeOfField.height/2);
+            enemyFighterList.addActor(pEnemy);
+            
+            /*
+            ControlEnemyProcess* cp = new ControlEnemyProcess();
+            cp->init(pEnemy->getProcessOwner(), pEnemy);
+            HGProcessManager::sharedProcessManager()->addPrcoess(cp);
+            cp->release();
+            */
         }
         
     }

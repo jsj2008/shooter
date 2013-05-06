@@ -15,7 +15,8 @@
 #define HDebug(A, ...) NSLog(@"[Debug] Func:%s\tLine:%d\t%@", __PRETTY_FUNCTION__,__LINE__,[NSString stringWithFormat:A, ## __VA_ARGS__]);
 #define HInfo(A, ...) NSLog(@"[Info] Func:%s\tLine:%d\t%@", __PRETTY_FUNCTION__,__LINE__,[NSString stringWithFormat:A, ## __VA_ARGS__]);
 #define HError(A, ...) NSLog(@"[###ERROR###] Func:%s\tLine:%d\t%@", __PRETTY_FUNCTION__,__LINE__,[NSString stringWithFormat:A, ## __VA_ARGS__]);
-#define IS_PROCESS_DEBUG 1
+#define IS_PROCESS_DEBUG 0
+#define IS_DEBUG_MEMORY 0
 
 namespace hg
 {
@@ -64,6 +65,7 @@ namespace hg
         
     private:
         HGHeap(std::string name):
+        objectCount(0),
         name(name),
         allocatedSize(0),
         pFirst(NULL),
@@ -74,6 +76,7 @@ namespace hg
         size_t allocatedSize;
         AllocHeader* pFirst;
         AllocHeader* pLast;
+        int objectCount;
         void addAllocation(size_t size);
         void removeAllocation(size_t size);
         
@@ -92,16 +95,33 @@ namespace hg
     class HGObject
     {
     public:
-        HGObject()
+        HGObject():
+        refCount(1)
         {};
-        virtual ~HGObject(void){};
+        virtual ~HGObject(){};
         static void* operator new(size_t size);
         static void* operator new(size_t size, std::string heapName);
-        static void operator delete(void *p, size_t size);
-        void retain();
-        void release();
+        //static void operator delete(void *p, size_t size);
+        inline void retain()
+        {
+            refCount++;
+            s_pHeap->retain(this);
+        }
+        inline void release()
+        {
+            assert(refCount > 0);
+            refCount--;
+            if (refCount <= 0)
+            {
+                this->~HGObject();
+            }
+            s_pHeap->release(this);
+            assert(refCount >= 0);
+        }
+    
     private:
         static HGHeap* s_pHeap;
+        int refCount;
     };
     
     ////////////////////
@@ -141,6 +161,29 @@ namespace hg
     ////////////////////
     // プロセス管理
     
+    // プロセスオーナークラス
+    class HGProcessOwner : public HGObject
+    {
+    public:
+        HGProcessOwner():
+        pProcess(NULL)
+        {}
+        ~HGProcessOwner()
+        {
+        }
+        inline void setProcess(HGProcess* pProcess)
+        {
+            this->pProcess = pProcess;
+        }
+        inline HGProcess* getProcess()
+        {
+            return this->pProcess;
+        }
+    private:
+        HGProcess* pProcess;
+        
+    };
+    
     // プロセスクラス
     class HGProcess : public HGObject
     {
@@ -157,22 +200,42 @@ namespace hg
         isInitialized(false)
         {
         };
-        virtual ~HGProcess();
-        inline void init(HGProcessOwner* pOwner)
+        inline virtual void init(HGProcessOwner* pOwner)
         {
             this->pOwner = pOwner;
+            pOwner->retain();
             isInitialized = true;
         }
         void setNext(HGProcess* nextPtr);
     protected:
-        int frameCount;
-        bool isInitialUpdate;
         virtual void onEnd(){}
         virtual void onUpdate(){}
         virtual void onIntercept(){}
         virtual std::string getName();
-        
+        inline void setEnd()
+        {
+            this->_isEnd = true;
+        }
+        inline bool isEnd()
+        {
+            return _isEnd;
+        }
+        virtual ~HGProcess()
+        {
+            if (this->pNextProcess)
+            {
+                pNextProcess->release();
+            }
+            pOwner->release();
+            //base::~HGObject();
+        }
+        inline int& getFrameCount()
+        {
+            return frameCount;
+        }
     private:
+        int frameCount;
+        bool isInitialUpdate;
         bool _isEnd;
         bool isIntercepted;
         bool isInitialized;
@@ -182,15 +245,6 @@ namespace hg
         {
             return pOwner;
         }
-        inline bool isEnd()
-        {
-            return _isEnd;
-        }
-        
-        inline void setEnd()
-        {
-            this->_isEnd = true;
-        }
         inline void setIntercepted()
         {
             this->isIntercepted = true;
@@ -198,6 +252,7 @@ namespace hg
         inline void update()
         {
             assert(isInitialized);
+            assert(!this->_isEnd);
             this->onUpdate();
             frameCount++;
             isInitialUpdate = false;
@@ -211,26 +266,6 @@ namespace hg
             this->onIntercept();
         }
         friend class HGProcessManager;
-    };
-    
-    // プロセスオーナークラス
-    class HGProcessOwner : public HGObject
-    {
-    public:
-        HGProcessOwner():
-        pProcess(NULL)
-        {}
-        inline void setProcess(HGProcess* pProcess)
-        {
-            this->pProcess = pProcess;
-        }
-        inline HGProcess* getProcess()
-        {
-            return this->pProcess;
-        }
-    private:
-        HGProcess* pProcess;
-        
     };
     
     // プロセス管理クラス
@@ -274,7 +309,15 @@ namespace hg
         parent(NULL)
         {
         }
-        virtual ~HGNode(){}
+        virtual ~HGNode(){
+            this->removeAllChildren();
+            if (parent)
+            {
+                //parent->release(); 相互参照になってしまふ
+                parent = NULL;
+            }
+            //HGObject::~HGObject();
+        }
         
         inline void removeAllChildren()
         {
@@ -289,6 +332,12 @@ namespace hg
         {
             children.remove(node);
             node->release();
+        }
+        
+        inline void removeFromParent()
+        {
+            assert(parent);
+            parent->removeChild(this);
         }
         
         inline void addChild(HGNode* node)
@@ -306,7 +355,7 @@ namespace hg
             {
                 parent->release();
             }
-            node->retain();
+            //node->retain(); 相互参照になってしまふ
             parent = node;
         }
         
@@ -322,7 +371,14 @@ namespace hg
             this->scale.y = scaleY;
             this->scale.z = scaleZ;
         }
-        
+        inline float getScaleX()
+        {
+            return this->scale.x;
+        }
+        inline float getScaleY()
+        {
+            return this->scale.y;
+        }
         inline void setRotate(float x, float y, float z)
         {
             this->rotate.set(x, y, z);
@@ -352,8 +408,8 @@ namespace hg
         
         inline void addPosition(float x, float y)
         {
-            position.x += x;
-            position.y += y;
+            position.x = position.x + x;
+            position.y = position.y + y;
         }
         inline void setPosition(float x, float y)
         {
@@ -389,16 +445,21 @@ namespace hg
         {
             this->rotate.z = radian;
         }
+        
+        inline Vector& getPosition()
+        {
+            return position;
+        }
     protected:
         virtual void render(){};
         
-        hgles::HGLVector3 position;
-        hgles::HGLVector3 scale;
-        hgles::HGLVector3 rotate;
+        Vector position;
+        Vector scale;
+        Vector rotate;
         
-        hgles::HGLVector3 worldPosition;
-        hgles::HGLVector3 worldScale;
-        hgles::HGLVector3 WorldRotate;
+        Vector worldPosition;
+        Vector worldScale;
+        Vector WorldRotate;
         
         HGSize size;
     private:
@@ -460,6 +521,15 @@ namespace hg
         {
             color = c;
             isPropertyChanged = true;
+        }
+        inline void setOpacity(float a)
+        {
+            color.a = a;
+            isPropertyChanged = true;
+        }
+        inline float& getOpacity()
+        {
+            return color.a;
         }
         inline void setType(SpriteType t)
         {
@@ -526,6 +596,11 @@ namespace hg
     class HGDirector : HGObject
     {
     public:
+        HGDirector():
+        pRootNode(NULL)
+        {
+            
+        }
         static inline HGDirector* sharedDirector()
         {
             if (!directorPtr)
@@ -546,6 +621,11 @@ namespace hg
     private:
         inline void init()
         {
+            if (pRootNode)
+            {
+                pRootNode->release();
+                pRootNode = NULL;
+            }
             pRootNode = new (SYSTEM_HEAP_NAME)HGNode();
             rootPosition = Vector(0,0,0);
             rootScale = Vector(1,1,1);

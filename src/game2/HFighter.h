@@ -12,6 +12,7 @@
 #include <iostream>
 #include "HGameCommon.h"
 #include "HWeapon.h"
+#include "HCollision.h"
 
 #include <list>
 
@@ -19,6 +20,12 @@ namespace hg {
 
     ////////////////////
     // Fighter
+    typedef enum FighterType
+    {
+        FighterTypeRobo1,
+        FighterTypeRobo2,
+    } FighterType;
+    
     static int SPRITE_INDEX_TABLE[359] = {};
     typedef std::list<Weapon*> WeaponList;
     class Fighter : public Actor
@@ -34,7 +41,10 @@ namespace hg {
         speed(0),
         textureName(""),
         life(0),
-        lifeMax(0)
+        lifeMax(0),
+        processOwner(NULL),
+        side(SideTypeEnemy),
+        isInitialized(false)
         {
         }
         
@@ -46,25 +56,57 @@ namespace hg {
             }
             weaponList.clear();
             pSprite->release();
+            processOwner->release();
+        }
+        inline void setActive(bool isActive)
+        {
+            base::setActive(isActive);
         }
         
-        void init(HGNode* layerParent)
+        inline void init(HGNode* layerParent, SideType side, FighterType type)
         {
             base::init(layerParent);
+            this->side = side;
+            this->type = type;
+            processOwner = new HGProcessOwner();
             
             // 種類別の初期化
+            switch (type)
             {
-                textureName = "p_robo1.png";
-                textureSrcOffset.x = 0;
-                textureSrcOffset.y = 0;
-                textureSrcSize.width = 16;
-                textureSrcSize.height = 16;
-                setSizeByPixel(128, 128);
-                speed = v(0.6);
-                life = lifeMax = 100;
-                Weapon* wp = new Weapon();
-                wp->init(WEAPON_TYPE_NORMAL, BULLET_TYPE_NORMAL , 0, 0);
-                weaponList.push_back(wp);
+                case FighterTypeRobo1:
+                {
+                    textureName = "p_robo1.png";
+                    textureSrcOffset.x = 0;
+                    textureSrcOffset.y = 0;
+                    textureSrcSize.width = 16;
+                    textureSrcSize.height = 16;
+                    setSizeByPixel(128, 128);
+                    setCollisionId(2);
+                    speed = v(0.6);
+                    life = lifeMax = 100;
+                    Weapon* wp = new Weapon();
+                    wp->init(WEAPON_TYPE_NORMAL, BULLET_TYPE_NORMAL , 0, 0);
+                    weaponList.push_back(wp);
+                    break;
+                }
+                case FighterTypeRobo2:
+                {
+                    textureName = "e_robo2.png";
+                    textureSrcOffset.x = 0;
+                    textureSrcOffset.y = 0;
+                    textureSrcSize.width = 64;
+                    textureSrcSize.height = 64;
+                    setSizeByPixel(256, 256);
+                    setCollisionId(4);
+                    speed = v(0.3);
+                    life = lifeMax = 50;
+                    Weapon* wp = new Weapon();
+                    wp->init(WEAPON_TYPE_NORMAL, BULLET_TYPE_NORMAL , 0, 0);
+                    weaponList.push_back(wp);
+                    break;
+                }
+                default:
+                    assert(0);
             }
             
             pSprite = new HGSprite();
@@ -74,6 +116,10 @@ namespace hg {
             getNode()->addChild(pSprite);
             
             setAspectDegree(0);
+            
+#if IS_DEBUG_COLLISION
+            CollisionManager::sharedCollisionManager()->addDebugMark(getCollisionId(), getNode(), getWidth(), getHeight());
+#endif
             
             // テーブル初期化
             static bool isTableInitialized = false;
@@ -103,47 +149,60 @@ namespace hg {
                     SPRITE_INDEX_TABLE[i] = index;
                 }
             }
-            
+            isInitialized = true;
         }
-        void setAspectDegree(float degree)
+        inline void setAspectDegree(float degree)
         {
             aspectDegree = degree;
             int spIdx = getSpriteIndex(aspectDegree + 0.5);
             int x = textureSrcSize.width * spIdx + textureSrcOffset.x;
             pSprite->setTextureRect(x - 1, textureSrcOffset.y, textureSrcSize.width, textureSrcSize.height);
         }
+        inline SideType getSide()
+        {
+            return side;
+        }
         
-        int getLife()
+        inline int getLife()
         {
             return life;
         }
         
-        void setLife(int life)
+        inline void setLife(int life)
         {
             this->life = life;
         }
         
-        void setMaxLife(int life)
+        inline void setMaxLife(int life)
         {
             this->lifeMax = life;
         }
         
-        float getAspectDegree()
+        inline float getAspectDegree()
         {
             return aspectDegree;
         }
         
-        void fire()
+        inline void fire()
         {
             for (WeaponList::iterator it = weaponList.begin(); it != weaponList.end(); ++it)
             {
-                (*it)->fire(this, this->aspectDegree);
+                (*it)->fire(this, this->aspectDegree, side);
             }
         }
-    public:
+        
+        inline HGProcessOwner* getProcessOwner()
+        {
+            return this->processOwner;
+        }
+        
+        inline float getSpeed()
+        {
+            return speed;
+        }
+    private:
         float speed;
         float aspectDegree;
-    private:
         int life;
         int lifeMax;
         HGPoint textureSrcOffset;
@@ -151,6 +210,10 @@ namespace hg {
         std::string textureName;
         WeaponList weaponList;
         HGSprite* pSprite;
+        SideType side;
+        FighterType type;
+        HGProcessOwner* processOwner;
+        bool isInitialized;
         
         int getSpriteIndex(int i)
         {

@@ -15,7 +15,6 @@
 #include "HFighter.h"
 
 namespace hg {
-    ////////////////////
     // 自キャラ移動プロセス
     class ControlPlayerProcess : public HGProcess
     {
@@ -41,13 +40,13 @@ namespace hg {
     protected:
         void onUpdate()
         {
-            if (keyInfo.power != 0)
+            if (keyInfo.power != 0 && !keyInfo.isFire)
             {
                 pFighter->setAspectDegree(keyInfo.degree);
             }
             if (pFighter->getLife() > 0)
             {
-                float speed = pFighter->speed*keyInfo.power;
+                float speed = pFighter->getSpeed()*keyInfo.power;
                 float r = toRad(keyInfo.degree);
                 vx = cos(r) * speed;
                 vy = sin(r) * speed * -1;
@@ -61,13 +60,13 @@ namespace hg {
                 float y = pFighter->getPositionY();
                 float w = pFighter->getWidth();
                 float h = pFighter->getHeight();
-                if (x + w/2 > fieldSize.width)
+                if (x + w/2 > sizeOfField.width)
                 {
-                    pFighter->setPositionX(fieldSize.width - w/2);
+                    pFighter->setPositionX(sizeOfField.width - w/2);
                 }
-                if (y + h/2 > fieldSize.height)
+                if (y + h/2 > sizeOfField.height)
                 {
-                    pFighter->setPositionY(fieldSize.height - h/2);
+                    pFighter->setPositionY(sizeOfField.height - h/2);
                 }
                 if (x - w/2 < 0)
                 {
@@ -81,6 +80,10 @@ namespace hg {
             if (keyInfo.isFire)
             {
                 pFighter->fire();
+            }
+            if (!pFighter->isActive())
+            {
+                this->setEnd();
             }
             
         }

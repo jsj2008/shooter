@@ -71,6 +71,11 @@ namespace hg
         char* pStartMemBlock = pMem + sizeof(AllocHeader);
         int *pEndMarker = (int*)(pStartMemBlock + size);
         *pEndMarker = ENDMARKER;
+        objectCount++;
+#if IS_DEBUG_MEMORY
+        HDebug(@"ALLOC: %d", objectCount);
+#endif
+        pHeader->pStart = pStartMemBlock;
         return pStartMemBlock;
     }
     void HGHeap::deleteAllocation(void *pMem)
@@ -95,6 +100,10 @@ namespace hg
             pLast = pHeader->pPrev;
         }
         int *pEndmarker = (int *)((char*)pMem + pHeader->iSize);
+        objectCount--;
+#if IS_DEBUG_MEMORY
+        HDebug(@"DELETE: %d", objectCount);
+#endif
         assert(*pEndmarker == ENDMARKER);
         free(pHeader);
     }
@@ -146,15 +155,6 @@ namespace hg
     ////////////////////
     // 基底
     
-    void HGObject::retain()
-    {
-        s_pHeap->retain(this);
-    }
-    void HGObject::release()
-    {
-        s_pHeap->release(this);
-    }
-    
     HGHeap* HGObject::s_pHeap = NULL;
     void* HGObject::operator new(size_t size)
     {
@@ -168,10 +168,11 @@ namespace hg
         }
         return (HGObject*)s_pHeap->alloc(size);
     }
+    /*
     void HGObject::operator delete(void *p, size_t size)
     {
         s_pHeap->deleteAllocation(p);
-    }
+    }*/
     
     ////////////////////
     // ステート管理
@@ -254,13 +255,6 @@ namespace hg
     // プロセス管理
     
     // プロセスクラス
-    HGProcess::~HGProcess()
-    {
-        if (this->pNextProcess)
-        {
-            pNextProcess->release();
-        }
-    };
     void HGProcess::setNext(HGProcess* nextPtr)
     {
         assert(nextPtr);
@@ -273,80 +267,81 @@ namespace hg
     }
     
     // プロセス管理クラス
-        void HGProcessManager::clear()
-        {
+    void HGProcessManager::clear()
+    {
 #if IS_PROCESS_DEBUG
-            HDebug(@"Process Clear");
+        HDebug(@"Process Clear");
 #endif
-            for (ProcessList::iterator it = processList.begin(); it != processList.end(); ++it)
-            {
-                (*it)->release();
-            }
-            processList.clear();
+        for (ProcessList::iterator it = processList.begin(); it != processList.end(); ++it)
+        {
+            (*it)->release();
         }
+        processList.clear();
+    }
     void HGProcessManager::addPrcoess(HGProcess* pProcess)
+    {
+#if IS_PROCESS_DEBUG
+        HDebug(@"Add Process : %s", pProcess->getName().c_str());
+#endif
+        pProcess->retain();
+        HGProcessOwner* pOwner = pProcess->getOwner();
+        if (pOwner->getProcess())
         {
 #if IS_PROCESS_DEBUG
-            HDebug(@"Add Process : %s", pProcess->getName().c_str());
+            HDebug(@"Process Intercepted : %s", pOwner->getProcess()->getName().c_str());
 #endif
-            pProcess->retain();
-            HGProcessOwner* pOwner = pProcess->getOwner();
-            if (pOwner->getProcess())
-            {
-#if IS_PROCESS_DEBUG
-                HDebug(@"Process Intercepted : %s", pOwner->getProcess()->getName().c_str());
-#endif
-                HGProcess* p = pOwner->getProcess();
-                p->intercept();
-                p->setIntercepted();
-                p->setEnd();
-            }
-            pOwner->setProcess(pProcess);
-            addProcessList.push_back(pProcess);
+            HGProcess* p = pOwner->getProcess();
+            p->intercept();
+            p->setIntercepted();
+            p->setEnd();
         }
+        pOwner->setProcess(pProcess);
+        addProcessList.push_back(pProcess);
+    }
     void HGProcessManager::update()
+    {
+        for (ProcessList::iterator it = addProcessList.begin(); it != addProcessList.end(); ++it)
         {
-            for (ProcessList::iterator it = addProcessList.begin(); it != addProcessList.end(); ++it)
-            {
-                processList.push_back(*it);
-            }
-            addProcessList.clear();
-            for (ProcessList::iterator it = processList.begin(); it != processList.end(); ++it)
-            {
-                HGProcess* tmp = *it;
-                if (tmp->isIntercepted)
-                {
-                    // 中断された場合、nextも中断
-                    delProcessList.push_back(tmp);
-                    continue;
-                }
-                tmp->update();
-                if (tmp->isEnd())
-                {
-#if IS_PROCESS_DEBUG
-                    HDebug(@"Process Ended: %s", tmp->getName().c_str());
-#endif
-                    tmp->end();
-                    delProcessList.push_back(tmp);
-                    if (tmp->pNextProcess)
-                    {
-#if IS_PROCESS_DEBUG
-                        HDebug(@"Next Process Found : %s", tmp->pNextProcess->getName().c_str());
-#endif
-                        this->addPrcoess(tmp->pNextProcess);
-                        tmp->pNextProcess = NULL;
-                    }
-                }
-            }
-            for (ProcessList::iterator it = delProcessList.begin(); it != delProcessList.end(); ++it)
-            {
-                processList.remove(*it);
-            }
-            delProcessList.clear();
+            processList.push_back(*it);
         }
+        addProcessList.clear();
+        for (ProcessList::iterator it = processList.begin(); it != processList.end(); ++it)
+        {
+            HGProcess* tmp = *it;
+            if (tmp->isIntercepted)
+            {
+                // 中断された場合、nextも中断
+                delProcessList.push_back(tmp);
+                continue;
+            }
+            tmp->update();
+            if (tmp->isEnd())
+            {
+#if IS_PROCESS_DEBUG
+                HDebug(@"Process Ended: %s", tmp->getName().c_str());
+#endif
+                tmp->end();
+                delProcessList.push_back(tmp);
+                if (tmp->pNextProcess)
+                {
+#if IS_PROCESS_DEBUG
+                    HDebug(@"Next Process Found : %s", tmp->pNextProcess->getName().c_str());
+#endif
+                    this->addPrcoess(tmp->pNextProcess);
+                    tmp->pNextProcess = NULL;
+                }
+            }
+        }
+        for (ProcessList::iterator it = delProcessList.begin(); it != delProcessList.end(); ++it)
+        {
+            (*it)->release();
+            processList.remove(*it);
+        }
+        delProcessList.clear();
+    }
     void HGProcessManager::init()
-        {
-        }
+    {
+    }
     
     
     

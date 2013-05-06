@@ -17,24 +17,10 @@ namespace hg
         AllocHeader *pNext;
         AllocHeader *pPrev;
         int referenceCount = 0;
+        void* pStart;
     } AllocHeader;
     
     typedef hgles::HGLVector3 Vector;
-    
-    typedef struct t_rect
-    {
-        float x, y, w, h;
-    } t_rect;
-    
-    typedef struct t_size2d
-    {
-        float w, h;
-    } t_size2d;
-    
-    typedef struct t_pos2d
-    {
-        float x, y;
-    } t_pos2d;
     
     typedef struct HGPoint
     {

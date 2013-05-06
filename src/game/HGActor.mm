@@ -47,7 +47,6 @@ namespace HGGame {
         return degree;
 	}
     
-    
     void HGActor::setMoveDirectionWithDegree(float degree)
     {
         moveRadian = degree * M_PI / 180;

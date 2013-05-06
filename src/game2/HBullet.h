@@ -12,6 +12,7 @@
 #include <iostream>
 #include "HActor.h"
 #include "HGameCommon.h"
+#include "CallFunctionRepeatedlyProcess.h"
 
 namespace hg {
     
@@ -34,39 +35,111 @@ namespace hg {
         {
             pOwner->release();
             pMoveOwner->release();
+            //Actor::~Actor();
         }
-        inline void init(BulletType type, int power, Actor* pOwner, float x, float y, float directionDegree)
+        inline void init(BulletType type, float speed, int power, Actor* pOwner, float x, float y, float directionDegree, SideType side)
         {
             assert(pOwner);
-            base::init(pLayerBullet);
+            base::init(pLayerPlayer);
             this->power = power;
             this->pOwner = pOwner;
             pOwner->retain();
             this->type = type;
+            this->directionDegree = directionDegree;
+            this->directionRadian = toRad(directionDegree);
+            this->side = side;
+            this->setPosition(x, y);
+            
+            vx = cos(directionRadian) * speed;
+            vy = sin(directionRadian) * speed * -1;
+            
+            // move process
+            CallFunctionRepeadedlyProcess<Bullet>* p = new CallFunctionRepeadedlyProcess<Bullet>();
+            p->init(pMoveOwner, &Bullet::move, this);
+            HGProcessManager::sharedProcessManager()->addPrcoess(p);
+            p->release();
+            
             switch (type) {
                 case BULLET_TYPE_NORMAL:
                 {
-                    setSizeByPixel(200, 200);
-                    HGSprite* pSprite = new HGSprite();
+                    setSizeByPixel(80, 80);
+                    setCollisionId(1);
+                    this->life = v(20);
+                    
+                    // core
+                     HGSprite* pSprite = new HGSprite();
                     pSprite->setType(SPRITE_TYPE_BILLBOARD);
                     pSprite->init("divine.png");
-                    pSprite->setScale(getWidth(), getHeight());
+                    pSprite->setScale(getWidth()*1.1, getHeight()*1.1);
                     pSprite->shouldRenderAsAlphaMap(true);
                     pSprite->setColor({1,1,1,1});
                     pSprite->setBlendFunc(GL_ALPHA, GL_ALPHA);
-                    pSprite->setPosition(x, y);
                     getNode()->addChild(pSprite);
                     pSprite->release();
                     
-                    //BulletMoveProcess* bmp = new BulletMoveProcess();
-                    //bmp->init(pMoveOwner, this, speed, directionDegree)
+                    // light
+                    HGSprite* pSprGlow = new HGSprite();
+                    pSprGlow->setType(SPRITE_TYPE_BILLBOARD);
+                    pSprGlow->init("star.png");
                     
-                    //HGProcessManager::sharedProcessManager()->addPrcoess(ProcessPtr(new BulletMoveProcess(moveProcessOwner, speed,)))
+                    if (side == SideTypeFriend)
+                    {
+                        pSprGlow->setColor({0.7, 0.7, 1.0, 0.5});
+                    }
+                    else
+                    {
+                        pSprGlow->setColor({1.0, 0.7, 0.7, 0.5});
+                    }
+                    pSprGlow->setScale(getWidth()*3, getHeight()*3);
+                    pSprGlow->shouldRenderAsAlphaMap(true);
+                    pSprGlow->setBlendFunc(GL_ALPHA, GL_ALPHA);
+                    getNode()->addChild(pSprGlow);
+                    pSprGlow->release();
                     break;
                 }
                 default:
                     break;
             }
+#if IS_DEBUG_COLLISION
+            CollisionManager::sharedCollisionManager()->addDebugMark(getCollisionId(), getNode(), getWidth(), getHeight());
+#endif
+        }
+        inline Actor* getOwner()
+        {
+            return pOwner;
+        }
+        inline SideType getSide()
+        {
+            return this->side;
+        }
+        bool move()
+        {
+            HGNode* n = this->getNode();
+            n->addPosition(vx, vy);
+            
+            --life;
+            if (life <= 10)
+            {
+                this->getNode()->setScale(this->getNode()->getScaleX() * 0.5, this->getNode()->getScaleY() * 0.5);
+                if (life <= 0)
+                {
+                    this->setActive(false);
+                }
+            }
+            if (!this->isActive())
+            {
+                return true;
+            }
+            
+            return false;
+        }
+        void setActive(bool isActive)
+        {
+            if (!isActive)
+            {
+                this->getNode()->removeFromParent();
+            }
+            base::setActive(isActive);
         }
     private:
         int power;
@@ -74,6 +147,13 @@ namespace hg {
         BulletType type;
         Actor* pOwner;
         HGProcessOwner* pMoveOwner;
+        SideType side;
+        int life;
+        
+        float vx;
+        float vy;
+        float directionDegree;
+        float directionRadian;
     };
 }
 
