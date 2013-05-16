@@ -36,9 +36,17 @@
 		07436B1016FD647F002BA1C9 /* HGCPU.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07436B0F16FD647F002BA1C9 /* HGCPU.mm */; };
 		07436B1316FD6D76002BA1C9 /* HGPlayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07436B1216FD6D76002BA1C9 /* HGPlayer.mm */; };
 		07436B1616FDA691002BA1C9 /* HGWeapon.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07436B1516FDA691002BA1C9 /* HGWeapon.mm */; };
+		074CF5321733BFC30028D86E /* HBullet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 074CF5301733BFC30028D86E /* HBullet.cpp */; };
+		074CF5351733C0A40028D86E /* HWeapon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 074CF5331733C0A40028D86E /* HWeapon.cpp */; };
+		074D615E17365C8400A98AF8 /* ControlEnemyProcess.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 074D615C17365C8400A98AF8 /* ControlEnemyProcess.cpp */; };
+		074D6162173695AC00A98AF8 /* HCollision.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 074D6160173695AB00A98AF8 /* HCollision.cpp */; };
 		0755991316B3D0560066A0E9 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0755991216B3D0560066A0E9 /* QuartzCore.framework */; };
 		0755992916B561490066A0E9 /* block.mtl in Resources */ = {isa = PBXBuildFile; fileRef = 0755992716B561490066A0E9 /* block.mtl */; };
 		0755992A16B561490066A0E9 /* block.obj in Resources */ = {isa = PBXBuildFile; fileRef = 0755992816B561490066A0E9 /* block.obj */; };
+		075A01CE1737B4CD0035A532 /* ExplodeAnimeProcess.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 075A01CC1737B4CC0035A532 /* ExplodeAnimeProcess.cpp */; };
+		075A01D1173F94100035A532 /* SpawnProcess.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 075A01CF173F940F0035A532 /* SpawnProcess.cpp */; };
+		0793F46B17375CB500FE17CF /* HitAnimeProcess.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0793F46917375CB400FE17CF /* HitAnimeProcess.cpp */; };
+		079A4DEB1733B28A001895BC /* HActor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 079A4DE91733B28A001895BC /* HActor.cpp */; };
 		079FAE5916FEC262009B8BA6 /* rect.png in Resources */ = {isa = PBXBuildFile; fileRef = 079FAE5816FEC262009B8BA6 /* rect.png */; };
 		07B28FAB172430F6000ED715 /* HGame.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07B28FAA172430F6000ED715 /* HGame.mm */; };
 		07B28FAF172CE4EF000ED715 /* HGameEngine.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07B28FAE172CE4EF000ED715 /* HGameEngine.mm */; };
@@ -48,6 +56,10 @@
 		07B4244F16D94145007055DF /* divine.png in Resources */ = {isa = PBXBuildFile; fileRef = 07B4244E16D94145007055DF /* divine.png */; };
 		07B4245116D94AEC007055DF /* space.png in Resources */ = {isa = PBXBuildFile; fileRef = 07B4245016D94AEC007055DF /* space.png */; };
 		07B4245316D9F132007055DF /* star.png in Resources */ = {isa = PBXBuildFile; fileRef = 07B4245216D9F132007055DF /* star.png */; };
+		07CA13631733C417004C0AC8 /* HFighter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 07CA13611733C417004C0AC8 /* HFighter.cpp */; };
+		07CA136A1733C5FF004C0AC8 /* ControlPlayerProcess.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 07CA13681733C5FF004C0AC8 /* ControlPlayerProcess.cpp */; };
+		07CA136D1734082B004C0AC8 /* CallFunctionRepeatedlyProcess.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 07CA136B1734082A004C0AC8 /* CallFunctionRepeatedlyProcess.cpp */; };
+		07CA137017364419004C0AC8 /* HActorList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 07CA136E17364418004C0AC8 /* HActorList.cpp */; };
 		07D49FF216DA683C0040D8D5 /* x6.png in Resources */ = {isa = PBXBuildFile; fileRef = 07D49FF116DA683C0040D8D5 /* x6.png */; };
 		07D5BC5916E33AEC00F0D665 /* square.png in Resources */ = {isa = PBXBuildFile; fileRef = 07D5BC5816E33AEC00F0D665 /* square.png */; };
 		07D5BC6116E386B100F0D665 /* halfsphere.obj in Resources */ = {isa = PBXBuildFile; fileRef = 07D5BC6016E386B100F0D665 /* halfsphere.obj */; };
@@ -226,9 +238,26 @@
 		07436B1216FD6D76002BA1C9 /* HGPlayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGPlayer.mm; sourceTree = "<group>"; };
 		07436B1416FDA691002BA1C9 /* HGWeapon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGWeapon.h; sourceTree = "<group>"; };
 		07436B1516FDA691002BA1C9 /* HGWeapon.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGWeapon.mm; sourceTree = "<group>"; };
+		074CF52E1733BF300028D86E /* HGameCommon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HGameCommon.h; sourceTree = "<group>"; };
+		074CF5301733BFC30028D86E /* HBullet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HBullet.cpp; sourceTree = "<group>"; };
+		074CF5311733BFC30028D86E /* HBullet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HBullet.h; sourceTree = "<group>"; };
+		074CF5331733C0A40028D86E /* HWeapon.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HWeapon.cpp; sourceTree = "<group>"; };
+		074CF5341733C0A40028D86E /* HWeapon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HWeapon.h; sourceTree = "<group>"; };
+		074D615C17365C8400A98AF8 /* ControlEnemyProcess.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ControlEnemyProcess.cpp; sourceTree = "<group>"; };
+		074D615D17365C8400A98AF8 /* ControlEnemyProcess.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControlEnemyProcess.h; sourceTree = "<group>"; };
+		074D6160173695AB00A98AF8 /* HCollision.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HCollision.cpp; sourceTree = "<group>"; };
+		074D6161173695AB00A98AF8 /* HCollision.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCollision.h; sourceTree = "<group>"; };
 		0755991216B3D0560066A0E9 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		0755992716B561490066A0E9 /* block.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = block.mtl; sourceTree = "<group>"; };
 		0755992816B561490066A0E9 /* block.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = block.obj; sourceTree = "<group>"; };
+		075A01CC1737B4CC0035A532 /* ExplodeAnimeProcess.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExplodeAnimeProcess.cpp; sourceTree = "<group>"; };
+		075A01CD1737B4CD0035A532 /* ExplodeAnimeProcess.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExplodeAnimeProcess.h; sourceTree = "<group>"; };
+		075A01CF173F940F0035A532 /* SpawnProcess.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpawnProcess.cpp; sourceTree = "<group>"; };
+		075A01D0173F94100035A532 /* SpawnProcess.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpawnProcess.h; sourceTree = "<group>"; };
+		0793F46917375CB400FE17CF /* HitAnimeProcess.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HitAnimeProcess.cpp; sourceTree = "<group>"; };
+		0793F46A17375CB400FE17CF /* HitAnimeProcess.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HitAnimeProcess.h; sourceTree = "<group>"; };
+		079A4DE91733B28A001895BC /* HActor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HActor.cpp; sourceTree = "<group>"; };
+		079A4DEA1733B28A001895BC /* HActor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HActor.h; sourceTree = "<group>"; };
 		079FAE5816FEC262009B8BA6 /* rect.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rect.png; sourceTree = "<group>"; };
 		07B28FA9172430BA000ED715 /* HGame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGame.h; sourceTree = "<group>"; };
 		07B28FAA172430F6000ED715 /* HGame.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HGame.mm; sourceTree = "<group>"; };
@@ -240,6 +269,14 @@
 		07B4244E16D94145007055DF /* divine.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = divine.png; sourceTree = "<group>"; };
 		07B4245016D94AEC007055DF /* space.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = space.png; sourceTree = "<group>"; };
 		07B4245216D9F132007055DF /* star.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = star.png; sourceTree = "<group>"; };
+		07CA13611733C417004C0AC8 /* HFighter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HFighter.cpp; sourceTree = "<group>"; };
+		07CA13621733C417004C0AC8 /* HFighter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HFighter.h; sourceTree = "<group>"; };
+		07CA13681733C5FF004C0AC8 /* ControlPlayerProcess.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ControlPlayerProcess.cpp; sourceTree = "<group>"; };
+		07CA13691733C5FF004C0AC8 /* ControlPlayerProcess.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControlPlayerProcess.h; sourceTree = "<group>"; };
+		07CA136B1734082A004C0AC8 /* CallFunctionRepeatedlyProcess.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CallFunctionRepeatedlyProcess.cpp; sourceTree = "<group>"; };
+		07CA136C1734082B004C0AC8 /* CallFunctionRepeatedlyProcess.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallFunctionRepeatedlyProcess.h; sourceTree = "<group>"; };
+		07CA136E17364418004C0AC8 /* HActorList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HActorList.cpp; sourceTree = "<group>"; };
+		07CA136F17364418004C0AC8 /* HActorList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HActorList.h; sourceTree = "<group>"; };
 		07D49FF116DA683C0040D8D5 /* x6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = x6.png; sourceTree = "<group>"; };
 		07D5BC5816E33AEC00F0D665 /* square.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = square.png; sourceTree = "<group>"; };
 		07D5BC6016E386B100F0D665 /* halfsphere.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = halfsphere.obj; sourceTree = "<group>"; };
@@ -251,6 +288,7 @@
 		07D5BC6916E3931B00F0D665 /* galaxy+X.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "galaxy+X.png"; sourceTree = "<group>"; };
 		07D5BC6A16E3931C00F0D665 /* galaxy+Y.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "galaxy+Y.png"; sourceTree = "<group>"; };
 		07D5BC6B16E3931D00F0D665 /* galaxy+Z.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "galaxy+Z.png"; sourceTree = "<group>"; };
+		07DAB71C1733B31900B50B45 /* HTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTypes.h; sourceTree = "<group>"; };
 		07DE746116EC368F0048877C /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		07DE746216EC368F0048877C /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		07DE746316EC368F0048877C /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
@@ -569,10 +607,36 @@
 		07B28FA8172430BA000ED715 /* game2 */ = {
 			isa = PBXGroup;
 			children = (
+				07CA136B1734082A004C0AC8 /* CallFunctionRepeatedlyProcess.cpp */,
+				07CA136C1734082B004C0AC8 /* CallFunctionRepeatedlyProcess.h */,
+				074D615C17365C8400A98AF8 /* ControlEnemyProcess.cpp */,
+				074D615D17365C8400A98AF8 /* ControlEnemyProcess.h */,
+				07CA13681733C5FF004C0AC8 /* ControlPlayerProcess.cpp */,
+				07CA13691733C5FF004C0AC8 /* ControlPlayerProcess.h */,
+				079A4DE91733B28A001895BC /* HActor.cpp */,
+				079A4DEA1733B28A001895BC /* HActor.h */,
+				07CA136E17364418004C0AC8 /* HActorList.cpp */,
+				07CA136F17364418004C0AC8 /* HActorList.h */,
+				074CF5301733BFC30028D86E /* HBullet.cpp */,
+				074CF5311733BFC30028D86E /* HBullet.h */,
+				074D6160173695AB00A98AF8 /* HCollision.cpp */,
+				074D6161173695AB00A98AF8 /* HCollision.h */,
+				07CA13611733C417004C0AC8 /* HFighter.cpp */,
+				07CA13621733C417004C0AC8 /* HFighter.h */,
+				07B28FA9172430BA000ED715 /* HGame.h */,
+				07B28FAA172430F6000ED715 /* HGame.mm */,
+				074CF52E1733BF300028D86E /* HGameCommon.h */,
 				07B28FAD172CE4EF000ED715 /* HGameEngine.h */,
 				07B28FAE172CE4EF000ED715 /* HGameEngine.mm */,
-				07B28FAA172430F6000ED715 /* HGame.mm */,
-				07B28FA9172430BA000ED715 /* HGame.h */,
+				0793F46917375CB400FE17CF /* HitAnimeProcess.cpp */,
+				0793F46A17375CB400FE17CF /* HitAnimeProcess.h */,
+				07DAB71C1733B31900B50B45 /* HTypes.h */,
+				074CF5331733C0A40028D86E /* HWeapon.cpp */,
+				074CF5341733C0A40028D86E /* HWeapon.h */,
+				075A01CC1737B4CC0035A532 /* ExplodeAnimeProcess.cpp */,
+				075A01CD1737B4CD0035A532 /* ExplodeAnimeProcess.h */,
+				075A01CF173F940F0035A532 /* SpawnProcess.cpp */,
+				075A01D0173F94100035A532 /* SpawnProcess.h */,
 			);
 			path = game2;
 			sourceTree = "<group>";
@@ -1000,6 +1064,18 @@
 				07DEEC071708606600580C16 /* HGUser.mm in Sources */,
 				07B28FAB172430F6000ED715 /* HGame.mm in Sources */,
 				07B28FAF172CE4EF000ED715 /* HGameEngine.mm in Sources */,
+				079A4DEB1733B28A001895BC /* HActor.cpp in Sources */,
+				074CF5321733BFC30028D86E /* HBullet.cpp in Sources */,
+				074CF5351733C0A40028D86E /* HWeapon.cpp in Sources */,
+				07CA13631733C417004C0AC8 /* HFighter.cpp in Sources */,
+				07CA136A1733C5FF004C0AC8 /* ControlPlayerProcess.cpp in Sources */,
+				07CA136D1734082B004C0AC8 /* CallFunctionRepeatedlyProcess.cpp in Sources */,
+				07CA137017364419004C0AC8 /* HActorList.cpp in Sources */,
+				074D615E17365C8400A98AF8 /* ControlEnemyProcess.cpp in Sources */,
+				074D6162173695AC00A98AF8 /* HCollision.cpp in Sources */,
+				0793F46B17375CB500FE17CF /* HitAnimeProcess.cpp in Sources */,
+				075A01CE1737B4CD0035A532 /* ExplodeAnimeProcess.cpp in Sources */,
+				075A01D1173F94100035A532 /* SpawnProcess.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

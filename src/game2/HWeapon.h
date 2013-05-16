@@ -20,7 +20,7 @@ namespace hg {
     // Weapon
     typedef enum WeaponType
     {
-        WEAPON_TYPE_NORMAL,
+        WeaponTypeNormal,
     } WeaponType;
     class Weapon : public HGObject
     {
@@ -31,8 +31,9 @@ namespace hg {
         power(0),
         lastFireTime(0),
         fireInterval(0),
-        type(WEAPON_TYPE_NORMAL),
-        bulletType(BULLET_TYPE_NORMAL)
+        type(WeaponTypeNormal),
+        aspectDegree(0),
+        bulletType(BulletTypeNormal)
         {}
         
         ~Weapon()
@@ -43,7 +44,7 @@ namespace hg {
         inline void init(WeaponType type, BulletType bulletType, float pixelX, float pixelY)
         {
             switch (type) {
-                case WEAPON_TYPE_NORMAL:
+                case WeaponTypeNormal:
                     speed = v(0.4);
                     fireInterval = 0.2;
                     power = 100;
@@ -57,7 +58,27 @@ namespace hg {
             relativePosition.y = pixelY*PIXEL_SCALE;
         }
         
-        inline void fire(Actor* pOwner, float directionDegree, SideType side)
+        inline void setSpeed(float spd)
+        {
+            speed = spd;
+        }
+        
+        inline void setInterval(float interval)
+        {
+            fireInterval = interval;
+        }
+        
+        inline float getRelativeX()
+        {
+            return relativePosition.x;
+        }
+        
+        inline float getRelativeY()
+        {
+            return relativePosition.y;
+        }
+        
+        inline void fire(Actor* pOwner, SideType side)
         {
             if (getNowTime() - lastFireTime < fireInterval)
             {
@@ -67,7 +88,7 @@ namespace hg {
             Bullet* bp = new Bullet();
             float x = pOwner->getPositionX() + relativePosition.x;
             float y = pOwner->getPositionY() + relativePosition.y;
-            bp->init(bulletType, speed, power, pOwner, x, y, directionDegree, side);
+            bp->init(bulletType, speed, power, pOwner, x, y, this->aspectDegree, side);
             switch (side) {
                 case SideTypeEnemy:
                     enemyBulletList.addActor(bp);
@@ -82,6 +103,11 @@ namespace hg {
             bp->release();
         }
         
+        inline void setAspect(float degree)
+        {
+            this->aspectDegree = degree;
+        }
+        
         float speed;
         int power;
         HGPoint relativePosition;
@@ -89,6 +115,7 @@ namespace hg {
         double fireInterval;
         WeaponType type;
         BulletType bulletType;
+        float aspectDegree;
     };
 }
 

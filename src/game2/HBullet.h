@@ -20,7 +20,8 @@ namespace hg {
     // Bullet
     typedef enum BulletType
     {
-        BULLET_TYPE_NORMAL,
+        BulletTypeNormal,
+        BulletTypeVulcan,
     } BulletType;
     class Bullet : public Actor
     {
@@ -40,7 +41,7 @@ namespace hg {
         inline void init(BulletType type, float speed, int power, Actor* pOwner, float x, float y, float directionDegree, SideType side)
         {
             assert(pOwner);
-            base::init(pLayerPlayer);
+            base::init(pLayerBullet);
             this->power = power;
             this->pOwner = pOwner;
             pOwner->retain();
@@ -56,45 +57,59 @@ namespace hg {
             // move process
             CallFunctionRepeadedlyProcess<Bullet>* p = new CallFunctionRepeadedlyProcess<Bullet>();
             p->init(pMoveOwner, &Bullet::move, this);
-            HGProcessManager::sharedProcessManager()->addPrcoess(p);
+            HGProcessManager::sharedProcessManager()->addProcess(p);
             p->release();
             
+            static Color sideColor = {0.7, 0.7, 1.0, 0.5};
+            if (side == SideTypeFriend)
+            {
+                sideColor = {0.7, 0.7, 1.0, 0.5};
+                
+            }
+            else
+            {
+                sideColor = {1.0, 0.7, 0.7, 0.5};
+            }
+            
             switch (type) {
-                case BULLET_TYPE_NORMAL:
+                case BulletTypeNormal:
                 {
-                    setSizeByPixel(80, 80);
-                    setCollisionId(1);
+                    setSizeByPixel(160, 160);
+                    setCollisionId(CollisionId_BulletNormal);
                     this->life = v(20);
                     
                     // core
-                     HGSprite* pSprite = new HGSprite();
-                    pSprite->setType(SPRITE_TYPE_BILLBOARD);
-                    pSprite->init("divine.png");
-                    pSprite->setScale(getWidth()*1.1, getHeight()*1.1);
-                    pSprite->shouldRenderAsAlphaMap(true);
-                    pSprite->setColor({1,1,1,1});
-                    pSprite->setBlendFunc(GL_ALPHA, GL_ALPHA);
-                    getNode()->addChild(pSprite);
-                    pSprite->release();
+                    HGSprite* pSpr = CreateAlphaMapSprite("divine.png", (Color){1,1,1,1});
+                    pSpr->setScale(getWidth()*1.1, getHeight()*1.1);
+                    getNode()->addChild(pSpr);
+                    pSpr->release();
                     
                     // light
-                    HGSprite* pSprGlow = new HGSprite();
-                    pSprGlow->setType(SPRITE_TYPE_BILLBOARD);
-                    pSprGlow->init("star.png");
-                    
-                    if (side == SideTypeFriend)
-                    {
-                        pSprGlow->setColor({0.7, 0.7, 1.0, 0.5});
-                    }
-                    else
-                    {
-                        pSprGlow->setColor({1.0, 0.7, 0.7, 0.5});
-                    }
+                    HGSprite* pSprGlow = CreateAlphaMapSprite("star.png", sideColor);
                     pSprGlow->setScale(getWidth()*3, getHeight()*3);
-                    pSprGlow->shouldRenderAsAlphaMap(true);
-                    pSprGlow->setBlendFunc(GL_ALPHA, GL_ALPHA);
                     getNode()->addChild(pSprGlow);
                     pSprGlow->release();
+                    
+                    break;
+                }
+                case BulletTypeVulcan:
+                {
+                    setSizeByPixel(120, 120);
+                    setCollisionId(CollisionId_BulletVulcan);
+                    this->life = v(20);
+                    
+                    // core
+                    HGSprite* pSpr = CreateAlphaMapSprite("divine.png", (Color){1,1,1,1});
+                    pSpr->setScale(getWidth()*1.1, getHeight()*1.1);
+                    getNode()->addChild(pSpr);
+                    pSpr->release();
+                    
+                    // light
+                    HGSprite* pSprGlow = CreateAlphaMapSprite("star.png", sideColor);
+                    pSprGlow->setScale(getWidth()*3, getHeight()*3);
+                    getNode()->addChild(pSprGlow);
+                    pSprGlow->release();
+                    
                     break;
                 }
                 default:
@@ -103,6 +118,10 @@ namespace hg {
 #if IS_DEBUG_COLLISION
             CollisionManager::sharedCollisionManager()->addDebugMark(getCollisionId(), getNode(), getWidth(), getHeight());
 #endif
+        }
+        inline int getPower()
+        {
+            return power;
         }
         inline Actor* getOwner()
         {
@@ -114,11 +133,15 @@ namespace hg {
         }
         bool move()
         {
+            if (!this->isActive())
+            {
+                return true;
+            }
             HGNode* n = this->getNode();
             n->addPosition(vx, vy);
             
             --life;
-            if (life <= 10)
+            if (life <= 5)
             {
                 this->getNode()->setScale(this->getNode()->getScaleX() * 0.5, this->getNode()->getScaleY() * 0.5);
                 if (life <= 0)

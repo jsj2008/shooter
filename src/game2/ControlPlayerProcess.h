@@ -24,7 +24,8 @@ namespace hg {
         base(),
         vx(0),
         vy(0),
-        pFighter(NULL)
+        pFighter(NULL),
+        isControllable(true)
         {
         };
         ~ControlPlayerProcess()
@@ -50,6 +51,14 @@ namespace hg {
                 float r = toRad(keyInfo.degree);
                 vx = cos(r) * speed;
                 vy = sin(r) * speed * -1;
+            }
+            else
+            {
+                if (isControllable)
+                {
+                    pFighter->explode();
+                    isControllable = false;
+                }
             }
             pFighter->getNode()->addPosition(vx, vy);
             
@@ -95,6 +104,7 @@ namespace hg {
         Fighter* pFighter;
         float vx;
         float vy;
+        bool isControllable;
     };
 }
 

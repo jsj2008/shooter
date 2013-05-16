@@ -12,7 +12,7 @@
 #include "HGameEngine.h"
 #include "HActorList.h"
 
-#define IS_DEBUG_COLLISION 1
+#define IS_DEBUG_COLLISION 0
 #define ENEMY_NUM 10
 #define BULLET_NUM 100
 #define ENEMY_BULLET_NUM 100
@@ -44,7 +44,9 @@ namespace hg {
     
     // global
     extern HGNode* pLayerBullet;
-    extern HGNode* pLayerPlayer;
+    extern HGNode* pLayerFriend;
+    extern HGNode* pLayerEffect;
+    
     extern KeyInfo keyInfo;
     extern HGSize sizeOfField;
     extern HGPoint pointOfFieldCenter;

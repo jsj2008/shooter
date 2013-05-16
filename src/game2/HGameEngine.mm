@@ -278,7 +278,7 @@ namespace hg
         }
         processList.clear();
     }
-    void HGProcessManager::addPrcoess(HGProcess* pProcess)
+    void HGProcessManager::addProcess(HGProcess* pProcess)
     {
 #if IS_PROCESS_DEBUG
         HDebug(@"Add Process : %s", pProcess->getName().c_str());
@@ -327,7 +327,7 @@ namespace hg
 #if IS_PROCESS_DEBUG
                     HDebug(@"Next Process Found : %s", tmp->pNextProcess->getName().c_str());
 #endif
-                    this->addPrcoess(tmp->pNextProcess);
+                    this->addProcess(tmp->pNextProcess);
                     tmp->pNextProcess = NULL;
                 }
             }
@@ -341,6 +341,17 @@ namespace hg
     }
     void HGProcessManager::init()
     {
+    }
+    
+    HGSprite* CreateAlphaMapSprite(std::string texture, Color color)
+    {
+        HGSprite* pSpr = new HGSprite();
+        pSpr->setType(SPRITE_TYPE_BILLBOARD);
+        pSpr->init(texture);
+        pSpr->setColor(color);
+        pSpr->shouldRenderAsAlphaMap(true);
+        pSpr->setBlendFunc(GL_SRC_ALPHA, GL_ONE);
+        return pSpr;
     }
     
     

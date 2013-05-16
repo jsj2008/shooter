@@ -21,6 +21,7 @@ namespace hg
     } AllocHeader;
     
     typedef hgles::HGLVector3 Vector;
+    typedef hgles::Color Color;
     
     typedef struct HGPoint
     {

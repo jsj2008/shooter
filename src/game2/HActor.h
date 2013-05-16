@@ -28,7 +28,7 @@ namespace hg
         realSize(0,0),
         isInitialized(false),
         _isActive(true),
-        collisionId(-1)
+        collisionId(CollisionIdNone)
         {
         };
         ~Actor()
@@ -77,6 +77,10 @@ namespace hg
         inline float getPositionY()
         {
             return pNode->getPositionY();
+        }
+        inline float getPositionZ()
+        {
+            return pNode->getPositionZ();
         }
         inline float getWidth()
         {

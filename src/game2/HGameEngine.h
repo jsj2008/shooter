@@ -111,7 +111,7 @@ namespace hg
         {
             assert(refCount > 0);
             refCount--;
-            if (refCount <= 0)
+            if (refCount== 0)
             {
                 this->~HGObject();
             }
@@ -128,6 +128,7 @@ namespace hg
     // ステート管理
     class HGState : public HGObject
     {
+        typedef HGObject base;
     public:
         HGState();
         virtual void onUpdate(){}
@@ -164,8 +165,10 @@ namespace hg
     // プロセスオーナークラス
     class HGProcessOwner : public HGObject
     {
+        typedef HGObject base;
     public:
         HGProcessOwner():
+        base(),
         pProcess(NULL)
         {}
         ~HGProcessOwner()
@@ -285,7 +288,7 @@ namespace hg
         }
         HGProcessManager(){}
         void clear();
-        void addPrcoess(HGProcess* pProcess);
+        void addProcess(HGProcess* pProcess);
         void update();
     private:
         ProcessList processList;
@@ -441,7 +444,12 @@ namespace hg
             return position.y;
         }
         
-        inline void setRotateZWithRadian(float radian)
+        inline float getPositionZ()
+        {
+            return position.z;
+        }
+        
+        inline void setRotateZ(float radian)
         {
             this->rotate.z = radian;
         }
@@ -479,6 +487,7 @@ namespace hg
     {
     public:
         HGSprite():
+        HGNode(),
         textureSize(0,0),
         isTextureInitialized(false),
         textureName(""),
@@ -636,6 +645,187 @@ namespace hg
         Vector rootScale;
         Vector rootRotate;
     };
-
+    
+    HGSprite* CreateAlphaMapSprite(std::string texture, Color color);
+    
+    // process
+    class SpriteScaleProcess : public HGProcess
+    {
+    public:
+        typedef HGProcess base;
+        SpriteScaleProcess() :
+        base(),
+        pSpr(NULL)
+        {
+        };
+        ~SpriteScaleProcess()
+        {
+            pSpr->release();
+        }
+        void init(HGProcessOwner* pProcOwner, HGSprite* pSpr, float toScaleX, float toScaleY, float frame)
+        {
+            assert(pSpr != NULL);
+            base::init(pProcOwner);
+            this->pSpr = pSpr;
+            this->pSpr->retain();
+            this->frame = frame;
+            this->toScaleX = toScaleX;
+            this->toScaleY = toScaleY;
+        }
+    protected:
+        void onUpdate()
+        {
+            if (getFrameCount() == 0)
+            {
+                this->fromScaleX = pSpr->getScaleX();
+                this->fromScaleY = pSpr->getScaleY();
+                this->diffScaleX = (toScaleX - fromScaleX)/frame;
+                this->diffScaleY = (toScaleY - fromScaleY)/frame;
+            }
+            if (frame <= getFrameCount())
+            {
+                pSpr->setScale(toScaleX, toScaleY);
+                setEnd();
+            }
+            else
+            {
+                pSpr->setScale(pSpr->getScaleX() + diffScaleX, pSpr->getScaleY() + diffScaleY);
+            }
+        }
+        std::string getName()
+        {
+            return "SpriteScaleProcess";
+        }
+    private:
+        HGSprite* pSpr;
+        float frame = 0;
+        float toScaleX = 1;
+        float toScaleY = 1;
+        float fromScaleX = 0;
+        float fromScaleY = 0;
+        float diffScaleX = 0;
+        float diffScaleY = 0;
+    };
+    
+    // process
+    class SpriteChangeOpacityProcess : public HGProcess
+    {
+    public:
+        typedef HGProcess base;
+        SpriteChangeOpacityProcess() :
+        base(),
+        pSpr(NULL)
+        {
+        };
+        ~SpriteChangeOpacityProcess()
+        {
+            pSpr->release();
+        }
+        void init(HGProcessOwner* pProcOwner, HGSprite* pSpr, float toOpacity, float frame)
+        {
+            assert(pSpr != NULL);
+            base::init(pProcOwner);
+            this->pSpr = pSpr;
+            this->pSpr->retain();
+            this->frame = frame;
+            this->toOpacity = toOpacity;
+        }
+    protected:
+        void onUpdate()
+        {
+            if (getFrameCount() == 0)
+            {
+                this->fromOpacity = pSpr->getOpacity();
+                this->diffOpacity = (toOpacity - fromOpacity)/frame;
+            }
+            if (frame <= getFrameCount())
+            {
+                pSpr->setOpacity(toOpacity);
+                setEnd();
+            }
+            else
+            {
+                pSpr->setOpacity(pSpr->getOpacity() + diffOpacity);
+            }
+        }
+        std::string getName()
+        {
+            return "SpriteChangeOpacityProcess";
+        }
+    private:
+        HGSprite* pSpr;
+        float frame = 0;
+        float toOpacity = 1;
+        float fromOpacity = 1;
+        float diffOpacity = 1;
+    };
+    
+    class NodeRemoveProcess : public HGProcess
+    {
+    public:
+        typedef HGProcess base;
+        NodeRemoveProcess() :
+        base(),
+        pSpr(NULL)
+        {
+        };
+        ~NodeRemoveProcess()
+        {
+            pSpr->release();
+        }
+        void init(HGProcessOwner* pProcOwner, HGSprite* pSpr)
+        {
+            assert(pSpr != NULL);
+            base::init(pProcOwner);
+            this->pSpr = pSpr;
+            this->pSpr->retain();
+        }
+    protected:
+        void onUpdate()
+        {
+            pSpr->removeFromParent();
+            this->setEnd();
+        }
+        std::string getName()
+        {
+            return "NodeRemoveProcess";
+        }
+    private:
+        HGSprite* pSpr;
+    };
+    
+    class WaitProcess : public HGProcess
+    {
+    public:
+        typedef HGProcess base;
+        WaitProcess() :
+        base(),
+        frame(0)
+        {
+        };
+        ~WaitProcess()
+        {
+        }
+        void init(HGProcessOwner* pProcOwner, float frame)
+        {
+            base::init(pProcOwner);
+            this->frame = frame;
+        }
+    protected:
+        void onUpdate()
+        {
+            if (this->getFrameCount() >= frame)
+            {
+                this->setEnd();
+            }
+        }
+        std::string getName()
+        {
+            return "WaitProcess";
+        }
+    private:
+        float frame;
+    };
+    
 }
 #endif

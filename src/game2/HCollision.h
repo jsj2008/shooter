@@ -15,10 +15,22 @@
 #include "HGameCommon.h"
 
 namespace hg {
-
+    
+    typedef enum CollisionId
+    {
+        CollisionIdStart,
+        CollisionIdNone,
+        CollisionId_BulletNormal,
+        CollisionId_BulletVulcan,
+        CollisionId_P_ROBO1,
+        CollisionId_E_SENKAN,
+        CollisionId_E_ROBO2,
+        CollisionIdEnd,
+    } CollisionId;
+    
     class CollisionManager;
-    typedef int CollisionId;
     static CollisionManager* pCollisionManager = NULL;
+    
     class CollisionManager
     {
         typedef std::vector<HGRect> Collision;
@@ -36,16 +48,16 @@ namespace hg {
         inline bool isIntersect(CollisionId& ida, Vector& posa, HGSize& sizea,
                                 CollisionId& idb, Vector& posb, HGSize& sizeb)
         {
-            assert(ida >= 0);
+            assert(ida != CollisionIdNone);
             assert(ida < list.size());
-            assert(idb >= 0);
+            assert(idb != CollisionIdNone);
             assert(idb < list.size());
             Collision* cola = list[ida];
             Collision* colb = list[idb];
             int lena = cola->size();
             int lenb = colb->size();
             float offxa = posa.x - sizea.width/2;
-            float offya = posa.y - sizeb.height/2;
+            float offya = posa.y - sizea.height/2;
             float offxb = posb.x - sizeb.width/2;
             float offyb = posb.y - sizeb.height/2;
             for (int i = 0; i < lena; ++i)
@@ -67,8 +79,7 @@ namespace hg {
         }
         inline void addDebugMark(CollisionId ida, HGNode* node, float width, float height)
         {
-            assert(ida >= 0);
-            assert(ida < list.size());
+            assert(ida != CollisionIdNone);
             Collision* col = list[ida];
             for (Collision::iterator it = col->begin(); it != col->end(); ++it)
             {
@@ -93,35 +104,42 @@ namespace hg {
         void init()
         {
             Collision* c;
-            for (int i = 0; i <= 4; i++)
+            for (int i = (int)CollisionIdStart; i < (int)CollisionIdEnd; ++i)
             {
                 switch (i) {
-                    case 0:
+                    case CollisionId_BulletNormal:
                         c = new Collision();
-                        c->push_back({10, 10, 44, 44});
+                        c->push_back({-6, -6, 172, 172});
                         list.push_back(c);
                         break;
-                    case 1:
+                    case CollisionId_BulletVulcan:
                         c = new Collision();
-                        c->push_back({-6, -6, 96, 96});
+                        c->push_back({-2, -2, 84, 88});
                         list.push_back(c);
                         break;
-                    case 2:
+                    case CollisionId_P_ROBO1:
                         c = new Collision();
                         c->push_back({20, 20, 88, 88});
                         list.push_back(c);
                         break;
-                    case 3:
+                    case CollisionId_E_SENKAN:
                         c = new Collision();
-                        c->push_back({280, 230, 1700, 390});
+                        c->push_back({220, 200, 1530, 350});
                         list.push_back(c);
                         break;
-                    case 4:
+                    case CollisionId_E_ROBO2:
                         c = new Collision();
                         c->push_back({30, 30, 196, 196});
                         list.push_back(c);
                         break;
+                    case CollisionIdStart:
+                    case CollisionIdNone:
+                        c = new Collision();
+                        list.push_back(c);
+                        break;
                     default:
+                        assert(0);
+                        HDebug(@"invalid collision id %d", i);
                         break;
                 }
             }

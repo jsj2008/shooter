@@ -90,6 +90,11 @@ namespace hg {
             return list.end();
         }
         
+        int size()
+        {
+            return list.size();
+        }
+        
     private:
         List list;
         

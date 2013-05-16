@@ -13,6 +13,7 @@
 #include "HGameEngine.h"
 #include "HFighter.h"
 #include "HGameCommon.h"
+#include "ExplodeAnimeProcess.h"
 
 namespace hg {
     
@@ -26,7 +27,8 @@ namespace hg {
         vy(0),
         pFighter(NULL),
         pTarget(NULL),
-        pointOfDestination(0,0)
+        pointOfDestination(0,0),
+        isControllable(true)
         {
         };
         ~ControlEnemyProcess()
@@ -51,62 +53,72 @@ namespace hg {
                 this->setEnd();
                 return;
             }
+            if (isControllable && pFighter->getLife() <= 0)
+            {
+                pFighter->explode();
+                isControllable = false;
+            }
             if (pTarget && pTarget->getLife() <= 0)
             {
                 pTarget = NULL;
             }
-            if (pTarget == NULL)
+            if (isControllable)
             {
-                switch (pFighter->getSide()) {
-                    case SideTypeFriend:
-                        pTarget = enemyFighterList.getRandomActor();
-                        break;
-                    case SideTypeEnemy:
-                        pTarget = friendFighterList.getRandomActor();
-                        break;
-                    default:
-                        break;
-                }
-            }
-            else
-            {
-                // tgの方向を向く
-                float r = atan2f(pTarget->getPositionX() - pFighter->getPositionX(),
-                                 pTarget->getPositionY() - pFighter->getPositionY());
-                float d = r*180/M_PI-90;
-                pFighter->setAspectDegree(d);
-                
-                // 攻撃する
-                if (pTarget->getLife() > 0)
+                if (pTarget == NULL)
                 {
-                    pFighter->fire();
+                    switch (pFighter->getSide()) {
+                        case SideTypeFriend:
+                            pTarget = enemyFighterList.getRandomActor();
+                            break;
+                        case SideTypeEnemy:
+                            pTarget = friendFighterList.getRandomActor();
+                            break;
+                        default:
+                            break;
+                    }
                 }
-            }
-            if (pointOfDestination.x == 0 && pointOfDestination.y == 0)
-            {
-                setDestination();
-            }
-            else
-            {
-                // check alived
-                float diffX = pFighter->getPositionX() - pointOfDestination.x;
-                float diffY = pFighter->getPositionY() - pointOfDestination.y;
-                if (diffX < 0) diffX *= -1;
-                if (diffY < 0) diffY *= -1;
-                if (diffX < pFighter->getWidth()/2 && diffY < pFighter->getHeight()/2)
+                else
+                {
+                    // tgの方向を向く
+                    float dx = pTarget->getPositionX() - pFighter->getPositionX();
+                    float dy = pTarget->getPositionY() - pFighter->getPositionY();
+                    float r = atan2f(pTarget->getPositionX() - pFighter->getPositionX(),
+                                     pTarget->getPositionY() - pFighter->getPositionY());
+                    float d = r*180/M_PI-90;
+                    pFighter->setAspectDegree(d);
+                    
+                    // 攻撃する
+                    if (pTarget->getLife() > 0 && abs(dx) + abs(dy) < PXL2REAL(3500))
+                    {
+                        pFighter->fire(pTarget);
+                    }
+                }
+                if (pointOfDestination.x == 0 && pointOfDestination.y == 0)
                 {
                     setDestination();
                 }
+                else
+                {
+                    // check alived
+                    float diffX = pFighter->getPositionX() - pointOfDestination.x;
+                    float diffY = pFighter->getPositionY() - pointOfDestination.y;
+                    if (diffX < 0) diffX *= -1;
+                    if (diffY < 0) diffY *= -1;
+                    if (diffX < pFighter->getWidth()/2 && diffY < pFighter->getHeight()/2)
+                    {
+                        setDestination();
+                    }
+                }
+                // タゲの方向へ移動する
+                float r = atan2f(pointOfDestination.x - pFighter->getPositionX(), pointOfDestination.y - pFighter->getPositionY());
+                r = r - 90*M_PI/180;
+                float speed = pFighter->getSpeed();
+                vx = cos(r) * speed;
+                vy = sin(r) * speed * -1;
             }
             
-            // タゲの方向へ移動する
-            float r = atan2f(pointOfDestination.x - pFighter->getPositionX(), pointOfDestination.y - pFighter->getPositionY());
-            r = r - 90*M_PI/180;
-            float speed = pFighter->getSpeed();
-            vx = cos(r) * speed;
-            vy = sin(r) * speed * -1;
             pFighter->getNode()->addPosition(vx, vy);
-            if (pFighter->getLife() > 0)
+            if (isControllable)
             {
                 // フィールド外チェック
                 float x = pFighter->getPositionX();
@@ -130,10 +142,6 @@ namespace hg {
                     pFighter->setPositionY(h/2);
                 }
             }
-            if (!pFighter->isActive())
-            {
-                this->setEnd();
-            }
             
         }
         std::string getName()
@@ -146,6 +154,7 @@ namespace hg {
         float vx;
         float vy;
         HGPoint pointOfDestination;
+        bool isControllable;
         
         void setDestination()
         {

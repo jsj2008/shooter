@@ -1,13 +1,13 @@
 //
-//  HitAnimeProcess.h
+//  ExplodeAnimeProcess.h
 //  Shooter
 //
 //  Created by 濱田 洋太 on 13/05/06.
 //  Copyright (c) 2013年 hayogame. All rights reserved.
 //
 
-#ifndef __Shooter__HitAnimeProcess__
-#define __Shooter__HitAnimeProcess__
+#ifndef __Shooter__ExplodeAnimeProcess__
+#define __Shooter__ExplodeAnimeProcess__
 
 #include <iostream>
 #include "HGameEngine.h"
@@ -16,11 +16,11 @@
 namespace hg
 {
     
-    class HitAnimeProcess : public HGProcess
+    class ExplodeAnimeProcess : public HGProcess
     {
     public:
         typedef HGProcess base;
-        HitAnimeProcess() :
+        ExplodeAnimeProcess() :
         base(),
         pSprBom(NULL),
         sizeOfTexSrc(0,0),
@@ -28,7 +28,7 @@ namespace hg
         size(0,0)
         {
         };
-        ~HitAnimeProcess()
+        ~ExplodeAnimeProcess()
         {
             pSprBom->release();
         }
@@ -46,7 +46,7 @@ namespace hg
             size.height = r;
             
             pSprBom = new HGSprite();
-            pSprBom->init("hit_small.png");
+            pSprBom->init("explode_small.png");
             pSprBom->setPosition(position.x, position.y, position.z);
             pSprBom->setScale(size.width, size.height);
             pSprBom->setTextureRect(offsetOfTexSrc.x, offsetOfTexSrc.y, sizeOfTexSrc.width, sizeOfTexSrc.height);
@@ -58,30 +58,31 @@ namespace hg
     protected:
         void onUpdate()
         {
-            if (getFrameCount() >= 8)
+            int index = getFrameCount()/2;
+            if (index >= 9)
             {
                 pSprBom->removeFromParent();
                 setEnd();
                 return;
             }
-            if (getFrameCount() >= 5)
+            if (index >= 6)
             {
                 pSprBom->setOpacity(pSprBom->getOpacity() * 0.5);
             }
-            int x = sizeOfTexSrc.width * getFrameCount();
+            int x = sizeOfTexSrc.width * index;
             pSprBom->setTextureRect(x, 0, sizeOfTexSrc.width, sizeOfTexSrc.height);
         }
         std::string getName()
         {
-            return "HitAnimeProcess";
+            return "ExplodeAnimeProcess";
         }
     private:
-        HGSize sizeOfTexSrc;
         Vector position;
+        HGSize sizeOfTexSrc;
         HGPoint offsetOfTexSrc;
         HGSize size;
         HGSprite* pSprBom;
     };
 }
 
-#endif /* defined(__Shooter__HitAnimeProcess__) */
+#endif /* defined(__Shooter__ExplodeAnimeProcess__) */

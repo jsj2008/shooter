@@ -13,6 +13,7 @@
 #include "HGameCommon.h"
 #include "HWeapon.h"
 #include "HCollision.h"
+#include "ExplodeAnimeProcess.h"
 
 #include <list>
 
@@ -24,6 +25,7 @@ namespace hg {
     {
         FighterTypeRobo1,
         FighterTypeRobo2,
+        FighterTypeShip1,
     } FighterType;
     
     static int SPRITE_INDEX_TABLE[359] = {};
@@ -44,7 +46,9 @@ namespace hg {
         lifeMax(0),
         processOwner(NULL),
         side(SideTypeEnemy),
-        isInitialized(false)
+        isInitialized(false),
+        isShip(false),
+        explodeProcessCount(0)
         {
         }
         
@@ -76,33 +80,84 @@ namespace hg {
                 case FighterTypeRobo1:
                 {
                     textureName = "p_robo1.png";
-                    textureSrcOffset.x = 0;
-                    textureSrcOffset.y = 0;
-                    textureSrcSize.width = 16;
-                    textureSrcSize.height = 16;
+                    textureSrcOffset = {0, 0};
+                    textureSrcSize = {16, 16};
                     setSizeByPixel(128, 128);
-                    setCollisionId(2);
+                    setCollisionId(CollisionId_P_ROBO1);
                     speed = v(0.6);
-                    life = lifeMax = 100;
+                    life = lifeMax = 5500;
                     Weapon* wp = new Weapon();
-                    wp->init(WEAPON_TYPE_NORMAL, BULLET_TYPE_NORMAL , 0, 0);
+                    wp->init(WeaponTypeNormal, BulletTypeNormal, 0, 0);
                     weaponList.push_back(wp);
                     break;
                 }
                 case FighterTypeRobo2:
                 {
                     textureName = "e_robo2.png";
-                    textureSrcOffset.x = 0;
-                    textureSrcOffset.y = 0;
-                    textureSrcSize.width = 64;
-                    textureSrcSize.height = 64;
+                    textureSrcOffset = {0, 0};
+                    textureSrcSize = {64, 64};
                     setSizeByPixel(256, 256);
-                    setCollisionId(4);
+                    setCollisionId(CollisionId_E_ROBO2);
                     speed = v(0.3);
-                    life = lifeMax = 50;
+                    if (side == SideTypeFriend)
+                    {
+                    life = lifeMax = 5150;
+                    }
+                    else
+                    {
+                    life = lifeMax = 1150;
+                    }
                     Weapon* wp = new Weapon();
-                    wp->init(WEAPON_TYPE_NORMAL, BULLET_TYPE_NORMAL , 0, 0);
+                    wp->init(WeaponTypeNormal, BulletTypeNormal, 0, 0);
                     weaponList.push_back(wp);
+                    break;
+                }
+                case FighterTypeShip1:
+                {
+                    float sizeRatio = 10;
+                    textureName = "e_senkan1_4.png";
+                    textureSrcOffset = {0, 0};
+                    textureSrcSize = {204, 78};
+                    setSizeByPixel(204*sizeRatio, 78*sizeRatio);
+                    setCollisionId(CollisionId_E_SENKAN);
+                    speed = v(0.1);
+                    life = lifeMax = 8900;
+                    
+                    {
+                        Weapon* wp = new Weapon();
+                        wp->init(WeaponTypeNormal, BulletTypeNormal, 45*sizeRatio, 0);
+                        weaponList.push_back(wp);
+                    }
+                    
+                    {
+                        Weapon* wp = new Weapon();
+                        wp->init(WeaponTypeNormal, BulletTypeNormal, -45*sizeRatio, 0);
+                        weaponList.push_back(wp);
+                    }
+                    
+                    {
+                        Weapon* wp = new Weapon();
+                        wp->init(WeaponTypeNormal, BulletTypeVulcan, -90*sizeRatio, 0);
+                        wp->setInterval(0.1);
+                        weaponList.push_back(wp);
+                    }
+                    
+                    
+                    {
+                        Weapon* wp = new Weapon();
+                        wp->init(WeaponTypeNormal, BulletTypeVulcan, 0, 0);
+                        wp->setInterval(0.1);
+                        weaponList.push_back(wp);
+                    }
+                    
+                    {
+                        Weapon* wp = new Weapon();
+                        wp->init(WeaponTypeNormal, BulletTypeVulcan, 90*sizeRatio, 0);
+                        wp->setInterval(0.1);
+                        weaponList.push_back(wp);
+                    }
+                    
+                    isShip = true;
                     break;
                 }
                 default:
@@ -113,6 +168,7 @@ namespace hg {
             pSprite->setType(SPRITE_TYPE_BILLBOARD);
             pSprite->init(textureName);
             pSprite->setScale(getWidth(), getHeight());
+            pSprite->setTextureRect(textureSrcOffset.x, textureSrcOffset.y, textureSrcSize.width, textureSrcSize.height);
             getNode()->addChild(pSprite);
             
             setAspectDegree(0);
@@ -154,9 +210,12 @@ namespace hg {
         inline void setAspectDegree(float degree)
         {
             aspectDegree = degree;
-            int spIdx = getSpriteIndex(aspectDegree + 0.5);
-            int x = textureSrcSize.width * spIdx + textureSrcOffset.x;
-            pSprite->setTextureRect(x - 1, textureSrcOffset.y, textureSrcSize.width, textureSrcSize.height);
+            if (!isShip)
+            {
+                int spIdx = getSpriteIndex(aspectDegree + 0.5);
+                int x = textureSrcSize.width * spIdx + textureSrcOffset.x;
+                pSprite->setTextureRect(x - 1, textureSrcOffset.y, textureSrcSize.width, textureSrcSize.height);
+            }
         }
         inline SideType getSide()
         {
@@ -173,6 +232,11 @@ namespace hg {
             this->life = life;
         }
         
+        inline void addLife(int life)
+        {
+            this->life += life;
+        }
+        
         inline void setMaxLife(int life)
         {
             this->lifeMax = life;
@@ -183,11 +247,108 @@ namespace hg {
             return aspectDegree;
         }
         
+        inline void explode()
+        {
+            CallFunctionRepeadedlyProcess<Fighter>* cfrp = new CallFunctionRepeadedlyProcess<Fighter>();
+            HGProcessOwner* hpo = new HGProcessOwner();
+            cfrp->init(hpo, &Fighter::explodeProcess, this);
+            
+            HGProcessManager::sharedProcessManager()->addProcess(cfrp);
+            
+            cfrp->release();
+            hpo->release();
+        }
+        
+        // call function repeatedly processから呼び出される
+        inline bool explodeProcess()
+        {
+            explodeProcessCount++;
+            if (isShip)
+            {
+                if (explodeProcessCount > 90)
+                {
+                    pSprite->setOpacity(pSprite->getOpacity()*0.9);
+                }
+                if (explodeProcessCount > 100)
+                {
+                    this->setActive(false);
+                    this->getNode()->removeFromParent();
+                    return true;
+                }
+                if (rand(0, 10) > 3)
+                {
+                    ExplodeAnimeProcess* eap = new ExplodeAnimeProcess();
+                    HGProcessOwner* hpo = new HGProcessOwner();
+                    float x = rand(getPositionX() - getWidth()/2, getPositionX() + getWidth()/2);
+                    float y = rand(getPositionY() - getHeight()/2, getPositionY() + getHeight()/2);
+                    Vector position(x, y, getPositionZ());
+                    eap->init(hpo, position, pLayerEffect);
+                    
+                    HGProcessManager::sharedProcessManager()->addProcess(eap);
+                    
+                    eap->release();
+                    hpo->release();
+                }
+            }
+            else
+            {
+                if (explodeProcessCount > 20)
+                {
+                    pSprite->setOpacity(pSprite->getOpacity()*0.9);
+                }
+                if (explodeProcessCount > 30)
+                {
+                    this->setActive(false);
+                    this->getNode()->removeFromParent();
+                    return true;
+                }
+                if (rand(0, 10) > 7)
+                {
+                    ExplodeAnimeProcess* eap = new ExplodeAnimeProcess();
+                    HGProcessOwner* hpo = new HGProcessOwner();
+                    float x = rand(getPositionX() - getWidth()/2, getPositionX() + getWidth()/2);
+                    float y = rand(getPositionY() - getHeight()/2, getPositionY() + getHeight()/2);
+                    Vector position(x, y, getPositionZ());
+                    eap->init(hpo, position, pLayerEffect);
+                    
+                    HGProcessManager::sharedProcessManager()->addProcess(eap);
+                    
+                    eap->release();
+                    hpo->release();
+                }
+                
+            }
+            return false;
+        }
+        
+        inline void fire(Fighter* pTarget)
+        {
+            float x = this->getPositionX();
+            float y = this->getPositionY();
+            float tx = pTarget->getPositionX();
+            float ty = pTarget->getPositionY();
+            for (WeaponList::iterator it = weaponList.begin(); it != weaponList.end(); ++it)
+            {
+                if (rand(0, 10) < 2)
+                {
+                    float wx = (*it)->getRelativeX();
+                    float wy = (*it)->getRelativeY();
+                    // tgの方向を向く
+                    float r = atan2f(tx - (x + wx),
+                                     ty - (y + wy));
+                    float d = toDeg(r)-90;
+                    (*it)->setAspect(d);
+                }
+                (*it)->fire(this, side);
+            }
+        }
+        
         inline void fire()
         {
             for (WeaponList::iterator it = weaponList.begin(); it != weaponList.end(); ++it)
             {
-                (*it)->fire(this, this->aspectDegree, side);
+                (*it)->setAspect(this->aspectDegree);
+                (*it)->fire(this, side);
             }
         }
         
@@ -214,6 +375,8 @@ namespace hg {
         FighterType type;
         HGProcessOwner* processOwner;
         bool isInitialized;
+        bool isShip;
+        int explodeProcessCount;
         
         int getSpriteIndex(int i)
         {
