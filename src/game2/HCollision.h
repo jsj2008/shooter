@@ -92,7 +92,6 @@ namespace hg {
                 spr->setPosition(-width/2 + (*it).point.x + (*it).size.width/2, -height/2 + (*it).point.y + (*it).size.height/2);
                 spr->setType(SPRITE_TYPE_BILLBOARD);
                 node->addChild(spr);
-                spr->release();
             }
         }
         ~CollisionManager()

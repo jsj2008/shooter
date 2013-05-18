@@ -73,6 +73,7 @@ namespace hg {
             this->side = side;
             this->type = type;
             processOwner = new HGProcessOwner();
+            processOwner->retain();
             
             // 種類別の初期化
             switch (type)
@@ -89,6 +90,7 @@ namespace hg {
                     Weapon* wp = new Weapon();
                     wp->init(WeaponTypeNormal, BulletTypeNormal, 0, 0);
                     weaponList.push_back(wp);
+                    wp->retain();
                     break;
                 }
                 case FighterTypeRobo2:
@@ -101,7 +103,7 @@ namespace hg {
                     speed = v(0.3);
                     if (side == SideTypeFriend)
                     {
-                    life = lifeMax = 5150;
+                    life = lifeMax = 2150;
                     }
                     else
                     {
@@ -110,6 +112,7 @@ namespace hg {
                     Weapon* wp = new Weapon();
                     wp->init(WeaponTypeNormal, BulletTypeNormal, 0, 0);
                     weaponList.push_back(wp);
+                    wp->retain();
                     break;
                 }
                 case FighterTypeShip1:
@@ -121,18 +124,20 @@ namespace hg {
                     setSizeByPixel(204*sizeRatio, 78*sizeRatio);
                     setCollisionId(CollisionId_E_SENKAN);
                     speed = v(0.1);
-                    life = lifeMax = 8900;
+                    life = lifeMax = 5000;
                     
                     {
                         Weapon* wp = new Weapon();
                         wp->init(WeaponTypeNormal, BulletTypeVulcan, 45*sizeRatio, 0);
                         weaponList.push_back(wp);
+                        wp->retain();
                     }
                     
                     {
                         Weapon* wp = new Weapon();
                         wp->init(WeaponTypeNormal, BulletTypeVulcan, -45*sizeRatio, 0);
                         weaponList.push_back(wp);
+                        wp->retain();
                     }
                     
                     {
@@ -140,6 +145,7 @@ namespace hg {
                         wp->init(WeaponTypeNormal, BulletTypeVulcan, -90*sizeRatio, 0);
                         wp->setInterval(0.1);
                         weaponList.push_back(wp);
+                        wp->retain();
                     }
                     
                     
@@ -148,6 +154,7 @@ namespace hg {
                         wp->init(WeaponTypeNormal, BulletTypeVulcan, 0, 0);
                         wp->setInterval(0.1);
                         weaponList.push_back(wp);
+                        wp->retain();
                     }
                     
                     {
@@ -155,6 +162,7 @@ namespace hg {
                         wp->init(WeaponTypeNormal, BulletTypeVulcan, 90*sizeRatio, 0);
                         wp->setInterval(0.1);
                         weaponList.push_back(wp);
+                        wp->retain();
                     }
                     
                     isShip = true;
@@ -169,6 +177,7 @@ namespace hg {
             pSprite->init(textureName);
             pSprite->setScale(getWidth(), getHeight());
             pSprite->setTextureRect(textureSrcOffset.x, textureSrcOffset.y, textureSrcSize.width, textureSrcSize.height);
+            pSprite->retain();
             getNode()->addChild(pSprite);
             
             setAspectDegree(0);
@@ -252,11 +261,7 @@ namespace hg {
             CallFunctionRepeadedlyProcess<Fighter>* cfrp = new CallFunctionRepeadedlyProcess<Fighter>();
             HGProcessOwner* hpo = new HGProcessOwner();
             cfrp->init(hpo, &Fighter::explodeProcess, this);
-            
             HGProcessManager::sharedProcessManager()->addProcess(cfrp);
-            
-            cfrp->release();
-            hpo->release();
         }
         
         // call function repeatedly processから呼び出される
@@ -283,11 +288,7 @@ namespace hg {
                     float y = rand(getPositionY() - getHeight()/2, getPositionY() + getHeight()/2);
                     Vector position(x, y, getPositionZ());
                     eap->init(hpo, position, pLayerEffect);
-                    
                     HGProcessManager::sharedProcessManager()->addProcess(eap);
-                    
-                    eap->release();
-                    hpo->release();
                 }
             }
             else
@@ -310,11 +311,7 @@ namespace hg {
                     float y = rand(getPositionY() - getHeight()/2, getPositionY() + getHeight()/2);
                     Vector position(x, y, getPositionZ());
                     eap->init(hpo, position, pLayerEffect);
-                    
                     HGProcessManager::sharedProcessManager()->addProcess(eap);
-                    
-                    eap->release();
-                    hpo->release();
                 }
                 
             }

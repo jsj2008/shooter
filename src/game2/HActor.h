@@ -38,6 +38,7 @@ namespace hg
         virtual void init(HGNode* pNodeParent)
         {
             this->pNode = new HGNode();
+            this->pNode->retain();
             pNodeParent->addChild(this->pNode);
             isInitialized = true;
         }

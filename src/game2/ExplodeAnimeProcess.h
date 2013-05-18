@@ -52,6 +52,7 @@ namespace hg
             pSprBom->setTextureRect(offsetOfTexSrc.x, offsetOfTexSrc.y, sizeOfTexSrc.width, sizeOfTexSrc.height);
             pSprBom->setRotateZ(rand(0, 359) * M_PI/180);
             pSprBom->setBlendFunc(GL_SRC_ALPHA, GL_ONE);
+            pSprBom->retain();
             
             parentNode->addChild(pSprBom);
         }

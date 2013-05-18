@@ -31,6 +31,7 @@ namespace hg {
         base()
         {
             pMoveOwner = new HGProcessOwner();
+            pMoveOwner->retain();
         }
         ~Bullet()
         {
@@ -58,7 +59,6 @@ namespace hg {
             CallFunctionRepeadedlyProcess<Bullet>* p = new CallFunctionRepeadedlyProcess<Bullet>();
             p->init(pMoveOwner, &Bullet::move, this);
             HGProcessManager::sharedProcessManager()->addProcess(p);
-            p->release();
             
             static Color sideColor = {0.7, 0.7, 1.0, 0.5};
             if (side == SideTypeFriend)
@@ -82,13 +82,11 @@ namespace hg {
                     HGSprite* pSpr = CreateAlphaMapSprite("divine.png", (Color){1,1,1,1});
                     pSpr->setScale(getWidth()*1.1, getHeight()*1.1);
                     getNode()->addChild(pSpr);
-                    pSpr->release();
                     
                     // light
                     HGSprite* pSprGlow = CreateAlphaMapSprite("star.png", sideColor);
                     pSprGlow->setScale(getWidth()*3, getHeight()*3);
                     getNode()->addChild(pSprGlow);
-                    pSprGlow->release();
                     
                     break;
                 }
@@ -102,13 +100,11 @@ namespace hg {
                     HGSprite* pSpr = CreateAlphaMapSprite("divine.png", (Color){1,1,1,1});
                     pSpr->setScale(getWidth()*1.1, getHeight()*1.1);
                     getNode()->addChild(pSpr);
-                    pSpr->release();
                     
                     // light
                     HGSprite* pSprGlow = CreateAlphaMapSprite("star.png", sideColor);
                     pSprGlow->setScale(getWidth()*3, getHeight()*3);
                     getNode()->addChild(pSprGlow);
-                    pSprGlow->release();
                     
                     break;
                 }

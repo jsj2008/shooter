@@ -12,7 +12,7 @@
 #include "HGameEngine.h"
 #include "HActorList.h"
 
-#define IS_DEBUG_COLLISION 1
+#define IS_DEBUG_COLLISION 0
 #define ENEMY_NUM 10
 #define BULLET_NUM 100
 #define ENEMY_BULLET_NUM 100

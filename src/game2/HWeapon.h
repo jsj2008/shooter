@@ -45,7 +45,7 @@ namespace hg {
         {
             switch (type) {
                 case WeaponTypeNormal:
-                    speed = v(0.6);
+                    speed = v(0.4);
                     fireInterval = 0.2;
                     power = 100;
                     break;
@@ -100,7 +100,6 @@ namespace hg {
                     assert(0);
                     break;
             }
-            bp->release();
         }
         
         inline void setAspect(float degree)

@@ -153,6 +153,13 @@ namespace hg
     }
     
     ////////////////////
+    // AutoRelease
+    namespace AutoRelease
+    {
+        AutoReleaseList autoReleaseList;
+    }
+    
+    ////////////////////
     // 基底
     
     HGHeap* HGObject::s_pHeap = NULL;
@@ -166,7 +173,9 @@ namespace hg
         {
             s_pHeap = HGHeapFactory::CreateHeap(heapName);
         }
-        return (HGObject*)s_pHeap->alloc(size);
+        HGObject* p = (HGObject*)s_pHeap->alloc(size);
+        AutoRelease::addObject(p);
+        return p;
     }
     /*
     void HGObject::operator delete(void *p, size_t size)
@@ -206,6 +215,7 @@ namespace hg
         if (!pStateManager)
         {
             pStateManager = new (SYSTEM_HEAP_NAME)HGStateManager();
+            pStateManager->retain();
         }
         return pStateManager;
     }
@@ -278,6 +288,13 @@ namespace hg
         }
         processList.clear();
     }
+    
+    void HGProcessManager::addAndExecProcess(HGProcess* pProcess)
+    {
+        this->addProcess(pProcess);
+        this->exec(pProcess);
+    }
+    
     void HGProcessManager::addProcess(HGProcess* pProcess)
     {
 #if IS_PROCESS_DEBUG
@@ -304,6 +321,8 @@ namespace hg
         if (tmp->isIntercepted())
         {
             // 中断された場合、nextも中断
+            assert(tmp->getRefCount() == 1);
+            assert(tmp->_isIntercepted);
             delProcessList.push_back(tmp);
             return;
         }
@@ -315,17 +334,16 @@ namespace hg
 #endif
             tmp->end();
             delProcessList.push_back(tmp);
-            if (tmp->pNextProcess)
+            assert(tmp->_isEnd);
+            HGProcess* pNext = tmp->pNextProcess;
+            if (pNext)
             {
 #if IS_PROCESS_DEBUG
                 HDebug(@"Next Process Found : %s", tmp->pNextProcess->getName().c_str());
 #endif
-                this->exec(tmp->pNextProcess);
-                if (!tmp->pNextProcess->isEnd())
-                {
-                    this->addProcess(tmp->pNextProcess);
-                }
+                this->addProcess(pNext);
                 tmp->pNextProcess = NULL;
+                pNext->release();
             }
         }
     }
@@ -343,6 +361,7 @@ namespace hg
         }
         for (ProcessList::iterator it = delProcessList.begin(); it != delProcessList.end(); ++it)
         {
+            assert((*it)->getRefCount() <= 2);
             (*it)->release();
             processList.remove(*it);
         }

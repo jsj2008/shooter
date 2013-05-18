@@ -8,6 +8,7 @@
 
 #import <boost/shared_ptr.hpp>
 #import <list>
+#import <vector>
 #import <map>
 #include <sys/timeb.h>
 
@@ -91,8 +92,34 @@ namespace hg
     };
     
     ////////////////////
+    // AutoRelease
+    namespace AutoRelease
+    {
+        class AutoReleaseObject
+        {
+        public:
+            virtual void release() = 0;
+        };
+        
+        typedef std::vector<AutoReleaseObject*> AutoReleaseList;
+        extern AutoReleaseList autoReleaseList;
+        inline void addObject(AutoReleaseObject* o)
+        {
+            autoReleaseList.push_back(o);
+        }
+        inline void releaseAll()
+        {
+            for (AutoReleaseList::iterator it = autoReleaseList.begin(); it != autoReleaseList.end(); ++it)
+            {
+                (*it)->release();
+            }
+            autoReleaseList.clear();
+        }
+    }
+    
+    ////////////////////
     // 基底
-    class HGObject
+    class HGObject : hg::AutoRelease::AutoReleaseObject
     {
     public:
         HGObject():
@@ -118,7 +145,10 @@ namespace hg
             s_pHeap->release(this);
             assert(refCount >= 0);
         }
-    
+        inline int getRefCount()
+        {
+            return refCount;
+        }
     private:
         static HGHeap* s_pHeap;
         int refCount;
@@ -269,6 +299,7 @@ namespace hg
         {
             assert(_isInitialized);
             assert(!this->_isEnd);
+            assert(this->getRefCount() > 0);
             this->onUpdate();
             frameCount++;
             _isInitialUpdate = false;
@@ -295,6 +326,7 @@ namespace hg
             if (!hgProcessManagerPtr)
             {
                 hgProcessManagerPtr = new (SYSTEM_HEAP_NAME)HGProcessManager();
+                hgProcessManagerPtr->retain();
                 hgProcessManagerPtr->init();
             }
             return hgProcessManagerPtr;
@@ -302,6 +334,7 @@ namespace hg
         HGProcessManager(){}
         void clear();
         void addProcess(HGProcess* pProcess);
+        void addAndExecProcess(HGProcess* pProcess);
         void update();
         
     private:
@@ -404,6 +437,7 @@ namespace hg
         
         inline void draw(Vector& parentPosition, Vector& parentScale, Vector& parentRotate)
         {
+            assert(this->getRefCount() > 0);
             worldPosition.x = position.x + parentPosition.x;
             worldPosition.y = position.y + parentPosition.y;
             worldPosition.z = position.z + parentPosition.z;
@@ -568,6 +602,7 @@ namespace hg
     protected:
         inline void render()
         {
+            assert(this->getRefCount() > 0);
             if (!isTextureInitialized)
             {
                 texture = *hgles::HGLTexture::createTextureWithAsset(textureName);
@@ -630,6 +665,7 @@ namespace hg
             if (!directorPtr)
             {
                 directorPtr = new (SYSTEM_HEAP_NAME)HGDirector();
+                directorPtr->retain();
                 directorPtr->init();
             }
             return directorPtr;
@@ -637,6 +673,8 @@ namespace hg
         inline void drawRootNode()
         {
             pRootNode->draw(rootPosition, rootScale, rootRotate);
+            // autoRelease
+            AutoRelease::releaseAll();
         }
         inline HGNode* getRootNode()
         {
@@ -651,6 +689,7 @@ namespace hg
                 pRootNode = NULL;
             }
             pRootNode = new (SYSTEM_HEAP_NAME)HGNode();
+            pRootNode->retain();
             rootPosition = Vector(0,0,0);
             rootScale = Vector(1,1,1);
             rootRotate = Vector(0,0,0);

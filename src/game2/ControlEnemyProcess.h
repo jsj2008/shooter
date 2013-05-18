@@ -60,6 +60,7 @@ namespace hg {
             }
             if (pTarget && pTarget->getLife() <= 0)
             {
+                pTarget->release();
                 pTarget = NULL;
             }
             if (isControllable)
