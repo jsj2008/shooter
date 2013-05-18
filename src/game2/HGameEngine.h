@@ -198,16 +198,16 @@ namespace hg
         pNextProcess(NULL),
         frameCount(0),
         _isEnd(false),
-        isIntercepted(false),
-        isInitialUpdate(true),
-        isInitialized(false)
+        _isIntercepted(false),
+        _isInitialUpdate(true),
+        _isInitialized(false)
         {
         };
         inline virtual void init(HGProcessOwner* pOwner)
         {
             this->pOwner = pOwner;
             pOwner->retain();
-            isInitialized = true;
+            _isInitialized = true;
         }
         void setNext(HGProcess* nextPtr);
     protected:
@@ -238,27 +238,40 @@ namespace hg
         }
     private:
         int frameCount;
-        bool isInitialUpdate;
+        bool _isInitialUpdate;
         bool _isEnd;
-        bool isIntercepted;
-        bool isInitialized;
+        bool _isIntercepted;
+        bool _isInitialized;
         HGProcessOwner* pOwner;
         HGProcess* pNextProcess;
+        inline void removeNextProcess()
+        {
+            pNextProcess->release();
+            pNextProcess = NULL;
+        }
+        inline HGProcess* getNextProcess()
+        {
+            return pNextProcess;
+        }
         inline HGProcessOwner* getOwner()
         {
             return pOwner;
         }
+        inline bool isIntercepted()
+        {
+            return _isIntercepted;
+        }
         inline void setIntercepted()
         {
-            this->isIntercepted = true;
+            this->_isIntercepted = true;
         }
         inline void update()
         {
-            assert(isInitialized);
+            assert(_isInitialized);
             assert(!this->_isEnd);
             this->onUpdate();
             frameCount++;
-            isInitialUpdate = false;
+            _isInitialUpdate = false;
         }
         inline void end()
         {
@@ -290,7 +303,9 @@ namespace hg
         void clear();
         void addProcess(HGProcess* pProcess);
         void update();
+        
     private:
+        void exec(HGProcess* proc);
         ProcessList processList;
         ProcessList addProcessList;
         ProcessList delProcessList;

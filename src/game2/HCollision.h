@@ -86,8 +86,8 @@ namespace hg {
                 HGSprite* spr = new HGSprite();
                 spr->init("square.png");
                 spr->shouldRenderAsAlphaMap(true);
-                spr->setBlendFunc(GL_ALPHA, GL_ALPHA);
-                spr->setColor({1,0,0,0.5});
+                spr->setBlendFunc(GL_ONE, GL_ONE);
+                spr->setColor({1,0,0,0.9});
                 spr->setScale((*it).size.width, (*it).size.height);
                 spr->setPosition(-width/2 + (*it).point.x + (*it).size.width/2, -height/2 + (*it).point.y + (*it).size.height/2);
                 spr->setType(SPRITE_TYPE_BILLBOARD);
@@ -114,7 +114,7 @@ namespace hg {
                         break;
                     case CollisionId_BulletVulcan:
                         c = new Collision();
-                        c->push_back({-2, -2, 84, 88});
+                        c->push_back({-2, -2, 64, 64});
                         list.push_back(c);
                         break;
                     case CollisionId_P_ROBO1:

@@ -125,13 +125,13 @@ namespace hg {
                     
                     {
                         Weapon* wp = new Weapon();
-                        wp->init(WeaponTypeNormal, BulletTypeNormal, 45*sizeRatio, 0);
+                        wp->init(WeaponTypeNormal, BulletTypeVulcan, 45*sizeRatio, 0);
                         weaponList.push_back(wp);
                     }
                     
                     {
                         Weapon* wp = new Weapon();
-                        wp->init(WeaponTypeNormal, BulletTypeNormal, -45*sizeRatio, 0);
+                        wp->init(WeaponTypeNormal, BulletTypeVulcan, -45*sizeRatio, 0);
                         weaponList.push_back(wp);
                     }
                     

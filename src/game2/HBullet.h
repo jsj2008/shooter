@@ -76,7 +76,7 @@ namespace hg {
                 {
                     setSizeByPixel(160, 160);
                     setCollisionId(CollisionId_BulletNormal);
-                    this->life = v(20);
+                    this->life = v(40);
                     
                     // core
                     HGSprite* pSpr = CreateAlphaMapSprite("divine.png", (Color){1,1,1,1});
@@ -94,9 +94,9 @@ namespace hg {
                 }
                 case BulletTypeVulcan:
                 {
-                    setSizeByPixel(120, 120);
+                    setSizeByPixel(60, 60);
                     setCollisionId(CollisionId_BulletVulcan);
-                    this->life = v(20);
+                    this->life = v(15);
                     
                     // core
                     HGSprite* pSpr = CreateAlphaMapSprite("divine.png", (Color){1,1,1,1});

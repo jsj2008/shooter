@@ -45,7 +45,7 @@ namespace hg {
         {
             switch (type) {
                 case WeaponTypeNormal:
-                    speed = v(0.4);
+                    speed = v(0.6);
                     fireInterval = 0.2;
                     power = 100;
                     break;

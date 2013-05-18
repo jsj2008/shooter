@@ -298,6 +298,38 @@ namespace hg
         pOwner->setProcess(pProcess);
         addProcessList.push_back(pProcess);
     }
+    
+    void HGProcessManager::exec(HGProcess* tmp)
+    {
+        if (tmp->isIntercepted())
+        {
+            // 中断された場合、nextも中断
+            delProcessList.push_back(tmp);
+            return;
+        }
+        tmp->update();
+        if (tmp->isEnd())
+        {
+#if IS_PROCESS_DEBUG
+            HDebug(@"Process Ended: %s", tmp->getName().c_str());
+#endif
+            tmp->end();
+            delProcessList.push_back(tmp);
+            if (tmp->pNextProcess)
+            {
+#if IS_PROCESS_DEBUG
+                HDebug(@"Next Process Found : %s", tmp->pNextProcess->getName().c_str());
+#endif
+                this->exec(tmp->pNextProcess);
+                if (!tmp->pNextProcess->isEnd())
+                {
+                    this->addProcess(tmp->pNextProcess);
+                }
+                tmp->pNextProcess = NULL;
+            }
+        }
+    }
+    
     void HGProcessManager::update()
     {
         for (ProcessList::iterator it = addProcessList.begin(); it != addProcessList.end(); ++it)
@@ -307,30 +339,7 @@ namespace hg
         addProcessList.clear();
         for (ProcessList::iterator it = processList.begin(); it != processList.end(); ++it)
         {
-            HGProcess* tmp = *it;
-            if (tmp->isIntercepted)
-            {
-                // 中断された場合、nextも中断
-                delProcessList.push_back(tmp);
-                continue;
-            }
-            tmp->update();
-            if (tmp->isEnd())
-            {
-#if IS_PROCESS_DEBUG
-                HDebug(@"Process Ended: %s", tmp->getName().c_str());
-#endif
-                tmp->end();
-                delProcessList.push_back(tmp);
-                if (tmp->pNextProcess)
-                {
-#if IS_PROCESS_DEBUG
-                    HDebug(@"Next Process Found : %s", tmp->pNextProcess->getName().c_str());
-#endif
-                    this->addProcess(tmp->pNextProcess);
-                    tmp->pNextProcess = NULL;
-                }
-            }
+            this->exec(*it);
         }
         for (ProcessList::iterator it = delProcessList.begin(); it != delProcessList.end(); ++it)
         {
