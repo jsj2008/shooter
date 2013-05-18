@@ -76,6 +76,10 @@ namespace hg {
                         default:
                             break;
                     }
+                    if (pTarget)
+                    {
+                        pTarget->retain();
+                    }
                 }
                 else
                 {
