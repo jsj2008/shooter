@@ -32,6 +32,8 @@ namespace hg {
     typedef std::list<Weapon*> WeaponList;
     class Fighter : public Actor
     {
+        const int LIFE_BAR_WIDTH = PXL2REAL(260);
+        const int LIFE_BAR_HEIGHT = PXL2REAL(70);
     public:
         typedef Actor base;
         
@@ -45,10 +47,16 @@ namespace hg {
         life(0),
         lifeMax(0),
         processOwner(NULL),
+        pLifeColorNode(NULL),
+        pShieldNode(NULL),
+        pShieldColorNode(NULL),
+        pShieldBackColorNode(NULL),
         side(SideTypeEnemy),
         isInitialized(false),
         isShip(false),
-        explodeProcessCount(0)
+        _isPlayer(false),
+        explodeProcessCount(0),
+        shieldHeal(0)
         {
         }
         
@@ -61,17 +69,32 @@ namespace hg {
             weaponList.clear();
             pSprite->release();
             processOwner->release();
+            if (pLifeColorNode)
+            {
+                pLifeColorNode->release();
+            }
+            if (pShieldNode)
+            {
+                pShieldNode->release();
+            }
+            if (pShieldColorNode)
+            {
+                pShieldColorNode->release();
+            }
+            if (pShieldBackColorNode)
+            {
+                pShieldBackColorNode->release();
+            }
         }
         inline void setActive(bool isActive)
         {
             base::setActive(isActive);
         }
-        
-        inline void init(HGNode* layerParent, SideType side, FighterType type)
+        inline void init(HGNode* layerParent, SideType side, FighterInfo info)
         {
             base::init(layerParent);
             this->side = side;
-            this->type = type;
+            this->type = info.fighterType;
             processOwner = new HGProcessOwner();
             processOwner->retain();
             
@@ -85,10 +108,13 @@ namespace hg {
                     textureSrcSize = {16, 16};
                     setSizeByPixel(128, 128);
                     setCollisionId(CollisionId_P_ROBO1);
-                    speed = v(0.6);
-                    life = lifeMax = 5500;
+                    
+                    life = lifeMax = 1000;
+                    shield = shieldMax = 0;
+                    speed = 0.1;
+                    
                     Weapon* wp = new Weapon();
-                    wp->init(WeaponTypeNormal, BulletTypeNormal, 0, 0);
+                    wp->init(WeaponTypeNormal, BulletTypeMagic, 0, 0);
                     weaponList.push_back(wp);
                     wp->retain();
                     break;
@@ -100,15 +126,11 @@ namespace hg {
                     textureSrcSize = {64, 64};
                     setSizeByPixel(256, 256);
                     setCollisionId(CollisionId_E_ROBO2);
-                    speed = v(0.3);
-                    if (side == SideTypeFriend)
-                    {
-                    life = lifeMax = 2150;
-                    }
-                    else
-                    {
-                    life = lifeMax = 1150;
-                    }
+                    
+                    life = lifeMax = 1000;
+                    shield = shieldMax = 0;
+                    speed = 0.13;
+                    
                     Weapon* wp = new Weapon();
                     wp->init(WeaponTypeNormal, BulletTypeNormal, 0, 0);
                     weaponList.push_back(wp);
@@ -123,8 +145,11 @@ namespace hg {
                     textureSrcSize = {204, 78};
                     setSizeByPixel(204*sizeRatio, 78*sizeRatio);
                     setCollisionId(CollisionId_E_SENKAN);
-                    speed = v(0.1);
-                    life = lifeMax = 5000;
+                    
+                    life = lifeMax = 1000;
+                    shield = shieldMax = 0;
+                    speed = 0.13;
+                    shieldHeal = 1.5;
                     
                     {
                         Weapon* wp = new Weapon();
@@ -160,7 +185,7 @@ namespace hg {
                     {
                         Weapon* wp = new Weapon();
                         wp->init(WeaponTypeNormal, BulletTypeVulcan, 90*sizeRatio, 0);
-                        wp->setInterval(0.1);
+                        wp->setInterval(0.6);
                         weaponList.push_back(wp);
                         wp->retain();
                     }
@@ -172,13 +197,111 @@ namespace hg {
                     assert(0);
             }
             
+            if (side == SideTypeFriend)
+            {
+                life      = info.life;
+                lifeMax   = info.lifeMax;
+                shield    = info.shield;
+                shieldMax = info.shieldMax;
+                shieldHeal = info.shieldHeal;
+                speed     = v(info.speed);
+            }
+            
             pSprite = new HGSprite();
             pSprite->setType(SPRITE_TYPE_BILLBOARD);
             pSprite->init(textureName);
-            pSprite->setScale(getWidth(), getHeight());
+            pSprite->setScale(0, getHeight());
             pSprite->setTextureRect(textureSrcOffset.x, textureSrcOffset.y, textureSrcSize.width, textureSrcSize.height);
             pSprite->retain();
             getNode()->addChild(pSprite);
+            
+            {
+                // サイズ変更
+                HGProcessOwner* po = new HGProcessOwner();
+                ChangeScaleProcess* csp = new ChangeScaleProcess();
+                csp->init(po, pSprite, getWidth(), getHeight(), f(30));
+                csp->setEaseFunc(&ease_out);
+                HGProcessManager::sharedProcessManager()->addProcess(csp);
+            }
+            
+            // life
+            if (side == SideTypeFriend)
+            {
+                // back
+                ColorNode* pColorNode = new ColorNode();
+                pColorNode->init((Color){1,0,0,1}, LIFE_BAR_WIDTH, LIFE_BAR_HEIGHT);
+                pColorNode->setType(SPRITE_TYPE_BILLBOARD);
+                pColorNode->setPosition(0, -1 * getHeight()/2);
+                getNode()->addChild(pColorNode);
+                
+                // bar
+                pLifeColorNode = new ColorNode();
+                pLifeColorNode->init((Color){0,1,0,1}, LIFE_BAR_WIDTH, LIFE_BAR_HEIGHT);
+                pLifeColorNode->setType(SPRITE_TYPE_BILLBOARD);
+                pLifeColorNode->setPosition(0, -1 * getHeight()/2);
+                pLifeColorNode->retain();
+                getNode()->addChild(pLifeColorNode);
+            }
+            
+            {
+                if (shield > 0)
+                {
+                    // シールド
+                    pShieldNode = new AlphaMapSprite();
+                    if (side == SideTypeFriend)
+                    {
+                        pShieldNode->init("tunelring.png", (Color){0.5, 0.5, 1, 1.0});
+                        pShieldNode->setScale(getWidth()+PXL2REAL(250), getHeight()+PXL2REAL(250));
+                        pShieldNode->retain();
+                        getNode()->addChild(pShieldNode);
+                        {
+                            // 色変更
+                            HGProcessOwner* po = new HGProcessOwner();
+                            ChangeSpriteColorProcess* cscp = new ChangeSpriteColorProcess();
+                            Color c = {0.1, 0.1, 0.5, 0.7};
+                            cscp->init(po, pShieldNode, c, f(50));
+                            HGProcessManager::sharedProcessManager()->addProcess(cscp);
+                        }
+                    }
+                    else
+                    {
+                        pShieldNode->init("tunelring.png", (Color){1.0, 0.25, 0.25, 1.0});
+                        pShieldNode->setScale(getWidth()+PXL2REAL(250), getHeight()+PXL2REAL(250));
+                        pShieldNode->retain();
+                        getNode()->addChild(pShieldNode);
+                        {
+                            // 色変更
+                            HGProcessOwner* po = new HGProcessOwner();
+                            ChangeSpriteColorProcess* cscp = new ChangeSpriteColorProcess();
+                            Color c = {0.5, 0.2, 0.2, 0.7};
+                            cscp->init(po, pShieldNode, c, f(50));
+                            HGProcessManager::sharedProcessManager()->addProcess(cscp);
+                        }
+                    }
+                    
+                    // シールドゲージ
+                    if (side == SideTypeFriend)
+                    {
+                        // back
+                        pShieldBackColorNode = new ColorNode();
+                        pShieldBackColorNode->init((Color){1.0,0,0,1}, LIFE_BAR_WIDTH, LIFE_BAR_HEIGHT);
+                        pShieldBackColorNode->setType(SPRITE_TYPE_BILLBOARD);
+                        pShieldBackColorNode->setPosition(0, -1 * getHeight()/2 + LIFE_BAR_HEIGHT*4);
+                        pShieldBackColorNode->retain();
+                        getNode()->addChild(pShieldBackColorNode);
+                        
+                        // bar
+                        pShieldColorNode = new ColorNode();
+                        pShieldColorNode->init((Color){0.3,0.3,1,1}, LIFE_BAR_WIDTH, LIFE_BAR_HEIGHT);
+                        pShieldColorNode->setType(SPRITE_TYPE_BILLBOARD);
+                        pShieldColorNode->setPosition(0, -1 * getHeight()/2 + LIFE_BAR_HEIGHT*4);
+                        pShieldColorNode->retain();
+                        getNode()->addChild(pShieldColorNode);
+                    }
+                    
+                }
+                
+            }
             
             setAspectDegree(0);
             
@@ -235,15 +358,129 @@ namespace hg {
         {
             return life;
         }
-        
+        inline void setPlayer()
+        {
+            _isPlayer = true;
+        }
+        inline bool isPlayer()
+        {
+            return _isPlayer;
+        }
         inline void setLife(int life)
         {
             this->life = life;
+            updateLifeBar();
         }
         
         inline void addLife(int life)
         {
-            this->life += life;
+            if (this->life <= 0)
+            {
+                return;
+            }
+            if (life == 0)
+            {
+                return;
+            }
+            if (life < 0 && hasShield())
+            {
+                shield += life;
+                if (shield <= 0)
+                {
+                    shield = 0;
+                    if (pShieldNode)
+                    {
+                        pShieldNode->removeFromParent();
+                        pShieldNode->release();
+                        pShieldNode = NULL;
+                    }
+                    
+                    if (pShieldColorNode)
+                    {
+                        pShieldColorNode->removeFromParent();
+                        pShieldColorNode->release();
+                        pShieldColorNode = NULL;
+                    }
+                    
+                    if (pShieldBackColorNode)
+                    {
+                        pShieldBackColorNode->removeFromParent();
+                        pShieldBackColorNode->release();
+                        pShieldBackColorNode = NULL;
+                    }
+                }
+                else
+                {
+                    updateShieldBar();
+                }
+            }
+            else
+            {
+                this->life += life;
+                updateLifeBar();
+            }
+        }
+        
+        // 毎フレーム呼び出される
+        inline void tick()
+        {
+            if (isActive())
+            {
+                if (hasShield())
+                {
+                    double now = getNowTime();
+                    if (now - lastTimeShieldHeal >= 1)
+                    {
+                        healShield();
+                        lastTimeShieldHeal = now;
+                    }
+                }
+                
+                // 軌跡
+                /*
+                if (!isShip && rand(0, 100) <= 30)
+                {
+                    AlphaMapSprite* pSpr = new AlphaMapSprite();
+                    pSpr->init("sparkle.png", (Color){0.9, 0.9, 1.0, 1.0});
+                    pSpr->setPosition(rand(getPositionX() - getWidth()/2, getPositionX() + getWidth()/2),
+                                      rand(getPositionY() - getHeight()/2, getPositionY() + getHeight()/2));
+                    pSpr->setScale(0, 0);
+                    pSpr->setRotateZ(rand(0, 359) * M_PI/180);
+                    pLayerEffect->addChild(pSpr);
+                    {
+                        // 回転
+                        HGProcessOwner* po = new HGProcessOwner();
+                        RotateNodeProcess* rnp = new RotateNodeProcess();
+                        Vector r = Vector(0,0,-1300);
+                        rnp->init(po, pSpr, r, f(40));
+                        rnp->setEaseFunc(&ease_out);
+                        HGProcessManager::sharedProcessManager()->addProcess(rnp);
+                    }
+                    {
+                        float size = rand(PXL2REAL(250), PXL2REAL(650));
+                        // 拡大
+                        HGProcessOwner* po = new HGProcessOwner();
+                        ChangeScaleProcess* ssp = new ChangeScaleProcess();
+                        ssp->init(po, pSpr, size, size, f(10));
+                        ssp->setEaseFunc(&ease_out);
+                        
+                        // 縮小
+                        ChangeScaleProcess* ssp2 = new ChangeScaleProcess();
+                        ssp2->init(po, pSpr, 0, 0, f(25));
+                        ssp2->setEaseFunc(&ease_in);
+                        ssp->setNext(ssp2);
+                        
+                        // 削除
+                        NodeRemoveProcess* nrp = new NodeRemoveProcess();
+                        nrp->init(po, pSpr);
+                        ssp2->setNext(nrp);
+                        
+                        // プロセス開始
+                        HGProcessManager::sharedProcessManager()->addProcess(ssp);
+                    }
+                
+                }*/
+            }
         }
         
         inline void setMaxLife(int life)
@@ -358,7 +595,54 @@ namespace hg {
         {
             return speed;
         }
+        
+        inline bool hasShield()
+        {
+            return shield > 0;
+        }
+        
+        inline HGRect getShieldRect()
+        {
+            assert(hasShield());
+            HGRect r = {this->getPositionX() - this->getWidth()/2 - SHILD_SIZE_GAP, this->getPositionY() - SHILD_SIZE_GAP,
+                       this->getWidth() + SHILD_SIZE_GAP, this->getHeight() + SHILD_SIZE_GAP};
+            return r;
+        }
+        
     private:
+        inline void updateLifeBar()
+        {
+            if (side == SideTypeFriend)
+            {
+                float ratio = (float)life/(float)lifeMax;
+                float w = (LIFE_BAR_WIDTH * ratio);
+                pLifeColorNode->setScaleX(w);
+                pLifeColorNode->setPositionX(LIFE_BAR_WIDTH/2.0*-1.0 + w/2.0);
+            }
+        }
+        
+        inline void updateShieldBar()
+        {
+            if (side == SideTypeFriend)
+            {
+                float ratio = (float)shield/(float)shieldMax;
+                float w = (LIFE_BAR_WIDTH * ratio);
+                pShieldColorNode->setScaleX(w);
+                pShieldColorNode->setPositionX(LIFE_BAR_WIDTH/2.0*-1.0 + w/2.0);
+            }
+        }
+        
+        inline void healShield()
+        {
+            assert(hasShield());
+            shield += shieldHeal;
+            if (shield > shieldMax)
+            {
+                shield = shieldMax;
+                updateShieldBar();
+            }
+        }
+        
         float speed;
         float aspectDegree;
         int life;
@@ -368,13 +652,21 @@ namespace hg {
         std::string textureName;
         WeaponList weaponList;
         HGSprite* pSprite;
+        AlphaMapSprite* pShieldNode;
+        ColorNode* pLifeColorNode;
+        ColorNode* pShieldColorNode;
+        ColorNode* pShieldBackColorNode;
         SideType side;
-        FighterType type;
+        int type;
         HGProcessOwner* processOwner;
         bool isInitialized;
         bool isShip;
         int explodeProcessCount;
-        
+        float shield;
+        float shieldMax;
+        float shieldHeal;
+        double lastTimeShieldHeal = 0;
+        bool _isPlayer;
         int getSpriteIndex(int i)
         {
             while (i < 0)

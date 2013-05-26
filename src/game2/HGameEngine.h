@@ -40,7 +40,18 @@ namespace hg
     
     ////////////////////
     // 便利関数
-    int f(float frame);
+    
+    // イージングの計算
+    // t : 現在時間(フレーム数等)
+    // b : 開始の値
+    // c : 開始の値
+    // d : 全体の時間
+    float ease_linear(float t, float b, float c, float d);
+    float ease_in(float t, float b, float c, float d);
+    float ease_out(float t, float b, float c, float d);
+    float ease_in_out(float t, float b, float c, float d);
+    
+    int f(int frame);
     float v(float vec);
     int rand(int from, int to);
     float toDeg(float radian);
@@ -169,6 +180,10 @@ namespace hg
         void suspend();
         void resume();
         virtual ~HGState(){}
+        inline int getFrameCount()
+        {
+            return frameCount;
+        }
     private:
         int frameCount;
         bool isInitialUpdate;
@@ -230,7 +245,8 @@ namespace hg
         _isEnd(false),
         _isIntercepted(false),
         _isInitialUpdate(true),
-        _isInitialized(false)
+        _isInitialized(false),
+        waitFrame(0)
         {
         };
         inline virtual void init(HGProcessOwner* pOwner)
@@ -240,11 +256,24 @@ namespace hg
             _isInitialized = true;
         }
         void setNext(HGProcess* nextPtr);
+        inline void setWaitFrame(int frame)
+        {
+            this->waitFrame = frame;
+        }
     protected:
         virtual void onEnd(){}
         virtual void onUpdate(){}
         virtual void onIntercept(){}
         virtual std::string getName();
+        inline bool isWait()
+        {
+            if (this->waitFrame > 0)
+            {
+                this->waitFrame--;
+                return true;
+            }
+            return false;
+        }
         inline void setEnd()
         {
             this->_isEnd = true;
@@ -274,6 +303,7 @@ namespace hg
         bool _isInitialized;
         HGProcessOwner* pOwner;
         HGProcess* pNextProcess;
+        int waitFrame;
         inline void removeNextProcess()
         {
             pNextProcess->release();
@@ -374,6 +404,7 @@ namespace hg
         {
             for (Children::iterator itr = children.begin(); itr != children.end(); itr++)
             {
+                (*itr)->setParent(NULL);
                 (*itr)->release();
             }
             children.clear();
@@ -381,7 +412,9 @@ namespace hg
         
         inline void removeChild(HGNode* node)
         {
+            node->setParent(NULL);
             children.remove(node);
+            node->removedFromParent(this);
             node->release();
         }
         
@@ -398,21 +431,40 @@ namespace hg
             node->retain();
             children.push_back(node);
             node->setParent(this);
+            node->addedToParent(this);
+        }
+        
+        virtual inline void addedToParent(HGNode* parent)
+        {
+            
+        }
+        
+        virtual inline void removedFromParent(HGNode* parent)
+        {
+            
         }
         
         inline void setParent(HGNode* node)
         {
-            if (parent != NULL)
-            {
-                parent->release();
-            }
-            //node->retain(); 相互参照になってしまふ
             parent = node;
         }
-        
+        inline bool hasParent()
+        {
+            return (parent != NULL);
+        }
         inline void setScale(float scaleX, float scaleY)
         {
             this->scale.x = scaleX;
+            this->scale.y = scaleY;
+        }
+        
+        inline void setScaleX(float scaleX)
+        {
+            this->scale.x = scaleX;
+        }
+        
+        inline void setScaleY(float scaleY)
+        {
             this->scale.y = scaleY;
         }
         
@@ -433,6 +485,18 @@ namespace hg
         inline void setRotate(float x, float y, float z)
         {
             this->rotate.set(x, y, z);
+        }
+        inline float getRotateX()
+        {
+            return this->rotate.x;
+        }
+        inline float getRotateY()
+        {
+            return this->rotate.y;
+        }
+        inline float getRotateZ()
+        {
+            return this->rotate.z;
         }
         
         inline void draw(Vector& parentPosition, Vector& parentScale, Vector& parentRotate)
@@ -455,7 +519,6 @@ namespace hg
             {
                 (*itr)->draw(worldPosition, worldScale, WorldRotate);
             }
-            
         }
         
         inline void addPosition(float x, float y)
@@ -524,6 +587,43 @@ namespace hg
         Children children;
     };
     
+    class LayerNode : public HGNode
+    {
+    public:
+        LayerNode():
+        _cameraPosition(0,0,0),
+        _cameraRotate(0,0,0)
+        {
+            
+        }
+        void init()
+        {
+            
+        }
+        void setCameraPosition(float x, float y, float z)
+        {
+            _cameraPosition.x = x;
+            _cameraPosition.y = y;
+            _cameraPosition.z = z;
+        }
+        void setCameraRotate(float x, float y, float z)
+        {
+            _cameraRotate.x = x;
+            _cameraRotate.y = y;
+            _cameraRotate.z = z;
+        }
+    protected:
+        inline void render()
+        {
+            hgles::currentContext->cameraPosition = _cameraPosition;
+            hgles::currentContext->cameraRotate = _cameraRotate;
+            hgles::HGLES::updateCameraMatrix();
+        }
+    private:
+        Vector _cameraPosition;
+        Vector _cameraRotate;
+    };
+    
     ////////////////////
     // スプライト
     typedef enum SpriteType
@@ -551,7 +651,7 @@ namespace hg
         isAlphaMap(0)
         {
         };
-        inline void init(std::string textureName)
+        inline virtual void init(std::string textureName)
         {
             this->textureName = textureName;
             isTextureInitialized = false;
@@ -598,7 +698,10 @@ namespace hg
             isAlphaMap = p?1:0;
             isPropertyChanged = true;
         }
-        
+        inline Color getColor()
+        {
+            return this->color;
+        }
     protected:
         inline void render()
         {
@@ -647,6 +750,61 @@ namespace hg
         HGSize textureSize;
         hgles::Color color;
         hgles::Color blendColor;
+    };
+    
+    class AlphaMapSprite : public HGSprite
+    {
+        typedef HGSprite base;
+    public:
+        AlphaMapSprite():
+        base()
+        {}
+        
+        inline void init(std::string textureName, Color c)
+        {
+            setType(SPRITE_TYPE_BILLBOARD);
+            base::init(textureName);
+            this->setColor(c);
+            this->shouldRenderAsAlphaMap(true);
+            this->setBlendFunc(GL_SRC_ALPHA, GL_ONE);
+        }
+        
+    };
+    
+    class ColorNode : public HGSprite
+    {
+        typedef HGSprite base;
+    public:
+        ColorNode():
+        base()
+        {}
+        
+        inline void init(Color color, float scaleWidth, float scaleHeight)
+        {
+            base::init("square.png");
+            this->setblendcolor(color);
+            this->setScale(scaleWidth, scaleHeight);
+        }
+    };
+    
+    
+    class AlphaColorNode : public HGSprite
+    {
+        typedef HGSprite base;
+    public:
+        AlphaColorNode():
+        base()
+        {}
+        
+        inline void init(Color color, float scaleWidth, float scaleHeight)
+        {
+            base::init("square.png");
+            this->setColor(color);
+            this->shouldRenderAsAlphaMap(true);
+            this->setBlendFunc(GL_SRC_ALPHA, GL_ONE);
+            this->setScale(scaleWidth, scaleHeight);
+        }
+        
     };
     
     ////////////////////
@@ -700,23 +858,25 @@ namespace hg
         Vector rootRotate;
     };
     
-    HGSprite* CreateAlphaMapSprite(std::string texture, Color color);
-    
     // process
-    class SpriteScaleProcess : public HGProcess
+    class ChangeScaleProcess : public HGProcess
     {
     public:
         typedef HGProcess base;
-        SpriteScaleProcess() :
+        ChangeScaleProcess() :
         base(),
         pSpr(NULL)
         {
         };
-        ~SpriteScaleProcess()
+        ~ChangeScaleProcess()
         {
             pSpr->release();
         }
-        void init(HGProcessOwner* pProcOwner, HGSprite* pSpr, float toScaleX, float toScaleY, float frame)
+        void setEaseFunc(float (*pEaseFunc)(float t, float b, float c, float d))
+        {
+            this->pEaseFunc = pEaseFunc;
+        }
+        void init(HGProcessOwner* pProcOwner, HGNode* pSpr, float toScaleX, float toScaleY, float frame)
         {
             assert(pSpr != NULL);
             base::init(pProcOwner);
@@ -725,6 +885,7 @@ namespace hg
             this->frame = frame;
             this->toScaleX = toScaleX;
             this->toScaleY = toScaleY;
+            pEaseFunc = &ease_linear;
         }
     protected:
         void onUpdate()
@@ -733,8 +894,6 @@ namespace hg
             {
                 this->fromScaleX = pSpr->getScaleX();
                 this->fromScaleY = pSpr->getScaleY();
-                this->diffScaleX = (toScaleX - fromScaleX)/frame;
-                this->diffScaleY = (toScaleY - fromScaleY)/frame;
             }
             if (frame <= getFrameCount())
             {
@@ -743,22 +902,241 @@ namespace hg
             }
             else
             {
-                pSpr->setScale(pSpr->getScaleX() + diffScaleX, pSpr->getScaleY() + diffScaleY);
+                float x = pEaseFunc(getFrameCount(), fromScaleX, toScaleX, frame);
+                float y = pEaseFunc(getFrameCount(), fromScaleY, toScaleY, frame);
+                pSpr->setScale(x, y);
             }
         }
         std::string getName()
         {
-            return "SpriteScaleProcess";
+            return "ChangeScaleProcess";
         }
     private:
-        HGSprite* pSpr;
+        HGNode* pSpr;
         float frame = 0;
         float toScaleX = 1;
         float toScaleY = 1;
         float fromScaleX = 0;
         float fromScaleY = 0;
-        float diffScaleX = 0;
-        float diffScaleY = 0;
+        float (*pEaseFunc)(float t, float b, float c, float d);
+    };
+    
+    // process
+    class RotateNodeProcess : public HGProcess
+    {
+    public:
+        typedef HGProcess base;
+        RotateNodeProcess() :
+        base(),
+        pSpr(NULL)
+        {
+        };
+        ~RotateNodeProcess()
+        {
+            pSpr->release();
+        }
+        void setEaseFunc(float (*pEaseFunc)(float t, float b, float c, float d))
+        {
+            this->pEaseFunc = pEaseFunc;
+        }
+        void init(HGProcessOwner* pProcOwner, HGNode* pSpr, Vector toRatate, float frame)
+        {
+            assert(pSpr != NULL);
+            base::init(pProcOwner);
+            pEaseFunc = &ease_linear;
+            this->pSpr = pSpr;
+            this->pSpr->retain();
+            this->frame = frame;
+            this->toRotate = toRotate;
+            this->fromRotate.x = pSpr->getRotateX();
+            this->fromRotate.y = pSpr->getRotateY();
+            this->fromRotate.z = pSpr->getRotateZ();
+        }
+    protected:
+        void onUpdate()
+        {
+            if (frame <= getFrameCount())
+            {
+                pSpr->setRotate(toRotate.x, toRotate.y, toRotate.z);
+                setEnd();
+            }
+            else
+            {
+                float x = pEaseFunc(getFrameCount(), fromRotate.x, toRotate.x, frame);
+                float y = pEaseFunc(getFrameCount(), fromRotate.y, toRotate.y, frame);
+                float z = pEaseFunc(getFrameCount(), fromRotate.z, toRotate.z, frame);
+                pSpr->setRotate(x, y, z);
+            }
+        }
+        std::string getName()
+        {
+            return "RotateNodeProcess";
+        }
+    private:
+        HGNode* pSpr;
+        float frame = 0;
+        Vector toRotate;
+        Vector fromRotate;
+        float (*pEaseFunc)(float t, float b, float c, float d);
+    };
+    
+    // process
+    class ChangeSpriteColorProcess : public HGProcess
+    {
+    public:
+        typedef HGProcess base;
+        ChangeSpriteColorProcess() :
+        base(),
+        pSpr(NULL)
+        {
+        };
+        ~ChangeSpriteColorProcess()
+        {
+            pSpr->release();
+        }
+        void setEaseFunc(float (*pEaseFunc)(float t, float b, float c, float d))
+        {
+            this->pEaseFunc = pEaseFunc;
+        }
+        void init(HGProcessOwner* pProcOwner, HGSprite* pSpr, Color toColor, float frame)
+        {
+            assert(pSpr != NULL);
+            base::init(pProcOwner);
+            pEaseFunc = &ease_linear;
+            this->pSpr = pSpr;
+            this->pSpr->retain();
+            this->frame = frame;
+            this->toColor = toColor;
+            this->fromColor = pSpr->getColor();
+        }
+    protected:
+        void onUpdate()
+        {
+            if (!pSpr->hasParent())
+            {
+                setEnd();
+                return;
+            }
+            Color fc;
+            Color tc;
+            if (flag == 0)
+            {
+                fc = fromColor;
+                tc = toColor;
+            }
+            else
+            {
+                tc = fromColor;
+                fc = toColor;
+            }
+            if (frame <= frameCount)
+            {
+                pSpr->setColor(tc);
+                flag = flag == 1?0:1;
+                frameCount = 0;
+            }
+            else
+            {
+                float r = pEaseFunc(frameCount, fc.r, tc.r, frame);
+                float g = pEaseFunc(frameCount, fc.g, tc.g, frame);
+                float b = pEaseFunc(frameCount, fc.b, tc.b, frame);
+                float a = pEaseFunc(frameCount, fc.a, tc.a, frame);
+                pSpr->setColor((Color){r, g, b, a});
+            }
+            frameCount++;
+        }
+        std::string getName()
+        {
+            return "RotateNodeProcess";
+        }
+    private:
+        HGSprite* pSpr;
+        float frame = 0;
+        int frameCount = 0;
+        Color toColor;
+        Color fromColor;
+        float (*pEaseFunc)(float t, float b, float c, float d);
+        int flag = 0;
+    };
+    
+    
+    // process
+    class ChangeSpriteBlendColorProcess : public HGProcess
+    {
+    public:
+        typedef HGProcess base;
+        ChangeSpriteBlendColorProcess() :
+        base(),
+        pSpr(NULL)
+        {
+        };
+        ~ChangeSpriteBlendColorProcess()
+        {
+            pSpr->release();
+        }
+        void setEaseFunc(float (*pEaseFunc)(float t, float b, float c, float d))
+        {
+            this->pEaseFunc = pEaseFunc;
+        }
+        void init(HGProcessOwner* pProcOwner, HGSprite* pSpr, Color toColor, float frame)
+        {
+            assert(pSpr != NULL);
+            base::init(pProcOwner);
+            pEaseFunc = &ease_linear;
+            this->pSpr = pSpr;
+            this->pSpr->retain();
+            this->frame = frame;
+            this->toColor = toColor;
+            this->fromColor = pSpr->getColor();
+        }
+    protected:
+        void onUpdate()
+        {
+            if (!pSpr->hasParent())
+            {
+                setEnd();
+                return;
+            }
+            Color fc;
+            Color tc;
+            if (flag == 0)
+            {
+                fc = fromColor;
+                tc = toColor;
+            }
+            else
+            {
+                tc = fromColor;
+                fc = toColor;
+            }
+            if (frame <= frameCount)
+            {
+                pSpr->setblendcolor(tc);
+                flag = flag == 1?0:1;
+                frameCount = 0;
+            }
+            else
+            {
+                float r = pEaseFunc(frameCount, fc.r, tc.r, frame);
+                float g = pEaseFunc(frameCount, fc.g, tc.g, frame);
+                float b = pEaseFunc(frameCount, fc.b, tc.b, frame);
+                float a = pEaseFunc(frameCount, fc.a, tc.a, frame);
+                pSpr->setblendcolor((Color){r, g, b, a});
+            }
+            frameCount++;
+        }
+        std::string getName()
+        {
+            return "RotateNodeProcess";
+        }
+    private:
+        HGSprite* pSpr;
+        float frame = 0;
+        int frameCount = 0;
+        Color toColor;
+        Color fromColor;
+        float (*pEaseFunc)(float t, float b, float c, float d);
+        int flag = 0;
     };
     
     // process
@@ -775,10 +1153,15 @@ namespace hg
         {
             pSpr->release();
         }
+        void setEaseFunc(float (*pEaseFunc)(float t, float b, float c, float d))
+        {
+            this->pEaseFunc = pEaseFunc;
+        }
         void init(HGProcessOwner* pProcOwner, HGSprite* pSpr, float toOpacity, float frame)
         {
             assert(pSpr != NULL);
             base::init(pProcOwner);
+            pEaseFunc = &ease_linear;
             this->pSpr = pSpr;
             this->pSpr->retain();
             this->frame = frame;
@@ -790,7 +1173,6 @@ namespace hg
             if (getFrameCount() == 0)
             {
                 this->fromOpacity = pSpr->getOpacity();
-                this->diffOpacity = (toOpacity - fromOpacity)/frame;
             }
             if (frame <= getFrameCount())
             {
@@ -799,7 +1181,8 @@ namespace hg
             }
             else
             {
-                pSpr->setOpacity(pSpr->getOpacity() + diffOpacity);
+                float o = pEaseFunc(getFrameCount(), fromOpacity, toOpacity, frame);
+                pSpr->setOpacity(o);
             }
         }
         std::string getName()
@@ -811,7 +1194,7 @@ namespace hg
         float frame = 0;
         float toOpacity = 1;
         float fromOpacity = 1;
-        float diffOpacity = 1;
+        float (*pEaseFunc)(float t, float b, float c, float d);
     };
     
     class NodeRemoveProcess : public HGProcess
@@ -880,6 +1263,150 @@ namespace hg
     private:
         float frame;
     };
+    
+    class HGText: public HGNode
+    {
+        typedef HGNode base;
+    public:
+        HGText():
+        HGNode(),
+        textureSize(0,0),
+        isTextureInitialized(false),
+        text(""),
+        textureRect(0,0,0,0),
+        isTextureRectChanged(false),
+        isPropertyChanged(false),
+        blend1(GL_SRC_ALPHA),
+        blend2(GL_ONE_MINUS_SRC_ALPHA),
+        type(SPRITE_TYPE_BILLBOARD),
+        color({1,1,1,1}),
+        blendColor({1,1,1,1}),
+        isAlphaMap(0)
+        {
+        };
+        inline ~HGText()
+        {
+            texture->deleteTexture();
+            delete texture;
+        }
+        inline virtual void initWithString(std::string text)
+        {
+            this->text = text;
+            isTextureInitialized = false;
+        }
+        inline virtual void initWithString(std::string text, Color fontColor)
+        {
+            this->fontColor = fontColor;
+            this->initWithString(text);
+        }
+        inline void setTextureRect(float x, float y, float w, float h)
+        {
+            textureRect.point.x = x;
+            textureRect.point.y = y;
+            textureRect.size.width = w;
+            textureRect.size.height = h;
+            isTextureRectChanged = true;
+        }
+        inline void setScaleByTextSize(float scale)
+        {
+            this->scale = scale;
+        }
+        inline void setBlendFunc(int a, int b)
+        {
+            blend1 = a;
+            blend2 = b;
+            isPropertyChanged = true;
+        }
+        inline void setblendcolor(hgles::Color c)
+        {
+            blendColor = c;
+            isPropertyChanged = true;
+        }
+        inline void setColor(hgles::Color c)
+        {
+            color = c;
+            isPropertyChanged = true;
+        }
+        inline void setOpacity(float a)
+        {
+            color.a = a;
+            isPropertyChanged = true;
+        }
+        inline float& getOpacity()
+        {
+            return color.a;
+        }
+        inline void setType(SpriteType t)
+        {
+            type = t;
+        }
+        inline void shouldRenderAsAlphaMap(bool p)
+        {
+            isAlphaMap = p?1:0;
+            isPropertyChanged = true;
+        }
+        inline Color getColor()
+        {
+            return this->color;
+        }
+    protected:
+        inline void render()
+        {
+            assert(this->getRefCount() > 0);
+            if (!isTextureInitialized)
+            {
+                texture = hgles::HGLTexture::createTextureWithString(this->text, fontColor);
+                isTextureInitialized = true;
+                float w = texture->width;
+                float h = texture->height;
+                float scaleX = w*scale/h;
+                this->setScale(scaleX, scale);
+                return;
+            }
+            worldPosition.x += (worldScale.x)/2;
+            if (isTextureRectChanged)
+            {
+                texture->setTextureArea(textureRect.point.x, textureRect.point.y, textureRect.size.width, textureRect.size.height);
+                isTextureRectChanged = false;
+            }
+            if (isPropertyChanged)
+            {
+                isPropertyChanged = false;
+                texture->setBlendFunc(blend1, blend2);
+                texture->color = color;
+                texture->blendColor = blendColor;
+                texture->isAlphaMap = isAlphaMap;
+            }
+            switch (type)
+            {
+                case SPRITE_TYPE_BILLBOARD:
+                    hgles::HGLGraphics2D::draw(&worldPosition, &worldScale, &WorldRotate,  texture);
+                    break;
+                case SPRITE_TYPE_NORMAL:
+                    hgles::HGLGraphics2D::drawLike3d(&worldPosition, &worldScale, &WorldRotate,  texture);
+                    break;
+            }
+        }
+        
+        
+    private:
+        SpriteType type;
+        bool isPropertyChanged;
+        bool isTextureRectChanged;
+        bool isTextureInitialized;
+        int blend1;
+        int blend2;
+        int isAlphaMap;
+        HGRect textureRect;
+        hgles::HGLTexture* texture;
+        std::string text;
+        HGSize textureSize;
+        hgles::Color color;
+        hgles::Color blendColor;
+        float scale = 0;
+        Color fontColor = {1,1,1,1};
+    };
+    
     
 }
 #endif

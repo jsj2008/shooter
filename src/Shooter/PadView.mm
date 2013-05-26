@@ -23,12 +23,12 @@
     self = [super initWithFrame:frame];
     if (self)
     {
-        [self setAlpha:0.5];
+        [self setAlpha:0.4];
         [self setBackgroundColor:[UIColor clearColor]];
         _onTouch = [onTouch copy];
         _center.x = frame.size.width/2;
         _center.y = frame.size.height/2;
-        _padRadius = frame.size.width * 0.95 / 2;
+        _padRadius = frame.size.width * 0.80 / 2;
         _padPos.x = _center.x - _padRadius; // パッドの位置
         _padPos.y = _center.y - _padRadius; // パッドの位置
         

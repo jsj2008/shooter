@@ -41,15 +41,16 @@ namespace hg {
             
         }
         
-        inline void init(WeaponType type, BulletType bulletType, float pixelX, float pixelY)
+        inline void init(int type, BulletType bulletType, float pixelX, float pixelY)
         {
             switch (type) {
                 case WeaponTypeNormal:
-                    speed = v(0.4);
+                    speed = v(0.6);
                     fireInterval = 0.2;
                     power = 100;
                     break;
                 default:
+                    assert(0);
                     break;
             }
             this->type = type;
@@ -88,14 +89,14 @@ namespace hg {
             Bullet* bp = new Bullet();
             float x = pOwner->getPositionX() + relativePosition.x;
             float y = pOwner->getPositionY() + relativePosition.y;
-            bp->init(bulletType, speed, power, pOwner, x, y, this->aspectDegree, side);
+            bp->init(bulletType, speed, 10, power, pOwner, x, y, this->aspectDegree, side);
             switch (side) {
                 case SideTypeEnemy:
                     enemyBulletList.addActor(bp);
                     break;
                 case SideTypeFriend:
                     friendBulletList.addActor(bp);
-                    break;
+                   break;
                 default:
                     assert(0);
                     break;
@@ -112,7 +113,7 @@ namespace hg {
         HGPoint relativePosition;
         double lastFireTime;
         double fireInterval;
-        WeaponType type;
+        int type;
         BulletType bulletType;
         float aspectDegree;
     };

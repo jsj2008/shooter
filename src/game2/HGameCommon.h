@@ -11,6 +11,7 @@
 
 #include "HGameEngine.h"
 #include "HActorList.h"
+#include <deque>
 
 #define IS_DEBUG_COLLISION 0
 #define ENEMY_NUM 10
@@ -22,6 +23,7 @@
 #define STAGE_SCALE 100
 #define PIXEL_SCALE 0.01
 #define PXL2REAL(var) ((var)*(PIXEL_SCALE))
+#define SHILD_SIZE_GAP (250*(PIXEL_SCALE))
 
 namespace hg {
     class HGNode;
@@ -34,6 +36,34 @@ namespace hg {
         SideTypeEnemy,
         SideTypeFriend,
     } SideType;
+    
+    typedef struct WeaponInfo
+    {
+        int bulletType;
+        int weaponType;
+        int power;
+    } WeaponInfo;
+    
+    typedef std::vector<WeaponInfo> WeaponInfoList;
+    
+    typedef struct FighterInfo
+    {
+        FighterInfo()
+        {
+        }
+        int fighterType;
+        int level;
+        int life;
+        int lifeMax;
+        int shield;
+        int shieldMax;
+        int shieldHeal;
+        float speed;
+        WeaponInfoList weaponList;
+    } FighterInfo;
+    
+    typedef std::vector<FighterInfo> SpawnGroup;
+    typedef std::deque<SpawnGroup> SpawnData;
     
     typedef struct KeyInfo
     {

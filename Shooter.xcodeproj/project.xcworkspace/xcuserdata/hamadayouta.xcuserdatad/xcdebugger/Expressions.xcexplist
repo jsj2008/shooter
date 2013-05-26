@@ -119,10 +119,10 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "HGGame::HGBullet::draw():HGBullet.mm">
+         contextName = "hg::ControlPlayerProcess::~ControlPlayerProcess():ControlPlayerProcess.h">
       </ContextState>
       <ContextState
-         contextName = "hg::ControlPlayerProcess::~ControlPlayerProcess():ControlPlayerProcess.h">
+         contextName = "HGGame::HGBullet::draw():HGBullet.mm">
       </ContextState>
       <ContextState
          contextName = "HGLObjLoader::load(NSString*):HGLObjLoader.mm">
@@ -235,13 +235,13 @@
          contextName = "IndexBuffer::IndexBuffer(unsigned char const*, int):IndexBuffer.mm">
          <PersistentStrings>
             <PersistentString
-               value = "indices[1]">
-            </PersistentString>
-            <PersistentString
                value = "sizeof(Index)">
             </PersistentString>
             <PersistentString
                value = "sizeof(Vertex)">
+            </PersistentString>
+            <PersistentString
+               value = "indices[1]">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -283,10 +283,10 @@
          contextName = "GLES::compileShaders():GLES.mm">
          <PersistentStrings>
             <PersistentString
-               value = "aPositionSlot">
+               value = "aNormalSlot">
             </PersistentString>
             <PersistentString
-               value = "aNormalSlot">
+               value = "aPositionSlot">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -455,6 +455,17 @@
       </ContextState>
       <ContextState
          contextName = "hg::CollisionManager::isIntersect(int&amp;, hgles::HGLVector3&amp;, hg::HGSize&amp;, int&amp;, hgles::HGLVector3&amp;, hg::HGSize&amp;):HCollision.h">
+      </ContextState>
+      <ContextState
+         contextName = "hg::BattleState::onUpdate():HGame.mm">
+         <PersistentStrings>
+            <PersistentString
+               value = "SpawnGroup">
+            </PersistentString>
+            <PersistentString
+               value = "spawnData">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "ObjLoader::addMeshTo(Object3D*, std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;):ObjLoader.mm">

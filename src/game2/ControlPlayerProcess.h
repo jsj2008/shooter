@@ -36,11 +36,18 @@ namespace hg {
         {
             base::init(pProcOwner);
             pFighter = inFighter;
+            pFighter->setPlayer();
             pFighter->retain();
         }
     protected:
         void onUpdate()
         {
+            if (!pFighter->isActive())
+            {
+                this->setEnd();
+                return;
+            }
+            pFighter->tick();
             if (keyInfo.power != 0 && !keyInfo.isFire)
             {
                 pFighter->setAspectDegree(keyInfo.degree);

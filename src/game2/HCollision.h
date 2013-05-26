@@ -77,6 +77,30 @@ namespace hg {
             }
             return false;
         }
+        
+        inline bool isIntersect(CollisionId& ida, Vector& posa, HGSize& sizea,
+                                HGRect& rb)
+        {
+            assert(ida != CollisionIdNone);
+            assert(ida < list.size());
+            Collision* cola = list[ida];
+            int lena = cola->size();
+            float offxa = posa.x - sizea.width/2;
+            float offya = posa.y - sizea.height/2;
+            for (int i = 0; i < lena; ++i)
+            {
+                HGRect& ra = (*cola)[i];
+                if (offxa + ra.point.x <= rb.point.x + rb.size.width
+                    && rb.point.x <= offxa + ra.point.x + ra.size.width
+                    && offya + ra.point.y <= rb.point.y + rb.size.height
+                    && rb.point.y <= offya + ra.point.y + ra.size.height)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        
         inline void addDebugMark(CollisionId ida, HGNode* node, float width, float height)
         {
             assert(ida != CollisionIdNone);

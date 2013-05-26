@@ -2,7 +2,40 @@
 
 namespace hg
 {
-    int f(float frame)
+    float ease_linear(float t, float b, float c, float d)
+    {
+        t = t/d;
+        return (c - b) * t + b;
+    }
+    
+    float ease_in(float t, float b, float c, float d)
+    {
+        t = t/d;
+        return (c - b) * t * t * t * t + b;
+    }
+
+    float ease_out(float t, float b, float c, float d)
+    {
+        t = t/d;
+        t = t - 1;
+        return -1 * (c - b) * (t * t * t * t - 1) + b;
+    }
+    
+    float ease_in_out(float t, float b, float c, float d)
+    {
+        t = t/(d/2.0);
+        if (t < 1)
+        {
+            return (c - b) / 2.0 * t * t * t * t + b;
+        }
+        else
+        {
+            t = t - 2;
+            return -1 * (c - b) / 2.0 * (t * t * t * t - 2) + b;
+        }
+    }
+    
+    int f(int frame)
     {
         return (int)((frame*GAMEFPS/60.0) + 0.5);
     }
@@ -326,7 +359,10 @@ namespace hg
             delProcessList.push_back(tmp);
             return;
         }
-        tmp->update();
+        if (!tmp->isWait())
+        {
+            tmp->update();
+        }
         if (tmp->isEnd())
         {
 #if IS_PROCESS_DEBUG
@@ -370,18 +406,5 @@ namespace hg
     void HGProcessManager::init()
     {
     }
-    
-    HGSprite* CreateAlphaMapSprite(std::string texture, Color color)
-    {
-        HGSprite* pSpr = new HGSprite();
-        pSpr->setType(SPRITE_TYPE_BILLBOARD);
-        pSpr->init(texture);
-        pSpr->setColor(color);
-        pSpr->shouldRenderAsAlphaMap(true);
-        pSpr->setBlendFunc(GL_SRC_ALPHA, GL_ONE);
-        return pSpr;
-    }
-    
-    
-    
+
 }

@@ -34,7 +34,7 @@ namespace hg {
     
     ////////////////////
     // あたり判定
-    const int CELL_SPLIT_NUM = 20;
+    const int CELL_SPLIT_NUM = 10;
     HGSize sizeOfCell = {FIELD_SIZE/CELL_SPLIT_NUM, FIELD_SIZE/CELL_SPLIT_NUM};
     template <class T>
     class CellManager : HGObject
@@ -84,6 +84,13 @@ namespace hg {
                     }
                 }
             }
+        }
+        inline int getNumberInCell(int x, int y)
+        {
+            int index = x + y * CELL_SPLIT_NUM;
+            assert(index < CELL_SPLIT_NUM*CELL_SPLIT_NUM);
+            return list[index].size();
+            
         }
         const ActorList& getActorList(int cellNumber)
         {
@@ -140,26 +147,163 @@ namespace hg {
             return wx + wy * CELL_SPLIT_NUM;
         }
     };
-    
+
+    ////////////////////
+    // Rader
+    class Rader : public HGObject
+    {
+        typedef std::list<HGNode*> NodeList;
+        const float RADER_CELL_NUM = 10;
+        const float RADER_SCALE = 5;
+        const float RADER_CELL_SCALE = RADER_SCALE/10.0;
+    public:
+        Rader()
+        {
+            
+        }
+        ~Rader()
+        {
+            for (NodeList::iterator it = nodeList.begin(); it != nodeList.end(); ++it)
+            {
+                (*it)->release();
+            }
+            nodeList.clear();
+            if (pRootNode)
+            {
+                pRootNode->release();
+            }
+        }
+        void init(HGNode* pParentNode)
+        {
+            pRootNode = new HGNode();
+            pRootNode->retain();
+            pParentNode->addChild(pRootNode);
+            pRootNode->setPosition(13.5, 7.5);
+            
+            // フィールド境界
+            {
+                AlphaColorNode* p = new AlphaColorNode();
+                p->init((Color){0, 0.5, 0, 0.3}, RADER_SCALE, RADER_SCALE);
+                p->setBlendFunc(GL_SRC_ALPHA, GL_ONE);
+                p->setPosition(RADER_SCALE/2.0 - RADER_CELL_SCALE/2.0, RADER_SCALE/2.0 - RADER_CELL_SCALE/2.0);
+                pRootNode->addChild(p);
+                
+                {
+                    // 色変更
+                    HGProcessOwner* po = new HGProcessOwner();
+                    ChangeSpriteColorProcess* cscp = new ChangeSpriteColorProcess();
+                    Color c = {0.1, 0.6, 0.1, 0.5};
+                    cscp->init(po, p, c, f(50));
+                    cscp->setEaseFunc(&ease_linear);
+                    HGProcessManager::sharedProcessManager()->addProcess(cscp);
+                }
+            
+            }
+            {
+                HGSprite* pSprite = new HGSprite();
+                pSprite->init("rect.png");
+                pSprite->setblendcolor({0.9,1,0.9,1});
+                pSprite->setScale(RADER_SCALE*2, RADER_SCALE*2);
+                pSprite->setPosition(RADER_SCALE/2.0 - RADER_CELL_SCALE/2.0, RADER_SCALE/2.0 - RADER_CELL_SCALE/2.0);
+                pRootNode->addChild(pSprite);
+                
+            }
+            
+            {
+                // サイズ変更
+                pRootNode->setScaleX(0);
+                HGProcessOwner* po = new HGProcessOwner();
+                ChangeScaleProcess* csp = new ChangeScaleProcess();
+                csp->init(po, pRootNode, 1, 1, f(30));
+                csp->setEaseFunc(&ease_out);
+                HGProcessManager::sharedProcessManager()->addProcess(csp);
+            }
+            
+        }
+        void updateRader(CellManager<Fighter>& enemyCellManager, CellManager<Fighter>& friendCellManager)
+        {
+            if (nodeList.size() > 0)
+            {
+                for (NodeList::iterator it = nodeList.begin(); it != nodeList.end(); ++it)
+                {
+                    (*it)->removeFromParent();
+                    (*it)->release();
+                }
+                nodeList.clear();
+            }
+            
+            for (int i = 0; i < RADER_CELL_NUM; i++)
+            {
+                for (int j = 0; j < RADER_CELL_NUM; j++)
+                {
+                    if (enemyCellManager.getNumberInCell(i, j) > 0)
+                    {
+                        ColorNode* p = new ColorNode();
+                        p->init((Color){0.6, 0, 0, 1}, RADER_CELL_SCALE, RADER_CELL_SCALE);
+                        p->setPosition((float)i * RADER_CELL_SCALE, (float)j * RADER_CELL_SCALE);
+                        p->retain();
+                        nodeList.push_back(p);
+                        pRootNode->addChild(p);
+                    }
+                }
+            }
+            
+            // 味方を表示
+            {
+                Color c = {0.0,1.0,0,1};
+                Color pc = {1.0,1.0,0,1};
+                float scale = RADER_SCALE/FIELD_SIZE;
+                for (ActorList<Fighter>::iterator it = friendFighterList.begin(); it != friendFighterList.end(); ++it)
+                {
+                    Fighter* pF = *it;
+                    AlphaMapSprite* p = new AlphaMapSprite();
+                    if (pF->isPlayer())
+                    {
+                        p->init("pearl.png", pc);
+                    }
+                    else
+                    {
+                        p->init("pearl.png", c);
+                    }
+                    float w = pF->getWidth()*scale;
+                    w = MAX(w, 0.4);
+                    float h = pF->getHeight()*scale;
+                    h = MAX(h, 0.4);
+                    p->setScale(w, h);
+                    p->setPosition(pF->getPositionX()*scale, pF->getPositionY()*scale);
+                    p->retain();
+                    nodeList.push_back(p);
+                    pRootNode->addChild(p);
+                }
+            }
+        }
+    private:
+        NodeList nodeList;
+        HGNode* pRootNode = NULL;
+    };
+
     ////////////////////
     // 変数宣言
-    Vector _cameraPosition(0,0,0);
-    Vector _cameraRotate(0,0,0);
-    
+    LayerNode* pLayerBattleRoot = NULL;
+    LayerNode* pLayerUIRoot = NULL;
     Fighter* pPlayer = NULL;
     HGNode* pLayerBackground = NULL;
     HGNode* pLayerFriend = NULL;
     HGNode* pLayerEnemy = NULL;
     HGNode* pLayerBullet = NULL;
     HGNode* pLayerEffect = NULL;
-    
+    Rader* pRader = NULL;
+    SpawnData spawnData;
+
     ActorList<Bullet> friendBulletList;
     ActorList<Bullet> enemyBulletList;
     ActorList<Fighter> friendFighterList;
     ActorList<Fighter> enemyFighterList;
     CellManager<Bullet> enemyBulletCellManager;
     CellManager<Bullet> friendBulletCellManager;
-    
+    CellManager<Fighter> enemyCellManager;
+    CellManager<Fighter> friendCellManager;
+
     KeyInfo keyInfo = {};
     HGSize sizeOfField(0,0);
     HGPoint pointOfFieldCenter(0,0);
@@ -189,6 +333,20 @@ namespace hg {
             void operator()(Bullet* actor) {enemyBulletCellManager.addToCellList(actor);}
         };
         for_each(enemyBulletList.begin(), enemyBulletList.end(), AddEnemyBullets());
+        
+        enemyCellManager.clear();
+        struct AddEnemy
+        {
+            void operator()(Fighter* actor) {enemyCellManager.addToCellList(actor);}
+        };
+        for_each(enemyFighterList.begin(), enemyFighterList.end(), AddEnemy());
+        
+        friendCellManager.clear();
+        struct AddFriend
+        {
+            void operator()(Fighter* actor) {friendCellManager.addToCellList(actor);}
+        };
+        for_each(friendFighterList.begin(), friendFighterList.end(), AddFriend());
     }
    
     // fighterがroundと衝突したときの処理
@@ -208,6 +366,12 @@ namespace hg {
             if (!(*it)->isActive() || !(*it)->getLife() > 0)
             {
                 continue;
+            }
+            bool isShield = (*it)->hasShield();
+            HGRect shieldRect(0,0,0,0);
+            if (isShield)
+            {
+                shieldRect = (*it)->getShieldRect();
             }
             CollisionId cida = (*it)->getCollisionId();
             Vector posa = (*it)->getPosition();
@@ -233,9 +397,19 @@ namespace hg {
                     CollisionId cidb = a->getCollisionId();
                     Vector posb = a->getPosition();
                     HGSize sizeb = a->getSize();
-                    if (pColMgr->isIntersect(cida, posa, sizea, cidb, posb, sizeb))
+                    if (isShield)
                     {
-                        onFighterCollidedWithBullet(*it, a);
+                        if (pColMgr->isIntersect(cidb, posb, sizeb, shieldRect))
+                        {
+                            onFighterCollidedWithBullet(*it, a);
+                        }
+                    }
+                    else
+                    {
+                        if (pColMgr->isIntersect(cida, posa, sizea, cidb, posb, sizeb))
+                        {
+                            onFighterCollidedWithBullet(*it, a);
+                        }
                     }
                 }
             }
@@ -244,14 +418,14 @@ namespace hg {
     
     
     // 出現
-    void spawnFighter(SideType sideType, FighterType fighterType, float positionX, float positionY)
+    void spawnFighter(SideType sideType, FighterInfo fighterInfo, float positionX, float positionY, int wait)
     {
         class SpawnEnemy : public HGObject
         {
         public:
-            SpawnEnemy(SideType sideType, FighterType fighterType, float positionX, float positionY):
+            SpawnEnemy(SideType sideType, FighterInfo fighterInfo, float positionX, float positionY):
             sideType(sideType),
-            fighterType(fighterType),
+            fighterInfo(fighterInfo),
             positionX(positionX),
             positionY(positionY)
             {}
@@ -260,7 +434,7 @@ namespace hg {
                 if (SideTypeFriend == sideType)
                 {
                     Fighter* pEnemy = new Fighter();
-                    pEnemy->init(pLayerFriend, sideType, fighterType);
+                    pEnemy->init(pLayerFriend, sideType, fighterInfo);
                     pEnemy->setPosition(positionX, positionY);
                     friendFighterList.addActor(pEnemy);
                     
@@ -272,7 +446,7 @@ namespace hg {
                 else
                 {
                     Fighter* pEnemy = new Fighter();
-                    pEnemy->init(pLayerEnemy, sideType, fighterType);
+                    pEnemy->init(pLayerEnemy, sideType, fighterInfo);
                     pEnemy->setPosition(positionX, positionY);
                     enemyFighterList.addActor(pEnemy);
                     
@@ -285,84 +459,115 @@ namespace hg {
             }
         private:
             SideType sideType;
-            FighterType fighterType;
+            FighterInfo fighterInfo;
             float positionX;
             float positionY;
         };
         
         // 光
         {
-            HGSprite* pSpr = CreateAlphaMapSprite("corona.png", (Color){0.8, 0.8, 1.0, 1.0});
+            AlphaMapSprite* pSpr = new AlphaMapSprite();
+            pSpr->init("corona.png", (Color){0.8, 0.8, 1.0, 1.0});
             pSpr->setPosition(positionX, positionY);
             pSpr->setScale(0, 0);
             pSpr->setRotateZ(rand(0, 359) * M_PI/180);
             pLayerEffect->addChild(pSpr);
             
+            // 回転
+            {
+                HGProcessOwner* po = new HGProcessOwner();
+                RotateNodeProcess* rnp = new RotateNodeProcess();
+                Vector r = Vector(0,0,1300);
+                rnp->init(po, pSpr, r, f(40));
+                rnp->setEaseFunc(&ease_out);
+                rnp->setWaitFrame(wait);
+                HGProcessManager::sharedProcessManager()->addProcess(rnp);
+            }
+            
             // 拡大
-            HGProcessOwner* po = new HGProcessOwner();
-            SpriteScaleProcess* ssp = new SpriteScaleProcess();
-            ssp->init(po, pSpr, PXL2REAL(700), PXL2REAL(700), 10);
-            
-            // 縮小
-            SpriteScaleProcess* ssp2 = new SpriteScaleProcess();
-            ssp2->init(po, pSpr, 0, 0, 5);
-            ssp->setNext(ssp2);
-            
-            // 出現
-            SpawnEnemy* se = new SpawnEnemy(sideType, fighterType, positionX, positionY);
-            CallFunctionRepeadedlyProcess<SpawnEnemy>* cfrp = new CallFunctionRepeadedlyProcess<SpawnEnemy>();
-            cfrp->init(po, &SpawnEnemy::spawn, se);
-            ssp2->setNext(cfrp);
-            
-            // 削除
-            NodeRemoveProcess* nrp = new NodeRemoveProcess();
-            nrp->init(po, pSpr);
-            cfrp->setNext(nrp);
-            
-            // プロセス開始
-            HGProcessManager::sharedProcessManager()->addProcess(ssp);
+            {
+                HGProcessOwner* po = new HGProcessOwner();
+                ChangeScaleProcess* ssp = new ChangeScaleProcess();
+                ssp->init(po, pSpr, PXL2REAL(700), PXL2REAL(700), f(10));
+                ssp->setWaitFrame(wait);
+                ssp->setEaseFunc(&ease_out);
+                
+                // 縮小
+                ChangeScaleProcess* ssp2 = new ChangeScaleProcess();
+                ssp2->init(po, pSpr, 0, 0, 5);
+                ssp2->setEaseFunc(&ease_in);
+                ssp->setNext(ssp2);
+                
+                // 出現
+                SpawnEnemy* se = new SpawnEnemy(sideType, fighterInfo, positionX, positionY);
+                CallFunctionRepeadedlyProcess<SpawnEnemy>* cfrp = new CallFunctionRepeadedlyProcess<SpawnEnemy>();
+                cfrp->init(po, &SpawnEnemy::spawn, se);
+                ssp2->setNext(cfrp);
+                
+                // 削除
+                NodeRemoveProcess* nrp = new NodeRemoveProcess();
+                nrp->init(po, pSpr);
+                cfrp->setNext(nrp);
+                
+                // プロセス開始
+                HGProcessManager::sharedProcessManager()->addProcess(ssp);
+            }
         }
         
         // 光
         {
-            HGSprite* pSpr = CreateAlphaMapSprite("wavering.png", (Color){1.0, 0.5, 0.5, 1.0});
+            AlphaMapSprite* pSpr = new AlphaMapSprite();
+            pSpr->init("wavering.png", (Color){1.0, 0.5, 0.5, 1.0});
             pSpr->setPosition(positionX, positionY);
             pSpr->setScale(0, 0);
             pSpr->setRotateZ(rand(0, 359) * M_PI/180);
             pLayerEffect->addChild(pSpr);
             
-            // 拡大
-            HGProcessOwner* po = new HGProcessOwner();
-            SpriteScaleProcess* ssp = new SpriteScaleProcess();
-            ssp->init(po, pSpr, PXL2REAL(1000), PXL2REAL(1000), 16);
-            
-            // プロセス開始
-            HGProcessManager::sharedProcessManager()->addProcess(ssp);
-            
-            // Wait
-            HGProcessOwner* po2 = new HGProcessOwner();
-            WaitProcess* wp = new WaitProcess();
-            wp->init(po2, 10);
-            
-            // 透明化
-            SpriteChangeOpacityProcess* scop = new SpriteChangeOpacityProcess();
-            scop->init(po2, pSpr, 0, 8);
-            wp->setNext(scop);
-            
-            // 削除
-            NodeRemoveProcess* nrp = new NodeRemoveProcess();
-            nrp->init(po2, pSpr);
-            scop->setNext(nrp);
-            
-            // プロセス開始
-            HGProcessManager::sharedProcessManager()->addProcess(wp);
-            
+            {
+                {
+                    // 回転
+                    HGProcessOwner* po = new HGProcessOwner();
+                    RotateNodeProcess* rnp = new RotateNodeProcess();
+                    Vector r = Vector(0,0,-1300);
+                    rnp->init(po, pSpr, r, f(40));
+                    rnp->setEaseFunc(&ease_in);
+                    rnp->setWaitFrame(wait);
+                    HGProcessManager::sharedProcessManager()->addProcess(rnp);
+                }
+                
+                {
+                    // 拡大
+                    HGProcessOwner* po = new HGProcessOwner();
+                    ChangeScaleProcess* ssp = new ChangeScaleProcess();
+                    ssp->init(po, pSpr, PXL2REAL(1000), PXL2REAL(1000), 16);
+                    ssp->setEaseFunc(&ease_in_out);
+                    ssp->setWaitFrame(wait);
+                    
+                    // プロセス開始
+                    HGProcessManager::sharedProcessManager()->addProcess(ssp);
+                }
+                
+                {
+                    // 透明化
+                    HGProcessOwner* po2 = new HGProcessOwner();
+                    SpriteChangeOpacityProcess* scop = new SpriteChangeOpacityProcess();
+                    scop->setEaseFunc(&ease_in_out);
+                    scop->init(po2, pSpr, 0, 8);
+                    scop->setWaitFrame(wait + f(10));
+                    
+                    // 削除
+                    NodeRemoveProcess* nrp = new NodeRemoveProcess();
+                    nrp->init(po2, pSpr);
+                    scop->setNext(nrp);
+                    
+                    // プロセス開始
+                    HGProcessManager::sharedProcessManager()->addProcess(scop);
+                }
+            }
         }
-        
-        
+
+
     }
-    
-    
     
     ////////////////////
     // ステート
@@ -387,39 +592,56 @@ namespace hg {
             enemyFighterList.removeInactiveActors();
             
             // 援軍判定
-            if (enemyFighterList.size() <= 3)
+            if (enemyFighterList.size() <= 0)
             {
-                if (spawnCount < 100
-                    &&
-                    (enemyFighterList.size() == 0
-                    || rand(1, 1000) < 10))
+                // 援軍出現
+                if (spawnData.size() > 0)
                 {
-                    spawnCount++;
-                    if (rand(1, 10) <= 1)
+                    if (spawnWait == 0)
                     {
-                        spawnFighter(SideTypeEnemy, FighterTypeShip1, rand(0, sizeOfField.width), rand(0, sizeOfField.height));
-                    }
-                    else
-                    {
-                        spawnFighter(SideTypeEnemy, FighterTypeRobo2, rand(0, sizeOfField.width), rand(0, sizeOfField.height));
+                        SpawnGroup sg = spawnData.front();
+                        spawnData.pop_front();
+                        for (SpawnGroup::iterator it = sg.begin(); it != sg.end(); it++)
+                        {
+                            FighterInfo finfo = *it;
+                            spawnFighter(SideTypeEnemy,
+                                         finfo,
+                                         rand(0, sizeOfField.width),
+                                         rand(0, sizeOfField.height),
+                                         spawnWait * f(30));
+                            spawnWait++;
+                        }
                     }
                 }
             }
+            else
+            {
+                spawnWait = 0;
+            }
+            
+            // update Rader
+            if (this->getFrameCount() % f(10) == 0)
+            {
+                pRader->updateRader(enemyCellManager, friendCellManager);
+            }
         }
-        
         std::string getName()
         {
             return "BattleState";
         }
     private:
         int spawnCount = 0;
+        int spawnWait = 0;
     };
 
     ////////////////////
     // 初期化
-    void initialize()
+    void initialize(SpawnData sd)
     {
         srand((unsigned int)time(NULL));
+        
+        // 増援データ
+        spawnData = sd;
         
         // メモリ掃除
         HGHeapFactory::CreateHeap(DEFAULT_HEAP_NAME)->freeAll();
@@ -444,6 +666,37 @@ namespace hg {
         sizeOfField = {FIELD_SIZE, FIELD_SIZE};
         pointOfFieldCenter = {sizeOfField.width/2, sizeOfField.height/2};
         
+        ////////////////////
+        // Root Layer
+        
+        if (pLayerBattleRoot)
+        {
+            pLayerBattleRoot->release();
+        }
+        pLayerBattleRoot = new LayerNode();
+        pLayerBattleRoot->retain();
+        HGDirector::sharedDirector()->getRootNode()->addChild(pLayerBattleRoot);
+        
+        if (pLayerUIRoot)
+        {
+            pLayerUIRoot->release();
+        }
+        pLayerUIRoot = new LayerNode();
+        pLayerUIRoot->retain();
+        pLayerUIRoot->setCameraPosition(0, 0, -15);
+        HGDirector::sharedDirector()->getRootNode()->addChild(pLayerUIRoot);
+        
+        ////////////////////
+        // Rader
+        if (pRader)
+        {
+            pRader->release();
+        }
+        pRader = new Rader();
+        pRader->init(pLayerUIRoot);
+        pRader->retain();
+        
+        ////////////////////
         // layer
         if (pLayerBackground)
         {
@@ -451,7 +704,8 @@ namespace hg {
         }
         pLayerBackground = new HGNode();
         pLayerBackground->retain();
-        HGDirector::sharedDirector()->getRootNode()->addChild(pLayerBackground);
+        pLayerBattleRoot->addChild(pLayerBackground);
+        
         //
         if (pLayerEnemy)
         {
@@ -459,7 +713,8 @@ namespace hg {
         }
         pLayerEnemy = new HGNode();
         pLayerEnemy->retain();
-        HGDirector::sharedDirector()->getRootNode()->addChild(pLayerEnemy);
+        pLayerBattleRoot->addChild(pLayerEnemy);
+        
         //
         if (pLayerFriend)
         {
@@ -467,7 +722,8 @@ namespace hg {
         }
         pLayerFriend = new HGNode();
         pLayerFriend->retain();
-        HGDirector::sharedDirector()->getRootNode()->addChild(pLayerFriend);
+        pLayerBattleRoot->addChild(pLayerFriend);
+        
         //
         if (pLayerBullet)
         {
@@ -475,7 +731,8 @@ namespace hg {
         }
         pLayerBullet = new HGNode();
         pLayerBullet->retain();
-        HGDirector::sharedDirector()->getRootNode()->addChild(pLayerBullet);
+        pLayerBattleRoot->addChild(pLayerBullet);
+        
         //
         if (pLayerEffect)
         {
@@ -483,7 +740,7 @@ namespace hg {
         }
         pLayerEffect = new HGNode();
         pLayerEffect->retain();
-        HGDirector::sharedDirector()->getRootNode()->addChild(pLayerEffect);
+        pLayerBattleRoot->addChild(pLayerEffect);
         
         // background
         for (int i = 0; i < 5; ++i)
@@ -523,14 +780,34 @@ namespace hg {
             pLayerBackground->addChild(pSprite);
         }
         
+        // sun
+        {
+            AlphaMapSprite* pSprite = new AlphaMapSprite();
+            pSprite->init("sun.png", (Color){0.25, 0.20, 0.6, 0.6});
+            //pSprite->setBlendFunc(GL_SRC_ALPHA, GL_ONE);
+            pSprite->setScale(200, 200, 1);
+            pSprite->setPosition(-30, 80);
+            pLayerBackground->addChild(pSprite);
+        }
+        
         // フィールド境界
         {
             HGSprite* pSprite = new HGSprite();
             pSprite->init("rect.png");
-            //pSprite->setblendcolor({2.0,2.0,2.0,1.0});
+            pSprite->setblendcolor({0.8,0.1,0.1,0.2});
             pSprite->setScale(sizeOfField.width*2, sizeOfField.height*2, 1);
             pSprite->setPosition(pointOfFieldCenter.x, pointOfFieldCenter.y);
             pLayerBackground->addChild(pSprite);
+            
+            {
+                // 色変更
+                HGProcessOwner* po = new HGProcessOwner();
+                ChangeSpriteBlendColorProcess* cscp = new ChangeSpriteBlendColorProcess();
+                Color c = {0.1, 0.1, 0.8, 0.2};
+                cscp->init(po, pSprite, c, f(40));
+                cscp->setEaseFunc(&ease_linear);
+                HGProcessManager::sharedProcessManager()->addProcess(cscp);
+            }
         }
         
         // player
@@ -539,8 +816,17 @@ namespace hg {
             {
                 pPlayer->release();
             }
+            
+            FighterInfo i;
+            i.fighterType = 0;
+            i.life = 3000;
+            i.lifeMax = 3000;
+            i.shield = 3000;
+            i.shieldMax = 3000;
+            i.speed = 0.5;
+            
             pPlayer = new Fighter();
-            pPlayer->init(pLayerFriend, SideTypeFriend, FighterTypeRobo1);
+            pPlayer->init(pLayerFriend, SideTypeFriend, i);
             pPlayer->setPosition(sizeOfField.width/2, sizeOfField.height/2);
             friendFighterList.addActor(pPlayer);
             pPlayer->retain();
@@ -554,38 +840,46 @@ namespace hg {
             HGProcessManager::sharedProcessManager()->addProcess(p);
         }
         
-        /*
-                    Fighter* pEnemy = new Fighter();
-                    pEnemy->init(pLayerEnemy, SideTypeEnemy, FighterTypeShip1);
-                    pEnemy->setPosition(0, 0);
-                    enemyFighterList.addActor(pEnemy);
-                    
-                    ControlEnemyProcess* cp = new ControlEnemyProcess();
-                    cp->init(pEnemy->getProcessOwner(), pEnemy);
-        HGProcessManager::sharedProcessManager()->addProcess(cp);*/
-        
-        //spawnFighter(SideTypeEnemy, FighterTypeShip1, rand(0, sizeOfField.width), rand(0, sizeOfField.height));
-        //spawnFighter(SideTypeEnemy, FighterTypeShip1, rand(0, sizeOfField.width), rand(0, sizeOfField.height));
-        //spawnFighter(SideTypeEnemy, FighterTypeShip1, rand(0, sizeOfField.width), rand(0, sizeOfField.height));
-        
-             //spawnFighter(SideTypeFriend, FighterTypeShip1, rand(0, sizeOfField.width), rand(0, sizeOfField.height));
-        /*
-                    Fighter* pEnemy = new Fighter();
-                    pEnemy->init(pLayerFriend, SideTypeFriend, FighterTypeShip1);
-                    pEnemy->setPosition(0, 0);
-                    friendFighterList.addActor(pEnemy);
-                    ControlEnemyProcess* cp = new ControlEnemyProcess();
-                    cp->init(pEnemy->getProcessOwner(), pEnemy);
-                    HGProcessManager::sharedProcessManager()->addProcess(cp);
-        */
-        spawnFighter(SideTypeFriend, FighterTypeRobo1, rand(0, sizeOfField.width), rand(0, sizeOfField.height));
-        spawnFighter(SideTypeFriend, FighterTypeRobo1, rand(0, sizeOfField.width), rand(0, sizeOfField.height));
-        spawnFighter(SideTypeFriend, FighterTypeRobo1, rand(0, sizeOfField.width), rand(0, sizeOfField.height));
-        spawnFighter(SideTypeFriend, FighterTypeRobo1, rand(0, sizeOfField.width), rand(0, sizeOfField.height));
-        spawnFighter(SideTypeFriend, FighterTypeRobo1, rand(0, sizeOfField.width), rand(0, sizeOfField.height));
-        spawnFighter(SideTypeFriend, FighterTypeShip1, rand(0, sizeOfField.width), rand(0, sizeOfField.height));
+        {
+            FighterInfo i;
+            i.fighterType = 1;
+            i.life = 2000;
+            i.lifeMax = 2000;
+            i.shield = 1000;
+            i.shieldMax = 1000;
+            i.speed = 0.3;
+            
+            spawnFighter(SideTypeFriend, i, rand(0, sizeOfField.width), rand(0, sizeOfField.height), 0);
+            spawnFighter(SideTypeFriend, i, rand(0, sizeOfField.width), rand(0, sizeOfField.height), 50);
+            spawnFighter(SideTypeFriend, i, rand(0, sizeOfField.width), rand(0, sizeOfField.height), 100);
+        }
+        {
+            FighterInfo i;
+            i.fighterType = 2;
+            i.life = 4000;
+            i.lifeMax = 4000;
+            i.shield = 11000;
+            i.shieldMax = 11000;
+            i.speed = 0.1;
+            
+            spawnFighter(SideTypeFriend, i, rand(0, sizeOfField.width), rand(0, sizeOfField.height), 0);
+        }
+        {
+            HGText* pNodeText = new HGText();
+            pNodeText->initWithString("敵殲滅", {1,1,0,1});
+            pNodeText->setScaleByTextSize(4);
+            pNodeText->setPosition(-10, +10);
+            pLayerUIRoot->addChild(pNodeText);
+        }
+        {
+            HGText* pNodeText = new HGText();
+            pNodeText->initWithString("うっっへへへへっへへえh");
+            pNodeText->setScaleByTextSize(4);
+            pNodeText->setPosition(-10, 8);
+            pLayerUIRoot->addChild(pNodeText);
+        }
     }
-    
+
     ////////////////////
     // 更新
     void update(hg::t_keyState* keyState)
@@ -614,13 +908,10 @@ namespace hg {
         // set camera
         if (pPlayer)
         {
-            _cameraPosition.x = pPlayer->getPositionX() * -1;
-            _cameraPosition.y = pPlayer->getPositionY() * -1 + 7;
-            _cameraPosition.z = -18;
-            _cameraRotate.x = -15 * M_PI/180;
-            hgles::currentContext->cameraPosition = _cameraPosition;
-            hgles::currentContext->cameraRotate = _cameraRotate;
-            hgles::HGLES::updateCameraMatrix();
+            pLayerBattleRoot->setCameraPosition(pPlayer->getPositionX() * -1,
+                                                pPlayer->getPositionY() * -1 + 7,
+                                                -18);
+            pLayerBattleRoot->setCameraRotate(-15 * M_PI/180, 0, 0);
         }
         
         // ノードを描画

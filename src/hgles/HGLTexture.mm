@@ -13,6 +13,8 @@
 
 #import "HGLTexture.h"
 #import "HGLES.h"
+#include <Foundation/Foundation.h>
+#import <QuartzCore/CALayer.h>
 #include <OpenGLES/ES2/gl.h>
 #include <OpenGLES/ES2/glext.h>
 #include <map>
@@ -80,6 +82,85 @@ namespace hgles {
         
     }
     
+    HGLTexture* HGLTexture::createTextureWithString(std::string text, Color fontColor)
+    {
+        NSString* fontName = @"HiraKakuProN-W6";
+        UIFont* font = [UIFont fontWithName:fontName size:20];
+        NSLineBreakMode bm = NSLineBreakByCharWrapping;
+        NSString* strText = [NSString stringWithCString:text.c_str() encoding:NSUTF8StringEncoding];
+        // テキストのサイズを計算
+        CGSize expectedLabelSize = [strText sizeWithFont:font constrainedToSize:CGSizeMake(1024, 1024) lineBreakMode:bm];
+        
+        // 空の画像を生成
+        float width = expectedLabelSize.width;
+        float height = expectedLabelSize.height;
+        
+        // 最小の２のべき乗に変換
+        int wk = 32;
+        float tmp = width;
+        do {
+            wk = wk << 1;
+            tmp = wk;
+        } while (tmp < width && tmp <= 1024);
+        width = tmp;
+        wk = 32;
+        tmp = height;
+        do {
+            wk = wk << 1;
+            tmp = wk;
+        } while (tmp < height && tmp <= 1024);
+        height = tmp;
+        
+        CGImageRef image;
+        
+        {
+            UIGraphicsBeginImageContext(CGSizeMake(width, height));
+            CGContextRef context = UIGraphicsGetCurrentContext();
+            
+            UILabel* label = [[[UILabel alloc] initWithFrame:CGRectMake(0,0,width, height)] autorelease];
+            [label setText:[NSString stringWithCString:text.c_str() encoding:NSUTF8StringEncoding]];
+            [label setFont: font];
+            label.textColor = [UIColor colorWithRed:fontColor.r green:fontColor.g blue:fontColor.b alpha:fontColor.a];
+            label.backgroundColor = [UIColor clearColor];
+            [label.layer renderInContext:context];
+            [label setTextAlignment:NSTextAlignmentLeft];
+            UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
+            image = img.CGImage;
+            UIGraphicsEndImageContext();
+        }
+    
+        HGLTexture* tex = new HGLTexture();
+        glEnable(GL_TEXTURE_2D);
+        glBlendFunc(GL_ONE, GL_ZERO);
+        glEnable(GL_BLEND);
+        
+        GLuint texid;
+        glGenTextures(1, &texid);
+        tex->textureId = texid;
+        tex->width = width;
+        tex->height = height;
+        
+        GLubyte *spriteData = (GLubyte*)calloc(1, width*height*4);
+        CGContextRef spriteContext = CGBitmapContextCreate(spriteData, width, height, 8, width * 4, CGImageGetColorSpace(image), kCGImageAlphaPremultipliedLast);
+        
+        CGContextDrawImage(spriteContext, CGRectMake(0.0, 0.0, (CGFloat)width, (CGFloat)height), image);
+        CGContextRelease(spriteContext);
+        
+        glBindTexture(GL_TEXTURE_2D, tex->textureId);    // first Bind creates the texture and assigns a numeric name to it
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, spriteData);
+        
+        free(spriteData);
+        
+        glBindTexture(GL_TEXTURE_2D, 0);
+        
+        return tex;
+    }
+    
     HGLTexture::HGLTexture(const HGLTexture& obj)
     {
         this->textureId = obj.textureId;
@@ -99,6 +180,11 @@ namespace hgles {
             delete t;
         }
         textureIds->clear();
+    }
+    
+    void HGLTexture::deleteTexture()
+    {
+        glDeleteTextures(1, &textureId);
     }
     
     GLKMatrix4 HGLTexture::getTextureMatrix(int x, int y, int w, int h)

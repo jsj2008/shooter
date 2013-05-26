@@ -53,6 +53,7 @@ namespace hg {
                 this->setEnd();
                 return;
             }
+            pFighter->tick();
             if (isControllable && pFighter->getLife() <= 0)
             {
                 pFighter->explode();

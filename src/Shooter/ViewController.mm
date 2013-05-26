@@ -78,9 +78,31 @@
 - (void)initialize
 {
     
+    // 出現リスト読み込み
+    NSBundle* bundle = [NSBundle mainBundle];
+    NSString* path = [bundle pathForResource:@"enemyList" ofType:@"json"];
+    NSData* dataEnemyList = [NSData dataWithContentsOfFile:path];
+    NSError* error;
+    NSDictionary* dicEnemyList = [NSJSONSerialization JSONObjectWithData:dataEnemyList options:kNilOptions error:&error];
+    
+    // Create Spawn Data
+    hg::SpawnData spawnData;
+    for (NSDictionary* d in dicEnemyList)
+    {
+        int tmpGroup = [[d valueForKey:@"group"] integerValue] - 1;
+        hg::FighterInfo f;
+        f.fighterType = [[d valueForKey:@"fighterType"] integerValue];
+        f.level = [[d valueForKey:@"level"] integerValue];
+        if (tmpGroup >= spawnData.size())
+        {
+            spawnData.push_back(hg::SpawnGroup());
+        }
+        spawnData[tmpGroup].push_back(f);
+    }
+    
     // setup game
     //HGGame::initialize();
-    hg::initialize();
+    hg::initialize(spawnData);
     
     // creating game thread
     _game_queue = dispatch_queue_create(DISPATCH_QUEUE_PRIORITY_DEFAULT, NULL);
@@ -118,8 +140,8 @@
     {
         CGRect aframe = [UIScreen mainScreen].applicationFrame;
         CGRect frame = CGRectMake(0, 0, aframe.size.height, aframe.size.width);
-        frame.size.width = 110;
-        frame.size.height = 110;
+        frame.size.width = 180;
+        frame.size.height = 180;
         frame.origin.x = 0;
         frame.origin.y = aframe.size.width - frame.size.height;
         _leftPadView = [[[PadView alloc] initWithFrame:frame WithOnTouchBlock:^(int degree, float power) {

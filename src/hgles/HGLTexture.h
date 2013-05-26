@@ -30,11 +30,13 @@ namespace hgles {
     {
     public:
         static HGLTexture* createTextureWithAsset(std::string name);
+        static HGLTexture* createTextureWithString(std::string text, Color fontColor);
         static void deleteAllTextures();
         HGLTexture();
         HGLTexture(const HGLTexture& obj); // コピーコンストラクタ
         void bind();
         void unbind();
+        void deleteTexture();
         ~HGLTexture();
         GLKMatrix4 getTextureMatrix(int x, int y, int w, int h);
         void setTextureArea(int x, int y, int w, int h);
