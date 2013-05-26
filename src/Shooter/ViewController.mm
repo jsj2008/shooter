@@ -27,7 +27,7 @@
     HGLView* _glview;
     
     //HGGame::t_keystate keystate;
-    hg::t_keyState keyState;
+    hg::KeyInfo keyState;
     
 }
 @end
@@ -151,7 +151,9 @@
                 @synchronized(self)
                 {
                     //HGGame::update(&keystate);
-                    hg::update(&keyState);
+                    hg::update(keyState);
+                    keyState.shouldDeployFriend = false;
+                    keyState.shouldCollectFriend = false;
                 }
                 [_glview draw];
             }
@@ -170,25 +172,24 @@
     {
         CGRect aframe = [UIScreen mainScreen].applicationFrame;
         CGRect frame = CGRectMake(0, 0, aframe.size.height, aframe.size.width);
-        frame.size.width = 180;
-        frame.size.height = 180;
         frame.origin.x = 0;
         frame.origin.y = aframe.size.width - frame.size.height;
-        _leftPadView = [[[PadView alloc] initWithFrame:frame WithOnTouchBlock:^(int degree, float power) {
-            //HGGame::onMoveLeftPad(degree, power);
-            hg::onMoveLeftPad(degree, power);
+        _leftPadView = [[[PadView alloc] initWithFrame:frame WithOnTouchBlock:^(int degree, float power, bool touchBegan, bool touchEnd) {
+            keyState.degree = degree;
+            keyState.power = power;
         }] autorelease];
         [_glview addSubview:_leftPadView];
     }
     
-    // タッチイベント(右)
+    float btnGap = 12;
+    // 発射ボタン
     {
         CGRect aframe = [UIScreen mainScreen].applicationFrame;
         CGRect frame = CGRectMake(0, 0, aframe.size.height, aframe.size.width);
-        frame.size.width = 110;
-        frame.size.height = 110;
-        frame.origin.x = aframe.size.height - frame.size.width;
-        frame.origin.y = aframe.size.width - frame.size.height;
+        frame.size.width = 88;
+        frame.size.height = 88;
+        frame.origin.x = aframe.size.height - frame.size.width - btnGap;
+        frame.origin.y = aframe.size.width - frame.size.height - btnGap;
         
         UIButton* fireBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         fireBtn.frame = frame;
@@ -196,23 +197,66 @@
         [fireBtn addTarget:self action:@selector(startFire) forControlEvents:UIControlEventTouchDown];
         [fireBtn addTarget:self action:@selector(stopFire) forControlEvents:UIControlEventTouchUpInside];
         [fireBtn addTarget:self action:@selector(stopFire) forControlEvents:UIControlEventTouchUpOutside];
+        [fireBtn setAlpha:0.3];
         
         [_glview addSubview:fireBtn];
+    }
+    
+    // デプロイ
+    {
+        CGRect aframe = [UIScreen mainScreen].applicationFrame;
+        CGRect frame = CGRectMake(0, 0, aframe.size.height, aframe.size.width);
+        frame.size.width = 44;
+        frame.size.height = 44;
+        frame.origin.x = aframe.size.height - frame.size.width - btnGap;
+        frame.origin.y = aframe.size.width - frame.size.height - 88 - btnGap*2;
+        
+        UIButton* btn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        btn.frame = frame;
+        [btn setTitle:@"deploy" forState:UIControlStateNormal];
+        [btn addTarget:self action:@selector(deployFriend) forControlEvents:UIControlEventTouchUpInside];
+        [btn setAlpha:0.3];
+        
+        [_glview addSubview:btn];
+    }
+    
+    // コレクト
+    {
+        CGRect aframe = [UIScreen mainScreen].applicationFrame;
+        CGRect frame = CGRectMake(0, 0, aframe.size.height, aframe.size.width);
+        frame.size.width = 44;
+        frame.size.height = 44;
+        frame.origin.x = aframe.size.height - frame.size.width - btnGap;
+        frame.origin.y = aframe.size.width - frame.size.height - 88 - 44 - btnGap*3;
+        
+        UIButton* btn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        btn.frame = frame;
+        [btn setTitle:@"collect" forState:UIControlStateNormal];
+        [btn addTarget:self action:@selector(collectFriend) forControlEvents:UIControlEventTouchUpInside];
+        [btn setAlpha:0.3];
+        
+        [_glview addSubview:btn];
     }
     
 }
 
 - (void) startFire
 {
-    //keystate.fire = 1;
-    keyState.fire = 1;
+    keyState.isFire = 1;
 }
 
 - (void) stopFire
 {
-    //keystate.fire = 0;
-    keyState.fire = 0;
+    keyState.isFire = 0;
 }
 
+- (void) deployFriend
+{
+    keyState.shouldDeployFriend = true;
+}
+- (void) collectFriend
+{
+    keyState.shouldCollectFriend = true;
+}
 
 @end

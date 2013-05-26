@@ -7,11 +7,6 @@
 namespace hg
 {
     
-    typedef struct t_keyState
-    {
-        int fire = 0;
-    } t_keyState;
-    
     // classes
     class HGObject;
     class HGNode;
@@ -21,7 +16,6 @@ namespace hg
     
     void initialize(SpawnData sd, FighterInfo pl, FriendData fd);
     void render();
-    void update(t_keyState* keyState);
-    void onMoveLeftPad(int degree, float power);
+    void update(KeyInfo keyState);
 }
 #endif

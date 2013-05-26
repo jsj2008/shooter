@@ -57,7 +57,8 @@ namespace hg {
         shield(0),
         shieldMax(0),
         shieldHeal(0),
-        speed(0)
+        speed(0),
+        isDeployed(false)
         {
         }
         int fighterType;
@@ -67,6 +68,7 @@ namespace hg {
         int shield;
         int shieldMax;
         int shieldHeal;
+        bool isDeployed;
         float speed;
         WeaponInfoList weaponList;
     } FighterInfo;
@@ -80,6 +82,10 @@ namespace hg {
         bool isFire;
         int degree;
         float power;
+        bool isTouchBegan = false;
+        bool isTouchEnd = false;
+        bool shouldDeployFriend = false;
+        bool shouldCollectFriend = false;
     } KeyInfo;
     
     // global

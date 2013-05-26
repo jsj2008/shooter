@@ -5,7 +5,7 @@
 
 @interface PadView : UIView
 
-- (id)initWithFrame:(CGRect)frame WithOnTouchBlock:(void (^)(int degree, float power))onTouch;
+- (id)initWithFrame:(CGRect)frame WithOnTouchBlock:(void (^)(int degree, float power, bool touchBegan, bool touchEnd))onTouch;
 
 @end
 

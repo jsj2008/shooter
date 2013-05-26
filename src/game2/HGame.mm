@@ -463,6 +463,40 @@ namespace hg {
     }
     
     ////////////////////
+    // 友軍
+    void deployAllFriends()
+    {
+        assert(pPlayer);
+        if (pPlayer->getLife() <= 0)
+        {
+            return;
+        }
+        float wait = 0;
+        for (FriendData::iterator it = friendData.begin(); it != friendData.end(); ++it)
+        {
+            FighterInfo& i = (*it);
+            if (i.life <= 0)
+            {
+                continue;
+            }
+            if (i.isDeployed)
+            {
+                continue;
+            }
+            i.isDeployed = true;
+            float tx = pPlayer->getPositionX();
+            float ty = pPlayer->getPositionY();
+            float d = rand(0, 359);
+            float x = tx + cos(toRad(d)) * 15;
+            float y = ty + sin(toRad(d)) * 15;
+            x = MAX(x, 0), x = MIN(x, FIELD_SIZE);
+            y = MAX(y, 0), y = MIN(y, FIELD_SIZE);
+            spawnFighter(SideTypeFriend, i, x, y, wait);
+            wait += f(10);
+        }
+    }
+    
+    ////////////////////
     // ステート
     class BattleState : public HGState
     {
@@ -517,6 +551,11 @@ namespace hg {
             {
                 pRader->updateRader(enemyCellManager, friendCellManager);
             }
+            
+            if (keyInfo.shouldDeployFriend)
+            {
+                deployAllFriends();
+            }
         }
         std::string getName()
         {
@@ -526,6 +565,7 @@ namespace hg {
         int spawnCount = 0;
         int spawnWait = 0;
     };
+    
 
     ////////////////////
     // 初期化
@@ -747,18 +787,11 @@ namespace hg {
 
     ////////////////////
     // 更新
-    void update(hg::t_keyState* keyState)
+    void update(KeyInfo keyState)
     {
-        keyInfo.isFire = (keyState->fire>0)?true:false;
+        keyInfo = keyState;
+        keyInfo.isFire = (keyState.isFire>0)?true:false;
         HGStateManager::sharedStateManger()->update();
-    }
-    
-    ////////////////////
-    // 方向キー動作
-    void onMoveLeftPad(int degree, float power)
-    {
-        keyInfo.degree = degree;
-        keyInfo.power = power;
     }
     
     ////////////////////
