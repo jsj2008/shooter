@@ -55,6 +55,7 @@ namespace hg {
         isInitialized(false),
         isShip(false),
         _isPlayer(false),
+        pFighterHated(NULL),
         explodeProcessCount(0),
         shieldHeal(0)
         {
@@ -84,6 +85,10 @@ namespace hg {
             if (pShieldBackColorNode)
             {
                 pShieldBackColorNode->release();
+            }
+            if (pFighterHated)
+            {
+                pFighterHated->release();
             }
         }
         inline void setActive(bool isActive)
@@ -146,8 +151,8 @@ namespace hg {
                     setSizeByPixel(204*sizeRatio, 78*sizeRatio);
                     setCollisionId(CollisionId_E_SENKAN);
                     
-                    life = lifeMax = 1000;
-                    shield = shieldMax = 0;
+                    life = lifeMax = 10000;
+                    shield = shieldMax = 10000;
                     speed = 0.13;
                     shieldHeal = 1.5;
                     
@@ -370,6 +375,36 @@ namespace hg {
         {
             this->life = life;
             updateLifeBar();
+        }
+        inline void noticeAttackedBy(Actor* pFighter)
+        {
+            assert(pFighter);
+            if (pFighterHated)
+            {
+                pFighterHated->release();
+                pFighterHated = NULL;
+            }
+            if (rand(0, 10) <= 3)
+            {
+                pFighterHated = static_cast<Fighter*>(pFighter);
+                if (pFighterHated)
+                {
+                    pFighterHated->retain();
+                }
+            }
+        }
+        
+        inline Fighter* getFighterHated()
+        {
+            if (pFighterHated)
+            {
+                if (pFighterHated->getLife() <= 0)
+                {
+                    pFighterHated->release();
+                    pFighterHated = NULL;
+                }
+            }
+            return pFighterHated;
         }
         
         inline void addLife(int life)
@@ -667,6 +702,7 @@ namespace hg {
         float shieldHeal;
         double lastTimeShieldHeal = 0;
         bool _isPlayer;
+        Fighter* pFighterHated;
         int getSpriteIndex(int i)
         {
             while (i < 0)

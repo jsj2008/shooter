@@ -16,6 +16,7 @@
 #include "HActorList.h"
 #include "HitAnimeProcess.h"
 #include "ExplodeAnimeProcess.h"
+#include "CellManager.h"
 
 #include <boost/shared_ptr.hpp>
 #include <list>
@@ -32,122 +33,7 @@ namespace hg {
     ////////////////////
     // typedef
     
-    ////////////////////
-    // あたり判定
-    const int CELL_SPLIT_NUM = 10;
-    HGSize sizeOfCell = {FIELD_SIZE/CELL_SPLIT_NUM, FIELD_SIZE/CELL_SPLIT_NUM};
-    template <class T>
-    class CellManager : HGObject
-    {
-    public:
-        typedef std::list<T*> ActorList;
-        typedef std::vector<ActorList> CellList;
-        typedef std::list<int> CellNumberList;
-        CellManager()
-        {
-            list.resize(CELL_SPLIT_NUM*CELL_SPLIT_NUM);
-        }
-        void clear()
-        {
-            //for_each(list.begin(), list.end(), Clear());
-            for (typename CellList::iterator it = list.begin(); it != list.end(); it++)
-            {
-                (*it).clear();
-            }
-        }
-        void addToCellList(T* actor)
-        {
-            HGPoint tmpPos = {actor->getPositionX(), actor->getPositionY()};
-            float halfWidth = actor->getWidth()/2;
-            float halfHeight = actor->getHeight()/2;
-            tmpPos.x -= halfWidth;
-            tmpPos.y -= halfHeight;
-            int beforeNum = -1;
-            while (1)
-            {
-                int num = getCellNumber(tmpPos);
-                if (num > 0 && num > beforeNum)
-                {
-                    list[num].push_back(actor);
-                }
-                beforeNum = num;
-                tmpPos.x += sizeOfCell.width;
-                if (tmpPos.x > actor->getPositionX() + halfWidth)
-                {
-                    if (tmpPos.y + sizeOfCell.height > actor->getPositionY() + halfHeight)
-                    {
-                        break;
-                    }
-                    else
-                    {
-                        tmpPos.x = actor->getPositionX() - halfWidth;
-                    }
-                }
-            }
-        }
-        inline int getNumberInCell(int x, int y)
-        {
-            int index = x + y * CELL_SPLIT_NUM;
-            assert(index < CELL_SPLIT_NUM*CELL_SPLIT_NUM);
-            return list[index].size();
-            
-        }
-        const ActorList& getActorList(int cellNumber)
-        {
-            return list[cellNumber];
-        }
-        static void GetCellList(Actor* actor, CellNumberList &list)
-        {
-            HGPoint tmpPos = {actor->getPositionX(), actor->getPositionY()};
-            float halfWidth = actor->getWidth()/2;
-            float halfHeight = actor->getHeight()/2;
-            tmpPos.x -= halfWidth;
-            tmpPos.y -= halfHeight;
-            int beforeNum = -1;
-            while (1)
-            {
-                int num = getCellNumber(tmpPos);
-                if (num > 0 && num > beforeNum)
-                {
-                    list.push_back(num);
-                }
-                beforeNum = num;
-                tmpPos.x += sizeOfCell.width;
-                if (tmpPos.x > actor->getPositionX() + halfWidth)
-                {
-                    if (tmpPos.y + sizeOfCell.height > actor->getPositionY() + halfHeight)
-                    {
-                        break;
-                    }
-                    else
-                    {
-                        tmpPos.y += sizeOfCell.height;
-                        tmpPos.x = actor->getPositionX() - halfWidth;
-                    }
-                }
-            }
-        }
-    private:
-        struct Clear {
-            void operator()(ActorList cell) { cell.clear(); }
-        };
-        CellList list;
-        static int getCellNumber(HGPoint& s)
-        {
-            if (s.x < 0 || s.y < 0)
-            {
-                return -1;
-            }
-            if (s.x > sizeOfField.width || s.y > sizeOfField.height)
-            {
-                return -1;
-            }
-            int wx = (int)(s.x / sizeOfCell.width);
-            int wy = (int)(s.y / sizeOfCell.height);
-            return wx + wy * CELL_SPLIT_NUM;
-        }
-    };
-
+    
     ////////////////////
     // Rader
     class Rader : public HGObject
@@ -294,15 +180,18 @@ namespace hg {
     HGNode* pLayerEffect = NULL;
     Rader* pRader = NULL;
     SpawnData spawnData;
+    
+    FighterInfo playerInfo;
+    FriendData friendData;
 
     ActorList<Bullet> friendBulletList;
     ActorList<Bullet> enemyBulletList;
     ActorList<Fighter> friendFighterList;
     ActorList<Fighter> enemyFighterList;
-    CellManager<Bullet> enemyBulletCellManager;
-    CellManager<Bullet> friendBulletCellManager;
-    CellManager<Fighter> enemyCellManager;
-    CellManager<Fighter> friendCellManager;
+    CellManager<Bullet> enemyBulletCellManager({FIELD_SIZE, FIELD_SIZE});
+    CellManager<Bullet> friendBulletCellManager({FIELD_SIZE, FIELD_SIZE});
+    CellManager<Fighter> enemyCellManager({FIELD_SIZE, FIELD_SIZE});
+    CellManager<Fighter> friendCellManager({FIELD_SIZE, FIELD_SIZE});
 
     KeyInfo keyInfo = {};
     HGSize sizeOfField(0,0);
@@ -355,6 +244,7 @@ namespace hg {
         showHitAnimation(pBullet);
         pBullet->setActive(false);
         pFighter->addLife(pBullet->getPower() * -1);
+        pFighter->noticeAttackedBy(pBullet->getOwner());
     }
     
     // あたり判定
@@ -378,7 +268,10 @@ namespace hg {
             HGSize sizea = (*it)->getSize();
             
             CellManager<Bullet>::CellNumberList tList;
-            CellManager<Bullet>::GetCellList(*it, tList);
+            HGRect r = {(*it)->getPositionX() - (*it)->getWidth()/2,
+                (*it)->getPositionY() - (*it)->getHeight()/2,
+                (*it)->getWidth(), (*it)->getHeight()};
+            bulletCellManager.GetCellList(r, tList);
             
             for (CellManager<Bullet>::CellNumberList::iterator it1 = tList.begin(); it1 != tList.end(); it1++)
             {
@@ -636,12 +529,16 @@ namespace hg {
 
     ////////////////////
     // 初期化
-    void initialize(SpawnData sd)
+    void initialize(SpawnData sd, FighterInfo pl, FriendData fd)
     {
-        srand((unsigned int)time(NULL));
+        initRandom();
         
         // 増援データ
         spawnData = sd;
+        
+        // プレイヤーデータ
+        playerInfo = pl;
+        friendData = fd;
         
         // メモリ掃除
         HGHeapFactory::CreateHeap(DEFAULT_HEAP_NAME)->freeAll();
@@ -817,16 +714,8 @@ namespace hg {
                 pPlayer->release();
             }
             
-            FighterInfo i;
-            i.fighterType = 0;
-            i.life = 3000;
-            i.lifeMax = 3000;
-            i.shield = 3000;
-            i.shieldMax = 3000;
-            i.speed = 0.5;
-            
             pPlayer = new Fighter();
-            pPlayer->init(pLayerFriend, SideTypeFriend, i);
+            pPlayer->init(pLayerFriend, SideTypeFriend, playerInfo);
             pPlayer->setPosition(sizeOfField.width/2, sizeOfField.height/2);
             friendFighterList.addActor(pPlayer);
             pPlayer->retain();
@@ -840,30 +729,6 @@ namespace hg {
             HGProcessManager::sharedProcessManager()->addProcess(p);
         }
         
-        {
-            FighterInfo i;
-            i.fighterType = 1;
-            i.life = 2000;
-            i.lifeMax = 2000;
-            i.shield = 1000;
-            i.shieldMax = 1000;
-            i.speed = 0.3;
-            
-            spawnFighter(SideTypeFriend, i, rand(0, sizeOfField.width), rand(0, sizeOfField.height), 0);
-            spawnFighter(SideTypeFriend, i, rand(0, sizeOfField.width), rand(0, sizeOfField.height), 50);
-            spawnFighter(SideTypeFriend, i, rand(0, sizeOfField.width), rand(0, sizeOfField.height), 100);
-        }
-        {
-            FighterInfo i;
-            i.fighterType = 2;
-            i.life = 4000;
-            i.lifeMax = 4000;
-            i.shield = 11000;
-            i.shieldMax = 11000;
-            i.speed = 0.1;
-            
-            spawnFighter(SideTypeFriend, i, rand(0, sizeOfField.width), rand(0, sizeOfField.height), 0);
-        }
         {
             HGText* pNodeText = new HGText();
             pNodeText->initWithString("敵殲滅", {1,1,0,1});

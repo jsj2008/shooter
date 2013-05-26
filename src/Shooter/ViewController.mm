@@ -100,9 +100,39 @@
         spawnData[tmpGroup].push_back(f);
     }
     
+    hg::FighterInfo playerInfo;
+    playerInfo.fighterType = 0;
+    playerInfo.life = 3000;
+    playerInfo.lifeMax = 3000;
+    playerInfo.shield = 3000;
+    playerInfo.shieldMax = 3000;
+    playerInfo.speed = 0.5;
+    
+    hg::FriendData friendData;
+    {
+        hg::FighterInfo i;
+        i.fighterType = 1;
+        i.life = 2000;
+        i.lifeMax = 2000;
+        i.shield = 1000;
+        i.shieldMax = 1000;
+        i.speed = 0.3;
+        friendData.push_back(i);
+    }
+    {
+        hg::FighterInfo i;
+        i.fighterType = 2;
+        i.life = 4000;
+        i.lifeMax = 4000;
+        i.shield = 11000;
+        i.shieldMax = 11000;
+        i.speed = 0.1;
+        friendData.push_back(i);
+    }
+    
     // setup game
     //HGGame::initialize();
-    hg::initialize(spawnData);
+    hg::initialize(spawnData, playerInfo, friendData);
     
     // creating game thread
     _game_queue = dispatch_queue_create(DISPATCH_QUEUE_PRIORITY_DEFAULT, NULL);

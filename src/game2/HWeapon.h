@@ -89,7 +89,7 @@ namespace hg {
             Bullet* bp = new Bullet();
             float x = pOwner->getPositionX() + relativePosition.x;
             float y = pOwner->getPositionY() + relativePosition.y;
-            bp->init(bulletType, speed, 10, power, pOwner, x, y, this->aspectDegree, side);
+            bp->init(bulletType, speed, 50, power, pOwner, x, y, this->aspectDegree, side);
             switch (side) {
                 case SideTypeEnemy:
                     enemyBulletList.addActor(bp);

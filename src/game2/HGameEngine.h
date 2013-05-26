@@ -53,12 +53,25 @@ namespace hg
     
     int f(int frame);
     float v(float vec);
+    void initRandom();
     int rand(int from, int to);
     float toDeg(float radian);
     float toRad(float degree);
     void updateNowTime();
     double getNowTime();
-
+    
+    ////////////////////
+    // 関数オブジェクト
+    class Random
+    {
+    public:
+        // 関数オブジェクト
+        unsigned int operator()(unsigned int max)
+        {
+            return rand(0, max - 1);
+        }
+    };
+    
     ////////////////////
     // メモリ管理
     

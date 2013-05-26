@@ -34,6 +34,7 @@
 		07341B26174BC89000601A9A /* sparkle.png in Resources */ = {isa = PBXBuildFile; fileRef = 07341B25174BC88E00601A9A /* sparkle.png */; };
 		07341B2D17507E5100601A9A /* boxyfont.png in Resources */ = {isa = PBXBuildFile; fileRef = 07341B2C17507E5000601A9A /* boxyfont.png */; };
 		07341B2F175110C000601A9A /* enemyList.json in Resources */ = {isa = PBXBuildFile; fileRef = 07341B2E175110BF00601A9A /* enemyList.json */; };
+		07341B321751D44300601A9A /* CellManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 07341B301751D44100601A9A /* CellManager.cpp */; };
 		07436B0B16FA072C002BA1C9 /* deep_sky.png in Resources */ = {isa = PBXBuildFile; fileRef = 07436B0A16FA072C002BA1C9 /* deep_sky.png */; };
 		07436B0D16FA0FD9002BA1C9 /* space_a.png in Resources */ = {isa = PBXBuildFile; fileRef = 07436B0C16FA0FD9002BA1C9 /* space_a.png */; };
 		07436B1016FD647F002BA1C9 /* HGCPU.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07436B0F16FD647F002BA1C9 /* HGCPU.mm */; };
@@ -238,6 +239,8 @@
 		07341B25174BC88E00601A9A /* sparkle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sparkle.png; sourceTree = "<group>"; };
 		07341B2C17507E5000601A9A /* boxyfont.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = boxyfont.png; sourceTree = "<group>"; };
 		07341B2E175110BF00601A9A /* enemyList.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = enemyList.json; sourceTree = "<group>"; };
+		07341B301751D44100601A9A /* CellManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CellManager.cpp; sourceTree = "<group>"; };
+		07341B311751D44200601A9A /* CellManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellManager.h; sourceTree = "<group>"; };
 		07436B0A16FA072C002BA1C9 /* deep_sky.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = deep_sky.png; sourceTree = "<group>"; };
 		07436B0C16FA0FD9002BA1C9 /* space_a.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = space_a.png; sourceTree = "<group>"; };
 		07436B0E16FD647F002BA1C9 /* HGCPU.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGCPU.h; sourceTree = "<group>"; };
@@ -652,6 +655,8 @@
 				075A01CD1737B4CD0035A532 /* ExplodeAnimeProcess.h */,
 				075A01CF173F940F0035A532 /* SpawnProcess.cpp */,
 				075A01D0173F94100035A532 /* SpawnProcess.h */,
+				07341B301751D44100601A9A /* CellManager.cpp */,
+				07341B311751D44200601A9A /* CellManager.h */,
 			);
 			path = game2;
 			sourceTree = "<group>";
@@ -1096,6 +1101,7 @@
 				0793F46B17375CB500FE17CF /* HitAnimeProcess.cpp in Sources */,
 				075A01CE1737B4CD0035A532 /* ExplodeAnimeProcess.cpp in Sources */,
 				075A01D1173F94100035A532 /* SpawnProcess.cpp in Sources */,
+				07341B321751D44300601A9A /* CellManager.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

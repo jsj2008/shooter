@@ -19,7 +19,7 @@ namespace hg
     class HGState;
     class HGStateManager;
     
-    void initialize(SpawnData spawnData);
+    void initialize(SpawnData sd, FighterInfo pl, FriendData fd);
     void render();
     void update(t_keyState* keyState);
     void onMoveLeftPad(int degree, float power);

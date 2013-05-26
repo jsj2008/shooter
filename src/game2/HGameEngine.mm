@@ -2,6 +2,7 @@
 
 namespace hg
 {
+    
     float ease_linear(float t, float b, float c, float d)
     {
         t = t/d;
@@ -43,13 +44,32 @@ namespace hg
     {
         return vec*60/GAMEFPS;
     }
+    
+    std::vector<int> randomList;
+    int randomIndex = 0;
+    void initRandom()
+    {
+        srand((unsigned int)time(NULL));
+        randomList.clear();
+        randomIndex = 0;
+        for (int i = 0; i < 300; i++)
+        {
+            randomList.push_back(std::rand());
+        }
+    }
+    
     int rand(int from, int to)
     {
         if (from == to) return from;
-        int r = std::rand()%(to - from + 1);
+        if (randomIndex >= 300)
+        {
+            randomIndex = 0;
+        }
+        int r = randomList[randomIndex]%(to - from + 1);
         int ret = r+from;
         assert(ret >= from);
         assert(to >= ret);
+        randomIndex++;
         return ret;
     }
     float toDeg(float radian)

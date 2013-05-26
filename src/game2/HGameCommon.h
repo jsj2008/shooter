@@ -11,6 +11,7 @@
 
 #include "HGameEngine.h"
 #include "HActorList.h"
+#include "CellManager.h"
 #include <deque>
 
 #define IS_DEBUG_COLLISION 0
@@ -48,7 +49,15 @@ namespace hg {
     
     typedef struct FighterInfo
     {
-        FighterInfo()
+        FighterInfo():
+        fighterType(0),
+        level(1),
+        life(0),
+        lifeMax(0),
+        shield(0),
+        shieldMax(0),
+        shieldHeal(0),
+        speed(0)
         {
         }
         int fighterType;
@@ -64,6 +73,7 @@ namespace hg {
     
     typedef std::vector<FighterInfo> SpawnGroup;
     typedef std::deque<SpawnGroup> SpawnData;
+    typedef std::vector<FighterInfo> FriendData;
     
     typedef struct KeyInfo
     {
@@ -85,6 +95,9 @@ namespace hg {
     extern ActorList<Bullet> enemyBulletList;
     extern ActorList<Fighter> friendFighterList;
     extern ActorList<Fighter> enemyFighterList;
+    
+    extern CellManager<Fighter> enemyCellManager;
+    extern CellManager<Fighter> friendCellManager;
     
 }
 

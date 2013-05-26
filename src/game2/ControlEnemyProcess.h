@@ -59,7 +59,7 @@ namespace hg {
                 pFighter->explode();
                 isControllable = false;
             }
-            if (pTarget && pTarget->getLife() <= 0)
+            if (pTarget && (pTarget->getLife() <= 0 || rand(0, 10) <= 1))
             {
                 pTarget->release();
                 pTarget = NULL;
@@ -68,13 +68,33 @@ namespace hg {
             {
                 if (pTarget == NULL)
                 {
+                    pTarget = pFighter->getFighterHated();
+                    if (pTarget)
+                    {
+                        pTarget->retain();
+                    }
+                }
+                if (pTarget == NULL)
+                {
                     switch (pFighter->getSide()) {
                         case SideTypeFriend:
-                            pTarget = enemyFighterList.getRandomActor();
+                        {
+                            CellManager<Fighter>::ActorList* t = enemyCellManager.getNearbyTargetList(pFighter->getPositionX(), pFighter->getPositionY());
+                            if (t && t->size()>0)
+                            {
+                                pTarget = t->back();
+                            }
                             break;
+                        }
                         case SideTypeEnemy:
-                            pTarget = friendFighterList.getRandomActor();
+                        {
+                            CellManager<Fighter>::ActorList* t = friendCellManager.getNearbyTargetList(pFighter->getPositionX(), pFighter->getPositionY());
+                            if (t && t->size()>0)
+                            {
+                                pTarget = t->back();
+                            }
                             break;
+                        }
                         default:
                             break;
                     }
@@ -83,7 +103,29 @@ namespace hg {
                         pTarget->retain();
                     }
                 }
-                else
+                if (pTarget == NULL)
+                {
+                    switch (pFighter->getSide()) {
+                        case SideTypeFriend:
+                        {
+                            pTarget = enemyFighterList.getRandomActor();
+                            break;
+                        }
+                        case SideTypeEnemy:
+                        {
+                            pTarget = friendFighterList.getRandomActor();
+                            break;
+                        }
+                        default:
+                            break;
+                    }
+                    if (pTarget)
+                    {
+                        pTarget->retain();
+                    }
+                }
+                
+                if (pTarget)
                 {
                     // tgの方向を向く
                     float dx = pTarget->getPositionX() - pFighter->getPositionX();
@@ -94,9 +136,13 @@ namespace hg {
                     pFighter->setAspectDegree(d);
                     
                     // 攻撃する
-                    if (pTarget->getLife() > 0 && abs(dx) + abs(dy) < PXL2REAL(3500))
+                    if (pTarget->getLife() > 0 && abs(dx) + abs(dy) < 50)
                     {
                         pFighter->fire(pTarget);
+                    }
+                    else
+                    {
+                        pTarget = NULL;
                     }
                 }
                 if (pointOfDestination.x == 0 && pointOfDestination.y == 0)
