@@ -181,7 +181,7 @@ namespace hg {
     Rader* pRader = NULL;
     SpawnData spawnData;
     
-    FighterInfo playerInfo;
+    FighterInfo* playerInfo;
     FriendData friendData;
 
     ActorList<Bullet> friendBulletList;
@@ -309,16 +309,15 @@ namespace hg {
         }
     }
     
-    
     // 出現
-    void spawnFighter(SideType sideType, FighterInfo fighterInfo, float positionX, float positionY, int wait)
+    void spawnFighter(SideType sideType, FighterInfo* pFighterInfo, float positionX, float positionY, int wait)
     {
         class SpawnEnemy : public HGObject
         {
         public:
-            SpawnEnemy(SideType sideType, FighterInfo fighterInfo, float positionX, float positionY):
+            SpawnEnemy(SideType sideType, FighterInfo* pFighterInfo, float positionX, float positionY):
             sideType(sideType),
-            fighterInfo(fighterInfo),
+            pFighterInfo(pFighterInfo),
             positionX(positionX),
             positionY(positionY)
             {}
@@ -327,7 +326,7 @@ namespace hg {
                 if (SideTypeFriend == sideType)
                 {
                     Fighter* pEnemy = new Fighter();
-                    pEnemy->init(pLayerFriend, sideType, fighterInfo);
+                    pEnemy->init(pLayerFriend, sideType, pFighterInfo);
                     pEnemy->setPosition(positionX, positionY);
                     friendFighterList.addActor(pEnemy);
                     
@@ -339,7 +338,7 @@ namespace hg {
                 else
                 {
                     Fighter* pEnemy = new Fighter();
-                    pEnemy->init(pLayerEnemy, sideType, fighterInfo);
+                    pEnemy->init(pLayerEnemy, sideType, pFighterInfo);
                     pEnemy->setPosition(positionX, positionY);
                     enemyFighterList.addActor(pEnemy);
                     
@@ -352,7 +351,7 @@ namespace hg {
             }
         private:
             SideType sideType;
-            FighterInfo fighterInfo;
+            FighterInfo* pFighterInfo;
             float positionX;
             float positionY;
         };
@@ -381,7 +380,7 @@ namespace hg {
             {
                 HGProcessOwner* po = new HGProcessOwner();
                 ChangeScaleProcess* ssp = new ChangeScaleProcess();
-                ssp->init(po, pSpr, PXL2REAL(700), PXL2REAL(700), f(10));
+                ssp->init(po, pSpr, PXL2REAL(1500), PXL2REAL(1500), f(10));
                 ssp->setWaitFrame(wait);
                 ssp->setEaseFunc(&ease_out);
                 
@@ -392,7 +391,7 @@ namespace hg {
                 ssp->setNext(ssp2);
                 
                 // 出現
-                SpawnEnemy* se = new SpawnEnemy(sideType, fighterInfo, positionX, positionY);
+                SpawnEnemy* se = new SpawnEnemy(sideType, pFighterInfo, positionX, positionY);
                 CallFunctionRepeadedlyProcess<SpawnEnemy>* cfrp = new CallFunctionRepeadedlyProcess<SpawnEnemy>();
                 cfrp->init(po, &SpawnEnemy::spawn, se);
                 ssp2->setNext(cfrp);
@@ -474,16 +473,11 @@ namespace hg {
         float wait = 0;
         for (FriendData::iterator it = friendData.begin(); it != friendData.end(); ++it)
         {
-            FighterInfo& i = (*it);
-            if (i.life <= 0)
+            FighterInfo* i = (*it);
+            if (i->life <= 0)
             {
                 continue;
             }
-            if (i.isDeployed)
-            {
-                continue;
-            }
-            i.isDeployed = true;
             float tx = pPlayer->getPositionX();
             float ty = pPlayer->getPositionY();
             float d = rand(0, 359);
@@ -493,6 +487,16 @@ namespace hg {
             y = MAX(y, 0), y = MIN(y, FIELD_SIZE);
             spawnFighter(SideTypeFriend, i, x, y, wait);
             wait += f(10);
+        }
+    }
+    
+    void collectAllFriends()
+    {
+        assert(pPlayer);
+        for (ActorList<Fighter>::iterator it = friendFighterList.begin(); it != friendFighterList.end(); ++it)
+        {
+            if (*it == pPlayer) continue;
+            (*it)->disappear();
         }
     }
     
@@ -530,7 +534,7 @@ namespace hg {
                         spawnData.pop_front();
                         for (SpawnGroup::iterator it = sg.begin(); it != sg.end(); it++)
                         {
-                            FighterInfo finfo = *it;
+                            FighterInfo* finfo = *it;
                             spawnFighter(SideTypeEnemy,
                                          finfo,
                                          rand(0, sizeOfField.width),
@@ -556,6 +560,10 @@ namespace hg {
             {
                 deployAllFriends();
             }
+            else if (keyInfo.shouldCollectFriend)
+            {
+                collectAllFriends();
+            }
         }
         std::string getName()
         {
@@ -569,7 +577,7 @@ namespace hg {
 
     ////////////////////
     // 初期化
-    void initialize(SpawnData sd, FighterInfo pl, FriendData fd)
+    void initialize(SpawnData sd, FighterInfo* pl, FriendData fd)
     {
         initRandom();
         

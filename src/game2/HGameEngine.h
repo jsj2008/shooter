@@ -579,6 +579,16 @@ namespace hg
             this->rotate.z = radian;
         }
         
+        inline void setRotateY(float radian)
+        {
+            this->rotate.y = radian;
+        }
+        
+        inline void setRotateX(float radian)
+        {
+            this->rotate.x = radian;
+        }
+        
         inline Vector& getPosition()
         {
             return position;

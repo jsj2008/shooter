@@ -14,7 +14,7 @@ namespace hg
     class HGState;
     class HGStateManager;
     
-    void initialize(SpawnData sd, FighterInfo pl, FriendData fd);
+    void initialize(SpawnData sd, FighterInfo* pl, FriendData fd);
     void render();
     void update(KeyInfo keyState);
 }

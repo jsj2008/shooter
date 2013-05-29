@@ -70,6 +70,15 @@ namespace hg {
             list.push_back(t);
         }
         
+        void removeActor(T* t)
+        {
+            // ********************
+            // std::remove doesn't change the size of the container, it just moves the contents around
+            // ********************
+            list.erase(std::remove(list.begin(), list.end(), t), list.end());
+            t->release();
+        }
+        
         T* getRandomActor()
         {
             if (list.size() <= 0)

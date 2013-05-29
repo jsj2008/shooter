@@ -49,6 +49,8 @@
 		0755992A16B561490066A0E9 /* block.obj in Resources */ = {isa = PBXBuildFile; fileRef = 0755992816B561490066A0E9 /* block.obj */; };
 		075A01CE1737B4CD0035A532 /* ExplodeAnimeProcess.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 075A01CC1737B4CC0035A532 /* ExplodeAnimeProcess.cpp */; };
 		075A01D1173F94100035A532 /* SpawnProcess.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 075A01CF173F940F0035A532 /* SpawnProcess.cpp */; };
+		077207A117523D69009FCD2D /* star_cross.png in Resources */ = {isa = PBXBuildFile; fileRef = 077207A017523D69009FCD2D /* star_cross.png */; };
+		077207A417525BE2009FCD2D /* ring.png in Resources */ = {isa = PBXBuildFile; fileRef = 077207A317525BE0009FCD2D /* ring.png */; };
 		078D301A174920BB00C48579 /* tunelring.png in Resources */ = {isa = PBXBuildFile; fileRef = 078D3018174920B300C48579 /* tunelring.png */; };
 		078D301B174920BB00C48579 /* wave.png in Resources */ = {isa = PBXBuildFile; fileRef = 078D3019174920B700C48579 /* wave.png */; };
 		0793F46B17375CB500FE17CF /* HitAnimeProcess.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0793F46917375CB400FE17CF /* HitAnimeProcess.cpp */; };
@@ -265,6 +267,8 @@
 		075A01CD1737B4CD0035A532 /* ExplodeAnimeProcess.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExplodeAnimeProcess.h; sourceTree = "<group>"; };
 		075A01CF173F940F0035A532 /* SpawnProcess.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpawnProcess.cpp; sourceTree = "<group>"; };
 		075A01D0173F94100035A532 /* SpawnProcess.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpawnProcess.h; sourceTree = "<group>"; };
+		077207A017523D69009FCD2D /* star_cross.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = star_cross.png; sourceTree = "<group>"; };
+		077207A317525BE0009FCD2D /* ring.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ring.png; sourceTree = "<group>"; };
 		078D3018174920B300C48579 /* tunelring.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tunelring.png; sourceTree = "<group>"; };
 		078D3019174920B700C48579 /* wave.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wave.png; sourceTree = "<group>"; };
 		0793F46917375CB400FE17CF /* HitAnimeProcess.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HitAnimeProcess.cpp; sourceTree = "<group>"; };
@@ -490,6 +494,8 @@
 		0755992616B561490066A0E9 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				077207A317525BE0009FCD2D /* ring.png */,
+				077207A017523D69009FCD2D /* star_cross.png */,
 				07341B2E175110BF00601A9A /* enemyList.json */,
 				07341B2C17507E5000601A9A /* boxyfont.png */,
 				07341B25174BC88E00601A9A /* sparkle.png */,
@@ -1037,6 +1043,8 @@
 				07341B26174BC89000601A9A /* sparkle.png in Resources */,
 				07341B2D17507E5100601A9A /* boxyfont.png in Resources */,
 				07341B2F175110C000601A9A /* enemyList.json in Resources */,
+				077207A117523D69009FCD2D /* star_cross.png in Resources */,
+				077207A417525BE2009FCD2D /* ring.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

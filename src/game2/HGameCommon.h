@@ -18,7 +18,7 @@
 #define ENEMY_NUM 10
 #define BULLET_NUM 100
 #define ENEMY_BULLET_NUM 100
-#define FIELD_SIZE 100
+#define FIELD_SIZE 150
 #define ZPOS 0
 #define BACKGROUND_SCALE 2000
 #define STAGE_SCALE 100
@@ -57,8 +57,7 @@ namespace hg {
         shield(0),
         shieldMax(0),
         shieldHeal(0),
-        speed(0),
-        isDeployed(false)
+        speed(0)
         {
         }
         int fighterType;
@@ -68,14 +67,13 @@ namespace hg {
         int shield;
         int shieldMax;
         int shieldHeal;
-        bool isDeployed;
         float speed;
         WeaponInfoList weaponList;
     } FighterInfo;
     
-    typedef std::vector<FighterInfo> SpawnGroup;
+    typedef std::vector<FighterInfo*> SpawnGroup;
     typedef std::deque<SpawnGroup> SpawnData;
-    typedef std::vector<FighterInfo> FriendData;
+    typedef std::vector<FighterInfo*> FriendData;
     
     typedef struct KeyInfo
     {

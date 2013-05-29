@@ -53,11 +53,12 @@ namespace hg {
         pShieldBackColorNode(NULL),
         side(SideTypeEnemy),
         isInitialized(false),
-        isShip(false),
+        _isShip(false),
         _isPlayer(false),
         pFighterHated(NULL),
         explodeProcessCount(0),
-        shieldHeal(0)
+        shieldHeal(0),
+        pFighterInfo(NULL)
         {
         }
         
@@ -95,13 +96,18 @@ namespace hg {
         {
             base::setActive(isActive);
         }
-        inline void init(HGNode* layerParent, SideType side, FighterInfo info)
+        inline bool isShip()
+        {
+            return _isShip;
+        }
+        inline void init(HGNode* layerParent, SideType side, FighterInfo* pInfo)
         {
             base::init(layerParent);
             this->side = side;
-            this->type = info.fighterType;
+            this->type = pInfo->fighterType;
             processOwner = new HGProcessOwner();
             processOwner->retain();
+            this->pFighterInfo = pInfo;
             
             // 種類別の初期化
             switch (type)
@@ -195,7 +201,7 @@ namespace hg {
                         wp->retain();
                     }
                     
-                    isShip = true;
+                    _isShip = true;
                     break;
                 }
                 default:
@@ -204,12 +210,12 @@ namespace hg {
             
             if (side == SideTypeFriend)
             {
-                life      = info.life;
-                lifeMax   = info.lifeMax;
-                shield    = info.shield;
-                shieldMax = info.shieldMax;
-                shieldHeal = info.shieldHeal;
-                speed     = v(info.speed);
+                life      = pInfo->life;
+                lifeMax   = pInfo->lifeMax;
+                shield    = pInfo->shield;
+                shieldMax = pInfo->shieldMax;
+                shieldHeal = pInfo->shieldHeal;
+                speed     = v(pInfo->speed);
             }
             
             pSprite = new HGSprite();
@@ -347,7 +353,7 @@ namespace hg {
         inline void setAspectDegree(float degree)
         {
             aspectDegree = degree;
-            if (!isShip)
+            if (!_isShip)
             {
                 int spIdx = getSpriteIndex(aspectDegree + 0.5);
                 int x = textureSrcSize.width * spIdx + textureSrcOffset.x;
@@ -459,6 +465,7 @@ namespace hg {
         // 毎フレーム呼び出される
         inline void tick()
         {
+            // shield check
             if (isActive())
             {
                 if (hasShield())
@@ -471,28 +478,42 @@ namespace hg {
                     }
                 }
                 
-                // 軌跡
-                /*
-                if (!isShip && rand(0, 100) <= 30)
+            }
+            
+            // data copy
+            pFighterInfo->life = life;
+            pFighterInfo->shield = shield;
+            
+        }
+        
+        inline void showTracks(float rad)
+        {
+            // 軌跡
+            if (!_isShip && side == SideTypeFriend && rand(0, 100) <= 50)
+            {
+                for (int i = 0; i < 2; i++)
+                {
+                float r = toRad(rand(0, 359));
+                float tx = cos(r) * getWidth() + getPositionX();
+                float ty = sin(r) * getHeight() + getPositionY();
                 {
                     AlphaMapSprite* pSpr = new AlphaMapSprite();
-                    pSpr->init("sparkle.png", (Color){0.9, 0.9, 1.0, 1.0});
-                    pSpr->setPosition(rand(getPositionX() - getWidth()/2, getPositionX() + getWidth()/2),
-                                      rand(getPositionY() - getHeight()/2, getPositionY() + getHeight()/2));
+                    pSpr->init("star_cross.png", (Color){0.9, 0.9, 1.0, 1.0});
+                    pSpr->setPosition(tx, ty);
                     pSpr->setScale(0, 0);
-                    pSpr->setRotateZ(rand(0, 359) * M_PI/180);
+                    pSpr->setRotateZ(toRad(rand(0, 359)));
                     pLayerEffect->addChild(pSpr);
                     {
                         // 回転
                         HGProcessOwner* po = new HGProcessOwner();
                         RotateNodeProcess* rnp = new RotateNodeProcess();
-                        Vector r = Vector(0,0,-1300);
+                        Vector r = Vector(0,0,-9300);
                         rnp->init(po, pSpr, r, f(40));
                         rnp->setEaseFunc(&ease_out);
                         HGProcessManager::sharedProcessManager()->addProcess(rnp);
                     }
                     {
-                        float size = rand(PXL2REAL(250), PXL2REAL(650));
+                        float size = rand(PXL2REAL(80), PXL2REAL(170));
                         // 拡大
                         HGProcessOwner* po = new HGProcessOwner();
                         ChangeScaleProcess* ssp = new ChangeScaleProcess();
@@ -513,8 +534,49 @@ namespace hg {
                         // プロセス開始
                         HGProcessManager::sharedProcessManager()->addProcess(ssp);
                     }
+                }
+                }
                 
+                /*
+                {
+                    AlphaMapSprite* pSpr = new AlphaMapSprite();
+                    pSpr->init("star.png", (Color){0.9, 0.9, 1.0, 0.5});
+                    pSpr->setPosition(tx, ty);
+                    pSpr->setScale(0, 0);
+                    pSpr->setRotateZ(toRad(rand(0, 359)));
+                    pLayerEffect->addChild(pSpr);
+                    {
+                        {
+                            float size = PXL2REAL(420);
+                            // 拡大
+                            HGProcessOwner* po = new HGProcessOwner();
+                            ChangeScaleProcess* ssp = new ChangeScaleProcess();
+                            ssp->init(po, pSpr, size, size, f(50));
+                            ssp->setEaseFunc(&ease_out);
+                            
+                            // プロセス開始
+                            HGProcessManager::sharedProcessManager()->addProcess(ssp);
+                        }
+                        
+                        {
+                            HGProcessOwner* po = new HGProcessOwner();
+                            // 縮小
+                            SpriteChangeOpacityProcess* ssp2 = new SpriteChangeOpacityProcess();
+                            ssp2->setWaitFrame(f(30));
+                            ssp2->init(po, pSpr, 0, f(20));
+                            ssp2->setEaseFunc(&ease_in);
+                            
+                            // 削除
+                            NodeRemoveProcess* nrp = new NodeRemoveProcess();
+                            nrp->init(po, pSpr);
+                            ssp2->setNext(nrp);
+                            
+                            // プロセス開始
+                            HGProcessManager::sharedProcessManager()->addProcess(ssp2);
+                        }
+                    }
                 }*/
+                
             }
         }
         
@@ -536,11 +598,119 @@ namespace hg {
             HGProcessManager::sharedProcessManager()->addProcess(cfrp);
         }
         
+        // 撤収する
+        // エフェクトだしてから消え去る
+        inline void disappear()
+        {
+            if (isDisappearing)
+            {
+                return;
+            }
+            isDisappearing = true;
+            // 光
+            {
+                AlphaMapSprite* pSpr = new AlphaMapSprite();
+                pSpr->init("corona.png", (Color){0.8, 0.8, 1.0, 1.0});
+                pSpr->setPosition(this->getPositionX(), this->getPositionY());
+                pSpr->setScale(0, 0);
+                pSpr->setRotateZ(rand(0, 359) * M_PI/180);
+                pLayerEffect->addChild(pSpr);
+                
+                // 回転
+                {
+                    HGProcessOwner* po = new HGProcessOwner();
+                    RotateNodeProcess* rnp = new RotateNodeProcess();
+                    Vector r = Vector(0,0,1300);
+                    rnp->init(po, pSpr, r, f(40));
+                    rnp->setEaseFunc(&ease_out);
+                    HGProcessManager::sharedProcessManager()->addProcess(rnp);
+                }
+                
+                // 拡大
+                {
+                    HGProcessOwner* po = new HGProcessOwner();
+                    ChangeScaleProcess* ssp = new ChangeScaleProcess();
+                    ssp->init(po, pSpr, PXL2REAL(1500), PXL2REAL(1500), f(10));
+                    ssp->setEaseFunc(&ease_out);
+                    
+                    // 縮小
+                    ChangeScaleProcess* ssp2 = new ChangeScaleProcess();
+                    ssp2->init(po, pSpr, 0, 0, 5);
+                    ssp2->setEaseFunc(&ease_in);
+                    ssp->setNext(ssp2);
+                    
+                    // 撤収実行
+                    CallFunctionRepeadedlyProcess<Fighter>* cfrp = new CallFunctionRepeadedlyProcess<Fighter>();
+                    cfrp->init(po, &Fighter::disappearDo, this);
+                    ssp2->setNext(cfrp);
+                    
+                    // 削除
+                    NodeRemoveProcess* nrp = new NodeRemoveProcess();
+                    nrp->init(po, pSpr);
+                    cfrp->setNext(nrp);
+                    
+                    // プロセス開始
+                    HGProcessManager::sharedProcessManager()->addProcess(ssp);
+                }
+            }
+            
+            // 光
+            {
+                AlphaMapSprite* pSpr = new AlphaMapSprite();
+                pSpr->init("wavering.png", (Color){1.0, 0.5, 0.5, 1.0});
+                pSpr->setPosition(this->getPositionX(), this->getPositionY());
+                pSpr->setScale(0, 0);
+                pSpr->setRotateZ(rand(0, 359) * M_PI/180);
+                pLayerEffect->addChild(pSpr);
+                
+                {
+                    {
+                        // 回転
+                        HGProcessOwner* po = new HGProcessOwner();
+                        RotateNodeProcess* rnp = new RotateNodeProcess();
+                        Vector r = Vector(0,0,-1300);
+                        rnp->init(po, pSpr, r, f(40));
+                        rnp->setEaseFunc(&ease_in);
+                        HGProcessManager::sharedProcessManager()->addProcess(rnp);
+                    }
+                    
+                    {
+                        // 拡大
+                        HGProcessOwner* po = new HGProcessOwner();
+                        ChangeScaleProcess* ssp = new ChangeScaleProcess();
+                        ssp->init(po, pSpr, PXL2REAL(1000), PXL2REAL(1000), 16);
+                        ssp->setEaseFunc(&ease_in_out);
+                        
+                        // プロセス開始
+                        HGProcessManager::sharedProcessManager()->addProcess(ssp);
+                    }
+                    
+                    {
+                        // 透明化
+                        HGProcessOwner* po2 = new HGProcessOwner();
+                        SpriteChangeOpacityProcess* scop = new SpriteChangeOpacityProcess();
+                        scop->setEaseFunc(&ease_in_out);
+                        scop->init(po2, pSpr, 0, 8);
+                        scop->setWaitFrame(f(10));
+                        
+                        // 削除
+                        NodeRemoveProcess* nrp = new NodeRemoveProcess();
+                        nrp->init(po2, pSpr);
+                        scop->setNext(nrp);
+                        
+                        // プロセス開始
+                        HGProcessManager::sharedProcessManager()->addProcess(scop);
+                    }
+                }
+            }
+            
+        }
+        
         // call function repeatedly processから呼び出される
         inline bool explodeProcess()
         {
             explodeProcessCount++;
-            if (isShip)
+            if (_isShip)
             {
                 if (explodeProcessCount > 90)
                 {
@@ -645,6 +815,22 @@ namespace hg {
         }
         
     private:
+        
+        inline bool disappearDo()
+        {
+            if (SideTypeFriend == side)
+            {
+                friendFighterList.removeActor(this);
+            }
+            else
+            {
+                enemyFighterList.removeActor(this);
+            }
+            this->setActive(false);
+            this->getNode()->removeFromParent();
+            return true;
+        }
+        
         inline void updateLifeBar()
         {
             if (side == SideTypeFriend)
@@ -695,7 +881,7 @@ namespace hg {
         int type;
         HGProcessOwner* processOwner;
         bool isInitialized;
-        bool isShip;
+        bool _isShip;
         int explodeProcessCount;
         float shield;
         float shieldMax;
@@ -703,6 +889,8 @@ namespace hg {
         double lastTimeShieldHeal = 0;
         bool _isPlayer;
         Fighter* pFighterHated;
+        FighterInfo* pFighterInfo;
+        bool isDisappearing = false;
         int getSpriteIndex(int i)
         {
             while (i < 0)

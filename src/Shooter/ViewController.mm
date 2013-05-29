@@ -23,6 +23,9 @@
     PadView* _leftPadView;
     PadView* _rightPadView;
     
+    UIButton* deployBtn;
+    UIButton* collectBtn;
+    
     // OpenGL
     HGLView* _glview;
     
@@ -85,14 +88,15 @@
     NSError* error;
     NSDictionary* dicEnemyList = [NSJSONSerialization JSONObjectWithData:dataEnemyList options:kNilOptions error:&error];
     
+#warning DELETE FIGHTER DATA AFTER GAME!!!!!!!!
     // Create Spawn Data
     hg::SpawnData spawnData;
     for (NSDictionary* d in dicEnemyList)
     {
         int tmpGroup = [[d valueForKey:@"group"] integerValue] - 1;
-        hg::FighterInfo f;
-        f.fighterType = [[d valueForKey:@"fighterType"] integerValue];
-        f.level = [[d valueForKey:@"level"] integerValue];
+        hg::FighterInfo* f = new hg::FighterInfo();
+        f->fighterType = [[d valueForKey:@"fighterType"] integerValue];
+        f->level = [[d valueForKey:@"level"] integerValue];
         if (tmpGroup >= spawnData.size())
         {
             spawnData.push_back(hg::SpawnGroup());
@@ -100,39 +104,39 @@
         spawnData[tmpGroup].push_back(f);
     }
     
-    hg::FighterInfo playerInfo;
-    playerInfo.fighterType = 0;
-    playerInfo.life = 3000;
-    playerInfo.lifeMax = 3000;
-    playerInfo.shield = 3000;
-    playerInfo.shieldMax = 3000;
-    playerInfo.speed = 0.5;
+    hg::FighterInfo* pPlayerInfo = new hg::FighterInfo();
+    pPlayerInfo->fighterType = 0;
+    pPlayerInfo->life = 3000;
+    pPlayerInfo->lifeMax = 3000;
+    pPlayerInfo->shield = 3000;
+    pPlayerInfo->shieldMax = 3000;
+    pPlayerInfo->speed = 0.5;
     
     hg::FriendData friendData;
     {
-        hg::FighterInfo i;
-        i.fighterType = 1;
-        i.life = 2000;
-        i.lifeMax = 2000;
-        i.shield = 1000;
-        i.shieldMax = 1000;
-        i.speed = 0.3;
+        hg::FighterInfo* i = new hg::FighterInfo();
+        i->fighterType = 1;
+        i->life = 2000;
+        i->lifeMax = 2000;
+        i->shield = 1000;
+        i->shieldMax = 1000;
+        i->speed = 0.3;
         friendData.push_back(i);
     }
     {
-        hg::FighterInfo i;
-        i.fighterType = 2;
-        i.life = 4000;
-        i.lifeMax = 4000;
-        i.shield = 11000;
-        i.shieldMax = 11000;
-        i.speed = 0.1;
+        hg::FighterInfo* i = new hg::FighterInfo();
+        i->fighterType = 2;
+        i->life = 4000;
+        i->lifeMax = 4000;
+        i->shield = 11000;
+        i->shieldMax = 11000;
+        i->speed = 0.1;
         friendData.push_back(i);
     }
     
     // setup game
     //HGGame::initialize();
-    hg::initialize(spawnData, playerInfo, friendData);
+    hg::initialize(spawnData, pPlayerInfo, friendData);
     
     // creating game thread
     _game_queue = dispatch_queue_create(DISPATCH_QUEUE_PRIORITY_DEFAULT, NULL);
@@ -197,7 +201,7 @@
         [fireBtn addTarget:self action:@selector(startFire) forControlEvents:UIControlEventTouchDown];
         [fireBtn addTarget:self action:@selector(stopFire) forControlEvents:UIControlEventTouchUpInside];
         [fireBtn addTarget:self action:@selector(stopFire) forControlEvents:UIControlEventTouchUpOutside];
-        [fireBtn setAlpha:0.3];
+        //[fireBtn setAlpha:0.3];
         
         [_glview addSubview:fireBtn];
     }
@@ -215,9 +219,10 @@
         btn.frame = frame;
         [btn setTitle:@"deploy" forState:UIControlStateNormal];
         [btn addTarget:self action:@selector(deployFriend) forControlEvents:UIControlEventTouchUpInside];
-        [btn setAlpha:0.3];
-        
+        //[btn setAlpha:0.3];
         [_glview addSubview:btn];
+        deployBtn = btn;
+        
     }
     
     // コレクト
@@ -233,9 +238,13 @@
         btn.frame = frame;
         [btn setTitle:@"collect" forState:UIControlStateNormal];
         [btn addTarget:self action:@selector(collectFriend) forControlEvents:UIControlEventTouchUpInside];
-        [btn setAlpha:0.3];
-        
+        //[btn setAlpha:0.3];
         [_glview addSubview:btn];
+        collectBtn = btn;
+        
+        [btn setAlpha:0.5];
+        [btn setEnabled:false];
+        
     }
     
 }
@@ -253,10 +262,26 @@
 - (void) deployFriend
 {
     keyState.shouldDeployFriend = true;
+    [deployBtn setEnabled:false];
+    [deployBtn setAlpha:0.5];
+    int64_t delayInSeconds = 10;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [collectBtn setEnabled:true];
+        [collectBtn setAlpha:1];
+    });
 }
 - (void) collectFriend
 {
     keyState.shouldCollectFriend = true;
+    [collectBtn setEnabled:false];
+    [collectBtn setAlpha:0.5];
+    int64_t delayInSeconds = 10;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [deployBtn setEnabled:true];
+        [deployBtn setAlpha:1];
+    });
 }
 
 @end

@@ -31,7 +31,7 @@ CGSize defaultPadSize;
         
         defaultPadSize = {120, 120};
         _onTouch = [onTouch copy];
-        [self setPadSize: defaultPadSize];
+        [self setPadSize:CGSizeMake(0, 0)];
         [self setCenter:CGPointMake(defaultPadSize.width/2, frame.size.height - defaultPadSize.height/2)];
         
         // タッチエフェクト

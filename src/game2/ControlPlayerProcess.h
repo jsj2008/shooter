@@ -42,12 +42,12 @@ namespace hg {
     protected:
         void onUpdate()
         {
+            pFighter->tick();
             if (!pFighter->isActive())
             {
                 this->setEnd();
                 return;
             }
-            pFighter->tick();
             if (keyInfo.power != 0 && !keyInfo.isFire)
             {
                 pFighter->setAspectDegree(keyInfo.degree);
@@ -58,6 +58,10 @@ namespace hg {
                 float r = toRad(keyInfo.degree);
                 vx = cos(r) * speed;
                 vy = sin(r) * speed * -1;
+                if (speed > 0)
+                {
+                    pFighter->showTracks(toRad(keyInfo.degree -= 180));
+                }
             }
             else
             {
@@ -101,7 +105,6 @@ namespace hg {
             {
                 this->setEnd();
             }
-            
         }
         std::string getName()
         {

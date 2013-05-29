@@ -48,12 +48,12 @@ namespace hg {
     protected:
         void onUpdate()
         {
+            pFighter->tick();
             if (!pFighter->isActive())
             {
                 this->setEnd();
                 return;
             }
-            pFighter->tick();
             if (isControllable && pFighter->getLife() <= 0)
             {
                 pFighter->explode();
@@ -136,9 +136,17 @@ namespace hg {
                     pFighter->setAspectDegree(d);
                     
                     // 攻撃する
-                    if (pTarget->getLife() > 0 && abs(dx) + abs(dy) < 50)
+                    if (pTarget->getLife() > 0)
                     {
-                        pFighter->fire(pTarget);
+                        float distance = PXL2REAL(5000);
+                        if (pFighter->isShip())
+                        {
+                            distance = PXL2REAL(10000);
+                        }
+                        if (abs(dx) + abs(dy) < distance)
+                        {
+                            pFighter->fire(pTarget);
+                        }
                     }
                     else
                     {
@@ -212,12 +220,16 @@ namespace hg {
         {
             if (pTarget && pTarget->getLife() > 0)
             {
-                // 遠距離
-                float rad = rand(1, 359)*180/M_PI;
+                float rad = toRad(rand(1, 359));
                 
 #warning 距離を設定
-                float viaX = (pTarget->getPositionX() + PXL2REAL(1000)*cos(rad));
-                float viaY = (pTarget->getPositionY() + PXL2REAL(1000)*sin(rad));
+                float distance = PXL2REAL(3000);
+                if (pFighter->isShip())
+                {
+                    distance = PXL2REAL(5000);
+                }
+                float viaX = (pTarget->getPositionX() + distance*cos(rad));
+                float viaY = (pTarget->getPositionY() + distance*sin(rad));
                 pointOfDestination.x = viaX;
                 pointOfDestination.y = viaY;
             }
