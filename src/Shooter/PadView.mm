@@ -28,6 +28,7 @@ CGSize defaultPadSize;
     {
         [self setAlpha:0.4];
         [self setBackgroundColor:[UIColor clearColor]];
+        [self setUserInteractionEnabled:TRUE];
         
         defaultPadSize = {120, 120};
         _onTouch = [onTouch copy];

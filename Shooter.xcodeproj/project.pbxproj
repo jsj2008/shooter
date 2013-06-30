@@ -96,7 +96,7 @@
 		07DE748D16EC368F0048877C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 07DE746916EC368F0048877C /* main.m */; };
 		07DE748E16EC368F0048877C /* PadView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07DE746B16EC368F0048877C /* PadView.mm */; };
 		07DE749016EC368F0048877C /* TouchHandlerView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07DE746F16EC368F0048877C /* TouchHandlerView.mm */; };
-		07DE749116EC368F0048877C /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07DE747116EC368F0048877C /* ViewController.mm */; };
+		07DE749116EC368F0048877C /* GameView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07DE747116EC368F0048877C /* GameView.mm */; };
 		07DE749A16EC372B0048877C /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 07DE749316EC372B0048877C /* Default-568h@2x.png */; };
 		07DE749B16EC372B0048877C /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 07DE749416EC372B0048877C /* Default.png */; };
 		07DE749C16EC372B0048877C /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 07DE749516EC372B0048877C /* Default@2x.png */; };
@@ -349,8 +349,8 @@
 		07DE746B16EC368F0048877C /* PadView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PadView.mm; sourceTree = "<group>"; };
 		07DE746E16EC368F0048877C /* TouchHandlerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouchHandlerView.h; sourceTree = "<group>"; };
 		07DE746F16EC368F0048877C /* TouchHandlerView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TouchHandlerView.mm; sourceTree = "<group>"; };
-		07DE747016EC368F0048877C /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		07DE747116EC368F0048877C /* ViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ViewController.mm; sourceTree = "<group>"; };
+		07DE747016EC368F0048877C /* GameView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameView.h; sourceTree = "<group>"; };
+		07DE747116EC368F0048877C /* GameView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GameView.mm; sourceTree = "<group>"; };
 		07DE749316EC372B0048877C /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		07DE749416EC372B0048877C /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		07DE749516EC372B0048877C /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
@@ -754,8 +754,8 @@
 				077207AB175B5604009FCD2D /* UIButton+MyCategory.m */,
 				077207AD175B5644009FCD2D /* UIColor+MyCategory.h */,
 				077207AE175B5644009FCD2D /* UIColor+MyCategory.m */,
-				07DE747016EC368F0048877C /* ViewController.h */,
-				07DE747116EC368F0048877C /* ViewController.mm */,
+				07DE747016EC368F0048877C /* GameView.h */,
+				07DE747116EC368F0048877C /* GameView.mm */,
 				07AB4F5E176469AA0071482F /* AllyView.h */,
 				07AB4F5F176469AA0071482F /* AllyView.m */,
 				07BB8FCA17757A7A007FF3D0 /* ImageButtonView.h */,
@@ -1120,7 +1120,7 @@
 				07DE748D16EC368F0048877C /* main.m in Sources */,
 				07DE748E16EC368F0048877C /* PadView.mm in Sources */,
 				07DE749016EC368F0048877C /* TouchHandlerView.mm in Sources */,
-				07DE749116EC368F0048877C /* ViewController.mm in Sources */,
+				07DE749116EC368F0048877C /* GameView.mm in Sources */,
 				07DE74A616EC38780048877C /* smart_ptr.mm in Sources */,
 				07DE74C816EC38A40048877C /* HGLES.mm in Sources */,
 				07DE74C916EC38A40048877C /* HGLGraphics2D.mm in Sources */,

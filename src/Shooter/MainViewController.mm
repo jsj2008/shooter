@@ -18,17 +18,21 @@
 #import "StatusView.h"
 #import "BackgroundView.h"
 #import "UIColor+MyCategory.h"
+#import "GameView.h"
 
 @interface MainViewController()
 {
     // shootingView
-    ViewController* gameViewController;
+    GameView* gameView;
     
     // title
     TitleView* title;
     
+    // bottom
+    UIView* bottomView;
+    
     // background
-    //BackgroundView* backgroundView;
+    BackgroundView* backgroundView;
     
     // menu
     MenuView* menuView;
@@ -56,10 +60,17 @@ static MainViewController* instance = nil;
         instance = self;
         menuView = NULL;
         
+        CGRect frame = [UIScreen mainScreen].applicationFrame;
+        CGRect viewFrame = CGRectMake(0, 0, frame.size.height, frame.size.width);
+        
+        bottomView = [[[UIView alloc] initWithFrame:viewFrame] autorelease];
+        [bottomView setBackgroundColor:[UIColor clearColor]];
+        [self.view addSubview:bottomView];
+        
         // 背景
-        //backgroundView = [[BackgroundView alloc] init];
-        //assert(backgroundView != nil);
-        //[self.view addSubview:backgroundView];
+        backgroundView = [[[BackgroundView alloc] init] autorelease];
+        assert(backgroundView != nil);
+        [bottomView addSubview:backgroundView];
         
         // タイトルメニュー
         title = [[TitleView alloc] init];
@@ -117,15 +128,27 @@ static MainViewController* instance = nil;
 -(void)stageStart
 {
     // 背景終了
-    //[backgroundView clearGL];
-    //[backgroundView removeFromSuperview];
-    //backgroundView = NULL;
+    [backgroundView clearGL];
+    [backgroundView removeFromSuperview];
+    backgroundView = NULL;
+    
+    /*
+    while ([[self.view subviews] count] > 0)
+    {
+        [[[self.view subviews] objectAtIndex:0] removeFromSuperview];
+    }*/ 
     
     // ゲーム開始
-    gameViewController = [[ViewController alloc] init];
-    [self presentViewController:gameViewController animated:NO completion:^{
-        // nothing
+    gameView = [[GameView alloc] initWithOnEndAction:^{
+        // 背景復活
+        backgroundView = [[[BackgroundView alloc] init] autorelease];
+        assert(backgroundView != nil);
+        [bottomView addSubview:backgroundView];
+        [gameView removeFromSuperview];
+        [gameView release];
     }];
+    [self.view addSubview:gameView];
+    [self.view bringSubviewToFront:gameView];
 }
 
 +(void)PresentViewController:(UIViewController*) vc

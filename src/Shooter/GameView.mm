@@ -6,7 +6,7 @@
 //  Copyright (c) 2012年 hayogame. All rights reserved.
 //
 
-#import "ViewController.h"
+#import "GameView.h"
 //#import "HGGame.h"
 #import "HGame.h"
 #import "HGLView.h"
@@ -21,7 +21,7 @@
 #define DEPLOY_BTN_SIZE 50
 
 
-@interface ViewController()
+@interface GameView()
 {
     // game's main thread
     dispatch_queue_t _game_queue;
@@ -43,10 +43,13 @@
     NSTimeInterval collectedTime;
     CALayer* deployBtnSubLayer;
     
+    // action
+    void (^onEndAction)();
+    
 }
 @end
 
-@implementation ViewController
+@implementation GameView
 
 static NSObject* lock = nil;
 
@@ -55,15 +58,34 @@ static NSObject* lock = nil;
     if (_glview) {
         [_glview release];
     }
+    if (onEndAction)
+    {
+        [onEndAction release];
+    }
     [super dealloc];
 }
 
-- (id) init
+- (id) initWithOnEndAction:(void(^)(void))action
 {
     self = [super init];
+    onEndAction = [action copy];
     if (lock == nil)
     {
         lock = [[NSObject alloc] init];
+    }
+    if (self)
+    {
+        CGRect frame = [[UIScreen mainScreen] applicationFrame];
+        CGRect viewFrame = CGRectMake(0, 0, frame.size.height, frame.size.width);
+        [self setFrame:viewFrame];
+        //[self setBackgroundColor:[UIColor blackColor]];
+        //*/
+        double delayInSeconds = 0.5;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [self viewDidLoad];
+        });
+        [self setUserInteractionEnabled:TRUE];
     }
     return self;
 }
@@ -80,7 +102,8 @@ static NSObject* lock = nil;
             hg::render();
         }
     }];
-    self.view = _glview;
+    //self.view = _glview;
+    [self addSubview:_glview];
     
     ////////////////////
     // 3d以外の初期化
@@ -180,12 +203,12 @@ static NSObject* lock = nil;
                                 UIView* curtain = [[[UIView alloc] initWithFrame:cf] autorelease];
                                 [curtain setBackgroundColor:[UIColor blackColor]];
                                 [curtain setAlpha:0];
-                                [self.view addSubview:curtain];
+                                //[self.view addSubview:curtain];
+                                [self addSubview:curtain];
                                 [UIView animateWithDuration:1.0 animations:^{
                                     [curtain setAlpha:1];
                                 } completion:^(BOOL finished) {
-                                    [self dismissViewControllerAnimated:true completion:^{
-                                    }];
+                                    onEndAction();
                                 }];
                             });
                             break;
@@ -213,7 +236,8 @@ static NSObject* lock = nil;
                 keyState.degree = degree;
                 keyState.power = power;
             }] autorelease];
-            [_glview addSubview:_leftPadView];
+            //[_glview addSubview:_leftPadView];
+            [self addSubview:_leftPadView];
         }
         
         float btnGap = 12;
@@ -254,7 +278,7 @@ static NSObject* lock = nil;
             button.titleLabel.layer.shadowOffset = CGSizeZero;
             button.titleLabel.layer.masksToBounds = NO;
             
-            [_glview addSubview:button];
+            [self addSubview:button];
         }
         
         // デプロイ
@@ -294,7 +318,7 @@ static NSObject* lock = nil;
             button.titleLabel.layer.shadowOffset = CGSizeZero;
             button.titleLabel.layer.masksToBounds = NO;
             
-            [_glview addSubview:button];
+            [self addSubview:button];
             deployBtn = button;
             
         }
