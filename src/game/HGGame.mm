@@ -20,6 +20,7 @@
 #import <vector>
 #import <map>
 #import <stack>
+#import <cstdlib>
 //#import <mutex>
 
 namespace HGGame {
@@ -455,6 +456,7 @@ namespace HGGame {
         size_of_field = {FIELD_SIZE, FIELD_SIZE};
         center_of_field = {FIELD_SIZE/2, FIELD_SIZE/2};
         
+        /*
         // create friends
         userinfo::t_fighter_list* flist = userinfo::current_fighter_list;
         for (int i = 0; i < flist->size(); ++i)
@@ -479,7 +481,7 @@ namespace HGGame {
                 f->setDirectionWithDegree(0);
                 _friends.push_back(f);
             }
-        }
+        }*/
     
         // create enemies
         for (int i = 0; i < ENEMY_NUM; ++i)

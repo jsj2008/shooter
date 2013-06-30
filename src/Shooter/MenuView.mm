@@ -1,15 +1,16 @@
 #import "MenuView.h"
 #import "MainViewController.h"
 #import <QuartzCore/QuartzCore.h>
-
+#import "AllyViewController.h"
 #import <vector>
 
-typedef enum TYPE_MENU_BTN
+typedef enum MainMenuTag
 {
-    MENU_STAGE_BTN,
-    MENU_TROOPS_BTN,
-    MENU_BTN_NUM
-} TYPE_MENU_BTN;
+    MainMenuStage,
+    MainMenuSelectAlly,
+    MainMenuFixAlly,
+    MainMenuNum,
+}MainMenuTag;
 
 typedef struct t_menu_btn
 {
@@ -33,14 +34,20 @@ t_menu_btn menu_btn_info[] = {
         0,
         300,
         50,
-        @"troops"
+        @"select ally"
+    },
+    {
+        0,
+        100,
+        300,
+        50,
+        @"repair"
     }
 };
 
 @interface MenuView ()
 {
-    
-    UIButton* _buttons[MENU_BTN_NUM];
+    UIButton* _buttons[MainMenuNum];
 }
 
 @end
@@ -64,7 +71,7 @@ t_menu_btn menu_btn_info[] = {
 {
     // button
     CGPoint center = CGPointMake(self.frame.size.width/2, self.frame.size.height/2);
-    for (int i = 0; i < MENU_BTN_NUM; ++i)
+    for (int i = 0; i < MainMenuNum; ++i)
     {
         t_menu_btn info = menu_btn_info[i];
         UIButton* b = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -83,12 +90,22 @@ t_menu_btn menu_btn_info[] = {
 - (void)buttonPressed:(UIButton*)button
 {
     switch (button.tag) {
-        case MENU_STAGE_BTN:
+        case MainMenuStage:
             [MainViewController StageStart];
             break;
-        case MENU_TROOPS_BTN:
-            [MainViewController ShowTroops];
+        case MainMenuSelectAlly:
+        {
+            //[MainViewController ShowTroops];
+            AllyViewController* vc = [[[AllyViewController alloc] initWithViewMode:AllyViewModeSelectAlly] autorelease];
+            [MainViewController PresentViewController:vc];
             break;
+        }
+        case MainMenuFixAlly:
+        {
+            AllyViewController* vc = [[[AllyViewController alloc] initWithViewMode:AllyViewModeFix] autorelease];
+            [MainViewController PresentViewController:vc];
+            break;
+        }
         default:
             assert(0);
     }

@@ -8,6 +8,7 @@
 #import "HGLView.h"
 #import "HGLES.h"
 #import "HGLGraphics2D.h"
+#import "UIColor+MyCategory.h"
 
 typedef enum TYPE_TITLE_BTN
 {
@@ -42,7 +43,9 @@ t_title_btn title_btn_info[] = {
     
     bool isEnd;
     bool is3DInitialized;
+    bool isLabelHidden;
 }
+@property (assign, atomic) IBOutlet UILabel *myLabel;
 
 @end
 
@@ -60,41 +63,83 @@ t_title_btn title_btn_info[] = {
         [self setBackgroundColor:[UIColor clearColor]];
         isEnd = false;
         is3DInitialized = false;
+        isLabelHidden = true;
     }
     return self;
+}
+
+- (void)changeLabelState
+{
+    if(isLabelHidden)
+    {
+        isLabelHidden = false;
+        [UIView animateWithDuration:1.0 animations:^{
+            [self.myLabel setAlpha:1];
+        } completion:^(BOOL finished) {
+            [self changeLabelState];
+        }];
+    }
+    else
+    {
+        isLabelHidden = true;
+        [UIView animateWithDuration:1.0 animations:^{
+            [self.myLabel setAlpha:0];
+        } completion:^(BOOL finished) {
+            [self changeLabelState];
+        }];
+    }
 }
 
 -(void)initialize
 {
     
-    // button
-    CGPoint center = CGPointMake(self.frame.size.width/2, self.frame.size.height/2);
-    for (int i = 0; i < TITLE_BTN_NUM; ++i)
+    // logo
+    UIImage* img = [UIImage imageNamed:@"logo.png"];
+    UIImageView* imgView = [[[UIImageView alloc] initWithImage:img] autorelease];
+    float w = self.frame.size.width;
+    float h = w/480*320;
+    [self addSubview:imgView];
+    CGRect logoFrame = CGRectMake(0,0,w,h);
+    [imgView setFrame:logoFrame];
+    
+    imgView.transform = CGAffineTransformMakeScale(2.3, 2.3);
+    [UIView animateWithDuration:0.7 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        imgView.transform = CGAffineTransformMakeScale(1.0, 1.0);
+    } completion:^(BOOL finished) {
+        // message
+        {
+            UILabel* l = [[UILabel alloc] initWithFrame: CGRectMake(self.frame.size.width/2-200, logoFrame.size.height - 50, 400, 50)];
+            [l setTextAlignment:NSTextAlignmentCenter];
+            [l setTextColor:[UIColor greenColor]];
+            [l setText:@"Touch to start"];
+            UIFont* font = [UIFont fontWithName:@"Copperplate-Bold" size:20];
+            [l setFont:font];
+            [l setBackgroundColor:[UIColor clearColor]];
+            [l setAlpha:0];
+            [l autorelease];
+            self.myLabel = l;
+            [self addSubview:l];
+            [self changeLabelState];
+        }
+    }];
+    
+    // curtain
     {
-        t_title_btn info = title_btn_info[i];
-        UIButton* b = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [b setFrame: CGRectMake(0, 0, info.w, info.h)];
-        [b setCenter:CGPointMake(center.x + info.x, center.y + info.y)];
-        [b setTag:i];
-        [b setTitle:info.btnName forState:UIControlStateNormal];
-        [b setTitle:info.btnName forState:UIControlStateDisabled];
-        [b setTitle:info.btnName forState:UIControlStateHighlighted];
-        [b setTitle:info.btnName forState:UIControlStateSelected];
-        [b addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
-        [self addSubview:b];
+        UIView* curtain = [[[UIView alloc] initWithFrame:self.frame] autorelease];
+        [curtain setBackgroundColor:[UIColor colorWithHexString:@"#000000"]];
+        [self addSubview:curtain];
+        [UIView animateWithDuration:0.6 animations:^{
+            [curtain setAlpha:0];
+        } completion:^(BOOL finished) {
+            [curtain removeFromSuperview];
+        }];
     }
     
 }
 
-- (void)buttonPressed:(UIButton*)button
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    switch (button.tag) {
-        case TITLE_START_BTN:
-            [MainViewController Start];
-            break;
-        default:
-            assert(0);
-    }
+    [MainViewController Start];
 }
 
 -(void)dealloc

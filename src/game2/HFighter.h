@@ -58,7 +58,8 @@ namespace hg {
         pFighterHated(NULL),
         explodeProcessCount(0),
         shieldHeal(0),
-        pFighterInfo(NULL)
+        pFighterInfo(NULL),
+        shouldUpdateInfo(false)
         {
         }
         
@@ -348,6 +349,8 @@ namespace hg {
                     SPRITE_INDEX_TABLE[i] = index;
                 }
             }
+            updateLifeBar();
+            updateShieldBar();
             isInitialized = true;
         }
         inline void setAspectDegree(float degree)
@@ -381,6 +384,7 @@ namespace hg {
         {
             this->life = life;
             updateLifeBar();
+            shouldUpdateInfo = true;
         }
         inline void noticeAttackedBy(Actor* pFighter)
         {
@@ -458,8 +462,17 @@ namespace hg {
             else
             {
                 this->life += life;
+                if (this->life < 0)
+                {
+                    this->life = 0;
+                }
+                else if (this->life > this->lifeMax)
+                {
+                    this->life = this->lifeMax;
+                }
                 updateLifeBar();
             }
+            shouldUpdateInfo = true;
         }
         
         // 毎フレーム呼び出される
@@ -478,6 +491,12 @@ namespace hg {
                     }
                 }
                 
+            }
+            if (shouldUpdateInfo)
+            {
+                shouldUpdateInfo = false;
+                pFighterInfo->life = life;
+                pFighterInfo->shield = shield;
             }
             
             // data copy
@@ -827,7 +846,10 @@ namespace hg {
                 enemyFighterList.removeActor(this);
             }
             this->setActive(false);
-            this->getNode()->removeFromParent();
+            if (this->getNode()->hasParent())
+            {
+                this->getNode()->removeFromParent();
+            }
             return true;
         }
         
@@ -844,7 +866,7 @@ namespace hg {
         
         inline void updateShieldBar()
         {
-            if (side == SideTypeFriend)
+            if (side == SideTypeFriend && hasShield())
             {
                 float ratio = (float)shield/(float)shieldMax;
                 float w = (LIFE_BAR_WIDTH * ratio);
@@ -862,8 +884,10 @@ namespace hg {
                 shield = shieldMax;
                 updateShieldBar();
             }
+            shouldUpdateInfo = true;
         }
         
+        bool shouldUpdateInfo;
         float speed;
         float aspectDegree;
         int life;

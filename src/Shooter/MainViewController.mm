@@ -11,10 +11,13 @@
 #import "Common.h"
 #import "TitleView.h"
 #import "AppDelegate.h"
-#import "BackgroundView.h"
 #import "MenuView.h"
 #import "TroopsView.h"
-#import "HGUser.h"
+#import "UserData.h"
+#import "AllyViewController.h"
+#import "StatusView.h"
+#import "BackgroundView.h"
+#import "UIColor+MyCategory.h"
 
 @interface MainViewController()
 {
@@ -25,11 +28,14 @@
     TitleView* title;
     
     // background
-    BackgroundView* backgroundView;
+    //BackgroundView* backgroundView;
     
     // menu
     MenuView* menuView;
     TroopsView* troopsView;
+    
+    // status
+    StatusView* statusView;
 }
 @end
 
@@ -51,14 +57,16 @@ static MainViewController* instance = nil;
         menuView = NULL;
         
         // 背景
-        backgroundView = [[BackgroundView alloc] init];
-        assert(backgroundView != nil);
-        [self.view addSubview:backgroundView];
+        //backgroundView = [[BackgroundView alloc] init];
+        //assert(backgroundView != nil);
+        //[self.view addSubview:backgroundView];
         
         // タイトルメニュー
         title = [[TitleView alloc] init];
         assert(title != nil);
         [self.view addSubview:title];
+        
+        //[self.view setBackgroundColor:[UIColor colorWithHexString:@"#111133"]];
         
     }
     return self;
@@ -75,7 +83,8 @@ static MainViewController* instance = nil;
 -(void)start
 {
     // データロード
-    HGGame::userinfo::loadData();
+    hg::UserData::sharedUserData()->loadData();
+    //HGGame::userinfo::loadData();
     
     // タイトル
     [title removeFromSuperview];
@@ -88,8 +97,13 @@ static MainViewController* instance = nil;
 -(void)showMenu
 {
     assert(menuView == NULL);
+    
     menuView = [[MenuView alloc] init];
     [self.view addSubview:menuView];
+    
+    statusView = [[StatusView alloc] init];
+    [self.view addSubview:statusView];
+    [statusView loadUserInfo];
 }
 
 +(void)StageStart
@@ -103,14 +117,28 @@ static MainViewController* instance = nil;
 -(void)stageStart
 {
     // 背景終了
-    [backgroundView clearGL];
-    [backgroundView removeFromSuperview];
-    backgroundView = NULL;
+    //[backgroundView clearGL];
+    //[backgroundView removeFromSuperview];
+    //backgroundView = NULL;
     
     // ゲーム開始
     gameViewController = [[ViewController alloc] init];
     [self presentViewController:gameViewController animated:NO completion:^{
         // nothing
+    }];
+}
+
++(void)PresentViewController:(UIViewController*) vc
+{
+    if (instance)
+    {
+        [instance presentViewController:vc];
+    }
+}
+
+- (void)presentViewController:(UIViewController*)vc
+{
+    [self presentViewController:vc animated:YES completion:^{
     }];
 }
 
@@ -125,13 +153,12 @@ static MainViewController* instance = nil;
 -(void)showTroops
 {
     // メニューをかくしてテーブルを表示
-    [UIView animateWithDuration:0.2 animations:^{
-        CGRect f = menuView.frame;
-        f.origin.x = f.size.width;
-        menuView.frame = f;
-    } completion:^(BOOL finished) {
-        troopsView = [[TroopsView alloc] init];
-        [self.view addSubview:troopsView];
+    AllyViewController* avc = [[[AllyViewController alloc] initWithViewMode:AllyViewModeSelectAlly] autorelease];
+    //[self addChildViewController:avc];
+    
+    avc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    
+    [self presentViewController:avc animated:YES completion:^{
     }];
 }
 

@@ -180,6 +180,11 @@ namespace hg {
     HGNode* pLayerEffect = NULL;
     Rader* pRader = NULL;
     SpawnData spawnData;
+    float spawningEnemyCount = 0;
+    bool isInitialized = false;
+    
+    // 終了フラグ
+    bool isEnd = false;
     
     FighterInfo* playerInfo;
     FriendData friendData;
@@ -204,6 +209,75 @@ namespace hg {
         HGProcessOwner* pHo = new HGProcessOwner();
         pHitAnimeProcess->init(pHo, a->getPosition(), pLayerEffect);
         HGProcessManager::sharedProcessManager()->addProcess(pHitAnimeProcess);
+    }
+    void showShieldHitAnimation(Actor* a)
+    {
+        {
+            AlphaMapSprite* pSpr = new AlphaMapSprite();
+            pSpr->init("particlesheet01.png", (Color){0.5, 0.5, 1.0, 1.0});
+            pSpr->setPosition(a->getPositionX(), a->getPositionY());
+            pSpr->setTextureRect(0, 256, 256, 256);
+            pSpr->setScale(0, 0);
+            pSpr->setRotateZ(rand(0, 359) * M_PI/180);
+            pLayerEffect->addChild(pSpr);
+            
+            {
+                HGProcessOwner* po = new HGProcessOwner();
+                
+                // 拡大
+                ChangeScaleProcess* ssp = new ChangeScaleProcess();
+                ssp->init(po, pSpr, PXL2REAL(300), PXL2REAL(300), f(15));
+                ssp->setEaseFunc(&ease_in);
+                
+                // 縮小
+                ChangeScaleProcess* ssp2 = new ChangeScaleProcess();
+                ssp2->init(po, pSpr, 0, 0, f(10));
+                ssp2->setEaseFunc(&ease_in);
+                ssp->setNext(ssp2);
+                
+                // 削除
+                NodeRemoveProcess* nrp = new NodeRemoveProcess();
+                nrp->init(po, pSpr);
+                ssp2->setNext(nrp);
+                
+                // プロセス開始
+                HGProcessManager::sharedProcessManager()->addProcess(ssp);
+            }
+        }
+        
+        {
+            AlphaMapSprite* pSpr = new AlphaMapSprite();
+            pSpr->init("star.png", (Color){1.0, 1.0, 1.0, 0.5});
+            pSpr->setPosition(a->getPositionX(), a->getPositionY());
+            pSpr->setTextureRect(0, 256, 256, 256);
+            pSpr->setScale(0, 0);
+            pSpr->setRotateZ(rand(0, 359) * M_PI/180);
+            pLayerEffect->addChild(pSpr);
+            
+            {
+                HGProcessOwner* po = new HGProcessOwner();
+                
+                // 拡大
+                ChangeScaleProcess* ssp = new ChangeScaleProcess();
+                ssp->init(po, pSpr, PXL2REAL(500), PXL2REAL(500), f(15));
+                ssp->setEaseFunc(&ease_out);
+                
+                // 縮小
+                ChangeScaleProcess* ssp2 = new ChangeScaleProcess();
+                ssp2->init(po, pSpr, 0, 0, f(15));
+                ssp2->setEaseFunc(&ease_out);
+                ssp->setNext(ssp2);
+                
+                // 削除
+                NodeRemoveProcess* nrp = new NodeRemoveProcess();
+                nrp->init(po, pSpr);
+                ssp2->setNext(nrp);
+                
+                // プロセス開始
+                HGProcessManager::sharedProcessManager()->addProcess(ssp);
+            }
+        }
+        
     }
     
     // add actor to cell
@@ -241,8 +315,15 @@ namespace hg {
     // fighterがroundと衝突したときの処理
     void onFighterCollidedWithBullet(Fighter* pFighter, Bullet* pBullet)
     {
-        showHitAnimation(pBullet);
         pBullet->setActive(false);
+        if (pFighter->hasShield())
+        {
+            showShieldHitAnimation(pBullet);
+        }
+        else
+        {
+            showHitAnimation(pBullet);
+        }
         pFighter->addLife(pBullet->getPower() * -1);
         pFighter->noticeAttackedBy(pBullet->getOwner());
     }
@@ -337,6 +418,7 @@ namespace hg {
                 }
                 else
                 {
+                    spawningEnemyCount--;
                     Fighter* pEnemy = new Fighter();
                     pEnemy->init(pLayerEnemy, sideType, pFighterInfo);
                     pEnemy->setPosition(positionX, positionY);
@@ -355,6 +437,11 @@ namespace hg {
             float positionX;
             float positionY;
         };
+        
+        if (SideTypeEnemy == sideType)
+        {
+            spawningEnemyCount++;
+        }
         
         // 光
         {
@@ -502,6 +589,143 @@ namespace hg {
     
     ////////////////////
     // ステート
+    class LoseState : public HGState
+    {
+        ~LoseState()
+        {
+            
+        }
+        void onUpdate()
+        {
+            if (this->getFrameCount() == 0)
+            {
+                isInit = true;
+                class Fn : public HGObject
+                {
+                public:
+                    Fn() {}
+                    bool exec()
+                    {
+                        isEnd = true;
+                        return true;
+                    }
+                };
+                
+                // 終了
+                {
+                    // 出現
+                    Fn* fn = new Fn();
+                    HGProcessOwner* po = new HGProcessOwner();
+                    CallFunctionRepeadedlyProcess<Fn>* cfrp = new CallFunctionRepeadedlyProcess<Fn>();
+                    cfrp->init(po, &Fn::exec, fn);
+                    cfrp->setWaitFrame(f(70));
+                    
+                    // プロセス開始
+                    HGProcessManager::sharedProcessManager()->addProcess(cfrp);
+                }
+                
+                // lose
+                {
+                    HGText* pNodeText = new HGText();
+                    pNodeText->initWithString("You Lose...");
+                    pNodeText->setScaleByTextSize(8);
+                    pNodeText->setPosition(0, 0);
+                    pNodeText->setAnchor(0.5, 0.5);
+                    pNodeText->setblendcolor({64, 64, 64});
+                    pLayerUIRoot->addChild(pNodeText);
+                }
+                collectAllFriends();
+                
+            }
+            HGProcessManager::sharedProcessManager()->update();
+            addActorsToCells();
+            checkCollision(enemyFighterList, friendBulletCellManager);
+            checkCollision(friendFighterList, enemyBulletCellManager);
+            
+            // update Rader
+            if (this->getFrameCount() % f(10) == 0)
+            {
+                pRader->updateRader(enemyCellManager, friendCellManager);
+            }
+            else
+            {
+                assert(isInit == true);
+            }
+            
+        }
+        std::string getName()
+        {
+            return "LoseState";
+        }
+        bool isInit = false;
+    };
+    
+    ////////////////////
+    // ステート
+    class WinState : public HGState
+    {
+        ~WinState()
+        {
+            
+        }
+        void onUpdate()
+        {
+            if (this->getFrameCount() == 0)
+            {
+                class Fn : public HGObject
+                {
+                public:
+                    Fn() {}
+                    bool exec()
+                    {
+                        isEnd = true;
+                        return true;
+                    }
+                };
+                
+                // 終了
+                {
+                    // 出現
+                    Fn* fn = new Fn();
+                    HGProcessOwner* po = new HGProcessOwner();
+                    CallFunctionRepeadedlyProcess<Fn>* cfrp = new CallFunctionRepeadedlyProcess<Fn>();
+                    cfrp->init(po, &Fn::exec, fn);
+                    cfrp->setWaitFrame(f(70));
+                    
+                    // プロセス開始
+                    HGProcessManager::sharedProcessManager()->addProcess(cfrp);
+                }
+                
+                // win
+                {
+                    HGText* pNodeText = new HGText();
+                    pNodeText->initWithString("You Win");
+                    pNodeText->setScaleByTextSize(8);
+                    pNodeText->setPosition(0, 0);
+                    pNodeText->setAnchor(0.5, 0.5);
+                    pNodeText->setblendcolor({255, 0, 0});
+                    pLayerUIRoot->addChild(pNodeText);
+                }
+                
+            }
+            HGProcessManager::sharedProcessManager()->update();
+            addActorsToCells();
+            checkCollision(enemyFighterList, friendBulletCellManager);
+            checkCollision(friendFighterList, enemyBulletCellManager);
+            
+            // update Rader
+            if (this->getFrameCount() % f(10) == 0)
+            {
+                pRader->updateRader(enemyCellManager, friendCellManager);
+            }
+            
+        }
+        std::string getName()
+        {
+            return "WinState";
+        }
+    };
+    
     class BattleState : public HGState
     {
         ~BattleState()
@@ -528,10 +752,11 @@ namespace hg {
                 // 援軍出現
                 if (spawnData.size() > 0)
                 {
-                    if (spawnWait == 0)
+                    if (spawningEnemyCount <= 0)
                     {
                         SpawnGroup sg = spawnData.front();
                         spawnData.pop_front();
+                        int wait = 0;
                         for (SpawnGroup::iterator it = sg.begin(); it != sg.end(); it++)
                         {
                             FighterInfo* finfo = *it;
@@ -539,16 +764,27 @@ namespace hg {
                                          finfo,
                                          rand(0, sizeOfField.width),
                                          rand(0, sizeOfField.height),
-                                         spawnWait * f(30));
-                            spawnWait++;
+                                         wait * f(30));
+                            wait++;
                         }
                     }
                 }
             }
-            else
+            
+            if (spawningEnemyCount == 0 && enemyFighterList.size() <= 0)
             {
-                spawnWait = 0;
+                HGStateManager::sharedStateManger()->pop();
+                HGStateManager::sharedStateManger()->push(new WinState());
             }
+            
+            // 勝敗判定
+            if (pPlayer->getLife() <= 0)
+            {
+                // lose
+                HGStateManager::sharedStateManger()->pop();
+                HGStateManager::sharedStateManger()->push(new LoseState());
+            }
+            
             
             // update Rader
             if (this->getFrameCount() % f(10) == 0)
@@ -569,19 +805,30 @@ namespace hg {
         {
             return "BattleState";
         }
-    private:
-        int spawnCount = 0;
-        int spawnWait = 0;
     };
     
+    ////////////////////
+    // 終了準備
+    void cleanup()
+    {
+        NSLog(@"CLEAN UP START");
+        // メモリ掃除
+        //HGHeapFactory::CreateHeap(DEFAULT_HEAP_NAME)->freeAll();
+        NSLog(@"CLEAN UP END");
+        
+    }
 
     ////////////////////
     // 初期化
     void initialize(SpawnData sd, FighterInfo* pl, FriendData fd)
     {
+        NSLog(@"INITIALIZE START");
+        isEnd = false;
+        isInitialized = false;
         initRandom();
         
         // 増援データ
+        spawningEnemyCount = 0;
         spawnData = sd;
         
         // プレイヤーデータ
@@ -598,6 +845,11 @@ namespace hg {
         enemyFighterList.removeAllActor();
         friendBulletList.removeAllActor();
         enemyBulletList.removeAllActor();
+        
+        enemyCellManager.clear();
+        friendCellManager.clear();
+        enemyBulletCellManager.clear();
+        friendBulletCellManager.clear();
         
         // process
         HGProcessManager::sharedProcessManager()->clear();
@@ -777,6 +1029,7 @@ namespace hg {
             HGProcessManager::sharedProcessManager()->addProcess(p);
         }
         
+        /*
         {
             HGText* pNodeText = new HGText();
             pNodeText->initWithString("敵殲滅", {1,1,0,1});
@@ -790,13 +1043,19 @@ namespace hg {
             pNodeText->setScaleByTextSize(4);
             pNodeText->setPosition(-10, 8);
             pLayerUIRoot->addChild(pNodeText);
-        }
+        }*/
+        isInitialized = true;
+        NSLog(@"INITIALIZE END");
     }
 
     ////////////////////
     // 更新
     void update(KeyInfo keyState)
     {
+        if (isGameEnd() || !isInitialized)
+        {
+            return;
+        }
         keyInfo = keyState;
         keyInfo.isFire = (keyState.isFire>0)?true:false;
         HGStateManager::sharedStateManger()->update();
@@ -806,6 +1065,10 @@ namespace hg {
     // レンダリング
     void render()
     {
+        if (!isInitialized)
+        {
+            return;
+        }
         // 光源なし
         glUniform1f(hgles::currentContext->uUseLight, 0.0);
         // 2d
@@ -824,5 +1087,9 @@ namespace hg {
         HGDirector::sharedDirector()->drawRootNode();
     }
     
+    bool isGameEnd()
+    {
+        return isEnd;
+    }
 
 }

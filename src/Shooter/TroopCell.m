@@ -2,6 +2,7 @@
 //  CardListCell.m
 //  ARC enabled
 //  Created by Hooman Ahmadi on 7/18/12.
+/*
 
 #import "TroopCell.h"
 #import <QuartzCore/QuartzCore.h>
@@ -100,14 +101,7 @@
     [[self contentView] addSubview:fighterImgView];
     
     // 背景
-    /*
-    UILabel* infobg = [[UILabel alloc] initWithFrame:CGRectMake(100, 5, cardWidth - 100, cardHeight - 5)];
-    infobg.backgroundColor = [UIColor grayColor];
-    infobg.layer.borderColor = [UIColor whiteColor].CGColor;
-    infobg.layer.cornerRadius = 10;
-    [[self contentView] addSubview:infobg];
-    */
-    
+ 
     // HP
     life = [[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
     [life setFrame:CGRectMake(90.0, 3.0, 200, 35)];
@@ -157,3 +151,4 @@
 }
 
 @end
+*/

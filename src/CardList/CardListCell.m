@@ -57,7 +57,7 @@
     cardTitle = [[UILabel alloc] initWithFrame:CGRectZero];
     [[self contentView] addSubview:cardTitle];
     [cardTitle setFrame:CGRectMake(10.0, 5.0, cardWidth - 20.0, 30.0)];
-    cardTitle.textAlignment = UITextAlignmentLeft;
+    //cardTitle.textAlignment = UITextAlignmentLeft;
     cardTitle.backgroundColor = cellColor;
     [cardTitle setFont:[UIFont fontWithName:@"Helvetica-Bold" size:15]];
     cardTitle.textColor = [UIColor blackColor];

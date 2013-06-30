@@ -29,7 +29,6 @@ namespace hg {
     } CollisionId;
     
     class CollisionManager;
-    static CollisionManager* pCollisionManager = NULL;
     
     class CollisionManager
     {
@@ -38,6 +37,7 @@ namespace hg {
     public:
         inline static CollisionManager* sharedCollisionManager()
         {
+            static CollisionManager* pCollisionManager = NULL;
             if (!pCollisionManager)
             {
                 pCollisionManager = new CollisionManager();

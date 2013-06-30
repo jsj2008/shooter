@@ -24,7 +24,7 @@
 #define STAGE_SCALE 100
 #define PIXEL_SCALE 0.01
 #define PXL2REAL(var) ((var)*(PIXEL_SCALE))
-#define SHILD_SIZE_GAP (250*(PIXEL_SCALE))
+#define SHILD_SIZE_GAP (50*(PIXEL_SCALE))
 
 namespace hg {
     class HGNode;
@@ -57,18 +57,29 @@ namespace hg {
         shield(0),
         shieldMax(0),
         shieldHeal(0),
-        speed(0)
+        speed(0),
+        power(1),
+        exp(0),
+        expNext(0),
+        isReady(false),
+        isPlayer(false)
         {
         }
         int fighterType;
         int level;
+        int power;
         int life;
         int lifeMax;
         int shield;
         int shieldMax;
         int shieldHeal;
+        long exp;
+        long expNext;
+        bool isReady;
         float speed;
         WeaponInfoList weaponList;
+        bool isPlayer;
+        std::string name;
     } FighterInfo;
     
     typedef std::vector<FighterInfo*> SpawnGroup;

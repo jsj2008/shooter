@@ -17,5 +17,7 @@ namespace hg
     void initialize(SpawnData sd, FighterInfo* pl, FriendData fd);
     void render();
     void update(KeyInfo keyState);
+    bool isGameEnd();
+    void cleanup();
 }
 #endif

@@ -162,9 +162,16 @@ namespace hg
     }
     void HGHeap::freeAll()
     {
+        HDebug(@"HEAP CLEAR START");
+        AllocHeader* pWk = NULL;
+        while((pWk = pFirst) != NULL)
+        {
+            deleteAllocation(pWk->pStart);
+        }
         pFirst = NULL;
         pLast = NULL;
         allocatedSize = 0;
+        HDebug(@"HEAP CLEAR END");
     }
     void HGHeap::retain(void *pMem)
     {
@@ -238,11 +245,6 @@ namespace hg
     
     ////////////////////
     // ステート管理
-    HGState::HGState()
-    {
-        isInitialUpdate = true;
-    }
-    
     std::string HGState::getName()
     {
         return "BaseState";
@@ -262,9 +264,9 @@ namespace hg
         this->onResume();
     }
 
-    static HGStateManager* pStateManager = NULL;
     HGStateManager* HGStateManager::sharedStateManger()
     {
+        static HGStateManager* pStateManager = NULL;
         if (!pStateManager)
         {
             pStateManager = new (SYSTEM_HEAP_NAME)HGStateManager();
@@ -275,11 +277,18 @@ namespace hg
     
     void HGStateManager::clear()
     {
+        HDebug(@"STATE MANAGER CLEAR START");
         while(stack.size())
         {
             stack.top()->release();
             stack.pop();
         }
+        while(endStack.size())
+        {
+            endStack.top()->release();
+            endStack.pop();
+        }
+        HDebug(@"STATE MANAGER CLEAR END");
     }
     
     void HGStateManager::update()
@@ -289,6 +298,12 @@ namespace hg
         {
             HGState* state = stack.top();
             state->update();
+        }
+        while(endStack.size())
+        {
+            HGState* s = endStack.top();
+            endStack.pop();
+            s->release();
         }
     }
     void HGStateManager::pop()
@@ -301,7 +316,7 @@ namespace hg
         {
             stack.top()->resume();
         }
-        state->release();
+        endStack.push(state);
     }
     void HGStateManager::push(HGState* state)
     {
@@ -311,6 +326,7 @@ namespace hg
             stack.top()->suspend();
         }
         stack.push(state);
+        assert(state->getFrameCount() == 0);
         HInfo(@"STATE PUSH : %s", state->getName().c_str());
     }
     
@@ -332,14 +348,15 @@ namespace hg
     // プロセス管理クラス
     void HGProcessManager::clear()
     {
-#if IS_PROCESS_DEBUG
-        HDebug(@"Process Clear");
-#endif
+        HDebug(@"PROCESS MANAGER CLEAR START");
         for (ProcessList::iterator it = processList.begin(); it != processList.end(); ++it)
         {
             (*it)->release();
         }
         processList.clear();
+        addProcessList.clear();
+        delProcessList.clear();
+        HDebug(@"PROCESS MANAGER CLEAR END");
     }
     
     void HGProcessManager::addAndExecProcess(HGProcess* pProcess)

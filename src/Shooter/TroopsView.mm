@@ -1,3 +1,4 @@
+/*
 #import "TroopsView.h"
 #import "TroopCell.h"
 #import "MainViewController.h"
@@ -177,13 +178,7 @@ t_trp_btn trp_btn_info[] = {
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
 #warning 再利用コード
-    /*
-    TroopCell *cell = (TroopCell *)[tableView dequeueReusableCellWithIdentifier:@"UITableViewCell"];
-    
-    if (!cell) {
-        cell = [[[TroopCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UITableViewCell" withHeight:CARD_HEIGHT withWidth:CARD_WIDTH withCornerRadius:CORNER_RADIUS withColor:CARD_COLOR] autorelease];
-    }*/
-    
+ 
     HGGame::userinfo::t_fighter* data = &(*HGGame::userinfo::current_fighter_list)[indexPath.row];
     TroopCell* cell = [[TroopCell alloc] initWithReuseIdentifier:@"UITableViewCell" withHeight:CARD_HEIGHT withWidth:troopsTableView.frame.size.width withData:data];
     [cell addContent];
@@ -215,3 +210,4 @@ t_trp_btn trp_btn_info[] = {
 
 
 @end
+*/

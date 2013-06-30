@@ -20,9 +20,11 @@ namespace HGGame
     
     void HGFighter::initWithData(userinfo::t_fighter* f, WHICH_SIDE side)
     {
+        /*
         init(f->type, side);
         life = f->life;
         maxlife = f->life;
+         */
     }
     
     void HGFighter::update()

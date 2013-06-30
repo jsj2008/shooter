@@ -70,7 +70,7 @@
         NSDate* nowDt;
         NSTimeInterval start;
         NSTimeInterval end;
-        float base_sleep = 1.0/20;
+        float base_sleep = 1.0/60;
         float sleep;
         while (1)
         {
@@ -142,7 +142,7 @@
     for (std::vector<hgles::t_hgl2di*>::reverse_iterator itr = nebula.rbegin(); itr != nebula.rend(); ++itr)
     {
         hgles::t_hgl2di* n = *itr;
-        n->position.z += 10;
+        n->position.z += 0.5;
         
         if (n->position.z >= -50)
         {

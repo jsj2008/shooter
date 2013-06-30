@@ -17,6 +17,7 @@
 +(void)StageStart;
 +(void)ShowTroops;
 +(void)HideTroops;
++(void)PresentViewController:(UIViewController*) vc;
 
 @end
 

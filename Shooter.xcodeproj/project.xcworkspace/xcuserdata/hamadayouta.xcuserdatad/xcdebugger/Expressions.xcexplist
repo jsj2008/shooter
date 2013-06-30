@@ -3,15 +3,21 @@
    version = "1.0">
    <ContextStates>
       <ContextState
-         contextName = "hg::ControlPlayerProcess::~ControlPlayerProcess():ControlPlayerProcess.h">
-      </ContextState>
-      <ContextState
          contextName = "HGGame::drawHitbox(hgles::HGLVector3 const*, HGGame::t_size2d const*, int, hgles::HGLVector3 const*):HGCollision.mm">
          <PersistentStrings>
             <PersistentString
                value = "size1">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "hg::Fighter::init(hg::HGNode*, hg::SideType, hg::FighterInfo*):HFighter.h">
+      </ContextState>
+      <ContextState
+         contextName = "hg::ControlPlayerProcess::~ControlPlayerProcess():ControlPlayerProcess.h">
+      </ContextState>
+      <ContextState
+         contextName = "hg::HGDirector::sharedDirector():HGameEngine.h">
       </ContextState>
       <ContextState
          contextName = "HGGame::HGFighter::init(HGGame::HG_FIGHTER_TYPE, HGGame::WHICH_SIDE):HGFighter.mm">
@@ -26,6 +32,14 @@
       </ContextState>
       <ContextState
          contextName = "HGLGraphics2D::draw(t_hgl2d*):HGLGraphics2D.mm">
+      </ContextState>
+      <ContextState
+         contextName = "hg::update(hg::KeyInfo):HGame.mm">
+         <PersistentStrings>
+            <PersistentString
+               value = "HGStateManager::sharedStateManger()">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "hgles::HGLES::initialize(float, float):HGLES.mm">
@@ -68,6 +82,17 @@
       </ContextState>
       <ContextState
          contextName = "split(std::__1::vector&lt;std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;, std::__1::allocator&lt;std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; &gt; &gt;*, std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; const*, std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;):GLUtil.mm">
+      </ContextState>
+      <ContextState
+         contextName = "hg::LoseState::onUpdate():HGame.mm">
+         <PersistentStrings>
+            <PersistentString
+               value = "HGProcessManager::sharedProcessManager()">
+            </PersistentString>
+            <PersistentString
+               value = "HGStateManager::sharedStateManger()">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "HGObject::Space1Draw():HGObject.mm">
@@ -124,6 +149,9 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "hg::HGState::update():HGameEngine.mm">
+      </ContextState>
+      <ContextState
          contextName = "__28-[ViewController initialize]_block_invoke_0:ViewController.mm">
          <PersistentStrings>
             <PersistentString
@@ -173,6 +201,9 @@
       </ContextState>
       <ContextState
          contextName = "HGGame::HGBullet::draw():HGBullet.mm">
+      </ContextState>
+      <ContextState
+         contextName = "hg::NodeRemoveProcess::onUpdate():HGameEngine.h">
       </ContextState>
       <ContextState
          contextName = "hg::ControlPlayerProcess::onUpdate():ControlPlayerProcess.h">
@@ -236,6 +267,9 @@
          contextName = "HGGame::HGCPU::decideDestination():HGCPU.mm">
       </ContextState>
       <ContextState
+         contextName = "hg::Fighter::updateShieldBar():HFighter.h">
+      </ContextState>
+      <ContextState
          contextName = "HGGame::registerActorToColList(HGGame::HGActor*, std::__1::map&lt;int, std::__1::vector&lt;HGGame::HGActor*, std::__1::allocator&lt;HGGame::HGActor*&gt; &gt;, std::__1::less&lt;int&gt;, std::__1::allocator&lt;std::__1::pair&lt;int const, std::__1::vector&lt;HGGame::HGActor*, std::__1::allocator&lt;HGGame::HGActor*&gt; &gt; &gt; &gt; &gt;*):HGGame.mm">
       </ContextState>
       <ContextState
@@ -252,6 +286,9 @@
       </ContextState>
       <ContextState
          contextName = "IndexBuffer::draw():IndexBuffer.mm">
+      </ContextState>
+      <ContextState
+         contextName = "hg::Fighter::tick():HFighter.h">
       </ContextState>
       <ContextState
          contextName = "hg::Fighter::explodeProcess():HFighter.h">
@@ -291,19 +328,27 @@
          contextName = "HGLMesh::draw():HGLMesh.mm">
       </ContextState>
       <ContextState
+         contextName = "hg::HGDirector::drawRootNode():HGameEngine.h">
+         <PersistentStrings>
+            <PersistentString
+               value = "HGDirector::sharedDirector()">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "HGGame::HGCPU::update():HGCPU.mm">
       </ContextState>
       <ContextState
          contextName = "IndexBuffer::IndexBuffer(unsigned char const*, int):IndexBuffer.mm">
          <PersistentStrings>
             <PersistentString
+               value = "sizeof(Index)">
+            </PersistentString>
+            <PersistentString
                value = "sizeof(Vertex)">
             </PersistentString>
             <PersistentString
                value = "indices[1]">
-            </PersistentString>
-            <PersistentString
-               value = "sizeof(Index)">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -349,6 +394,9 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "hg::HGStateManager::sharedStateManger():HGameEngine.mm">
+      </ContextState>
+      <ContextState
          contextName = "hg::checkCollisionEnemy():HGame.mm">
          <PersistentStrings>
             <PersistentString
@@ -382,13 +430,16 @@
          contextName = "hg::render():HGame.mm">
          <PersistentStrings>
             <PersistentString
+               value = "friendFighterList">
+            </PersistentString>
+            <PersistentString
+               value = "HGDirector::sharedDirector()">
+            </PersistentString>
+            <PersistentString
                value = "ActorList">
             </PersistentString>
             <PersistentString
                value = "enemyFighterList">
-            </PersistentString>
-            <PersistentString
-               value = "friendFighterList">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -397,6 +448,9 @@
       </ContextState>
       <ContextState
          contextName = "hg::HGHeap::retain(void*):HGameEngine.h">
+      </ContextState>
+      <ContextState
+         contextName = "hg::Fighter::noticeAttackedBy(hg::Actor*):HFighter.h">
       </ContextState>
       <ContextState
          contextName = "HGGame::HGActor::isCollideWith(HGGame::HGActor*):HGActor.mm">
@@ -410,13 +464,13 @@
          contextName = "hg::CellManager::getCellNumber(hg::HGPoint&amp;):HGame.mm">
       </ContextState>
       <ContextState
-         contextName = "hg::Fighter::noticeAttackedBy(hg::Actor*):HFighter.h">
-      </ContextState>
-      <ContextState
          contextName = "HGGame::HGEnemy::update():HGEnemy.mm">
       </ContextState>
       <ContextState
          contextName = "hg::CollisionManager::isIntersect(int&amp;, hgles::HGLVector3&amp;, hg::HGSize&amp;, int&amp;, hgles::HGLVector3&amp;, hg::HGSize&amp;):HCollision.h">
+      </ContextState>
+      <ContextState
+         contextName = "hg::HGProcessManager::update():HGameEngine.mm">
       </ContextState>
       <ContextState
          contextName = "hg::CellManager::GetCellList(hg::Actor*, std::__1::list&lt;int, std::__1::allocator&lt;int&gt; &gt;&amp;):HGame.mm">
@@ -428,15 +482,24 @@
          contextName = "hg::BattleState::onUpdate():HGame.mm">
          <PersistentStrings>
             <PersistentString
-               value = "SpawnGroup">
+               value = "spawnData">
             </PersistentString>
             <PersistentString
-               value = "spawnData">
+               value = "HGProcessManager::sharedProcessManager()">
+            </PersistentString>
+            <PersistentString
+               value = "SpawnGroup">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "hg::initialize(std::__1::deque&lt;std::__1::vector&lt;hg::FighterInfo*, std::__1::allocator&lt;hg::FighterInfo*&gt; &gt;, std::__1::allocator&lt;std::__1::vector&lt;hg::FighterInfo*, std::__1::allocator&lt;hg::FighterInfo*&gt; &gt; &gt; &gt;, hg::FighterInfo*, std::__1::vector&lt;hg::FighterInfo*, std::__1::allocator&lt;hg::FighterInfo*&gt; &gt;):HGame.mm">
+      </ContextState>
+      <ContextState
          contextName = "split(std::__1::vector&lt;std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;, std::__1::allocator&lt;std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; &gt; &gt;*, std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; const*, std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;):HayoUtil.mm">
+      </ContextState>
+      <ContextState
+         contextName = "hg::HGDirector::getRootNode():HGameEngine.h">
       </ContextState>
       <ContextState
          contextName = "HGLIndexBuffer::HGLIndexBuffer(unsigned short const*, int):HGLIndexBuffer.mm">
@@ -451,6 +514,14 @@
          <PersistentStrings>
             <PersistentString
                value = "materials">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "hg::HGStateManager::update():HGameEngine.mm">
+         <PersistentStrings>
+            <PersistentString
+               value = "stack">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -487,6 +558,9 @@
       </ContextState>
       <ContextState
          contextName = "hg::onMoveLeftPad(int, float, bool, bool):HGame.mm">
+      </ContextState>
+      <ContextState
+         contextName = "hg::HGNode::removeFromParent():HGameEngine.h">
       </ContextState>
       <ContextState
          contextName = "HGActor::drawCollision():HGActor.mm">

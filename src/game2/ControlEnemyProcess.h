@@ -136,7 +136,7 @@ namespace hg {
                     pFighter->setAspectDegree(d);
                     
                     // 攻撃する
-                    if (pTarget->getLife() > 0)
+                    if (pTarget->getLife() > 0 && pTarget->isActive())
                     {
                         float distance = PXL2REAL(5000);
                         if (pFighter->isShip())

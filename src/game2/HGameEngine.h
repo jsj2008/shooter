@@ -184,7 +184,13 @@ namespace hg
     {
         typedef HGObject base;
     public:
-        HGState();
+        HGState():
+            frameCount(0),
+            isInitialUpdate(true)
+        {
+            frameCount = 0;
+            isInitialUpdate = true;
+        };
         virtual void onUpdate(){}
         virtual std::string getName();
         virtual void onSuspend(){}
@@ -207,12 +213,13 @@ namespace hg
     public:
         typedef std::stack<HGState*> stateStack;
         stateStack stack;
+        stateStack endStack;
         static HGStateManager* sharedStateManger();
         void clear();
         void update();
         void pop();
         void push(HGState* state);
-        ~HGStateManager(){}
+        ~HGStateManager(){assert(false);}
     private:
         HGStateManager(){};
     };
@@ -360,12 +367,12 @@ namespace hg
     
     // プロセス管理クラス
     typedef std::list<HGProcess*> ProcessList;
-    static HGProcessManager* hgProcessManagerPtr = NULL;
     class HGProcessManager : HGObject
     {
     public:
         static inline HGProcessManager* sharedProcessManager()
         {
+            static HGProcessManager* hgProcessManagerPtr = NULL;
             if (!hgProcessManagerPtr)
             {
                 hgProcessManagerPtr = new (SYSTEM_HEAP_NAME)HGProcessManager();
@@ -433,14 +440,19 @@ namespace hg
         
         inline void removeFromParent()
         {
-            assert(parent);
-            parent->removeChild(this);
+            if (parent)
+            {
+                parent->removeChild(this);
+            }
         }
         
         inline void addChild(HGNode* node)
         {
             assert(node != this);
-            assert(node->parent == NULL);
+            if (node->parent != NULL)
+            {
+                node->removeFromParent();
+            }
             node->retain();
             children.push_back(node);
             node->setParent(this);
@@ -832,7 +844,6 @@ namespace hg
     
     ////////////////////
     // グローバルノード
-    static HGDirector* directorPtr = NULL;
     class HGDirector : HGObject
     {
     public:
@@ -841,8 +852,13 @@ namespace hg
         {
             
         }
+        ~HGDirector()
+        {
+            assert(false);
+        }
         static inline HGDirector* sharedDirector()
         {
+            static HGDirector* directorPtr = NULL;
             if (!directorPtr)
             {
                 directorPtr = new (SYSTEM_HEAP_NAME)HGDirector();
@@ -1304,7 +1320,8 @@ namespace hg
         type(SPRITE_TYPE_BILLBOARD),
         color({1,1,1,1}),
         blendColor({1,1,1,1}),
-        isAlphaMap(0)
+        isAlphaMap(0),
+        anchorPoint(0,0)
         {
         };
         inline ~HGText()
@@ -1372,6 +1389,11 @@ namespace hg
         {
             return this->color;
         }
+        inline void setAnchor(float x, float y)
+        {
+            anchorPoint.x = x;
+            anchorPoint.y = y;
+        }
     protected:
         inline void render()
         {
@@ -1386,7 +1408,8 @@ namespace hg
                 this->setScale(scaleX, scale);
                 return;
             }
-            worldPosition.x += (worldScale.x)/2;
+            worldPosition.x += (worldScale.x)/2 - (worldScale.x) * anchorPoint.x;
+            worldPosition.y += (worldScale.y)/2 - (worldScale.y) * anchorPoint.y;
             if (isTextureRectChanged)
             {
                 texture->setTextureArea(textureRect.point.x, textureRect.point.y, textureRect.size.width, textureRect.size.height);
@@ -1417,6 +1440,7 @@ namespace hg
         bool isPropertyChanged;
         bool isTextureRectChanged;
         bool isTextureInitialized;
+        HGPoint anchorPoint;
         int blend1;
         int blend2;
         int isAlphaMap;
