@@ -7,8 +7,18 @@
 //
 
 #import "AllyView.h"
+#import "UserData.h"
 #import "UIColor+MyCategory.h"
 #import <QuartzCore/QuartzCore.h>
+#import "StatusView.h"
+
+@interface AllyViewLabel : UILabel
+
+@end
+
+@implementation AllyViewLabel
+
+@end
 
 @interface AllyView()
 {
@@ -16,6 +26,7 @@
     NSMutableArray* labels;
     UIView* highlightView;
     AllyViewMode _mode;
+    CGRect defaultFrame;
 }
 
 @end
@@ -29,6 +40,7 @@
         _mode = mode;
         // Initialization code
         labels = [[NSMutableArray alloc] init];
+        defaultFrame = frame;
     }
     return self;
     
@@ -42,13 +54,31 @@
 
 - (void)reloadData
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self setFighterInfo:_fighterInfo];
-    });
+    [self setFighterInfo:_fighterInfo];
+}
+
+- (UILabel*)labelWithIndex:(int)index WithText:(NSString*)text
+{
+    UILabel* lb = [[[UILabel alloc] init] autorelease];
+    UIFont* font = [UIFont fontWithName:@"Copperplate-Bold" size:12];
+    CGRect labelFrame = self.frame;
+    labelFrame.size.width = self.frame.size.height - 20;
+    labelFrame.size.height = self.frame.size.width;
+    [lb setFrame:labelFrame];
+    [lb setTextAlignment:NSTextAlignmentLeft];
+    [lb setFont:font];
+    [lb setText:text];
+    [lb setBackgroundColor:[UIColor clearColor]];
+    [lb setUserInteractionEnabled:NO];
+    [lb setTextColor:[UIColor colorWithHexString:@"#a9f16c"]];
+    [lb setTransform:CGAffineTransformRotate(CGAffineTransformIdentity, 90*M_PI/180)];
+    [lb setCenter:CGPointMake(self.frame.size.width/2 + 33 - (13*index), self.frame.size.height/2)];
+    return lb;
 }
 
 - (void)setFighterInfo:(hg::FighterInfo*) info
 {
+        
     _fighterInfo = info;
     
     // initialize
@@ -62,108 +92,65 @@
     [self setBackgroundColor:[UIColor colorWithHexString:@"#439400"]];
     // name
     {
-        UILabel* lb = [[[UILabel alloc] init] autorelease];
-        UIFont* font = [UIFont fontWithName:@"Copperplate-Bold" size:12];
-        CGRect labelFrame = self.frame;
-        labelFrame.size.width = self.frame.size.height - 20;
-        labelFrame.size.height = self.frame.size.width;
-        [lb setFrame:labelFrame];
-        [lb setTextAlignment:NSTextAlignmentLeft];
-        [lb setFont:font];
-        [lb setText:[NSString stringWithCString:info->name.c_str() encoding:NSUTF8StringEncoding]];
-        [lb setBackgroundColor:[UIColor clearColor]];
-        [lb setUserInteractionEnabled:NO];
-        //[lb setAlpha:0.5];
-        [lb setTextColor:[UIColor colorWithHexString:@"#a9f16c"]];
-        [lb setTransform:CGAffineTransformRotate(CGAffineTransformIdentity, 90*M_PI/180)];
-        [lb setCenter:CGPointMake(self.frame.size.width/2 + 26, self.frame.size.height/2)];
+        UILabel* lb = [self labelWithIndex:0 WithText:[NSString stringWithCString:info->name.c_str() encoding:NSUTF8StringEncoding]];
         [self addSubview:lb];
         [labels addObject:lb];
     }
     // level
     {
-        UILabel* lb = [[[UILabel alloc] init] autorelease];
-        UIFont* font = [UIFont fontWithName:@"Copperplate-Bold" size:12];
-        CGRect labelFrame = self.frame;
-        labelFrame.size.width = self.frame.size.height - 20;
-        labelFrame.size.height = self.frame.size.width;
-        [lb setFrame:labelFrame];
-        [lb setTextAlignment:NSTextAlignmentLeft];
-        [lb setFont:font];
-        [lb setText: [NSString stringWithFormat:@"Lv %d", info->level]];
-        [lb setBackgroundColor:[UIColor clearColor]];
-        [lb setUserInteractionEnabled:NO];
-        //[lb setAlpha:0.5];
-        [lb setTextColor:[UIColor colorWithHexString:@"#a9f16c"]];
-        [lb setTransform:CGAffineTransformRotate(CGAffineTransformIdentity, 90*M_PI/180)];
-        [lb setCenter:CGPointMake(self.frame.size.width/2 + 13, self.frame.size.height/2)];
+        UILabel* lb = [self labelWithIndex:1 WithText:[NSString stringWithFormat:@"Lv %d", info->level]];
         [self addSubview:lb];
         [labels addObject:lb];
     }
     // life
     {
-        UILabel* lb = [[[UILabel alloc] init] autorelease];
-        UIFont* font = [UIFont fontWithName:@"Copperplate-Bold" size:12];
-        CGRect labelFrame = self.frame;
-        labelFrame.size.width = self.frame.size.height - 20;
-        labelFrame.size.height = self.frame.size.width;
-        [lb setFrame:labelFrame];
-        [lb setTextAlignment:NSTextAlignmentLeft];
-        [lb setFont:font];
-        [lb setText: [NSString stringWithFormat:@"HP %d/%d", info->life, info->lifeMax]];
-        [lb setBackgroundColor:[UIColor clearColor]];
-        [lb setUserInteractionEnabled:NO];
-        //[lb setAlpha:0.5];
-        [lb setTextColor:[UIColor colorWithHexString:@"#a9f16c"]];
-        [lb setTransform:CGAffineTransformRotate(CGAffineTransformIdentity, 90*M_PI/180)];
-        [lb setCenter:CGPointMake(self.frame.size.width/2, self.frame.size.height/2)];
+        UILabel* lb = [self labelWithIndex:2 WithText:[NSString stringWithFormat:@"HP %d/%d", info->life, info->lifeMax]];
         [self addSubview:lb];
         [labels addObject:lb];
     }
     // power
     {
-        UILabel* lb = [[[UILabel alloc] init] autorelease];
-        UIFont* font = [UIFont fontWithName:@"Copperplate-Bold" size:12];
-        CGRect labelFrame = self.frame;
-        labelFrame.size.width = self.frame.size.height - 20;
-        labelFrame.size.height = self.frame.size.width;
-        [lb setFrame:labelFrame];
-        [lb setTextAlignment:NSTextAlignmentLeft];
-        [lb setFont:font];
-        [lb setText: [NSString stringWithFormat:@"Dmg %d/sec", info->power]];
-        [lb setBackgroundColor:[UIColor clearColor]];
-        [lb setUserInteractionEnabled:NO];
-        [lb setTextColor:[UIColor colorWithHexString:@"#a9f16c"]];
-        [lb setTransform:CGAffineTransformRotate(CGAffineTransformIdentity, 90*M_PI/180)];
-        [lb setCenter:CGPointMake(self.frame.size.width/2 - 13, self.frame.size.height/2)];
+        UILabel* lb = [self labelWithIndex:3 WithText:[NSString stringWithFormat:@"Dmg %d/sec", info->power]];
         [self addSubview:lb];
         [labels addObject:lb];
     }
     // shield
     {
-        UILabel* lb = [[[UILabel alloc] init] autorelease];
-        UIFont* font = [UIFont fontWithName:@"Copperplate-Bold" size:12];
-        CGRect labelFrame = self.frame;
-        labelFrame.size.width = self.frame.size.height - 20;
-        labelFrame.size.height = self.frame.size.width;
-        [lb setFrame:labelFrame];
-        [lb setTextAlignment:NSTextAlignmentLeft];
-        [lb setFont:font];
+        NSString* text = nil;
         if (info->shieldMax>0)
         {
-            [lb setText: [NSString stringWithFormat:@"Shield: %d", info->shieldMax]];
+            text = [NSString stringWithFormat:@"Shield: %d", info->shieldMax];
         }
         else
         {
-            [lb setText: [NSString stringWithFormat:@"Shield: None"]];
+            text = [NSString stringWithFormat:@"Shield: None"];
         }
-        [lb setBackgroundColor:[UIColor clearColor]];
-        [lb setUserInteractionEnabled:NO];
-        [lb setTextColor:[UIColor colorWithHexString:@"#a9f16c"]];
-        [lb setTransform:CGAffineTransformRotate(CGAffineTransformIdentity, 90*M_PI/180)];
-        [lb setCenter:CGPointMake(self.frame.size.width/2 - 26, self.frame.size.height/2)];
+        UILabel* lb = [self labelWithIndex:4 WithText:text];
         [self addSubview:lb];
         [labels addObject:lb];
+    }
+    // fix cost
+    if (_mode == AllyViewModeFix)
+    {
+        int cost = hg::UserData::sharedUserData()->getRepairCost(info);
+        if (cost >= 0)
+        {
+            NSString* text = [NSString stringWithFormat:@"%d", cost];
+            UILabel* lb = [self labelWithIndex:5 WithText:text];
+            CGRect f = lb.frame;
+            // money icon
+            {
+                CGRect coinf = CGRectMake(f.origin.x+34, f.origin.y, 16, 16);
+                UIImage* img = [UIImage imageNamed:@"goldCoin5.png"];
+                UIImageView* iv = [[[UIImageView alloc] initWithFrame:coinf] autorelease];
+                [iv setImage:img];
+                [self addSubview:iv];
+            }
+            f.origin.y += 16;
+            [lb setFrame:f];
+            [self addSubview:lb];
+            [labels addObject:lb];
+        }
     }
     {
         // highlight タッチされたときのハイライト用
@@ -193,6 +180,7 @@
             [l setTextColor:[UIColor colorWithHexString:@"#ff9b73"]];
         }
     }
+    
     [self.layer setCornerRadius:3];
     
     switch (_mode)
@@ -250,6 +238,8 @@
     } completion:^(BOOL finished) {
         [UIView animateWithDuration:0.10 animations:^{
             [self setTransform:CGAffineTransformIdentity];
+        } completion:^(BOOL finished) {
+            [self reloadData];
         }];
     }];
     
@@ -278,11 +268,12 @@
         // Fix Ally
         case AllyViewModeFix:
         {
+            hg::UserData* u = hg::UserData::sharedUserData();
+            u->addMoney(-1 * u->getRepairCost(_fighterInfo));
             _fighterInfo->life = _fighterInfo->lifeMax;
-            [self reloadData];
+            [[StatusView GetInstance] loadUserInfo];
             break;
         }
-            break;
         default:
             assert(0);
     }
@@ -334,31 +325,5 @@
     }];
 }
 
-- (void)onTouchAnime
-{
-    // 拡大アニメーションさせるので、トップに持ってくる
-    [highlightView setAlpha:0];
-    [self.superview.superview bringSubviewToFront:self.superview];
-    [self.superview bringSubviewToFront:self];
-    
-    [UIView animateWithDuration:0.10 animations:^{
-        CGAffineTransform t = CGAffineTransformMakeScale(1.1, 1.1);
-        [self setTransform:t];
-    } completion:^(BOOL finished) {
-        [UIView animateWithDuration:0.10 animations:^{
-            [self setTransform:CGAffineTransformIdentity];
-        }];
-    }];
-}
-
-
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-}
-*/
 
 @end

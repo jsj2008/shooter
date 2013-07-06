@@ -6,7 +6,7 @@
 //  Copyright (c) 2013年 hayogame. All rights reserved.
 //
 
-#import "AllyViewController.h"
+#import "AllyTableView.h"
 #import "TroopsView.h"
 #import <QuartzCore/QuartzCore.h>
 #import "HGame.h"
@@ -14,47 +14,64 @@
 #import "UIColor+MyCategory.h"
 #import "ImageButtonView.h"
 
-@interface AllyViewController ()
+@interface AllyTableView ()
 {
     AllyViewMode viewMode;
     UITableView* allyTableView;
+    
+    // action
+    void (^onEndAction)();
 }
 
 @end
 
-@implementation AllyViewController
+@implementation AllyTableView
 
 const int CELL_WIDTH = 130;
-const int CELL_HEIGHT = 70;
+const int CELL_HEIGHT = 85;
 const int CELL_GAP = 7;
 
 int maxRowNum = 0;
 
 CGRect frame;
 
-- (id)initWithViewMode:(AllyViewMode)_viewMode
+- (id)initWithViewMode:(AllyViewMode)_viewMode WithFrame:(CGRect)_frame
 {
     self = [super init];
     if (self)
     {
+        frame = _frame;
         viewMode = _viewMode;
+        [self viewDidLoad];
     }
     return self;
 }
 
+- (void) setOnEndAction:(void(^)(void))action
+{
+    onEndAction = [action copy];
+}
+
+- (void)dealloc
+{
+    if (onEndAction) [onEndAction release];
+    [super dealloc];
+}
+
 - (void)viewDidLoad
 {
-    [super viewDidLoad];
     
-    CGRect screen = [UIScreen mainScreen].applicationFrame;
-    frame = screen;
+    [self setBackgroundColor:[UIColor clearColor]];
     
-    UIView* tbCont = [[UIView alloc] initWithFrame: CGRectMake(0, 0, screen.size.height, screen.size.width)];
+    [self setFrame:frame];
+    
+    UIView* tbCont = [[UIView alloc] initWithFrame: CGRectMake(0, 0, frame.size.width, frame.size.height)];
+    [tbCont setBackgroundColor:[UIColor clearColor]];
     //[tbCont setBackgroundColor:[UIColor redColor]];
-    [self.view addSubview:tbCont];
+    [self addSubview:tbCont];
     
     // テーブル
-    CGRect scrollFrame = CGRectMake(0, 0, tbCont.frame.size.height, tbCont.frame.size.width);
+    CGRect scrollFrame = CGRectMake(0, 0, frame.size.height, frame.size.width);
     UITableView* tbv = [[UITableView alloc] initWithFrame:scrollFrame];
     [tbv setBackgroundColor:[UIColor clearColor]];
     [tbv setRowHeight:150];
@@ -65,14 +82,14 @@ CGRect frame;
     tbv.indicatorStyle = UIScrollViewIndicatorStyleBlack;
     tbv.delegate = self;
     tbv.dataSource = self;
-    [tbv setBackgroundColor:[UIColor blackColor]];
+    //[tbv setBackgroundColor:[UIColor blackColor]];
     [tbv setTransform:CGAffineTransformRotate(CGAffineTransformIdentity, -90*M_PI/180)];
     [tbv setCenter:CGPointMake(tbCont.frame.size.width/2, tbCont.frame.size.height/2)];
     allyTableView = tbv;
     [tbCont addSubview:tbv];
     
     // calc max row num
-    maxRowNum = (int)(screen.size.width / (CELL_HEIGHT + CELL_GAP));
+    maxRowNum = (int)(frame.size.height / (CELL_HEIGHT + CELL_GAP));
     
     // 戻るボタン
     {
@@ -80,7 +97,7 @@ CGRect frame;
         UIImage* img = [UIImage imageNamed:@"checkmark.png"];
         
         [backImgView setBackgroundColor:[UIColor whiteColor]];
-        [backImgView setFrame:CGRectMake(screen.size.height - 76, screen.size.width - 84, 66, 66)];
+        [backImgView setFrame:CGRectMake(frame.size.width - 76, frame.size.height - 84, 66, 66)];
         [backImgView.layer setCornerRadius:8];
         [backImgView.layer setBorderColor:[UIColor colorWithHexString:@"#222222"].CGColor];
         [backImgView.layer setBorderWidth:3];
@@ -89,21 +106,18 @@ CGRect frame;
         [backImgView setContentMode:UIViewContentModeScaleAspectFit];
         [backImgView setUserInteractionEnabled:YES];
         
-        [self.view addSubview:backImgView];
+        [self addSubview:backImgView];
         
         [backImgView setOnTapAction:^(ImageButtonView *target) {
-            [self removeFromParentViewController];
-            [self dismissModalViewControllerAnimated:YES];
+            //[self removeFromSuperview];
+            [self setUserInteractionEnabled:FALSE];
+            [backImgView setUserInteractionEnabled:FALSE];
+            onEndAction();
+            NSLog(@"onEnd");
         }];
     }
     
-    [self.view setBackgroundColor:[UIColor clearColor]];
-}
-
--(void)back:(id)sender
-{
-    [self removeFromParentViewController];
-    [self dismissModalViewControllerAnimated:YES];
+    [self setBackgroundColor:[UIColor clearColor]];
 }
 
 
@@ -144,7 +158,7 @@ numberOfRowsInSection:(NSInteger)section
     [c setSelectionStyle:UITableViewCellSelectionStyleNone];
     
     // 枠
-    int y = frame.size.width - CELL_HEIGHT - CELL_GAP;
+    int y = frame.size.height - CELL_HEIGHT - CELL_GAP;
     hg::FighterList fList = hg::UserData::sharedUserData()->getFighterList();
     for (int i = 0; i < maxRowNum; i++)
     {
@@ -174,9 +188,5 @@ heightForHeaderInSection:(NSInteger)section
     return 0;
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-}
 
 @end

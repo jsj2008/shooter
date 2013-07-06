@@ -20,8 +20,7 @@ typedef enum AllyViewMode
 - (id)initWithAllyViewMode:(AllyViewMode)mode WithFrame:(CGRect)frame;
 - (void)setFighterInfo:(hg::FighterInfo*) info;
 - (hg::FighterInfo*) getFighterinfo;
-- (void)reloadData;
-- (void)setBackgroundColor:(UIColor *)backgroundColor WithTextColor:(UIColor *)textColor;
-- (void)onTouchAnime;
+//- (void)setBackgroundColor:(UIColor *)backgroundColor WithTextColor:(UIColor *)textColor;
+//- (void)onTouchAnime;
 
 @end

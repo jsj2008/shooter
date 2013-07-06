@@ -1,7 +1,7 @@
 #import "MenuView.h"
 #import "MainViewController.h"
 #import <QuartzCore/QuartzCore.h>
-#import "AllyViewController.h"
+#import "AllyTableView.h"
 #import <vector>
 
 typedef enum MainMenuTag
@@ -95,15 +95,14 @@ t_menu_btn menu_btn_info[] = {
             break;
         case MainMenuSelectAlly:
         {
-            //[MainViewController ShowTroops];
-            AllyViewController* vc = [[[AllyViewController alloc] initWithViewMode:AllyViewModeSelectAlly] autorelease];
-            [MainViewController PresentViewController:vc];
+            AllyTableView* vc = [[[AllyTableView alloc] initWithViewMode:AllyViewModeSelectAlly] autorelease];
+            [self addSubview:vc];
             break;
         }
         case MainMenuFixAlly:
         {
-            AllyViewController* vc = [[[AllyViewController alloc] initWithViewMode:AllyViewModeFix] autorelease];
-            [MainViewController PresentViewController:vc];
+            AllyTableView* vc = [[[AllyTableView alloc] initWithViewMode:AllyViewModeFix] autorelease];
+            [self addSubview:vc];
             break;
         }
         default:

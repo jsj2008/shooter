@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "AllyView.h"
 
-@interface AllyViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
+@interface AllyTableView : UIView<UITableViewDataSource, UITableViewDelegate>
 
-- (id)initWithViewMode:(AllyViewMode)_viewMode;
+- (id)initWithViewMode:(AllyViewMode)_viewMode WithFrame:(CGRect)_frame;
+- (void) setOnEndAction:(void(^)(void))action;
 
 @end

@@ -6,25 +6,19 @@
 //  Copyright (c) 2013年 hayogame. All rights reserved.
 //
 
-#import "ImageButtonView.h"
+#import <QuartzCore/QuartzCore.h>
+#import "MenuButton.h"
+#import "UIColor+MyCategory.h"
 
-@interface ImageButtonView()
+@interface MenuButton()
 {
     UIView* highlightView;
-    void (^onTap)(ImageButtonView* target);
+    UILabel* label;
+    void (^onTap)(MenuButton* target);
 }
 @end
 
-@implementation ImageButtonView
-
-- (id)init
-{
-    self = [super init];
-    if (self)
-    {
-    }
-    return self;
-}
+@implementation MenuButton
 
 - (void)dealloc
 {
@@ -32,7 +26,46 @@
     [super dealloc];
 }
 
-- (void)setOnTapAction:(void(^)(ImageButtonView* target)) _onTap
+- (id)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self)
+    {
+        CGRect frm = frame;
+        //MenuButton* m = [[[MenuButton alloc] initWithFrame:frm] autorelease];
+        MenuButton* m = self;
+        [self setBackgroundColor:[UIColor colorWithHexString:@"#aaccff"]];
+        // label
+        {
+            UILabel * l = [[[UILabel alloc] init] autorelease];
+            UIFont* font = [UIFont fontWithName:@"Copperplate-Bold" size:17];
+            [l setFont:font];
+            [l setTextColor:[UIColor colorWithHexString:@"#ddddff"]];
+            [l setText:@"Battle"];
+            [l setTextAlignment:NSTextAlignmentCenter];
+            [l setFrame:CGRectMake(0, 0, frm.size.width, frm.size.height)];
+            [l setBackgroundColor:[UIColor clearColor]];
+            label = l;
+            [m addSubview:l];
+        }
+        // design
+        {
+            [m.layer setBorderColor:[UIColor colorWithHexString:@"#8888dd"].CGColor];
+            [m.layer setBorderWidth:2];
+            //[m.layer setBackgroundColor:[UIColor colorWithHexString:@"#343488"].CGColor];
+            [m.layer setBackgroundColor:[UIColor clearColor].CGColor];
+            //[m setAlpha:0.6];
+        }
+    }
+    return self;
+}
+
+- (void)setText:(NSString*)text
+{
+    [label setText:text];
+}
+
+- (void)setOnTapAction:(void(^)(MenuButton* target)) _onTap
 {
     onTap = [_onTap copy];
     {

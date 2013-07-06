@@ -8,8 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+const int StatusViewHeight = 20;
+
 @interface StatusView : UIView
 
 - (void)loadUserInfo;
++ (id)GetInstance;
 
 @end
