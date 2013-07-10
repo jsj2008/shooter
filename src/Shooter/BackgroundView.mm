@@ -142,8 +142,10 @@
     }
     
     // model
+    /*
     HGLObject3D* model = HGLObjLoader::load(@"droid.obj");
     fighterObject = model;
+     */
     
 }
 
@@ -178,7 +180,6 @@
         {
             return;
         }
-        /*
         // 光源なし
         glUniform1f(hgles::currentContext->uUseLight, 0.0);
         
@@ -197,16 +198,18 @@
         for (std::vector<hgles::t_hgl2di*>::reverse_iterator itr = nebula.rbegin(); itr != nebula.rend(); ++itr)
         {
             hgles::HGLGraphics2D::draw(*itr);
-        }*/
+        }
         
         // 光源ON
         //glUniform1f(hgles::currentContext->uUseLight, 1.0);
+        /*
         fighterObject->position.x = 0;
         fighterObject->position.y = 0;
         fighterObject->position.z = 2;
         fighterObject->scale.set(1,1,1);
         
         fighterObject->draw();
+         */
     }
 }
 
