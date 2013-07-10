@@ -13,6 +13,7 @@ typedef enum AllyViewMode
 {
     AllyViewModeSelectAlly,
     AllyViewModeFix,
+    AllyViewModeSelectPlayer,
 } AllyViewMode;
 
 @interface AllyView : UIView

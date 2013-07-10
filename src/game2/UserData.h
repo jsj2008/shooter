@@ -32,6 +32,7 @@ namespace hg {
         {
             money += add;
         }
+        int getRepairCost(hg::FighterInfo* fInfo);
     private:
         FighterList fighterList;
         int money = 1000;

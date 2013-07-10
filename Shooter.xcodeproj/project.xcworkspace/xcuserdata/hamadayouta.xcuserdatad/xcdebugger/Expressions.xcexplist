@@ -3,10 +3,13 @@
    version = "1.0">
    <ContextStates>
       <ContextState
-         contextName = "HGGame::drawHitbox(hgles::HGLVector3 const*, HGGame::t_size2d const*, int, hgles::HGLVector3 const*):HGCollision.mm">
+         contextName = "HGGame::HGActor::drawCollision():HGActor.mm">
          <PersistentStrings>
             <PersistentString
-               value = "size1">
+               value = "*list1">
+            </PersistentString>
+            <PersistentString
+               value = "HITBOX_LIST">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -14,7 +17,7 @@
          contextName = "hg::Fighter::init(hg::HGNode*, hg::SideType, hg::FighterInfo*):HFighter.h">
       </ContextState>
       <ContextState
-         contextName = "hg::ControlPlayerProcess::~ControlPlayerProcess():ControlPlayerProcess.h">
+         contextName = "-[TestViewController render]:TestViewController.mm">
       </ContextState>
       <ContextState
          contextName = "hg::HGDirector::sharedDirector():HGameEngine.h">
@@ -43,6 +46,9 @@
       </ContextState>
       <ContextState
          contextName = "hgles::HGLES::initialize(float, float):HGLES.mm">
+      </ContextState>
+      <ContextState
+         contextName = "-[BackgroundView renderThis]:BackgroundView.mm">
       </ContextState>
       <ContextState
          contextName = "HGLObjLoader::addIndex(std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;*):HGLObjLoader.mm">
@@ -141,10 +147,10 @@
          contextName = "GLES::compileShaders():GLES.mm">
          <PersistentStrings>
             <PersistentString
-               value = "aPositionSlot">
+               value = "aNormalSlot">
             </PersistentString>
             <PersistentString
-               value = "aNormalSlot">
+               value = "aPositionSlot">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -325,6 +331,14 @@
          contextName = "HGGame::getCellList(HGGame::HGActor*, std::__1::vector&lt;int, std::__1::allocator&lt;int&gt; &gt;*):HGGame.mm">
       </ContextState>
       <ContextState
+         contextName = "hgles::HGLObject3D::draw():HGLObject3D.mm">
+         <PersistentStrings>
+            <PersistentString
+               value = "testObject">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "HGLMesh::draw():HGLMesh.mm">
       </ContextState>
       <ContextState
@@ -342,13 +356,13 @@
          contextName = "IndexBuffer::IndexBuffer(unsigned char const*, int):IndexBuffer.mm">
          <PersistentStrings>
             <PersistentString
-               value = "sizeof(Index)">
-            </PersistentString>
-            <PersistentString
                value = "sizeof(Vertex)">
             </PersistentString>
             <PersistentString
                value = "indices[1]">
+            </PersistentString>
+            <PersistentString
+               value = "sizeof(Index)">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -482,13 +496,13 @@
          contextName = "hg::BattleState::onUpdate():HGame.mm">
          <PersistentStrings>
             <PersistentString
+               value = "SpawnGroup">
+            </PersistentString>
+            <PersistentString
                value = "spawnData">
             </PersistentString>
             <PersistentString
                value = "HGProcessManager::sharedProcessManager()">
-            </PersistentString>
-            <PersistentString
-               value = "SpawnGroup">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -500,6 +514,9 @@
       </ContextState>
       <ContextState
          contextName = "hg::HGDirector::getRootNode():HGameEngine.h">
+      </ContextState>
+      <ContextState
+         contextName = "-[AllyView touchAlly:]:AllyView.m">
       </ContextState>
       <ContextState
          contextName = "HGLIndexBuffer::HGLIndexBuffer(unsigned short const*, int):HGLIndexBuffer.mm">
@@ -572,18 +589,15 @@
          contextName = "-[ViewController deployFriend]:ViewController.mm">
       </ContextState>
       <ContextState
-         contextName = "HGGame::HGActor::drawCollision():HGActor.mm">
+         contextName = "HGGame::drawHitbox(hgles::HGLVector3 const*, HGGame::t_size2d const*, int, hgles::HGLVector3 const*):HGCollision.mm">
          <PersistentStrings>
             <PersistentString
-               value = "*list1">
-            </PersistentString>
-            <PersistentString
-               value = "HITBOX_LIST">
+               value = "size1">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[TestViewController render]:TestViewController.mm">
+         contextName = "hg::ControlPlayerProcess::~ControlPlayerProcess():ControlPlayerProcess.h">
       </ContextState>
    </ContextStates>
 </VariablesViewState>

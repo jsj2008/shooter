@@ -462,7 +462,7 @@ namespace hg {
             else
             {
                 this->life += life;
-                if (this->life < 0)
+                if (this->life <= 0)
                 {
                     this->life = 0;
                 }
@@ -728,6 +728,14 @@ namespace hg {
         // call function repeatedly processから呼び出される
         inline bool explodeProcess()
         {
+            if (this->isActive() == false)
+            {
+                if (this->getNode()->hasParent())
+                {
+                    this->getNode()->removeFromParent();
+                }
+                return true;
+            }
             explodeProcessCount++;
             if (_isShip)
             {

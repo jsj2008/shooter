@@ -47,6 +47,16 @@ namespace hg {
     
     typedef std::vector<WeaponInfo> WeaponInfoList;
     
+    typedef struct BattleResult
+    {
+        bool isWin = false;
+        int earnedMoney = 0;
+        int yourShot = 0;
+        int allShotMoney = 0;
+        int killedFriend = 0;
+        int killedEnemy = 0;
+    } BattleResult;
+    
     typedef struct FighterInfo
     {
         FighterInfo():
@@ -80,6 +90,7 @@ namespace hg {
         WeaponInfoList weaponList;
         bool isPlayer;
         std::string name;
+        int cost;
     } FighterInfo;
     
     typedef std::vector<FighterInfo*> SpawnGroup;
@@ -113,6 +124,8 @@ namespace hg {
     
     extern CellManager<Fighter> enemyCellManager;
     extern CellManager<Fighter> friendCellManager;
+    
+    extern BattleResult battleResult;
     
 }
 

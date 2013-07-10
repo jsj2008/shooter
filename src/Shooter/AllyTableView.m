@@ -35,6 +35,8 @@ int maxRowNum = 0;
 
 CGRect frame;
 
+static AllyTableView* instance;
+
 - (id)initWithViewMode:(AllyViewMode)_viewMode WithFrame:(CGRect)_frame
 {
     self = [super init];
@@ -43,8 +45,36 @@ CGRect frame;
         frame = _frame;
         viewMode = _viewMode;
         [self viewDidLoad];
+        instance = self;
     }
     return self;
+}
+
++ (void)EndView
+{
+    if (instance)
+    {
+        [instance endView];
+    }
+}
+
+- (void)endView
+{
+    [self setUserInteractionEnabled:FALSE];
+    onEndAction();
+}
+
++ (void)ReloadData
+{
+    if (instance)
+    {
+        [instance reloadData];
+    }
+}
+
+- (void)reloadData
+{
+    [allyTableView reloadData];
 }
 
 - (void) setOnEndAction:(void(^)(void))action
@@ -109,11 +139,8 @@ CGRect frame;
         [self addSubview:backImgView];
         
         [backImgView setOnTapAction:^(ImageButtonView *target) {
-            //[self removeFromSuperview];
             [self setUserInteractionEnabled:FALSE];
-            [backImgView setUserInteractionEnabled:FALSE];
             onEndAction();
-            NSLog(@"onEnd");
         }];
     }
     

@@ -18,6 +18,7 @@ namespace hg
     void render();
     void update(KeyInfo keyState);
     bool isGameEnd();
+    BattleResult getResult();
     void cleanup();
 }
 #endif

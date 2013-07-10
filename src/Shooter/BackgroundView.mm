@@ -8,6 +8,8 @@
 #import "HGLView.h"
 #import "HGLES.h"
 #import "HGLGraphics2D.h"
+#import "HGLObject3D.h"
+#import "HGLObjLoader.h"
 
 @interface BackgroundView ()
 {
@@ -20,6 +22,9 @@
     // background
     hgles::t_hgl2di* background;
     std::vector<hgles::t_hgl2di*> nebula;
+    
+    // fighter
+    hgles::HGLObject3D* fighterObject;
     
     bool isEnd;
     bool is3DInitialized;
@@ -106,6 +111,8 @@
 
 - (void)setUp
 {
+    using namespace hgles;
+    
     // background
     hgles::t_hgl2di* t = new hgles::t_hgl2di();
     t->texture = *hgles::HGLTexture::createTextureWithAsset("square.png");
@@ -133,6 +140,11 @@
             z += 50;
         }
     }
+    
+    // model
+    HGLObject3D* model = HGLObjLoader::load(@"droid.obj");
+    fighterObject = model;
+    
 }
 
 - (void)update
@@ -166,6 +178,7 @@
         {
             return;
         }
+        /*
         // 光源なし
         glUniform1f(hgles::currentContext->uUseLight, 0.0);
         
@@ -184,7 +197,16 @@
         for (std::vector<hgles::t_hgl2di*>::reverse_iterator itr = nebula.rbegin(); itr != nebula.rend(); ++itr)
         {
             hgles::HGLGraphics2D::draw(*itr);
-        }
+        }*/
+        
+        // 光源ON
+        //glUniform1f(hgles::currentContext->uUseLight, 1.0);
+        fighterObject->position.x = 0;
+        fighterObject->position.y = 0;
+        fighterObject->position.z = 2;
+        fighterObject->scale.set(1,1,1);
+        
+        fighterObject->draw();
     }
 }
 

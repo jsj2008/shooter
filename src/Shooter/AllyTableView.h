@@ -13,5 +13,7 @@
 
 - (id)initWithViewMode:(AllyViewMode)_viewMode WithFrame:(CGRect)_frame;
 - (void) setOnEndAction:(void(^)(void))action;
++ (void)EndView;
++ (void)ReloadData;
 
 @end

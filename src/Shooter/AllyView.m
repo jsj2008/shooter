@@ -7,10 +7,12 @@
 //
 
 #import "AllyView.h"
+#import "AllyTableView.h"
 #import "UserData.h"
 #import "UIColor+MyCategory.h"
 #import <QuartzCore/QuartzCore.h>
 #import "StatusView.h"
+#import "DialogView.h"
 
 @interface AllyViewLabel : UILabel
 
@@ -78,7 +80,9 @@
 
 - (void)setFighterInfo:(hg::FighterInfo*) info
 {
-        
+    
+    hg::UserData* u = hg::UserData::sharedUserData();
+    
     _fighterInfo = info;
     
     // initialize
@@ -130,27 +134,55 @@
         [labels addObject:lb];
     }
     // fix cost
-    if (_mode == AllyViewModeFix)
+    switch(_mode)
     {
-        int cost = hg::UserData::sharedUserData()->getRepairCost(info);
-        if (cost >= 0)
+        case AllyViewModeFix:
         {
-            NSString* text = [NSString stringWithFormat:@"%d", cost];
-            UILabel* lb = [self labelWithIndex:5 WithText:text];
-            CGRect f = lb.frame;
-            // money icon
+            int cost = hg::UserData::sharedUserData()->getRepairCost(info);
+            if (cost >= 0)
             {
-                CGRect coinf = CGRectMake(f.origin.x+34, f.origin.y, 16, 16);
-                UIImage* img = [UIImage imageNamed:@"goldCoin5.png"];
-                UIImageView* iv = [[[UIImageView alloc] initWithFrame:coinf] autorelease];
-                [iv setImage:img];
-                [self addSubview:iv];
+                NSString* text = [NSString stringWithFormat:@"%d", cost];
+                UILabel* lb = [self labelWithIndex:5 WithText:text];
+                CGRect f = lb.frame;
+                // money icon
+                {
+                    CGRect coinf = CGRectMake(f.origin.x+34, f.origin.y, 16, 16);
+                    UIImage* img = [UIImage imageNamed:@"goldCoin5.png"];
+                    UIImageView* iv = [[[UIImageView alloc] initWithFrame:coinf] autorelease];
+                    [iv setImage:img];
+                    [self addSubview:iv];
+                }
+                f.origin.y += 16;
+                [lb setFrame:f];
+                [self addSubview:lb];
+                [labels addObject:lb];
             }
-            f.origin.y += 16;
-            [lb setFrame:f];
-            [self addSubview:lb];
-            [labels addObject:lb];
+            break;
         }
+        case AllyViewModeSelectAlly:
+        {
+            if (info->isPlayer)
+            {
+                NSString* text = [NSString stringWithFormat:@"You fly this."];
+                UILabel* lb = [self labelWithIndex:5 WithText:text];
+                [self addSubview:lb];
+                [labels addObject:lb];
+            }
+            break;
+        }
+        case AllyViewModeSelectPlayer:
+        {
+            if (info->isPlayer)
+            {
+                NSString* text = [NSString stringWithFormat:@"You fly this."];
+                UILabel* lb = [self labelWithIndex:5 WithText:text];
+                [self addSubview:lb];
+                [labels addObject:lb];
+            }
+            break;
+        }
+        default:
+            assert(0);
     }
     {
         // highlight タッチされたときのハイライト用
@@ -213,6 +245,23 @@
             }
             break;
         }
+        case AllyViewModeSelectPlayer:
+        {
+            if (_fighterInfo->isPlayer)
+            {
+                [self setBackgroundColor:[UIColor colorWithHexString:@"#a62f00"] WithTextColor:[UIColor colorWithHexString:@"#ff9b73"]];
+            }
+            else if (_fighterInfo->isReady)
+            {
+                [self setBackgroundColor:[UIColor colorWithHexString:@"#6c006c"] WithTextColor:[UIColor colorWithHexString:@"#d25fd2"]];
+            }
+            else
+            {
+                [self setBackgroundColor:[UIColor colorWithHexString:@"#439400"] WithTextColor:[UIColor colorWithHexString:@"#a9f16c"]];
+            }
+            break;
+            
+        }
         default:
             assert(0);
     }
@@ -269,9 +318,46 @@
         case AllyViewModeFix:
         {
             hg::UserData* u = hg::UserData::sharedUserData();
-            u->addMoney(-1 * u->getRepairCost(_fighterInfo));
-            _fighterInfo->life = _fighterInfo->lifeMax;
-            [[StatusView GetInstance] loadUserInfo];
+            int cost = u->getRepairCost(_fighterInfo);
+            // check money
+            if (u->getMoney() >= cost)
+            {
+                // fix
+                u->addMoney(-1 * u->getRepairCost(_fighterInfo));
+                _fighterInfo->life = _fighterInfo->lifeMax;
+                [[StatusView GetInstance] loadUserInfo];
+            }
+            else
+            {
+                DialogView* dialog = [[[DialogView alloc] initWithMessage:@"You need more gold."] autorelease];
+                [dialog addButtonWithText:@"OK" withAction:^{
+                    // nothing
+                }];
+                [dialog show];
+            }
+            
+            break;
+        }
+        ////////////////////
+        // select fighter
+        case AllyViewModeSelectPlayer:
+        {
+            if (!_fighterInfo->isPlayer)
+            {
+                _fighterInfo->isPlayer = true;
+                _fighterInfo->isReady = false;
+            }
+            hg::UserData* u = hg::UserData::sharedUserData();
+            hg::FighterList fList = u->getFighterList();
+            for (hg::FighterList::iterator it = fList.begin(); it != fList.end(); it++)
+            {
+                hg::FighterInfo* tmp = *it;
+                if (tmp != _fighterInfo)
+                {
+                    tmp->isPlayer = false;
+                }
+            }
+            [AllyTableView ReloadData];
             break;
         }
         default:

@@ -22,6 +22,9 @@
 #include <list>
 #include <algorithm>
 
+#include "HGLObject3D.h"
+#include "HGLObjLoader.h"
+
 namespace hg {
     
     class Actor;
@@ -197,7 +200,8 @@ namespace hg {
     CellManager<Bullet> friendBulletCellManager({FIELD_SIZE, FIELD_SIZE});
     CellManager<Fighter> enemyCellManager({FIELD_SIZE, FIELD_SIZE});
     CellManager<Fighter> friendCellManager({FIELD_SIZE, FIELD_SIZE});
-
+    BattleResult battleResult;
+    
     KeyInfo keyInfo = {};
     HGSize sizeOfField(0,0);
     HGPoint pointOfFieldCenter(0,0);
@@ -326,6 +330,19 @@ namespace hg {
         }
         pFighter->addLife(pBullet->getPower() * -1);
         pFighter->noticeAttackedBy(pBullet->getOwner());
+        // 死亡カウント
+        if (pFighter->getLife() <= 0)
+        {
+            if (pFighter->getSide() == SideTypeEnemy)
+            {
+                battleResult.killedEnemy++;
+                battleResult.earnedMoney += 300;
+            }
+            else
+            {
+                battleResult.killedFriend++;
+            }
+        }
     }
     
     // あたり判定
@@ -568,8 +585,8 @@ namespace hg {
             float tx = pPlayer->getPositionX();
             float ty = pPlayer->getPositionY();
             float d = rand(0, 359);
-            float x = tx + cos(toRad(d)) * 15;
-            float y = ty + sin(toRad(d)) * 15;
+            float x = tx + cos(toRad(d)) * 7;
+            float y = ty + sin(toRad(d)) * 7;
             x = MAX(x, 0), x = MIN(x, FIELD_SIZE);
             y = MAX(y, 0), y = MIN(y, FIELD_SIZE);
             spawnFighter(SideTypeFriend, i, x, y, wait);
@@ -773,6 +790,7 @@ namespace hg {
             
             if (spawningEnemyCount == 0 && enemyFighterList.size() <= 0)
             {
+                battleResult.isWin = true;
                 HGStateManager::sharedStateManger()->pop();
                 HGStateManager::sharedStateManger()->push(new WinState());
             }
@@ -781,6 +799,7 @@ namespace hg {
             if (pPlayer->getLife() <= 0)
             {
                 // lose
+                battleResult.isWin = false;
                 HGStateManager::sharedStateManger()->pop();
                 HGStateManager::sharedStateManger()->push(new LoseState());
             }
@@ -826,6 +845,7 @@ namespace hg {
         isEnd = false;
         isInitialized = false;
         initRandom();
+        battleResult = BattleResult();
         
         // 増援データ
         spawningEnemyCount = 0;
@@ -1063,6 +1083,7 @@ namespace hg {
     
     ////////////////////
     // レンダリング
+    hgles::HGLObject3D* testObject = NULL;
     void render()
     {
         if (!isInitialized)
@@ -1085,6 +1106,25 @@ namespace hg {
         
         // ノードを描画
         HGDirector::sharedDirector()->drawRootNode();
+        
+        /*
+         // 光源なし
+        glUniform1f(hgles::currentContext->uUseLight, 1.0);
+        // 2d
+        glEnable(GL_DEPTH_TEST);
+        if (testObject == NULL)
+        {
+            testObject = hgles::HGLObjLoader::load(@"block.obj");
+            testObject->position = pPlayer->getNode()->getPosition();
+            testObject->scale.set(100,100,100);
+            testObject->useLight = 1;
+        }
+        testObject->draw();*/
+    }
+    
+    BattleResult getResult()
+    {
+        return battleResult;
     }
     
     bool isGameEnd()

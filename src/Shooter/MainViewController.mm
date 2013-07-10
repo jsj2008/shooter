@@ -21,8 +21,12 @@
 #import "UIColor+MyCategory.h"
 #import "GameView.h"
 #import "MenuButton.h"
+#import "DialogView.h"
 
 const float MenuAnimationDuration = 0.2;
+const float MenuButtonWidth = 180;
+const float MenuButtonHeight = 50;
+const float MenuButtonGap = 10;
 
 @interface MainViewController()
 {
@@ -226,8 +230,10 @@ static MainViewController* instance = nil;
             }];
             
             // start battle
+            float buttonX = mainFrame.size.width - 10 - MenuButtonWidth;
+            float buttonY = StatusViewHeight + 10;
             {
-                CGRect frm = CGRectMake(mainFrame.size.width - 220, mainFrame.size.height - 250, 200, 50);
+                CGRect frm = CGRectMake(buttonX, buttonY, MenuButtonWidth, MenuButtonHeight);
                 MenuButton* m = [[[MenuButton alloc] initWithFrame:frm] autorelease];
                 [m setText:@"Battle"];
                 [menuBaseView addSubview:m];
@@ -236,19 +242,20 @@ static MainViewController* instance = nil;
                 }];
             }
             
-            // Select Ally
+            // Select your ship.
+            buttonY += (MenuButtonHeight + MenuButtonGap);
             {
-                CGRect frm = CGRectMake(mainFrame.size.width - 220, mainFrame.size.height - 180, 200, 50);
+                CGRect frm = CGRectMake(buttonX, buttonY, MenuButtonWidth, MenuButtonHeight);
                 MenuButton* m = [[[MenuButton alloc] initWithFrame:frm] autorelease];
-                [m setText:@"Select Ally"];
+                [m setText:@"Select your ship"];
                 [menuBaseView addSubview:m];
                 [m setOnTapAction:^(MenuButton *target) {
                     [self hideMenuViewAnimate];
-                    AllyTableView* vc = [[[AllyTableView alloc] initWithViewMode:AllyViewModeSelectAlly WithFrame:mainFrame] autorelease];
+                    AllyTableView* vc = [[[AllyTableView alloc] initWithViewMode:AllyViewModeSelectPlayer WithFrame:mainFrame] autorelease];
                     [self.view addSubview:vc];
                     // animate
                     {
-                        [vc setTransform:CGAffineTransformMakeScale(0.8, 0.0)];
+                        [vc setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
                         [vc setUserInteractionEnabled:FALSE];
                         [UIView animateWithDuration:MenuAnimationDuration animations:^{
                             [vc setAlpha:1];
@@ -263,7 +270,44 @@ static MainViewController* instance = nil;
                         {
                             [vc setUserInteractionEnabled:FALSE];
                             [UIView animateWithDuration:MenuAnimationDuration animations:^{
-                                [vc setTransform:CGAffineTransformMakeScale(0.8, 0.0)];
+                                [vc setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
+                            } completion:^(BOOL finished) {
+                                [vc removeFromSuperview];
+                            }];
+                        }
+                    }];
+                }];
+            }
+            
+            // Select Ally
+            buttonY += (MenuButtonHeight + MenuButtonGap);
+            {
+                CGRect frm = CGRectMake(buttonX, buttonY, MenuButtonWidth, MenuButtonHeight);
+                MenuButton* m = [[[MenuButton alloc] initWithFrame:frm] autorelease];
+                [m setText:@"Select Ally"];
+                [menuBaseView addSubview:m];
+                [m setOnTapAction:^(MenuButton *target) {
+                    [self hideMenuViewAnimate];
+                    AllyTableView* vc = [[[AllyTableView alloc] initWithViewMode:AllyViewModeSelectAlly WithFrame:mainFrame] autorelease];
+                    [self.view addSubview:vc];
+                    // animate
+                    {
+                        [vc setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
+                        [vc setUserInteractionEnabled:FALSE];
+                        [UIView animateWithDuration:MenuAnimationDuration animations:^{
+                            [vc setAlpha:1];
+                            [vc setTransform:CGAffineTransformMakeScale(1,1)];
+                        }completion:^(BOOL finished) {
+                            [vc setUserInteractionEnabled:TRUE];
+                        }];
+                    }
+                    [vc setOnEndAction:^{
+                        [self showMenu];
+                        // animate
+                        {
+                            [vc setUserInteractionEnabled:FALSE];
+                            [UIView animateWithDuration:MenuAnimationDuration animations:^{
+                                [vc setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
                             } completion:^(BOOL finished) {
                                 [vc removeFromSuperview];
                             }];
@@ -274,9 +318,9 @@ static MainViewController* instance = nil;
             
             
             // fix ally
-            // Select Ally
+            buttonY += (MenuButtonHeight + MenuButtonGap);
             {
-                CGRect frm = CGRectMake(mainFrame.size.width - 220, mainFrame.size.height - 110, 200, 50);
+                CGRect frm = CGRectMake(buttonX, buttonY, MenuButtonWidth, MenuButtonHeight);
                 MenuButton* m = [[[MenuButton alloc] initWithFrame:frm] autorelease];
                 [m setText:@"Repair"];
                 [menuBaseView addSubview:m];
@@ -286,7 +330,7 @@ static MainViewController* instance = nil;
                     [self.view addSubview:vc];
                     // animate
                     {
-                        [vc setTransform:CGAffineTransformMakeScale(0.8, 0.0)];
+                        [vc setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
                         [vc setUserInteractionEnabled:FALSE];
                         [UIView animateWithDuration:MenuAnimationDuration animations:^{
                             [vc setAlpha:1];
@@ -301,7 +345,7 @@ static MainViewController* instance = nil;
                         {
                             [vc setUserInteractionEnabled:FALSE];
                             [UIView animateWithDuration:MenuAnimationDuration animations:^{
-                                [vc setTransform:CGAffineTransformMakeScale(0.8, 0.0)];
+                                [vc setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
                             } completion:^(BOOL finished) {
                                 [vc removeFromSuperview];
                             }];
@@ -329,6 +373,14 @@ static MainViewController* instance = nil;
     
     // MENU
     [self showMenu];
+    
+    /*
+    // dialog test
+    DialogView* v = [[[DialogView alloc] initWithMessage:@"test?"] autorelease];
+    [v addButtonWithText:@"test" withAction:^{
+        NSLog(@"test button pushed");
+    }];
+    [v show];*/
     
 }
 

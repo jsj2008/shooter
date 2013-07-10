@@ -194,6 +194,14 @@ static NSObject* lock = nil;
                         if (hg::isGameEnd())
                         {
                             // 終了処理
+                            // 戦果集計
+                            {
+                                using namespace hg;
+                                BattleResult br = getResult();
+                                UserData* u = UserData::sharedUserData();
+                                u->addMoney(br.earnedMoney);
+                            }
+                            
                             // フェードアウト
                             dispatch_async(dispatch_get_main_queue(), ^{
                                 CGRect f = [UIScreen mainScreen].applicationFrame;

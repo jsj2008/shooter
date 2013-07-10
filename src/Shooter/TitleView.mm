@@ -102,7 +102,7 @@ t_title_btn title_btn_info[] = {
     CGRect logoFrame = CGRectMake(0,0,w,h);
     [imgView setFrame:logoFrame];
     
-    imgView.transform = CGAffineTransformMakeScale(2.3, 2.3);
+    imgView.transform = CGAffineTransformMakeScale(1.0, 1.0);
     [UIView animateWithDuration:0.7 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
         imgView.transform = CGAffineTransformMakeScale(1.0, 1.0);
     } completion:^(BOOL finished) {

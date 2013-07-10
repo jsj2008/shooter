@@ -54,13 +54,15 @@
 		077207AC175B5604009FCD2D /* UIButton+MyCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 077207AB175B5604009FCD2D /* UIButton+MyCategory.m */; };
 		077207AF175B5644009FCD2D /* UIColor+MyCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 077207AE175B5644009FCD2D /* UIColor+MyCategory.m */; };
 		077207B3175B5BFE009FCD2D /* Mutsuki.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 077207B2175B5BFE009FCD2D /* Mutsuki.ttf */; };
+		077C60EE17893D6C00277A31 /* DialogView.m in Sources */ = {isa = PBXBuildFile; fileRef = 077C60ED17893D6C00277A31 /* DialogView.m */; };
 		078D301A174920BB00C48579 /* tunelring.png in Resources */ = {isa = PBXBuildFile; fileRef = 078D3018174920B300C48579 /* tunelring.png */; };
 		078D301B174920BB00C48579 /* wave.png in Resources */ = {isa = PBXBuildFile; fileRef = 078D3019174920B700C48579 /* wave.png */; };
+		078E950D1787DE7D00ED4AF1 /* goldCoin5.png in Resources */ = {isa = PBXBuildFile; fileRef = 078E950C1787DE7D00ED4AF1 /* goldCoin5.png */; };
 		078F423D176DA9D70026CD17 /* particlesheet01.png in Resources */ = {isa = PBXBuildFile; fileRef = 078F423C176DA9D70026CD17 /* particlesheet01.png */; };
 		0792C778175BF7BD00E72380 /* JPStupidButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 0792C777175BF7BD00E72380 /* JPStupidButton.m */; };
 		0792C77C175C025400E72380 /* QBFlatButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 0792C77B175C025400E72380 /* QBFlatButton.m */; };
 		0792C77E176360F600E72380 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 0792C77D176360F600E72380 /* logo.png */; };
-		0792C7811764154F00E72380 /* AllyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0792C7801764154F00E72380 /* AllyViewController.m */; };
+		0792C7811764154F00E72380 /* AllyTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0792C7801764154F00E72380 /* AllyTableView.m */; };
 		0793F46B17375CB500FE17CF /* HitAnimeProcess.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0793F46917375CB400FE17CF /* HitAnimeProcess.cpp */; };
 		079A4DEB1733B28A001895BC /* HActor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 079A4DE91733B28A001895BC /* HActor.cpp */; };
 		079FAE5916FEC262009B8BA6 /* rect.png in Resources */ = {isa = PBXBuildFile; fileRef = 079FAE5816FEC262009B8BA6 /* rect.png */; };
@@ -77,6 +79,7 @@
 		07B4245316D9F132007055DF /* star.png in Resources */ = {isa = PBXBuildFile; fileRef = 07B4245216D9F132007055DF /* star.png */; };
 		07BB8FCC17757A7B007FF3D0 /* ImageButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BB8FCB17757A7B007FF3D0 /* ImageButtonView.m */; };
 		07BB8FCF177EFA01007FF3D0 /* StatusView.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BB8FCE177EFA00007FF3D0 /* StatusView.m */; };
+		07BB8FD2177FD82C007FF3D0 /* MenuButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BB8FD1177FD82B007FF3D0 /* MenuButton.m */; };
 		07CA13631733C417004C0AC8 /* HFighter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 07CA13611733C417004C0AC8 /* HFighter.cpp */; };
 		07CA136A1733C5FF004C0AC8 /* ControlPlayerProcess.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 07CA13681733C5FF004C0AC8 /* ControlPlayerProcess.cpp */; };
 		07CA136D1734082B004C0AC8 /* CallFunctionRepeatedlyProcess.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 07CA136B1734082A004C0AC8 /* CallFunctionRepeatedlyProcess.cpp */; };
@@ -287,16 +290,19 @@
 		077207AD175B5644009FCD2D /* UIColor+MyCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+MyCategory.h"; sourceTree = "<group>"; };
 		077207AE175B5644009FCD2D /* UIColor+MyCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+MyCategory.m"; sourceTree = "<group>"; };
 		077207B2175B5BFE009FCD2D /* Mutsuki.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Mutsuki.ttf; sourceTree = "<group>"; };
+		077C60EC17893D6C00277A31 /* DialogView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DialogView.h; sourceTree = "<group>"; };
+		077C60ED17893D6C00277A31 /* DialogView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DialogView.m; sourceTree = "<group>"; };
 		078D3018174920B300C48579 /* tunelring.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tunelring.png; sourceTree = "<group>"; };
 		078D3019174920B700C48579 /* wave.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wave.png; sourceTree = "<group>"; };
+		078E950C1787DE7D00ED4AF1 /* goldCoin5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = goldCoin5.png; sourceTree = "<group>"; };
 		078F423C176DA9D70026CD17 /* particlesheet01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = particlesheet01.png; sourceTree = "<group>"; };
 		0792C776175BF7BD00E72380 /* JPStupidButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JPStupidButton.h; sourceTree = "<group>"; };
 		0792C777175BF7BD00E72380 /* JPStupidButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JPStupidButton.m; sourceTree = "<group>"; };
 		0792C77A175C025400E72380 /* QBFlatButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBFlatButton.h; sourceTree = "<group>"; };
 		0792C77B175C025400E72380 /* QBFlatButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBFlatButton.m; sourceTree = "<group>"; };
 		0792C77D176360F600E72380 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
-		0792C77F1764154E00E72380 /* AllyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllyViewController.h; sourceTree = "<group>"; };
-		0792C7801764154F00E72380 /* AllyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllyViewController.m; sourceTree = "<group>"; };
+		0792C77F1764154E00E72380 /* AllyTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllyTableView.h; sourceTree = "<group>"; };
+		0792C7801764154F00E72380 /* AllyTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllyTableView.m; sourceTree = "<group>"; };
 		0793F46917375CB400FE17CF /* HitAnimeProcess.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HitAnimeProcess.cpp; sourceTree = "<group>"; };
 		0793F46A17375CB400FE17CF /* HitAnimeProcess.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HitAnimeProcess.h; sourceTree = "<group>"; };
 		079A4DE91733B28A001895BC /* HActor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HActor.cpp; sourceTree = "<group>"; };
@@ -321,6 +327,8 @@
 		07BB8FCB17757A7B007FF3D0 /* ImageButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageButtonView.m; sourceTree = "<group>"; };
 		07BB8FCD177EFA00007FF3D0 /* StatusView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatusView.h; sourceTree = "<group>"; };
 		07BB8FCE177EFA00007FF3D0 /* StatusView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatusView.m; sourceTree = "<group>"; };
+		07BB8FD0177FD82B007FF3D0 /* MenuButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuButton.h; sourceTree = "<group>"; };
+		07BB8FD1177FD82B007FF3D0 /* MenuButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuButton.m; sourceTree = "<group>"; };
 		07CA13611733C417004C0AC8 /* HFighter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HFighter.cpp; sourceTree = "<group>"; };
 		07CA13621733C417004C0AC8 /* HFighter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HFighter.h; sourceTree = "<group>"; };
 		07CA13681733C5FF004C0AC8 /* ControlPlayerProcess.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ControlPlayerProcess.cpp; sourceTree = "<group>"; };
@@ -529,6 +537,7 @@
 		0755992616B561490066A0E9 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				078E950C1787DE7D00ED4AF1 /* goldCoin5.png */,
 				078F423C176DA9D70026CD17 /* particlesheet01.png */,
 				07AB4F651764CA090071482F /* checkmark.png */,
 				0792C77D176360F600E72380 /* logo.png */,
@@ -724,24 +733,36 @@
 		07DE746016EC368F0048877C /* Shooter */ = {
 			isa = PBXGroup;
 			children = (
-				0792C77F1764154E00E72380 /* AllyViewController.h */,
-				0792C7801764154F00E72380 /* AllyViewController.m */,
+				0792C77F1764154E00E72380 /* AllyTableView.h */,
+				0792C7801764154F00E72380 /* AllyTableView.m */,
+				07AB4F5E176469AA0071482F /* AllyView.h */,
+				07AB4F5F176469AA0071482F /* AllyView.m */,
 				07DE746116EC368F0048877C /* AppDelegate.h */,
 				07DE746216EC368F0048877C /* AppDelegate.m */,
 				07DEEBDC1707F9B500580C16 /* BackgroundView.h */,
 				07DEEBDD1707F9B500580C16 /* BackgroundView.mm */,
 				07DE746316EC368F0048877C /* Common.h */,
+				077C60EC17893D6C00277A31 /* DialogView.h */,
+				077C60ED17893D6C00277A31 /* DialogView.m */,
+				07DE747016EC368F0048877C /* GameView.h */,
+				07DE747116EC368F0048877C /* GameView.mm */,
+				07BB8FCA17757A7A007FF3D0 /* ImageButtonView.h */,
+				07BB8FCB17757A7B007FF3D0 /* ImageButtonView.m */,
 				0792C776175BF7BD00E72380 /* JPStupidButton.h */,
 				0792C777175BF7BD00E72380 /* JPStupidButton.m */,
 				07DE746916EC368F0048877C /* main.m */,
 				07339E251706C5DA0057041F /* MainViewController.h */,
 				07339E261706C5DA0057041F /* MainViewController.mm */,
+				07BB8FD0177FD82B007FF3D0 /* MenuButton.h */,
+				07BB8FD1177FD82B007FF3D0 /* MenuButton.m */,
 				07DEEBDF1707FABD00580C16 /* MenuView.h */,
 				07DEEBE01707FABE00580C16 /* MenuView.mm */,
 				07DE746A16EC368F0048877C /* PadView.h */,
 				07DE746B16EC368F0048877C /* PadView.mm */,
 				0792C77A175C025400E72380 /* QBFlatButton.h */,
 				0792C77B175C025400E72380 /* QBFlatButton.m */,
+				07BB8FCD177EFA00007FF3D0 /* StatusView.h */,
+				07BB8FCE177EFA00007FF3D0 /* StatusView.m */,
 				07339E281706C65E0057041F /* TitleView.h */,
 				07339E291706C65E0057041F /* TitleView.mm */,
 				07DE746E16EC368F0048877C /* TouchHandlerView.h */,
@@ -754,14 +775,6 @@
 				077207AB175B5604009FCD2D /* UIButton+MyCategory.m */,
 				077207AD175B5644009FCD2D /* UIColor+MyCategory.h */,
 				077207AE175B5644009FCD2D /* UIColor+MyCategory.m */,
-				07DE747016EC368F0048877C /* GameView.h */,
-				07DE747116EC368F0048877C /* GameView.mm */,
-				07AB4F5E176469AA0071482F /* AllyView.h */,
-				07AB4F5F176469AA0071482F /* AllyView.m */,
-				07BB8FCA17757A7A007FF3D0 /* ImageButtonView.h */,
-				07BB8FCB17757A7B007FF3D0 /* ImageButtonView.m */,
-				07BB8FCD177EFA00007FF3D0 /* StatusView.h */,
-				07BB8FCE177EFA00007FF3D0 /* StatusView.m */,
 			);
 			path = Shooter;
 			sourceTree = "<group>";
@@ -1106,6 +1119,7 @@
 				0792C77E176360F600E72380 /* logo.png in Resources */,
 				07AB4F661764CA090071482F /* checkmark.png in Resources */,
 				078F423D176DA9D70026CD17 /* particlesheet01.png in Resources */,
+				078E950D1787DE7D00ED4AF1 /* goldCoin5.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1175,11 +1189,13 @@
 				077207AF175B5644009FCD2D /* UIColor+MyCategory.m in Sources */,
 				0792C778175BF7BD00E72380 /* JPStupidButton.m in Sources */,
 				0792C77C175C025400E72380 /* QBFlatButton.m in Sources */,
-				0792C7811764154F00E72380 /* AllyViewController.m in Sources */,
+				0792C7811764154F00E72380 /* AllyTableView.m in Sources */,
 				07AB4F60176469AA0071482F /* AllyView.m in Sources */,
 				07AB4F64176471A30071482F /* UserData.cpp in Sources */,
 				07BB8FCC17757A7B007FF3D0 /* ImageButtonView.m in Sources */,
 				07BB8FCF177EFA01007FF3D0 /* StatusView.m in Sources */,
+				07BB8FD2177FD82C007FF3D0 /* MenuButton.m in Sources */,
+				077C60EE17893D6C00277A31 /* DialogView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
