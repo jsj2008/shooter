@@ -18,6 +18,13 @@ namespace hgles {
     class HGLIndexBuffer;
     class HGLVertexBuffer;
     
+    typedef enum ProgramType
+    {
+        ProgramTypeNone,
+        ProgramType2D,
+        ProgramType3D,
+    } ProgramType;
+    
     typedef struct t_context
     {
         t_context():
@@ -82,7 +89,7 @@ namespace hgles {
     } t_context;
     
     // 現在のコンテキストを設定する
-    void setCurrentContext(int contextId);
+    void setCurrentContext(ProgramType contextId);
     
     // 現在のコンテキスト
     extern t_context* currentContext;

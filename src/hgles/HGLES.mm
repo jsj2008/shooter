@@ -17,17 +17,17 @@
 
 namespace hgles {
     
-    std::map<int, t_context> contextMap;
+    std::map<ProgramType, t_context> contextMap;
     int contextIdIndex = -1;
     
     float HGLES::viewWidth;
     float HGLES::viewHeight;
     
-    int currentContextId = 0;
+    ProgramType currentContextId = ProgramTypeNone;
     t_context* currentContext = NULL;
-    void setCurrentContext(int contextId)
+    void setCurrentContext(ProgramType programType)
     {
-        currentContextId = contextId;
+        currentContextId = programType;
         currentContext = &contextMap[currentContextId];
     }
     
@@ -45,17 +45,19 @@ namespace hgles {
     int HGLES::initialize(float viewWidth, float viewHeight)
     {
         // 現在のコンテキストを作成
-        contextIdIndex++;
-        contextMap[contextIdIndex] = {};
-        setCurrentContext(contextIdIndex);
-        glViewport(0, 0, viewWidth, viewHeight);
+        contextIdIndex = ProgramType2D;
+        contextMap[ProgramType2D] = {};
+        setCurrentContext(ProgramType3D);
+        compileShaders(@"vertex", @"fragment");
+        setCurrentContext(ProgramType2D);
         compileShaders(@"vertex2d", @"fragment2d");
+        contextMap[ProgramType3D] = {};
+        glViewport(0, 0, viewWidth, viewHeight);
         HGLES::viewWidth = viewWidth;
         HGLES::viewHeight = viewHeight;
         float aspect = (float)(viewWidth / viewHeight);
         currentContext->projectionMatrix = GLKMatrix4MakePerspective(GLKMathDegreesToRadians(80.0f), aspect, 0.1f, 2000.0f);
         currentContext->mvMatrix = GLKMatrix4Identity;
-        
         return contextIdIndex;
     }
     
