@@ -142,10 +142,8 @@
     }
     
     // model
-    /*
-    HGLObject3D* model = HGLObjLoader::load(@"droid.obj");
+    HGLObject3D* model = HGLObjLoader::load(@"droid");
     fighterObject = model;
-     */
     
 }
 
@@ -210,6 +208,14 @@
         
         fighterObject->draw();
          */
+        // 光源ON
+        fighterObject->position.x = 0;
+        fighterObject->position.y = 0;
+        fighterObject->position.z = 0;
+        fighterObject->scale.set(1,1,1);
+        fighterObject->useLight = 1;
+        
+        fighterObject->draw();
     }
 }
 

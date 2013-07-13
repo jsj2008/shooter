@@ -49,7 +49,7 @@ namespace hgles {
         contextMap[contextIdIndex] = {};
         setCurrentContext(contextIdIndex);
         glViewport(0, 0, viewWidth, viewHeight);
-        compileShaders();
+        compileShaders(@"vertex2d", @"fragment2d");
         HGLES::viewWidth = viewWidth;
         HGLES::viewHeight = viewHeight;
         float aspect = (float)(viewWidth / viewHeight);
@@ -118,14 +118,15 @@ namespace hgles {
         
     }
     
-    void HGLES::compileShaders()
+    void HGLES::compileShaders(NSString* vertexShader, NSString* fragmentShader)
     {
-        GLuint vertexShader = HGLES::compileShader(@"vertex2d", GL_VERTEX_SHADER);
-        GLuint fragmentShader = HGLES::compileShader(@"fragment2d", GL_FRAGMENT_SHADER);
+        currentContext->vertexShader = HGLES::compileShader(vertexShader, GL_VERTEX_SHADER);
+        currentContext->fragmentShader = HGLES::compileShader(fragmentShader, GL_FRAGMENT_SHADER);
         
         GLuint programHandle = glCreateProgram();
-        glAttachShader(programHandle, vertexShader);
-        glAttachShader(programHandle, fragmentShader);
+        currentContext->programHandle = programHandle;
+        glAttachShader(programHandle, currentContext->vertexShader);
+        glAttachShader(programHandle,  currentContext->fragmentShader);
         glLinkProgram(programHandle);
         
         currentContext->aPositionSlot = glGetAttribLocation(programHandle, "aPosition");

@@ -75,6 +75,10 @@ namespace hgles {
         GLuint uBlendColor;
         GLuint uUseAlphaMap;
         GLuint uAlpha;
+        // program
+        GLuint vertexShader;
+        GLuint fragmentShader;
+        GLuint programHandle;
     } t_context;
     
     // 現在のコンテキストを設定する
@@ -104,7 +108,7 @@ namespace hgles {
         static float viewHeight;
         
     private:
-        static void compileShaders();
+        static void compileShaders(NSString* vertexShader, NSString* fragmentShader);
         static GLuint compileShader(NSString* shaderName, GLenum shaderType);
         //static std::stack<GLKMatrix4> matrixStack; // 行列スタック
         static void setDefault();
