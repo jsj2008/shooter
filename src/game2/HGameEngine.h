@@ -650,8 +650,8 @@ namespace hg
     protected:
         inline void render()
         {
-            hgles::currentContext->cameraPosition = _cameraPosition;
-            hgles::currentContext->cameraRotate = _cameraRotate;
+            hgles::cameraPosition = _cameraPosition;
+            hgles::cameraRotate = _cameraRotate;
             hgles::HGLES::updateCameraMatrix();
         }
     private:

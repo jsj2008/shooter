@@ -24,6 +24,7 @@ namespace hgles {
         useLight = 0.0;
         paralell = false;
         alpha = 1.0;
+        programType = ProgramType3D;
     }
     
     HGLObject3D::~HGLObject3D()
@@ -46,6 +47,11 @@ namespace hgles {
     
     void HGLObject3D::draw()
     {
+        if (programType != getCurrentProgramType())
+        {
+            setCurrentContext(programType);
+        }
+        
         // 光源使用有無設定
         glUniform1f(currentContext->uUseLight, useLight);
         
@@ -72,20 +78,11 @@ namespace hgles {
         // 行列をポップする
         // =====終わり
         HGLES::pushMatrix();
-        currentContext->mvMatrix = GLKMatrix4Translate(currentContext->mvMatrix, position.x, position.y, position.z);
-        currentContext->mvMatrix = GLKMatrix4Scale(currentContext->mvMatrix, scale.x, scale.y, scale.z);
-        if (paralell)
-        {
-            currentContext->mvMatrix = GLKMatrix4Rotate(currentContext->mvMatrix, currentContext->cameraRotate.x*-1, 1, 0, 0);
-            currentContext->mvMatrix = GLKMatrix4Rotate(currentContext->mvMatrix, currentContext->cameraRotate.y*-1, 0, 1, 0);
-            currentContext->mvMatrix = GLKMatrix4Rotate(currentContext->mvMatrix, rotate.z, 0, 0, 1); // zは回転を適用
-        }
-        else
-        {
-            currentContext->mvMatrix = GLKMatrix4Rotate(currentContext->mvMatrix, rotate.x, 1, 0, 0);
-            currentContext->mvMatrix = GLKMatrix4Rotate(currentContext->mvMatrix, rotate.y, 0, 1, 0);
-            currentContext->mvMatrix = GLKMatrix4Rotate(currentContext->mvMatrix, rotate.z, 0, 0, 1);
-        }
+        mvMatrix = GLKMatrix4Translate(mvMatrix, position.x, position.y, position.z);
+        mvMatrix = GLKMatrix4Scale(mvMatrix, scale.x, scale.y, scale.z);
+            mvMatrix = GLKMatrix4Rotate(mvMatrix, rotate.x, 1, 0, 0);
+            mvMatrix = GLKMatrix4Rotate(mvMatrix, rotate.y, 0, 1, 0);
+            mvMatrix = GLKMatrix4Rotate(mvMatrix, rotate.z, 0, 0, 1);
         HGLES::updateMatrix();
         
         // 自分を描画

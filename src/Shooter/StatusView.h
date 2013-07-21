@@ -14,5 +14,6 @@ const int StatusViewHeight = 20;
 
 - (void)loadUserInfo;
 + (id)GetInstance;
++ (id)CreateInstance;
 
 @end

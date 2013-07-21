@@ -32,12 +32,12 @@ namespace hgles {
         // http://www9.plala.or.jp/sgwr-t/c/sec10-2.html
         // 配列のときは&をつけなくても先頭要素のアドレス
         HGLVertexBuffer* vertexBuffer = new HGLVertexBuffer(rectVertex, 4);
-        currentContext->squareVertexBuffer = vertexBuffer;
+        squareVertexBuffer = vertexBuffer;
         Index index[] = {
             0,1,2,2,3,0
         };
         HGLIndexBuffer* indexBuffer = new HGLIndexBuffer(index, 6);
-        currentContext->squareIndexBuffer = indexBuffer;
+        squareIndexBuffer = indexBuffer;
     }
     
     /*
@@ -65,17 +65,17 @@ namespace hgles {
         HGLES::pushMatrix();
         
         // モデルビュー変換
-        currentContext->mvMatrix = GLKMatrix4Translate(currentContext->mvMatrix, position->x, position->y, position->z);
-        currentContext->mvMatrix = GLKMatrix4Scale(currentContext->mvMatrix, scale->x, scale->y, scale->z);
-        currentContext->mvMatrix = GLKMatrix4Rotate(currentContext->mvMatrix, rotate->x, 1, 0, 0);
-        currentContext->mvMatrix = GLKMatrix4Rotate(currentContext->mvMatrix, rotate->y, 0, 1, 0);
-        currentContext->mvMatrix = GLKMatrix4Rotate(currentContext->mvMatrix, rotate->z, 0, 0, 1);
+        mvMatrix = GLKMatrix4Translate(mvMatrix, position->x, position->y, position->z);
+        mvMatrix = GLKMatrix4Scale(mvMatrix, scale->x, scale->y, scale->z);
+        mvMatrix = GLKMatrix4Rotate(mvMatrix, rotate->x, 1, 0, 0);
+        mvMatrix = GLKMatrix4Rotate(mvMatrix, rotate->y, 0, 1, 0);
+        mvMatrix = GLKMatrix4Rotate(mvMatrix, rotate->z, 0, 0, 1);
         HGLES::updateMatrix();
         
         texture->bind();
-        currentContext->squareVertexBuffer->bind();
-        currentContext->squareIndexBuffer->draw();
-        currentContext->squareVertexBuffer->unbind();
+        squareVertexBuffer->bind();
+        squareIndexBuffer->draw();
+        squareVertexBuffer->unbind();
         texture->unbind();
         
         // 行列をもとに戻しておく
@@ -91,18 +91,18 @@ namespace hgles {
         glUniform1f(currentContext->uAlpha, texture->color.a);
         HGLES::pushMatrix();
         
-        currentContext->mvMatrix = GLKMatrix4Translate(currentContext->mvMatrix, position->x, position->y, position->z);
-        currentContext->mvMatrix = GLKMatrix4Scale(currentContext->mvMatrix, scale->x, scale->y, scale->z);
-        currentContext->mvMatrix = GLKMatrix4Rotate(currentContext->mvMatrix, currentContext->cameraRotate.x*-1, 1, 0, 0);
-        currentContext->mvMatrix = GLKMatrix4Rotate(currentContext->mvMatrix, currentContext->cameraRotate.y*-1, 0, 1, 0);
-        currentContext->mvMatrix = GLKMatrix4Rotate(currentContext->mvMatrix, rotate->z, 0, 0, 1);
+        mvMatrix = GLKMatrix4Translate(mvMatrix, position->x, position->y, position->z);
+        mvMatrix = GLKMatrix4Scale(mvMatrix, scale->x, scale->y, scale->z);
+        mvMatrix = GLKMatrix4Rotate(mvMatrix, cameraRotate.x*-1, 1, 0, 0);
+        mvMatrix = GLKMatrix4Rotate(mvMatrix, cameraRotate.y*-1, 0, 1, 0);
+        mvMatrix = GLKMatrix4Rotate(mvMatrix, rotate->z, 0, 0, 1);
         
         HGLES::updateMatrix();
         
         texture->bind();
-        currentContext->squareVertexBuffer->bind();
-        currentContext->squareIndexBuffer->draw();
-        currentContext->squareVertexBuffer->unbind();
+        squareVertexBuffer->bind();
+        squareIndexBuffer->draw();
+        squareVertexBuffer->unbind();
         texture->unbind();
        
         HGLES::popMatrix();
@@ -114,17 +114,17 @@ namespace hgles {
         HGLES::pushMatrix();
         
         // モデルビュー変換
-        currentContext->mvMatrix = GLKMatrix4Translate(currentContext->mvMatrix, p->position.x, p->position.y, p->position.z);
-        currentContext->mvMatrix = GLKMatrix4Scale(currentContext->mvMatrix, p->scale.x, p->scale.y, p->scale.z);
-        currentContext->mvMatrix = GLKMatrix4Rotate(currentContext->mvMatrix, p->rotate.x, 1, 0, 0);
-        currentContext->mvMatrix = GLKMatrix4Rotate(currentContext->mvMatrix, p->rotate.y, 0, 1, 0);
-        currentContext->mvMatrix = GLKMatrix4Rotate(currentContext->mvMatrix, p->rotate.z, 0, 0, 1);
+        mvMatrix = GLKMatrix4Translate(mvMatrix, p->position.x, p->position.y, p->position.z);
+        mvMatrix = GLKMatrix4Scale(mvMatrix, p->scale.x, p->scale.y, p->scale.z);
+        mvMatrix = GLKMatrix4Rotate(mvMatrix, p->rotate.x, 1, 0, 0);
+        mvMatrix = GLKMatrix4Rotate(mvMatrix, p->rotate.y, 0, 1, 0);
+        mvMatrix = GLKMatrix4Rotate(mvMatrix, p->rotate.z, 0, 0, 1);
         HGLES::updateMatrix();
         
         p->texture.bind();
-        currentContext->squareVertexBuffer->bind();
-        currentContext->squareIndexBuffer->draw();
-        currentContext->squareVertexBuffer->unbind();
+        squareVertexBuffer->bind();
+        squareIndexBuffer->draw();
+        squareVertexBuffer->unbind();
         p->texture.unbind();
         
         // 行列をもとに戻しておく

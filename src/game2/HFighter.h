@@ -18,15 +18,6 @@
 #include <list>
 
 namespace hg {
-
-    ////////////////////
-    // Fighter
-    typedef enum FighterType
-    {
-        FighterTypeRobo1,
-        FighterTypeRobo2,
-        FighterTypeShip1,
-    } FighterType;
     
     static int SPRITE_INDEX_TABLE[359] = {};
     typedef std::list<Weapon*> WeaponList;
@@ -100,6 +91,10 @@ namespace hg {
         inline bool isShip()
         {
             return _isShip;
+        }
+        inline FighterInfo* getFighterInfo()
+        {
+            return pFighterInfo;
         }
         inline void init(HGNode* layerParent, SideType side, FighterInfo* pInfo)
         {
@@ -408,7 +403,7 @@ namespace hg {
         {
             if (pFighterHated)
             {
-                if (pFighterHated->getLife() <= 0)
+                if (pFighterHated->getLife() <= 0 || !pFighterHated->isActive())
                 {
                     pFighterHated->release();
                     pFighterHated = NULL;
@@ -847,6 +842,10 @@ namespace hg {
         {
             if (SideTypeFriend == side)
             {
+                if (pFighterInfo->isOnBattleGround)
+                {
+                    return true;
+                }
                 friendFighterList.removeActor(this);
             }
             else

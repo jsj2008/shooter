@@ -12,14 +12,17 @@
 typedef enum AllyViewMode
 {
     AllyViewModeSelectAlly,
+    AllyViewModeDeployAlly,
     AllyViewModeFix,
+    AllyViewModeSell,
     AllyViewModeSelectPlayer,
+    AllyViewModeShop,
 } AllyViewMode;
 
 @interface AllyView : UIView
 
-- (id)initWithAllyViewMode:(AllyViewMode)mode WithFrame:(CGRect)frame;
-- (void)setFighterInfo:(hg::FighterInfo*) info;
+- (id)initWithAllyViewMode:(AllyViewMode)mode WithFrame:(CGRect)frame WithFighterInfo:(hg::FighterInfo*)info;
+//- (void)setFighterInfo:(hg::FighterInfo*) info;
 - (hg::FighterInfo*) getFighterinfo;
 //- (void)setBackgroundColor:(UIColor *)backgroundColor WithTextColor:(UIColor *)textColor;
 //- (void)onTouchAnime;

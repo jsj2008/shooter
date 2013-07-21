@@ -13,23 +13,16 @@
 #import <stack>
 #import <map>
 #import "HGLTexture.h"
+#import "HGLCommon.h"
 
 namespace hgles {
     class HGLIndexBuffer;
     class HGLVertexBuffer;
     
-    typedef enum ProgramType
-    {
-        ProgramTypeNone,
-        ProgramType2D,
-        ProgramType3D,
-    } ProgramType;
-    
     typedef struct t_context
     {
-        t_context():
-        currentTextureId(-1)
-        {}
+        t_context() {}
+        /*
         ////////////////////
         // テクスチャ描画用プリミティブ
         HGLIndexBuffer* squareIndexBuffer;
@@ -51,6 +44,7 @@ namespace hgles {
         // 反映するにはupdateCameraMatrixを呼び出す
         HGLVector3 cameraPosition;
         HGLVector3 cameraRotate;
+         */
         
         ////////////////////
         // シェーダ変数ポインタ
@@ -93,6 +87,35 @@ namespace hgles {
     
     // 現在のコンテキスト
     extern t_context* currentContext;
+    extern ProgramType currentProgramType;
+    
+    inline ProgramType getCurrentProgramType()
+    {
+        return currentProgramType;
+    }
+    
+    ////////////////////
+    // テクスチャ描画用プリミティブ
+    extern HGLIndexBuffer* squareIndexBuffer;
+    extern HGLVertexBuffer* squareVertexBuffer;
+    ////////////////////
+    // テクスチャIDリスト
+    extern std::map<std::string, HGLTexture*> textureIds;
+    extern GLuint currentTextureId;
+    
+    ////////////////////
+    // モデルビュー行列
+    extern std::stack<GLKMatrix4> matrixStack;
+    extern GLKMatrix4 mvMatrix;
+    extern GLKMatrix4 cameraMatrix;
+    extern GLKMatrix4 projectionMatrix;
+    
+    ////////////////////
+    // カメラ設定
+    // 反映するにはupdateCameraMatrixを呼び出す
+    extern HGLVector3 cameraPosition;
+    extern HGLVector3 cameraRotate;
+    //
     
     struct Color;
     struct Position;
@@ -102,7 +125,7 @@ namespace hgles {
     public:
         
         // コンテキストIDを返す
-        static int initialize(float viewWidth, float viewHeight);
+        static void initialize(float viewWidth, float viewHeight);
         
         
         static void pushMatrix();

@@ -981,8 +981,8 @@ namespace HGGame {
             _cameraPosition.y = _player->position.y * -1 + 8;
             _cameraPosition.z = -20;
             _cameraRotate.x = -15 * M_PI/180;
-            hgles::currentContext->cameraPosition = _cameraPosition;
-            hgles::currentContext->cameraRotate = _cameraRotate;
+            hgles::cameraPosition = _cameraPosition;
+            hgles::cameraRotate = _cameraRotate;
             hgles::HGLES::updateCameraMatrix();
         }
         
@@ -995,8 +995,8 @@ namespace HGGame {
              }*/
         
         hgles::HGLES::pushMatrix();
-        hgles::currentContext->mvMatrix = GLKMatrix4Rotate(hgles::currentContext->mvMatrix, hgles::currentContext->cameraRotate.x*-1, 1, 0, 0);
-        hgles::currentContext->mvMatrix = GLKMatrix4Rotate(hgles::currentContext->mvMatrix, hgles::currentContext->cameraRotate.y*-1, 0, 1, 0);
+        hgles::mvMatrix = GLKMatrix4Rotate(hgles::mvMatrix, hgles::cameraRotate.x*-1, 1, 0, 0);
+        hgles::mvMatrix = GLKMatrix4Rotate(hgles::mvMatrix, hgles::cameraRotate.y*-1, 0, 1, 0);
         
         // draw bg
         for (std::vector<hgles::t_hgl2di*>::reverse_iterator itr = background.rbegin(); itr != background.rend(); ++itr)

@@ -27,8 +27,8 @@
 
 @implementation AllyTableView
 
-const int CELL_WIDTH = 130;
-const int CELL_HEIGHT = 85;
+const int CELL_WIDTH = 150;
+const int CELL_HEIGHT = 67;
 const int CELL_GAP = 7;
 
 int maxRowNum = 0;
@@ -85,6 +85,11 @@ static AllyTableView* instance;
 - (void)dealloc
 {
     if (onEndAction) [onEndAction release];
+    if(allyTableView)
+    {
+        [allyTableView release];
+        allyTableView = nil;
+    }
     [super dealloc];
 }
 
@@ -104,7 +109,7 @@ static AllyTableView* instance;
     CGRect scrollFrame = CGRectMake(0, 0, frame.size.height, frame.size.width);
     UITableView* tbv = [[UITableView alloc] initWithFrame:scrollFrame];
     [tbv setBackgroundColor:[UIColor clearColor]];
-    [tbv setRowHeight:150];
+    [tbv setRowHeight:CELL_WIDTH + 20];
     [tbv setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [tbv setEditing:false];
     [tbv setTableHeaderView:nil];
@@ -144,6 +149,29 @@ static AllyTableView* instance;
         }];
     }
     
+    // sortボタン
+    {
+        ImageButtonView* backImgView = [[ImageButtonView alloc] initWithFrame:CGRectMake(0, 0, 66, 66)];
+        UIImage* img = [UIImage imageNamed:@"checkmark.png"];
+        
+        [backImgView setBackgroundColor:[UIColor whiteColor]];
+        [backImgView setFrame:CGRectMake(frame.size.width - 76, frame.size.height - 84 - 10 - 66, 66, 66)];
+        [backImgView.layer setCornerRadius:8];
+        [backImgView.layer setBorderColor:[UIColor colorWithHexString:@"#222222"].CGColor];
+        [backImgView.layer setBorderWidth:3];
+        
+        [backImgView setImage:img];
+        [backImgView setContentMode:UIViewContentModeScaleAspectFit];
+        [backImgView setUserInteractionEnabled:YES];
+        
+        [self addSubview:backImgView];
+        
+        [backImgView setOnTapAction:^(ImageButtonView *target) {
+            hg::UserData::sharedUserData()->sortFighterList();
+            [self reloadData];
+        }];
+    }
+    
     [self setBackgroundColor:[UIColor clearColor]];
 }
 
@@ -156,7 +184,20 @@ static AllyTableView* instance;
 -(NSInteger)tableView:(UITableView *)tableView
 numberOfRowsInSection:(NSInteger)section
 {
-    hg::FighterList list = hg::UserData::sharedUserData()->getFighterList();
+    hg::FighterList list;
+    
+    if (viewMode == AllyViewModeShop)
+    {
+        list = hg::UserData::sharedUserData()->getShopList();
+    }
+    else if (viewMode == AllyViewModeDeployAlly)
+    {
+        list = hg::UserData::sharedUserData()->getReadyList();
+    }
+    else
+    {
+        list = hg::UserData::sharedUserData()->getFighterList();
+    }
     int rows = (int)(list.size()/maxRowNum) + 1 + 1;
     return rows;
 }
@@ -186,7 +227,21 @@ numberOfRowsInSection:(NSInteger)section
     
     // 枠
     int y = frame.size.height - CELL_HEIGHT - CELL_GAP;
-    hg::FighterList fList = hg::UserData::sharedUserData()->getFighterList();
+    hg::FighterList fList;
+    
+    if (viewMode == AllyViewModeShop)
+    {
+        fList = hg::UserData::sharedUserData()->getShopList();
+    }
+    else if (viewMode == AllyViewModeDeployAlly)
+    {
+        fList = hg::UserData::sharedUserData()->getReadyList();
+    }
+    else
+    {
+        fList = hg::UserData::sharedUserData()->getFighterList();
+    }
+    
     for (int i = 0; i < maxRowNum; i++)
     {
         int index = i + [indexPath row] * maxRowNum;
@@ -197,8 +252,7 @@ numberOfRowsInSection:(NSInteger)section
         hg::FighterInfo* fInfo = fList[index];
         
         // セルコンテナ
-        AllyView* v = [[[AllyView alloc] initWithAllyViewMode:viewMode WithFrame:CGRectMake(y, 0, CELL_HEIGHT, CELL_WIDTH)] autorelease];
-        [v setFighterInfo:fInfo];
+        AllyView* v = [[[AllyView alloc] initWithAllyViewMode:viewMode WithFrame:CGRectMake(y, 0, CELL_HEIGHT, CELL_WIDTH) WithFighterInfo:fInfo] autorelease];
         [c addSubview:v];
         
         y -= (CELL_HEIGHT + CELL_GAP);

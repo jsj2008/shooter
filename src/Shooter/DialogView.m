@@ -185,11 +185,12 @@ const float MessageHeight = 100;
     // rotate
     [self setTransform:CGAffineTransformMakeRotation(-90*M_PI/180)];
     
-    int index = 0;
-    int x = MessageBoxWidth/2 - ButtonWidth/2 - (floor((_numButton)/2) * ButtonHeight);
+    int index = -1;
+    int x = MessageBoxWidth/2 - ButtonWidth/2 - (floor((_numButton)/2) * ButtonHeight) - (floor((_numButton)/2) * ButtonGap);
     int y = MessageHeight + 10;
     for (id i in _textList)
     {
+        index++;
         MenuButton* btn = [[[MenuButton alloc] init] autorelease];
         [btn setFrame:CGRectMake(x, y, ButtonWidth, ButtonHeight)];
         btn.tag = index;

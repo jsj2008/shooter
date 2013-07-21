@@ -29,8 +29,17 @@
     bool isEnd;
     bool is3DInitialized;
 }
-
 @end
+
+typedef struct Fighter
+{
+    hgles::HGLVector3 position;
+    hgles::HGLVector3 rotate;
+    hgles::HGLObject3D* obj;
+    float spd;
+} Fighter;
+
+std::vector<Fighter> fighter_list;
 
 @implementation BackgroundView
 
@@ -47,6 +56,14 @@
         is3DInitialized = false;
     }
     return self;
+}
+
+-(int)rand:(int) from to:(int) to
+{
+    if (from == to) return from;
+    int r = rand()%(to - from + 1);
+    int ret = r+from;
+    return ret;
 }
 
 -(void)initialize
@@ -142,8 +159,22 @@
     }
     
     // model
-    HGLObject3D* model = HGLObjLoader::load(@"droid");
+    srand((unsigned int)time(NULL));
+    HGLObject3D* model = HGLObjLoader::load(@"ship-animated");
     fighterObject = model;
+    fighterObject->useLight = 1;
+    
+    fighter_list.clear();
+    int num = 40;
+    for (int i = 0; i < num; i++)
+    {
+        Fighter f;
+        f.position.z = [self rand:0.3 to:300];
+        f.position.x = cos([self rand:0 to:360]*M_PI/180) * [self rand:2 to:80];
+        f.position.y = sin([self rand:0 to:360]*M_PI/180) * [self rand:2 to:80];
+        f.spd = [self rand:3 to:100] * 0.02 * -1;
+        fighter_list.push_back(f);
+    }
     
 }
 
@@ -170,6 +201,7 @@
     
 }
 
+float fighterMoveDiffZ = -0.05;
 - (void)renderThis
 {
     @synchronized(self)
@@ -186,7 +218,7 @@
         
         // set camera
         hgles::HGLVector3 cameraPos = hgles::HGLVector3(0, 0, -5);
-        hgles::currentContext->cameraPosition = cameraPos;
+        hgles::cameraPosition = cameraPos;
         hgles::HGLES::updateCameraMatrix();
         
         // draw background
@@ -198,24 +230,23 @@
             hgles::HGLGraphics2D::draw(*itr);
         }
         
-        // 光源ON
-        //glUniform1f(hgles::currentContext->uUseLight, 1.0);
-        /*
-        fighterObject->position.x = 0;
-        fighterObject->position.y = 0;
-        fighterObject->position.z = 2;
-        fighterObject->scale.set(1,1,1);
-        
-        fighterObject->draw();
-         */
-        // 光源ON
-        fighterObject->position.x = 0;
-        fighterObject->position.y = 0;
-        fighterObject->position.z = 0;
-        fighterObject->scale.set(1,1,1);
-        fighterObject->useLight = 1;
-        
-        fighterObject->draw();
+        // 3d
+        glEnable(GL_DEPTH_TEST);
+        for (std::vector<Fighter>::iterator it = fighter_list.begin(); it != fighter_list.end(); it++)
+        {
+            (*it).position.z += (*it).spd;
+            fighterObject->position = (*it).position;
+            fighterObject->rotate = (*it).rotate;
+            fighterObject->draw();
+            
+            if ((*it).position.z <= -400)
+            {
+                (*it).position.z = [self rand:0.3 to:300];
+                (*it).position.x = cos([self rand:0 to:360]*M_PI/180) * [self rand:5 to:50];
+                (*it).position.y = sin([self rand:0 to:360]*M_PI/180) * [self rand:5 to:50];
+                (*it).spd = [self rand:3 to:100] * 0.02 * -1;
+            }
+        }
     }
 }
 
@@ -231,6 +262,7 @@
             delete *itr;
         }
         nebula.clear();
+        delete fighterObject;
     }
 }
 

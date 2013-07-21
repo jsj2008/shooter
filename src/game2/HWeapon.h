@@ -16,12 +16,6 @@
 
 namespace hg {
     
-    ////////////////////
-    // Weapon
-    typedef enum WeaponType
-    {
-        WeaponTypeNormal,
-    } WeaponType;
     class Weapon : public HGObject
     {
     public:
@@ -64,11 +58,6 @@ namespace hg {
             speed = spd;
         }
         
-        inline void setInterval(float interval)
-        {
-            fireInterval = interval;
-        }
-        
         inline float getRelativeX()
         {
             return relativePosition.x;
@@ -101,6 +90,11 @@ namespace hg {
                     assert(0);
                     break;
             }
+        }
+        
+        inline void setInterval(float interval)
+        {
+            fireInterval = interval;
         }
         
         inline void setAspect(float degree)

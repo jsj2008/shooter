@@ -24,6 +24,7 @@
 
 #include "HGLObject3D.h"
 #include "HGLObjLoader.h"
+#include "UserData.h"
 
 namespace hg {
     
@@ -188,6 +189,8 @@ namespace hg {
     
     // 終了フラグ
     bool isEnd = false;
+    bool shouldDeployFriends = false;
+    bool isPause = false;
     
     FighterInfo* playerInfo;
     FriendData friendData;
@@ -423,6 +426,10 @@ namespace hg {
             {
                 if (SideTypeFriend == sideType)
                 {
+                    if (!pFighterInfo->isOnBattleGround)
+                    {
+                        return true;
+                    }
                     Fighter* pEnemy = new Fighter();
                     pEnemy->init(pLayerFriend, sideType, pFighterInfo);
                     pEnemy->setPosition(positionX, positionY);
@@ -566,7 +573,7 @@ namespace hg {
     }
     
     ////////////////////
-    // 友軍
+    // friend fighter
     void deployAllFriends()
     {
         assert(pPlayer);
@@ -575,22 +582,59 @@ namespace hg {
             return;
         }
         float wait = 0;
-        for (FriendData::iterator it = friendData.begin(); it != friendData.end(); ++it)
+        using namespace hg;
+        UserData* userData = UserData::sharedUserData();
+        FighterList fList = userData->getFighterList();
+        for (FighterList::iterator it = fList.begin(); it != fList.end(); ++it)
         {
-            FighterInfo* i = (*it);
-            if (i->life <= 0)
+            FighterInfo* pFighterInfo = (*it);
+            if (pFighterInfo->life <= 0 || pFighterInfo->isPlayer)
             {
                 continue;
             }
-            float tx = pPlayer->getPositionX();
-            float ty = pPlayer->getPositionY();
-            float d = rand(0, 359);
-            float x = tx + cos(toRad(d)) * 7;
-            float y = ty + sin(toRad(d)) * 7;
-            x = MAX(x, 0), x = MIN(x, FIELD_SIZE);
-            y = MAX(y, 0), y = MIN(y, FIELD_SIZE);
-            spawnFighter(SideTypeFriend, i, x, y, wait);
-            wait += f(10);
+            FriendData::iterator findItr = std::find(friendData.begin(), friendData.end(), pFighterInfo);
+            if (pFighterInfo->isOnBattleGround)
+            {
+                if (findItr == friendData.end())
+                {
+                    friendData.push_back(pFighterInfo);
+                    // deploy
+                    float tx = pPlayer->getPositionX();
+                    float ty = pPlayer->getPositionY();
+                    float d = rand(0, 359);
+                    float x = tx + cos(toRad(d)) * 7;
+                    float y = ty + sin(toRad(d)) * 7;
+                    x = MAX(x, 0), x = MIN(x, FIELD_SIZE);
+                    y = MAX(y, 0), y = MIN(y, FIELD_SIZE);
+                    spawnFighter(SideTypeFriend, pFighterInfo, x, y, wait);
+                    //wait += f(10);
+                }
+                else
+                {
+                    // do nothing
+                }
+            }
+            else
+            {
+                if (findItr == friendData.end())
+                {
+                    // do nothing
+                }
+                else
+                {
+                    friendData.erase(findItr);
+                    // collect
+                    for (ActorList<Fighter>::iterator it = friendFighterList.begin(); it != friendFighterList.end(); ++it)
+                    {
+                        if (*it == pPlayer) continue;
+                        FighterInfo* pFighterInfoTmp = (*it)->getFighterInfo();
+                        if (pFighterInfo == pFighterInfoTmp)
+                        {
+                            (*it)->disappear();
+                        }
+                    }
+                }
+            }
         }
     }
     
@@ -811,6 +855,12 @@ namespace hg {
                 pRader->updateRader(enemyCellManager, friendCellManager);
             }
             
+            //
+            if (shouldDeployFriends)
+            {
+                deployAllFriends();
+            }
+            /*
             if (keyInfo.shouldDeployFriend)
             {
                 deployAllFriends();
@@ -818,7 +868,7 @@ namespace hg {
             else if (keyInfo.shouldCollectFriend)
             {
                 collectAllFriends();
-            }
+            }*/
         }
         std::string getName()
         {
@@ -839,11 +889,13 @@ namespace hg {
 
     ////////////////////
     // 初期化
-    void initialize(SpawnData sd, FighterInfo* pl, FriendData fd)
+    void initialize(SpawnData sd, FighterInfo* pl)
     {
         NSLog(@"INITIALIZE START");
         isEnd = false;
+        isPause = false;
         isInitialized = false;
+        shouldDeployFriends = false;
         initRandom();
         battleResult = BattleResult();
         
@@ -853,12 +905,15 @@ namespace hg {
         
         // プレイヤーデータ
         playerInfo = pl;
-        friendData = fd;
+        friendData.clear();
         
         // メモリ掃除
         HGHeapFactory::CreateHeap(DEFAULT_HEAP_NAME)->freeAll();
         
         HGDirector::sharedDirector()->getRootNode()->removeAllChildren();
+        
+        // init data
+        UserData::sharedUserData()->initBeforeBattle();
         
         // list
         friendFighterList.removeAllActor();
@@ -1067,12 +1122,21 @@ namespace hg {
         isInitialized = true;
         NSLog(@"INITIALIZE END");
     }
-
+    
+    void deployFriends()
+    {
+        shouldDeployFriends = true;
+    }
+    
     ////////////////////
     // 更新
     void update(KeyInfo keyState)
     {
         if (isGameEnd() || !isInitialized)
+        {
+            return;
+        }
+        if (isPause)
         {
             return;
         }
@@ -1130,6 +1194,11 @@ namespace hg {
     bool isGameEnd()
     {
         return isEnd;
+    }
+    
+    void setPause(bool shouldPause)
+    {
+        isPause = shouldPause;
     }
 
 }

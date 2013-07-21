@@ -99,7 +99,6 @@ namespace hgles {
             {
                 uvs.push_back({
                     s2f(&(words)[1]),
-#warning 本当に正しいのか確認する
                     1.0f - s2f(&(words)[2])
                 });
             }
@@ -147,16 +146,19 @@ namespace hgles {
         if (material_name.length())
         {
             HGLMaterial* temp = materials[material_name];
-            m = new HGLMaterial();
-            m->name      = temp->name;
-            m->ambient   = temp->ambient;
-            m->diffuse   = temp->diffuse;
-            m->specular  = temp->specular;
-            m->shininess = temp->shininess;
-            m->texture_name = temp->texture_name;
-            if (m->texture_name.length())
+            if (temp)
             {
-                t = HGLTexture::createTextureWithAsset(m->texture_name);
+                m = new HGLMaterial();
+                m->name      = temp->name;
+                m->ambient   = temp->ambient;
+                m->diffuse   = temp->diffuse;
+                m->specular  = temp->specular;
+                m->shininess = temp->shininess;
+                m->texture_name = temp->texture_name;
+                if (m->texture_name.length())
+                {
+                    t = HGLTexture::createTextureWithAsset(m->texture_name);
+                }
             }
         }
         HGLMesh* mesh = new HGLMesh(v, i, m, t);
@@ -190,17 +192,16 @@ namespace hgles {
         }
         if (m.size() >= 3)
         {
-            i2 = i1;
             i3 = s2i(&(m[2]))-1;
         }
         Position p = positions[i1];
         UV uv = {0,0};
-        if (uvs.size() >= i2)
+        if (uvs.size() > i2)
         {
             uv = uvs[i2];
         }
         Normal n = {0, 0, 0};
-        if (normals.size() >= i3)
+        if (normals.size() > i3)
         {
             n = normals[i3];
         }

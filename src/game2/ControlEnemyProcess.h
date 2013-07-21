@@ -147,12 +147,6 @@ namespace hg {
                         {
                             pFighter->fire(pTarget);
                         }
-                        // 遠すぎる
-                        else
-                        {
-                            pTarget->release();
-                            pTarget = NULL;
-                        }
                     }
                     else
                     {

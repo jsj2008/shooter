@@ -16,18 +16,6 @@
 
 namespace hg {
     
-    typedef enum CollisionId
-    {
-        CollisionIdStart,
-        CollisionIdNone,
-        CollisionId_BulletNormal,
-        CollisionId_BulletVulcan,
-        CollisionId_P_ROBO1,
-        CollisionId_E_SENKAN,
-        CollisionId_E_ROBO2,
-        CollisionIdEnd,
-    } CollisionId;
-    
     class CollisionManager;
     
     class CollisionManager

@@ -17,13 +17,6 @@
 namespace hg {
     
     ////////////////////
-    // Bullet
-    typedef enum BulletType
-    {
-        BulletTypeNormal,
-        BulletTypeMagic,
-        BulletTypeVulcan,
-    } BulletType;
     
     class Bullet : public Actor
     {

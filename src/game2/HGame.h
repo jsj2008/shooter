@@ -14,11 +14,13 @@ namespace hg
     class HGState;
     class HGStateManager;
     
-    void initialize(SpawnData sd, FighterInfo* pl, FriendData fd);
+    void initialize(SpawnData sd, FighterInfo* pl);
     void render();
+    void deployFriends();
     void update(KeyInfo keyState);
     bool isGameEnd();
     BattleResult getResult();
     void cleanup();
+    void setPause(bool shouldPause);
 }
 #endif

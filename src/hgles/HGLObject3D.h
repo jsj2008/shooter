@@ -11,6 +11,7 @@
 #import <Foundation/Foundation.h>
 #import "HGLMesh.h"
 #import "HGLVector3.h"
+#import "HGLCommon.h"
 #import <vector>
 
 namespace hgles {
@@ -30,7 +31,7 @@ namespace hgles {
         float useLight; // 光源を使用するか
         float alpha; // アルファ値
         bool paralell; // 常にカメラに向く
-        
+        ProgramType programType;
     private:
         std::vector<HGLMesh*> meshlist;
         std::vector<HGLObject3D*> children;

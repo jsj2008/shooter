@@ -1,0 +1,22 @@
+# Blender MTL File: 'ship-animated.blend'
+# Material Count: 1
+newmtl Material
+Ns 15.686275
+
+#Ka 0.000000 0.000000 0.000000
+#Kd 0.800000 0.800000 0.800000
+#Ks 0.701676 0.701676 0.701676
+Kd 0.500 0.300 0.400
+Ks 0.800 0.400 0.500
+Ka 0.600 0.600 0.600
+
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd SHIP-TXTR.png
+map_Bump SHIP-TXTR.png
+map_Ns SHIP-TXTR.png
+map_Ks SHIP-TXTR.png
+map_Ka SHIP-TXTR.png
+
+

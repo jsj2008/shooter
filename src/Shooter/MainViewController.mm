@@ -12,7 +12,6 @@
 #import "Common.h"
 #import "TitleView.h"
 #import "AppDelegate.h"
-//#import "MenuView.h"
 #import "TroopsView.h"
 #import "UserData.h"
 #import "AllyTableView.h"
@@ -25,7 +24,7 @@
 
 const float MenuAnimationDuration = 0.2;
 const float MenuButtonWidth = 180;
-const float MenuButtonHeight = 50;
+const float MenuButtonHeight = 44;
 const float MenuButtonGap = 10;
 
 @interface MainViewController()
@@ -92,7 +91,7 @@ static MainViewController* instance = nil;
     return self;
 }
 
--(void)earthQuake
+-(void)earthquake
 {
     UIView* v = mainBaseView;
     
@@ -106,39 +105,6 @@ static MainViewController* instance = nil;
     [animation setToValue:[NSValue valueWithCGPoint:
                            CGPointMake([v center].x + 10.0f, [v center].y)]];
     [[self.view layer] addAnimation:animation forKey:@"position"];
-    /*
-    [UIView animateWithDuration:0.01 animations:^{
-        CGRect f = self.view.frame;
-        if (rand()%10 >= 5)
-        {
-            f.origin.x += rand()%5;
-        }
-        else
-        {
-            f.origin.x += rand()%5 * -1;
-        }
-        if (rand()%10 >= 5)
-        {
-            f.origin.y += rand()%5;
-        }
-        else
-        {
-            f.origin.y += rand()%5 * -1;
-        }
-        [self.view setFrame:f];
-    } completion:^(BOOL finished) {
-        if ([[NSDate date] timeIntervalSince1970] - start <= 0.5)
-        {
-            [self earthQuake];
-        }
-        else
-        {
-            CGRect f = self.view.frame;
-            f.origin.x = 0;
-            f.origin.y = 0;
-            [self.view setFrame:f];
-        }
-    }];*/
 }
 
 +(void)Start
@@ -229,131 +195,275 @@ static MainViewController* instance = nil;
                 //[self earthQuake];
             }];
             
-            // start battle
-            float buttonX = mainFrame.size.width - 10 - MenuButtonWidth;
-            float buttonY = StatusViewHeight + 10;
             {
-                CGRect frm = CGRectMake(buttonX, buttonY, MenuButtonWidth, MenuButtonHeight);
-                MenuButton* m = [[[MenuButton alloc] initWithFrame:frm] autorelease];
-                [m setText:@"Battle"];
-                [menuBaseView addSubview:m];
-                [m setOnTapAction:^(MenuButton *target) {
-                    [self stageStart];
-                }];
-            }
-            
-            // Select your ship.
-            buttonY += (MenuButtonHeight + MenuButtonGap);
-            {
-                CGRect frm = CGRectMake(buttonX, buttonY, MenuButtonWidth, MenuButtonHeight);
-                MenuButton* m = [[[MenuButton alloc] initWithFrame:frm] autorelease];
-                [m setText:@"Select your ship"];
-                [menuBaseView addSubview:m];
-                [m setOnTapAction:^(MenuButton *target) {
-                    [self hideMenuViewAnimate];
-                    AllyTableView* vc = [[[AllyTableView alloc] initWithViewMode:AllyViewModeSelectPlayer WithFrame:mainFrame] autorelease];
-                    [self.view addSubview:vc];
-                    // animate
-                    {
-                        [vc setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
-                        [vc setUserInteractionEnabled:FALSE];
-                        [UIView animateWithDuration:MenuAnimationDuration animations:^{
-                            [vc setAlpha:1];
-                            [vc setTransform:CGAffineTransformMakeScale(1,1)];
-                        }completion:^(BOOL finished) {
-                            [vc setUserInteractionEnabled:TRUE];
-                        }];
-                    }
-                    [vc setOnEndAction:^{
-                        [self showMenu];
+                // start battle
+                float buttonX = mainFrame.size.width - 10 - MenuButtonWidth;
+                float buttonY = StatusViewHeight + 5;
+                
+                {
+                    CGRect frm = CGRectMake(buttonX, buttonY, MenuButtonWidth, MenuButtonHeight);
+                    MenuButton* m = [[[MenuButton alloc] initWithFrame:frm] autorelease];
+                    [m setText:@"Battle"];
+                    [menuBaseView addSubview:m];
+                    [m setOnTapAction:^(MenuButton *target) {
+                        [self stageStart];
+                    }];
+                }
+                
+                // Select your ship.
+                buttonY += (MenuButtonHeight + MenuButtonGap);
+                {
+                    CGRect frm = CGRectMake(buttonX, buttonY, MenuButtonWidth, MenuButtonHeight);
+                    MenuButton* m = [[[MenuButton alloc] initWithFrame:frm] autorelease];
+                    [m setText:@"Select your ship"];
+                    [menuBaseView addSubview:m];
+                    [m setOnTapAction:^(MenuButton *target) {
+                        [self hideMenuViewAnimate];
+                        AllyTableView* vc = [[[AllyTableView alloc] initWithViewMode:AllyViewModeSelectPlayer WithFrame:mainFrame] autorelease];
+                        [self.view addSubview:vc];
                         // animate
                         {
+                            [vc setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
                             [vc setUserInteractionEnabled:FALSE];
                             [UIView animateWithDuration:MenuAnimationDuration animations:^{
-                                [vc setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
-                            } completion:^(BOOL finished) {
-                                [vc removeFromSuperview];
+                                [vc setAlpha:1];
+                                [vc setTransform:CGAffineTransformMakeScale(1,1)];
+                            }completion:^(BOOL finished) {
+                                [vc setUserInteractionEnabled:TRUE];
                             }];
                         }
-                    }];
-                }];
-            }
-            
-            // Select Ally
-            buttonY += (MenuButtonHeight + MenuButtonGap);
-            {
-                CGRect frm = CGRectMake(buttonX, buttonY, MenuButtonWidth, MenuButtonHeight);
-                MenuButton* m = [[[MenuButton alloc] initWithFrame:frm] autorelease];
-                [m setText:@"Select Ally"];
-                [menuBaseView addSubview:m];
-                [m setOnTapAction:^(MenuButton *target) {
-                    [self hideMenuViewAnimate];
-                    AllyTableView* vc = [[[AllyTableView alloc] initWithViewMode:AllyViewModeSelectAlly WithFrame:mainFrame] autorelease];
-                    [self.view addSubview:vc];
-                    // animate
-                    {
-                        [vc setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
-                        [vc setUserInteractionEnabled:FALSE];
-                        [UIView animateWithDuration:MenuAnimationDuration animations:^{
-                            [vc setAlpha:1];
-                            [vc setTransform:CGAffineTransformMakeScale(1,1)];
-                        }completion:^(BOOL finished) {
-                            [vc setUserInteractionEnabled:TRUE];
+                        [vc setOnEndAction:^{
+                            [self showMenu];
+                            // animate
+                            {
+                                [vc setUserInteractionEnabled:FALSE];
+                                [UIView animateWithDuration:MenuAnimationDuration animations:^{
+                                    [vc setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
+                                } completion:^(BOOL finished) {
+                                    [vc removeFromSuperview];
+                                }];
+                            }
                         }];
-                    }
-                    [vc setOnEndAction:^{
-                        [self showMenu];
+                    }];
+                }
+                
+                // repair all
+                buttonY += (MenuButtonHeight + MenuButtonGap);
+                {
+                    CGRect frm = CGRectMake(buttonX, buttonY, MenuButtonWidth, MenuButtonHeight);
+                    MenuButton* m = [[[MenuButton alloc] initWithFrame:frm] autorelease];
+                    [m setText:@"Repair All"];
+                    [menuBaseView addSubview:m];
+                    [m setOnTapAction:^(MenuButton *target) {
+                        // buy
+                        int cost = hg::UserData::sharedUserData()->getRepairAllCost();
+                        if (hg::UserData::sharedUserData()->getMoney() >= cost)
+                        {
+                            NSString* msg = [NSString stringWithFormat:@"It Costs %d gold. Are you sure to repair all?", cost];
+                            DialogView* dialog = [[[DialogView alloc] initWithMessage:msg] autorelease];
+                            [dialog addButtonWithText:@"Buy" withAction:^{
+                                hg::UserData::sharedUserData()->repairAll();
+                                dispatch_async(dispatch_get_main_queue(), ^{
+                                    [[StatusView GetInstance] loadUserInfo];
+                                });
+                            }];
+                            [dialog addButtonWithText:@"Cancel" withAction:^{
+                                // nothing
+                            }];
+                            [dialog show];
+                        }
+                        else
+                        {
+                            NSString* msg = [NSString stringWithFormat:@"It Costs %d gold. You need more gold", cost];
+                            DialogView* dialog = [[[DialogView alloc] initWithMessage:msg] autorelease];
+                            [dialog addButtonWithText:@"OK" withAction:^{
+                                // nothing
+                            }];
+                            [dialog show];
+                        }
+                        
+                    }];
+                }
+                
+                // fix ally
+                buttonY += (MenuButtonHeight + MenuButtonGap);
+                {
+                    CGRect frm = CGRectMake(buttonX, buttonY, MenuButtonWidth, MenuButtonHeight);
+                    MenuButton* m = [[[MenuButton alloc] initWithFrame:frm] autorelease];
+                    [m setText:@"Repair"];
+                    [menuBaseView addSubview:m];
+                    [m setOnTapAction:^(MenuButton *target) {
+                        [self hideMenuViewAnimate];
+                        AllyTableView* vc = [[[AllyTableView alloc] initWithViewMode:AllyViewModeFix WithFrame:mainFrame] autorelease];
+                        [self.view addSubview:vc];
                         // animate
                         {
+                            [vc setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
                             [vc setUserInteractionEnabled:FALSE];
                             [UIView animateWithDuration:MenuAnimationDuration animations:^{
-                                [vc setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
-                            } completion:^(BOOL finished) {
-                                [vc removeFromSuperview];
+                                [vc setAlpha:1];
+                                [vc setTransform:CGAffineTransformMakeScale(1,1)];
+                            }completion:^(BOOL finished) {
+                                [vc setUserInteractionEnabled:TRUE];
                             }];
                         }
-                    }];
-                }];
-            }
-            
-            
-            // fix ally
-            buttonY += (MenuButtonHeight + MenuButtonGap);
-            {
-                CGRect frm = CGRectMake(buttonX, buttonY, MenuButtonWidth, MenuButtonHeight);
-                MenuButton* m = [[[MenuButton alloc] initWithFrame:frm] autorelease];
-                [m setText:@"Repair"];
-                [menuBaseView addSubview:m];
-                [m setOnTapAction:^(MenuButton *target) {
-                    [self hideMenuViewAnimate];
-                    AllyTableView* vc = [[[AllyTableView alloc] initWithViewMode:AllyViewModeFix WithFrame:mainFrame] autorelease];
-                    [self.view addSubview:vc];
-                    // animate
-                    {
-                        [vc setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
-                        [vc setUserInteractionEnabled:FALSE];
-                        [UIView animateWithDuration:MenuAnimationDuration animations:^{
-                            [vc setAlpha:1];
-                            [vc setTransform:CGAffineTransformMakeScale(1,1)];
-                        }completion:^(BOOL finished) {
-                            [vc setUserInteractionEnabled:TRUE];
+                        [vc setOnEndAction:^{
+                            [self showMenu];
+                            // animate
+                            {
+                                [vc setUserInteractionEnabled:FALSE];
+                                [UIView animateWithDuration:MenuAnimationDuration animations:^{
+                                    [vc setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
+                                } completion:^(BOOL finished) {
+                                    [vc removeFromSuperview];
+                                }];
+                            }
                         }];
-                    }
-                    [vc setOnEndAction:^{
-                        [self showMenu];
+                    }];
+                }
+                
+                // battle with someone
+                buttonY += (MenuButtonHeight + MenuButtonGap);
+                {
+                    CGRect frm = CGRectMake(buttonX, buttonY, MenuButtonWidth, MenuButtonHeight);
+                    MenuButton* m = [[[MenuButton alloc] initWithFrame:frm] autorelease];
+                    [m setText:@"Select allies"];
+                    [menuBaseView addSubview:m];
+                    [m setOnTapAction:^(MenuButton *target) {
+                        [self hideMenuViewAnimate];
+                        AllyTableView* vc = [[[AllyTableView alloc] initWithViewMode:AllyViewModeSelectAlly WithFrame:mainFrame] autorelease];
+                        [self.view addSubview:vc];
                         // animate
                         {
+                            [vc setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
                             [vc setUserInteractionEnabled:FALSE];
                             [UIView animateWithDuration:MenuAnimationDuration animations:^{
-                                [vc setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
-                            } completion:^(BOOL finished) {
-                                [vc removeFromSuperview];
+                                [vc setAlpha:1];
+                                [vc setTransform:CGAffineTransformMakeScale(1,1)];
+                            }completion:^(BOOL finished) {
+                                [vc setUserInteractionEnabled:TRUE];
                             }];
                         }
+                        [vc setOnEndAction:^{
+                            [self showMenu];
+                            // animate
+                            {
+                                [vc setUserInteractionEnabled:FALSE];
+                                [UIView animateWithDuration:MenuAnimationDuration animations:^{
+                                    [vc setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
+                                } completion:^(BOOL finished) {
+                                    [vc removeFromSuperview];
+                                }];
+                            }
+                        }];
                     }];
-                }];
-            }
+                }
+                
+            } // end of menu 1
             
+            {
+                float buttonX2 = mainFrame.size.width - 10 - MenuButtonWidth - 20 - MenuButtonWidth;
+                float buttonY2 = StatusViewHeight + 5;
+                
+                // buy ally
+                {
+                    CGRect frm = CGRectMake(buttonX2, buttonY2, MenuButtonWidth, MenuButtonHeight);
+                    MenuButton* m = [[[MenuButton alloc] initWithFrame:frm] autorelease];
+                    [m setText:@"Buy ships"];
+                    [menuBaseView addSubview:m];
+                    [m setOnTapAction:^(MenuButton *target) {
+                        [self hideMenuViewAnimate];
+                        AllyTableView* vc = [[[AllyTableView alloc] initWithViewMode:AllyViewModeShop WithFrame:mainFrame] autorelease];
+                        [self.view addSubview:vc];
+                        // animate
+                        {
+                            [vc setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
+                            [vc setUserInteractionEnabled:FALSE];
+                            [UIView animateWithDuration:MenuAnimationDuration animations:^{
+                                [vc setAlpha:1];
+                                [vc setTransform:CGAffineTransformMakeScale(1,1)];
+                            }completion:^(BOOL finished) {
+                                [vc setUserInteractionEnabled:TRUE];
+                            }];
+                        }
+                        [vc setOnEndAction:^{
+                            [self showMenu];
+                            // animate
+                            {
+                                [vc setUserInteractionEnabled:FALSE];
+                                [UIView animateWithDuration:MenuAnimationDuration animations:^{
+                                    [vc setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
+                                } completion:^(BOOL finished) {
+                                    [vc removeFromSuperview];
+                                }];
+                            }
+                        }];
+                    }];
+                }
+                
+                // sell ally
+                buttonY2 += (MenuButtonHeight + MenuButtonGap);
+                {
+                    CGRect frm = CGRectMake(buttonX2, buttonY2, MenuButtonWidth, MenuButtonHeight);
+                    MenuButton* m = [[[MenuButton alloc] initWithFrame:frm] autorelease];
+                    [m setText:@"Sell ships"];
+                    [menuBaseView addSubview:m];
+                    [m setOnTapAction:^(MenuButton *target) {
+                        [self hideMenuViewAnimate];
+                        AllyTableView* vc = [[[AllyTableView alloc] initWithViewMode:AllyViewModeFix WithFrame:mainFrame] autorelease];
+                        [self.view addSubview:vc];
+                        // animate
+                        {
+                            [vc setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
+                            [vc setUserInteractionEnabled:FALSE];
+                            [UIView animateWithDuration:MenuAnimationDuration animations:^{
+                                [vc setAlpha:1];
+                                [vc setTransform:CGAffineTransformMakeScale(1,1)];
+                            }completion:^(BOOL finished) {
+                                [vc setUserInteractionEnabled:TRUE];
+                            }];
+                        }
+                        [vc setOnEndAction:^{
+                            [self showMenu];
+                            // animate
+                            {
+                                [vc setUserInteractionEnabled:FALSE];
+                                [UIView animateWithDuration:MenuAnimationDuration animations:^{
+                                    [vc setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
+                                } completion:^(BOOL finished) {
+                                    [vc removeFromSuperview];
+                                }];
+                            }
+                        }];
+                    }];
+                }
+                
+                // change stage
+                buttonY2 += (MenuButtonHeight + MenuButtonGap);
+                {
+                    CGRect frm = CGRectMake(buttonX2, buttonY2, MenuButtonWidth, MenuButtonHeight);
+                    MenuButton* m = [[[MenuButton alloc] initWithFrame:frm] autorelease];
+                    [m setText:@"Select stage"];
+                    [menuBaseView addSubview:m];
+                    [m setOnTapAction:^(MenuButton *target) {
+                        [self hideMenuViewAnimate];
+                        // TODO:
+                    }];
+                }
+                
+                // option stage
+                buttonY2 += (MenuButtonHeight + MenuButtonGap);
+                {
+                    CGRect frm = CGRectMake(buttonX2, buttonY2, MenuButtonWidth, MenuButtonHeight);
+                    MenuButton* m = [[[MenuButton alloc] initWithFrame:frm] autorelease];
+                    [m setText:@"Option"];
+                    [menuBaseView addSubview:m];
+                    [m setOnTapAction:^(MenuButton *target) {
+                        [self hideMenuViewAnimate];
+                        // TODO:
+                    }];
+                }
+            } // end of menu 2
             
         }
     });
@@ -367,7 +477,7 @@ static MainViewController* instance = nil;
     [self.view addSubview:mainBaseView];
     
     // ステータス
-    statusView = [[[StatusView alloc] init] autorelease];
+    statusView = [StatusView CreateInstance];
     [mainBaseView addSubview:statusView];
     [statusView loadUserInfo];
     
@@ -427,43 +537,5 @@ static MainViewController* instance = nil;
     }];
 }
 
-/*
-+(void)ShowTroops
-{
-    if (instance)
-    {
-        [instance showTroops];
-    }
-}
-
--(void)showTroops
-{
-    // メニューをかくしてテーブルを表示
-    AllyTableView* avc = [[[AllyTableView alloc] initWithViewMode:AllyViewModeSelectAlly] autorelease];
-    //[self addChildViewController:avc];
-    [self.view addSubview:avc];
-    
-}
-
-+(void)HideTroops
-{
-    if (instance)
-    {
-        [instance hideTroops];
-    }
-}
-
--(void)hideTroops
-{
-    [UIView animateWithDuration:0.2 animations:^{
-        [troopsView setAlpha:0];
-        CGRect f = menuView.frame;
-        f.origin.x = 0;
-        menuView.frame = f;
-    } completion:^(BOOL finished) {
-        [troopsView release];
-        troopsView = NULL;
-    }];
-}*/
 
 @end

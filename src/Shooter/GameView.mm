@@ -17,6 +17,9 @@
 #import "UIButton+MyCategory.h"
 #import "UIColor+MyCategory.h"
 #import "UserData.h"
+#import "MenuButton.h"
+#import "ImageButtonView.h"
+#import "AllyTableView.h"
 
 #define DEPLOY_BTN_SIZE 50
 
@@ -25,10 +28,6 @@
 {
     // game's main thread
     dispatch_queue_t _game_queue;
-    
-    // UI
-    PadView* _leftPadView;
-    PadView* _rightPadView;
     
     UIButton* deployBtn;
     
@@ -46,6 +45,12 @@
     // action
     void (^onEndAction)();
     
+    // base
+    UIView* baseView;
+    CGRect baseFrame;
+    
+    UIView* baseCurtain;
+    
 }
 @end
 
@@ -62,6 +67,8 @@ static NSObject* lock = nil;
     {
         [onEndAction release];
     }
+    [baseView release];
+    [baseCurtain release];
     [super dealloc];
 }
 
@@ -78,185 +85,157 @@ static NSObject* lock = nil;
         CGRect frame = [[UIScreen mainScreen] applicationFrame];
         CGRect viewFrame = CGRectMake(0, 0, frame.size.height, frame.size.width);
         [self setFrame:viewFrame];
-        //[self setBackgroundColor:[UIColor blackColor]];
-        //*/
-        double delayInSeconds = 0.5;
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            [self viewDidLoad];
-        });
-        [self setUserInteractionEnabled:TRUE];
+        
+        // 3d描画用ビューを初期化
+        _glview = [[HGLView alloc] initWithFrame:viewFrame WithRenderBlock:^{
+            @synchronized(lock)
+            {
+                hg::render();
+            }
+        }];
+        [self addSubview:_glview];
+        [self initialize];
+        
+        // 描画開始
+        [_glview start];
+        
     }
     return self;
 }
 
-- (void)viewDidLoad
-{
-    ////////////////////
-    // 3d描画用ビューを初期化
-    CGRect frame = [[UIScreen mainScreen] applicationFrame];
-    CGRect viewFrame = CGRectMake(0, 0, frame.size.height, frame.size.width);
-    _glview = [[HGLView alloc] initWithFrame:viewFrame WithRenderBlock:^{
-        @synchronized(lock)
-        {
-            hg::render();
-        }
-    }];
-    //self.view = _glview;
-    [self addSubview:_glview];
-    
-    ////////////////////
-    // 3d以外の初期化
-    _leftPadView = nil;
-    _rightPadView = nil;
-    
-    [self initialize];
-    
-    ////////////////////
-    // 描画開始
-    [_glview start];
-}
-
+// UI初期化
 - (void)initialize
 {
     
     @synchronized(lock)
     {
-        
-        // 出現リスト読み込み
-        NSBundle* bundle = [NSBundle mainBundle];
-        NSString* path = [bundle pathForResource:@"enemyList" ofType:@"json"];
-        NSData* dataEnemyList = [NSData dataWithContentsOfFile:path];
-        NSError* error;
-        NSDictionary* dicEnemyList = [NSJSONSerialization JSONObjectWithData:dataEnemyList options:kNilOptions error:&error];
-        
+        // initialize game
+        {
+            // 出現リスト読み込み
+            NSBundle* bundle = [NSBundle mainBundle];
+            NSString* path = [bundle pathForResource:@"enemyList" ofType:@"json"];
+            NSData* dataEnemyList = [NSData dataWithContentsOfFile:path];
+            NSError* error;
+            NSDictionary* dicEnemyList = [NSJSONSerialization JSONObjectWithData:dataEnemyList options:kNilOptions error:&error];
+            
 #warning DELETE FIGHTER DATA AFTER GAME!!!!!!!!
-        // Create Spawn Data
-        hg::SpawnData spawnData;
-        for (NSDictionary* d in dicEnemyList)
-        {
-            int tmpGroup = [[d valueForKey:@"group"] integerValue] - 1;
-            hg::FighterInfo* f = new hg::FighterInfo();
-            f->fighterType = [[d valueForKey:@"fighterType"] integerValue];
-            f->level = [[d valueForKey:@"level"] integerValue];
-            if (tmpGroup >= spawnData.size())
+            // Create Spawn Data
+            hg::SpawnData spawnData;
+            for (NSDictionary* d in dicEnemyList)
             {
-                spawnData.push_back(hg::SpawnGroup());
-            }
-            spawnData[tmpGroup].push_back(f);
-        }
-        
-        
-        hg::FighterInfo* pPlayerInfo = NULL;
-        hg::FriendData friendData;
-        hg::FighterList fList = hg::UserData::sharedUserData()->getFighterList();
-        
-        for (hg::FighterList::iterator it = fList.begin(); it != fList.end(); ++it)
-        {
-            hg::FighterInfo* info = *it;
-            if (info->isPlayer)
-            {
-                pPlayerInfo = info;
-                continue;
-            }
-            if (info->isReady && info->life > 0)
-            {
-                friendData.push_back(info);
-                continue;
-            }
-        }
-        
-        // setup game
-        //HGGame::initialize();
-        hg::cleanup();
-        hg::initialize(spawnData, pPlayerInfo, friendData);
-        
-        // creating game thread
-        _game_queue = dispatch_queue_create(DISPATCH_QUEUE_PRIORITY_DEFAULT, NULL);
-        dispatch_async(_game_queue, ^{
-            NSDate* nowDt;
-            NSTimeInterval start;
-            NSTimeInterval end;
-            float base_sleep = 1.0/FPS;
-            float sleep;
-            while (1)
-            {
-                nowDt = [NSDate date];
-                start = [nowDt timeIntervalSince1970];
+                int tmpGroup = [[d valueForKey:@"group"] integerValue] - 1;
+                hg::FighterInfo* f = new hg::FighterInfo();
+                f->fighterType = [[d valueForKey:@"fighterType"] integerValue];
+                f->level = [[d valueForKey:@"level"] integerValue];
+                if (tmpGroup >= spawnData.size())
                 {
-                    // calling game's main process
-                    @synchronized(lock)
+                    spawnData.push_back(hg::SpawnGroup());
+                }
+                spawnData[tmpGroup].push_back(f);
+            }
+            
+            // initialize game
+            hg::FighterInfo* pPlayerInfo = hg::UserData::sharedUserData()->getPlayerInfo();
+            assert(pPlayerInfo != NULL);
+            
+            // setup game
+            hg::cleanup();
+            
+            hg::initialize(spawnData, pPlayerInfo);
+            
+            // creating game thread
+            _game_queue = dispatch_queue_create(DISPATCH_QUEUE_PRIORITY_DEFAULT, NULL);
+            dispatch_async(_game_queue, ^{
+                NSDate* nowDt;
+                NSTimeInterval start;
+                NSTimeInterval end;
+                float base_sleep = 1.0/FPS;
+                float sleep;
+                while (1)
+                {
+                    nowDt = [NSDate date];
+                    start = [nowDt timeIntervalSince1970];
                     {
-                        hg::update(keyState);
-                        keyState.shouldDeployFriend = false;
-                        keyState.shouldCollectFriend = false;
-                        [_glview draw];
-                        if (hg::isGameEnd())
+                        // calling game's main process
+                        @synchronized(lock)
                         {
-                            // 終了処理
-                            // 戦果集計
+                            hg::update(keyState);
+                            keyState.shouldDeployFriend = false;
+                            keyState.shouldCollectFriend = false;
+                            [_glview draw];
+                            if (hg::isGameEnd())
                             {
-                                using namespace hg;
-                                BattleResult br = getResult();
-                                UserData* u = UserData::sharedUserData();
-                                u->addMoney(br.earnedMoney);
+                                // 終了処理
+                                hg::UserData::sharedUserData()->initAfterBattle();
+                                // 戦果集計
+                                {
+                                    using namespace hg;
+                                    BattleResult br = getResult();
+                                    UserData* u = UserData::sharedUserData();
+                                    u->addMoney(br.earnedMoney);
+                                }
+                                
+                                // フェードアウト
+                                dispatch_async(dispatch_get_main_queue(), ^{
+                                    CGRect f = [UIScreen mainScreen].applicationFrame;
+                                    CGRect cf = f;
+                                    cf.size.width = f.size.height;
+                                    cf.size.height = f.size.width;
+                                    [baseCurtain setUserInteractionEnabled:true];
+                                    [baseCurtain setBackgroundColor:[UIColor blackColor]];
+                                    [baseCurtain setAlpha:0];
+                                    [UIView animateWithDuration:1.0 animations:^{
+                                        [baseCurtain setAlpha:1];
+                                    } completion:^(BOOL finished) {
+                                        onEndAction();
+                                    }];
+                                });
+                                break;
                             }
-                            
-                            // フェードアウト
-                            dispatch_async(dispatch_get_main_queue(), ^{
-                                CGRect f = [UIScreen mainScreen].applicationFrame;
-                                CGRect cf = f;
-                                cf.size.width = f.size.height;
-                                cf.size.height = f.size.width;
-                                UIView* curtain = [[[UIView alloc] initWithFrame:cf] autorelease];
-                                [curtain setBackgroundColor:[UIColor blackColor]];
-                                [curtain setAlpha:0];
-                                //[self.view addSubview:curtain];
-                                [self addSubview:curtain];
-                                [UIView animateWithDuration:1.0 animations:^{
-                                    [curtain setAlpha:1];
-                                } completion:^(BOOL finished) {
-                                    onEndAction();
-                                }];
-                            });
-                            break;
                         }
                     }
+                    nowDt = [NSDate date];
+                    end = [nowDt timeIntervalSince1970];
+                    sleep = base_sleep - (end - start);
+                    if (sleep > 0)
+                    {
+                        [NSThread sleepForTimeInterval:sleep];
+                    }
+                    
                 }
-                nowDt = [NSDate date];
-                end = [nowDt timeIntervalSince1970];
-                sleep = base_sleep - (end - start);
-                if (sleep > 0)
-                {
-                    [NSThread sleepForTimeInterval:sleep];
-                }
-                
-            }
-        });
+            });
+        }// end of initialize game
         
-        // タッチイベント(左)
+        // baseview
         {
             CGRect aframe = [UIScreen mainScreen].applicationFrame;
             CGRect frame = CGRectMake(0, 0, aframe.size.height, aframe.size.width);
             frame.origin.x = 0;
-            frame.origin.y = aframe.size.width - frame.size.height;
-            _leftPadView = [[[PadView alloc] initWithFrame:frame WithOnTouchBlock:^(int degree, float power, bool touchBegan, bool touchEnd) {
+            frame.origin.y = 0;
+            baseView = [[UIView alloc] initWithFrame:frame];
+            [baseView setBackgroundColor:[UIColor clearColor]];
+            baseFrame = frame;
+            [self addSubview:baseView];
+        }
+        
+        // タッチイベント(左)
+        {
+            CGRect frame = baseFrame;
+            UIView* _leftPadView = [[[PadView alloc] initWithFrame:frame WithOnTouchBlock:^(int degree, float power, bool touchBegan, bool touchEnd) {
                 keyState.degree = degree;
                 keyState.power = power;
             }] autorelease];
-            //[_glview addSubview:_leftPadView];
-            [self addSubview:_leftPadView];
+            [baseView addSubview:_leftPadView];
         }
         
         float btnGap = 12;
         // 発射ボタン
         {
-            CGRect aframe = [UIScreen mainScreen].applicationFrame;
-            CGRect frame = CGRectMake(0, 0, aframe.size.height, aframe.size.width);
+            CGRect frame;
             frame.size.width = 100;
             frame.size.height = 100;
-            frame.origin.x = aframe.size.height - frame.size.width - btnGap;
-            frame.origin.y = aframe.size.width - frame.size.height - btnGap;
+            frame.origin.x = baseFrame.size.width - frame.size.width - btnGap;
+            frame.origin.y = baseFrame.size.height - frame.size.height - btnGap;
             
             UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
             button.frame = frame;
@@ -286,50 +265,78 @@ static NSObject* lock = nil;
             button.titleLabel.layer.shadowOffset = CGSizeZero;
             button.titleLabel.layer.masksToBounds = NO;
             
-            [self addSubview:button];
+            [baseView addSubview:button];
         }
         
-        // デプロイ
+        // deploy
         {
-            
-            CGRect aframe = [UIScreen mainScreen].applicationFrame;
-            CGRect frame = CGRectMake(0, 0, aframe.size.height, aframe.size.width);
+            CGRect frame;
             frame.size.width = DEPLOY_BTN_SIZE;
             frame.size.height = DEPLOY_BTN_SIZE;
-            frame.origin.x = aframe.size.height - frame.size.width - btnGap;
-            frame.origin.y = aframe.size.width - frame.size.height - btnGap - 120;
+            frame.origin.x = baseFrame.size.width - frame.size.width - btnGap;
+            frame.origin.y = baseFrame.size.height - frame.size.height - btnGap - 160;
             
-            UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
-            button.frame = frame;
-            [button setTitle:@"Ally" forState:UIControlStateNormal];
-            [button addTarget:self action:@selector(deployFriend) forControlEvents:UIControlEventTouchUpInside];
-            [button setContentVerticalAlignment:UIControlContentVerticalAlignmentBottom];
+            ImageButtonView* backImgView = [[ImageButtonView alloc] initWithFrame:CGRectMake(0, 0, 66, 66)];
+            UIImage* img = [UIImage imageNamed:@"checkmark.png"];
             
-            // ボタンデザイン
-            [button.layer setCornerRadius:DEPLOY_BTN_SIZE/2];
-            [button.layer setMasksToBounds:YES];
-            [button.layer setBorderWidth:3];
-            [button.layer setBorderColor:[[UIColor colorWithHexString:@"#ffffff"] CGColor]];
+            [backImgView setBackgroundColor:[UIColor whiteColor]];
+            [backImgView setFrame:frame];
+            [backImgView.layer setCornerRadius:8];
+            [backImgView.layer setBorderColor:[UIColor colorWithHexString:@"#222222"].CGColor];
+            [backImgView.layer setBorderWidth:3];
             
-            [button setBackgroundColorString:@"#64aa2b" forState:UIControlStateNormal radius:0];
-            [button setBackgroundColorString:@"#ff4940" forState:UIControlStateHighlighted radius:0];
-            [button setBackgroundColorString:@"#666666" forState:UIControlStateDisabled radius:0];
+            [backImgView setImage:img];
+            [backImgView setContentMode:UIViewContentModeScaleAspectFit];
+            [backImgView setUserInteractionEnabled:YES];
             
-            [button.titleLabel setFont:[UIFont fontWithName:@"EuphemiaUCAS" size:12]];
-            [button setContentVerticalAlignment:UIControlContentVerticalAlignmentCenter];
-            [button setContentHorizontalAlignment:UIControlContentHorizontalAlignmentCenter];
+            [baseView addSubview:backImgView];
             
-            UIColor *color = button.currentTitleColor;
-            button.titleLabel.layer.shadowColor = [color CGColor];
-            button.titleLabel.layer.shadowRadius = 4.0f;
-            button.titleLabel.layer.shadowOpacity = .9;
-            button.titleLabel.layer.shadowOffset = CGSizeZero;
-            button.titleLabel.layer.masksToBounds = NO;
-            
-            [self addSubview:button];
-            deployBtn = button;
-            
+            [backImgView setOnTapAction:^(ImageButtonView *target) {
+                hg::setPause(true);
+                [baseCurtain setUserInteractionEnabled:true];
+                [UIView animateWithDuration:0.2 animations:^{
+                    [baseCurtain setBackgroundColor:[UIColor blackColor]];
+                    [baseCurtain setAlpha:0.8];
+                }];
+                
+                AllyTableView* vc = [[[AllyTableView alloc] initWithViewMode:AllyViewModeDeployAlly WithFrame:baseFrame] autorelease];
+                [self addSubview:vc];
+                // animate
+                {
+                    [vc setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
+                    [vc setUserInteractionEnabled:FALSE];
+                    [UIView animateWithDuration:0.2 animations:^{
+                        [vc setAlpha:1];
+                        [vc setTransform:CGAffineTransformMakeScale(1,1)];
+                    }completion:^(BOOL finished) {
+                        [vc setUserInteractionEnabled:TRUE];
+                    }];
+                }
+                [vc setOnEndAction:^{
+                    // animate
+                    {
+                        [vc setUserInteractionEnabled:FALSE];
+                        [UIView animateWithDuration:0.2 animations:^{
+                            [baseCurtain setAlpha:0];
+                            [baseCurtain setUserInteractionEnabled:false];
+                            [vc setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
+                        } completion:^(BOOL finished) {
+                            [vc removeFromSuperview];
+                            hg::setPause(false);
+                            hg::deployFriends();
+                        }];
+                    }
+                }];
+            }];
         }
+        
+        // curtain
+        {
+            baseCurtain = [[UIView alloc] initWithFrame:baseFrame];
+            [self addSubview:baseCurtain];
+            [baseCurtain setUserInteractionEnabled:false];
+        }
+        
     }
     
 }
@@ -342,91 +349,6 @@ static NSObject* lock = nil;
 - (void) stopFire
 {
     keyState.isFire = 0;
-}
-
-- (void) deployFriend
-{
-    keyState.shouldDeployFriend = true;
-    [deployBtn setEnabled:false];
-    [deployBtn setAlpha:0.5];
-    
-    deployedTime = [[NSDate date] timeIntervalSince1970];
-    [self tickDeployButton];
-    
-    deployBtnSubLayer = [CALayer layer];
-    [deployBtnSubLayer setBackgroundColor:[UIColor colorWithHexString:@"#ff4940"].CGColor];
-    [deployBtnSubLayer setFrame:CGRectMake(0, 0, 0, 0)];
-    [deployBtnSubLayer setCornerRadius:0];
-    [deployBtn.layer addSublayer:deployBtnSubLayer];
-}
-
-- (void) tickDeployButton
-{
-    int64_t delayInSeconds = 0.05;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        NSTimeInterval diff = [[NSDate date] timeIntervalSince1970] - deployedTime;
-        if (diff >= 10)
-        {
-            // 冷却完了
-            [deployBtn setEnabled:true];
-            [deployBtn setAlpha:1];
-            [deployBtn setTitle:@"Alone" forState:UIControlStateNormal];
-            [deployBtn removeTarget:self action:@selector(deployFriend) forControlEvents:UIControlEventTouchUpInside];
-            [deployBtn addTarget:self action:@selector(collectFriend) forControlEvents:UIControlEventTouchUpInside];
-            [deployBtnSubLayer removeFromSuperlayer];
-        }
-        else
-        {
-            [deployBtn setTitle:[NSString stringWithFormat:@"%.1f", 10 - diff] forState:UIControlStateNormal];
-            float w = (DEPLOY_BTN_SIZE*0.95)*(10-diff)/10;
-            [deployBtnSubLayer setFrame:CGRectMake(DEPLOY_BTN_SIZE/2-w/2, DEPLOY_BTN_SIZE/2-w/2, w, w)];
-            [deployBtnSubLayer setCornerRadius:w/2];
-            [self tickDeployButton];
-        }
-    });
-}
-
-- (void) collectFriend
-{
-    keyState.shouldCollectFriend = true;
-    [deployBtn setEnabled:false];
-    [deployBtn setAlpha:0.5];
-    collectedTime = [[NSDate date] timeIntervalSince1970];
-    [self tickCollectButton];
-    
-    deployBtnSubLayer = [CALayer layer];
-    [deployBtnSubLayer setBackgroundColor:[UIColor colorWithHexString:@"#ff4940"].CGColor];
-    [deployBtnSubLayer setFrame:CGRectMake(0, 0, DEPLOY_BTN_SIZE, DEPLOY_BTN_SIZE)];
-    [deployBtnSubLayer setCornerRadius:DEPLOY_BTN_SIZE/2];
-    [deployBtn.layer addSublayer:deployBtnSubLayer];
-}
-
-- (void) tickCollectButton
-{
-    int64_t delayInSeconds = 0.05;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        NSTimeInterval diff = [[NSDate date] timeIntervalSince1970] - collectedTime;
-        if (diff >= 10)
-        {
-            // 冷却完了
-            [deployBtn setEnabled:true];
-            [deployBtn setAlpha:1];
-            [deployBtn setTitle:@"Ally" forState:UIControlStateNormal];
-            [deployBtn removeTarget:self action:@selector(collectFriend) forControlEvents:UIControlEventTouchUpInside];
-            [deployBtn addTarget:self action:@selector(deployFriend) forControlEvents:UIControlEventTouchUpInside];
-            [deployBtnSubLayer removeFromSuperlayer];
-        }
-        else
-        {
-            [deployBtn setTitle:[NSString stringWithFormat:@"%.1f", 10 - diff] forState:UIControlStateNormal];
-            float w = (DEPLOY_BTN_SIZE*0.95)*(10-diff)/10;
-            [deployBtnSubLayer setFrame:CGRectMake(DEPLOY_BTN_SIZE/2-w/2, DEPLOY_BTN_SIZE/2-w/2, w, w)];
-            [deployBtnSubLayer setCornerRadius:w/2];
-            [self tickCollectButton];
-        }
-    });
 }
 
 @end

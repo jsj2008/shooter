@@ -28,8 +28,7 @@ namespace hgles {
     
     HGLTexture* HGLTexture::createTextureWithAsset(std::string name)
     {
-        std::map<std::string, HGLTexture*>* textureIds = &currentContext->textureIds;
-        if (textureIds->find(name) == textureIds->end())
+        if (textureIds.find(name) == textureIds.end())
         {
             HGLTexture* tex = new HGLTexture();
             
@@ -72,12 +71,12 @@ namespace hgles {
                 glBindTexture(GL_TEXTURE_2D, 0);
                 
             }
-            (*textureIds)[name] = tex;
+            (textureIds)[name] = tex;
             return tex;
         }
         else
         {
-            return (*textureIds)[name];
+            return (textureIds)[name];
         }
         
     }
@@ -172,14 +171,13 @@ namespace hgles {
     // 呼び出す際にはコンテキストに注意
     void HGLTexture::deleteAllTextures()
     {
-        std::map<std::string, HGLTexture*>* textureIds = &currentContext->textureIds;
-        for (std::map<std::string, HGLTexture*>::iterator itr = textureIds->begin(); itr != textureIds->end(); itr++)
+        for (std::map<std::string, HGLTexture*>::iterator itr = textureIds.begin(); itr != textureIds.end(); itr++)
         {
             HGLTexture* t = itr->second;
             glDeleteTextures(1, &t->textureId);
             delete t;
         }
-        textureIds->clear();
+        textureIds.clear();
     }
     
     void HGLTexture::deleteTexture()
@@ -254,10 +252,10 @@ namespace hgles {
         glEnable(GL_TEXTURE_2D);
         glActiveTexture(GL_TEXTURE0);
         
-        if (currentContext->currentTextureId != textureId)
+        if (currentTextureId != textureId)
         {
             glBindTexture(GL_TEXTURE_2D, textureId);
-            currentContext->currentTextureId = textureId;
+            currentTextureId = textureId;
         }
         glBlendFunc(blend1, blend2);
         glUniform1f(currentContext->uTexSlot, 0);
