@@ -33,8 +33,8 @@ namespace hg {
             }
             return pCollisionManager;
         }
-        inline bool isIntersect(CollisionId& ida, Vector& posa, HGSize& sizea,
-                                CollisionId& idb, Vector& posb, HGSize& sizeb)
+        inline bool isIntersect(int& ida, Vector& posa, HGSize& sizea,
+                                int& idb, Vector& posb, HGSize& sizeb)
         {
             assert(ida != CollisionIdNone);
             assert(ida < list.size());
@@ -66,7 +66,7 @@ namespace hg {
             return false;
         }
         
-        inline bool isIntersect(CollisionId& ida, Vector& posa, HGSize& sizea,
+        inline bool isIntersect(int& ida, Vector& posa, HGSize& sizea,
                                 HGRect& rb)
         {
             assert(ida != CollisionIdNone);

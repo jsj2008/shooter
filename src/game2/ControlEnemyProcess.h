@@ -203,7 +203,7 @@ namespace hg {
                     pFighter->setPositionY(h/2);
                 }
             }
-            
+        
         }
         std::string getName()
         {

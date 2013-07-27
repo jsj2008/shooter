@@ -48,18 +48,33 @@ namespace hg {
     
     typedef struct WeaponInfo
     {
-        WeaponInfo(int _bulletType, int _weaponType, int _power, double _x, double _y):
+        WeaponInfo(
+            int _weaponType,
+            int _bulletType,
+            int _power,
+            double _x,
+            double _y,
+            float _speed,
+            float _fireInterval):
         bulletType(_bulletType),
         weaponType(_weaponType),
         power(_power),
         x(_x),
-        y(_y)
+        y(_y),
+        speed(_speed),
+        fireInterval(_fireInterval)
         {}
         int bulletType;
         int weaponType;
         int power;
+        float speed;
+        float fireInterval;
         double x;
         double y;
+        float getDamagePerSecond()
+        {
+            return (float)power/fireInterval;
+        }
     } WeaponInfo;
     
     typedef std::vector<WeaponInfo> WeaponInfoList;
@@ -125,7 +140,12 @@ namespace hg {
         showPixelWidth(0),
         showPixelHeight(0),
         collisionId(0),
-        isShip(0)
+        isShip(0),
+        dieCnt(0),
+        killCnt(0),
+        totalKill(0),
+        totalDie(0),
+        cpu_lv(0)
         {
         }
         int fighterType;
@@ -144,7 +164,6 @@ namespace hg {
         WeaponInfoList weaponList;
         bool isPlayer;
         std::string name;
-        int cost;
         // innner data
         std::string textureName;
         double textureSrcOffsetX;
@@ -155,6 +174,12 @@ namespace hg {
         double showPixelHeight;
         int collisionId;
         bool isShip;
+        int killInStage;
+        int dieCnt;
+        int killCnt;
+        int totalKill;
+        int totalDie;
+        int cpu_lv;
     } FighterInfo;
     
     typedef std::vector<FighterInfo*> SpawnGroup;
@@ -190,80 +215,6 @@ namespace hg {
     extern CellManager<Fighter> friendCellManager;
     
     extern BattleResult battleResult;
-    
-    inline void setDefaultInfo(FighterInfo* pInfo)
-    {
-        int type = pInfo->fighterType;
-        
-        // 種類別の初期化
-        switch (type)
-        {
-            case FighterTypeRobo1:
-            {
-                pInfo->textureName = "p_robo1.png";
-                pInfo->textureSrcOffsetX = 0;
-                pInfo->textureSrcOffsetY = 0;
-                pInfo->textureSrcWidth = 16;
-                pInfo->textureSrcHeight = 16;
-                pInfo->showPixelWidth = 128;
-                pInfo->showPixelHeight = 128;
-                pInfo->collisionId = CollisionId_P_ROBO1;
-                
-                pInfo->life = pInfo->lifeMax = 1000;
-                pInfo->shield = pInfo->shieldMax = 0;
-                pInfo->speed = 0.1;
-                
-                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeNormal, BulletTypeMagic, 100, 0, 0));
-                break;
-            }
-            case FighterTypeRobo2:
-            {
-                pInfo->textureName = "e_robo2.png";
-                pInfo->textureSrcOffsetX = 0;
-                pInfo->textureSrcOffsetY = 0;
-                pInfo->textureSrcWidth = 64;
-                pInfo->textureSrcHeight = 64;
-                pInfo->showPixelHeight = 256;
-                pInfo->showPixelWidth = 256;
-                pInfo->collisionId = CollisionId_E_ROBO2;
-                
-                pInfo->life = pInfo->lifeMax = 1000;
-                pInfo->shield = pInfo->shieldMax = 0;
-                pInfo->speed = 0.13;
-                
-                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeNormal, BulletTypeNormal, 50, 0, 0));
-                
-                break;
-            }
-            case FighterTypeShip1:
-            {
-                pInfo->textureName = "e_senkan1_4.png";
-                pInfo->textureSrcOffsetX = 0;
-                pInfo->textureSrcOffsetY = 0;
-                pInfo->textureSrcWidth = 204;
-                pInfo->textureSrcHeight = 78;
-                pInfo->showPixelHeight = 204*10;
-                pInfo->showPixelWidth = 78*10;
-                pInfo->collisionId = CollisionId_E_SENKAN;
-                
-                pInfo->life = pInfo->lifeMax = 10000;
-                pInfo->shield = pInfo->shieldMax = 10000;
-                pInfo->speed = 0.13;
-                pInfo->shieldHeal = 1.5;
-                
-                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeNormal, BulletTypeVulcan, 50, 45, 0));
-                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeNormal, BulletTypeVulcan, 50, -45, 0));
-                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeNormal, BulletTypeVulcan, 50, -90, 0));
-                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeNormal, BulletTypeVulcan, 50, 90, 0));
-                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeNormal, BulletTypeVulcan, 50, 0, 0));
-                
-                pInfo->isShip = true;
-                break;
-            }
-            default:
-                assert(0);
-        }
-    }
     
 }
 

@@ -91,7 +91,7 @@ const float MessageHeight = 100;
     // close
     [_curtain removeFromSuperview];
     [UIView animateWithDuration:0.2 animations:^{
-        [_menuBase setTransform:CGAffineTransformMakeScale(1.5, 0)];
+        [_menuBase setTransform:CGAffineTransformMakeScale(2, 0)];
     } completion:^(BOOL finished) {
         [self removeFromSuperview];
         if (onCancel)
@@ -143,7 +143,7 @@ const float MessageHeight = 100;
     
     // animation
     [_menuBase setAlpha:0];
-    [_menuBase setTransform:CGAffineTransformMakeScale(1.5, 0)];
+    [_menuBase setTransform:CGAffineTransformMakeScale(2, 0)];
     [UIView animateWithDuration:0.2 animations:^{
         [_menuBase setAlpha:1];
         [_menuBase setTransform:CGAffineTransformMakeScale(1.0, 1.0)];
@@ -203,7 +203,7 @@ const float MessageHeight = 100;
             [_curtain removeFromSuperview];
             [UIView animateWithDuration:0.2 animations:^{
                 [_menuBase setAlpha:0];
-                [_menuBase setTransform:CGAffineTransformMakeScale(1.5, 0)];
+                [_menuBase setTransform:CGAffineTransformMakeScale(2, 0)];
             } completion:^(BOOL finished) {
                 [self removeFromSuperview];
                 action();

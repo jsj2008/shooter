@@ -261,7 +261,7 @@ static MainViewController* instance = nil;
                         {
                             NSString* msg = [NSString stringWithFormat:@"It Costs %d gold. Are you sure to repair all?", cost];
                             DialogView* dialog = [[[DialogView alloc] initWithMessage:msg] autorelease];
-                            [dialog addButtonWithText:@"Buy" withAction:^{
+                            [dialog addButtonWithText:@"OK" withAction:^{
                                 hg::UserData::sharedUserData()->repairAll();
                                 dispatch_async(dispatch_get_main_queue(), ^{
                                     [[StatusView GetInstance] loadUserInfo];
@@ -410,7 +410,7 @@ static MainViewController* instance = nil;
                     [menuBaseView addSubview:m];
                     [m setOnTapAction:^(MenuButton *target) {
                         [self hideMenuViewAnimate];
-                        AllyTableView* vc = [[[AllyTableView alloc] initWithViewMode:AllyViewModeFix WithFrame:mainFrame] autorelease];
+                        AllyTableView* vc = [[[AllyTableView alloc] initWithViewMode:AllyViewModeSell WithFrame:mainFrame] autorelease];
                         [self.view addSubview:vc];
                         // animate
                         {
@@ -496,6 +496,28 @@ static MainViewController* instance = nil;
 
 -(void)stageStart
 {
+    // check
+    hg::UserData* userData = hg::UserData::sharedUserData();
+    hg::FighterInfo* playerFighterInfo = userData->getPlayerFighterInfo();
+    if (playerFighterInfo == NULL)
+    {
+        DialogView* dialog = [[[DialogView alloc] initWithMessage:@"Please select your ship."] autorelease];
+        [dialog addButtonWithText:@"OK" withAction:^{
+            // do nothing
+        }];
+        [dialog show];
+        return;
+    }
+    if (playerFighterInfo->life <= 0)
+    {
+        DialogView* dialog = [[[DialogView alloc] initWithMessage:@"Your ship is bloken. Please repaire or change your ship."] autorelease];
+        [dialog addButtonWithText:@"OK" withAction:^{
+            // do nothing
+        }];
+        [dialog show];
+        return;
+    }
+    
     // 消す
     curtain = [[UIView alloc] initWithFrame:viewFrame];
     [curtain setBackgroundColor:[UIColor blackColor]];

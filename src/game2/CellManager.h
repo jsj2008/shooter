@@ -65,6 +65,7 @@ namespace hg {
                     else
                     {
                         tmpPos.x = actor->getPositionX() - halfWidth;
+                        tmpPos.y += sizeOfCell.height;
                     }
                 }
             }

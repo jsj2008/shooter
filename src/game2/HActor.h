@@ -95,7 +95,7 @@ namespace hg
         {
             return pNode;
         }
-        inline CollisionId getCollisionId()
+        inline int getCollisionId()
         {
             return collisionId;
         }
@@ -109,7 +109,7 @@ namespace hg
         
     protected:
         HGNode* pNode;
-        inline void setCollisionId(CollisionId cid)
+        inline void setCollisionId(int cid)
         {
             collisionId = cid;
         }
@@ -118,7 +118,7 @@ namespace hg
         HGSize realSize;
         bool isInitialized;
         bool _isActive;
-        CollisionId collisionId;
+        int collisionId;
     };
     
 }

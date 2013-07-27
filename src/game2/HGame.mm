@@ -339,7 +339,7 @@ namespace hg {
             if (pFighter->getSide() == SideTypeEnemy)
             {
                 battleResult.killedEnemy++;
-                battleResult.earnedMoney += 300;
+                battleResult.earnedMoney += ceil(hg::UserData::sharedUserData()->getCost(pFighter->getFighterInfo())*0.05);
             }
             else
             {
@@ -364,7 +364,7 @@ namespace hg {
             {
                 shieldRect = (*it)->getShieldRect();
             }
-            CollisionId cida = (*it)->getCollisionId();
+            int cida = (*it)->getCollisionId();
             Vector posa = (*it)->getPosition();
             HGSize sizea = (*it)->getSize();
             
@@ -388,7 +388,7 @@ namespace hg {
                     {
                         continue;
                     }
-                    CollisionId cidb = a->getCollisionId();
+                    int cidb = a->getCollisionId();
                     Vector posb = a->getPosition();
                     HGSize sizeb = a->getSize();
                     if (isShield)

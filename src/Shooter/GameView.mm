@@ -118,14 +118,15 @@ static NSObject* lock = nil;
             NSError* error;
             NSDictionary* dicEnemyList = [NSJSONSerialization JSONObjectWithData:dataEnemyList options:kNilOptions error:&error];
             
-#warning DELETE FIGHTER DATA AFTER GAME!!!!!!!!
             // Create Spawn Data
             hg::SpawnData spawnData;
             for (NSDictionary* d in dicEnemyList)
             {
                 int tmpGroup = [[d valueForKey:@"group"] integerValue] - 1;
+#warning DELETE FIGHTER DATA AFTER GAME!!!!!!!!
                 hg::FighterInfo* f = new hg::FighterInfo();
-                f->fighterType = [[d valueForKey:@"fighterType"] integerValue];
+                int fighterType = [[d valueForKey:@"fighterType"] integerValue];
+                hg::UserData::setDefaultInfo(f, fighterType);
                 f->level = [[d valueForKey:@"level"] integerValue];
                 if (tmpGroup >= spawnData.size())
                 {
@@ -144,7 +145,8 @@ static NSObject* lock = nil;
             hg::initialize(spawnData, pPlayerInfo);
             
             // creating game thread
-            _game_queue = dispatch_queue_create(DISPATCH_QUEUE_PRIORITY_DEFAULT, NULL);
+            _game_queue = dispatch_queue_create("com.hayo.shooter.game", NULL);
+            //_game_queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
             dispatch_async(_game_queue, ^{
                 NSDate* nowDt;
                 NSTimeInterval start;
@@ -165,6 +167,7 @@ static NSObject* lock = nil;
                             [_glview draw];
                             if (hg::isGameEnd())
                             {
+                                NSLog(@"is game end");
                                 // 終了処理
                                 hg::UserData::sharedUserData()->initAfterBattle();
                                 // 戦果集計

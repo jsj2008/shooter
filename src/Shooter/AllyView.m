@@ -49,6 +49,7 @@
         _mode = mode;
         labels = [[NSMutableArray alloc] init];
         defaultFrame = frame;
+        self.frame = frame;
         
         mainFrame.size.width = self.frame.size.height;
         mainFrame.size.height = self.frame.size.width;
@@ -66,7 +67,7 @@
         [self addSubview:baseView];
         {
             // highlight タッチされたときのハイライト用
-            CGRect f = self.frame;
+            CGRect f = defaultFrame;
             f.origin.x = 0; f.origin.y = 0;
             highlightView = [[UIView alloc] initWithFrame:f];
             [highlightView setBackgroundColor:[UIColor whiteColor]];
@@ -123,6 +124,11 @@
 - (void)setFighterInfo:(hg::FighterInfo*) info
 {
     
+    if (info == NULL)
+    {
+        NSLog(@"no info!!(AllyView->setFighterInfo)");
+        return;
+    }
     _fighterInfo = info;
     
     // initialize
@@ -137,10 +143,10 @@
     
     // life
     {
-        CGRect frame = self.frame;
+        CGRect frame = defaultFrame;
         frame.origin.x = 2;
         frame.origin.y = 10;
-        frame.size.height -= 20;
+        frame.size.height = frame.size.height - 20;
         frame.size.width = 2;
         // life base
         UIView* lifeBar = [[UIView alloc] initWithFrame:frame];
@@ -162,7 +168,7 @@
     // shield
     if (_fighterInfo->shieldMax > 0)
     {
-        CGRect frame = self.frame;
+        CGRect frame = defaultFrame;
         frame.origin.x = 5;
         frame.origin.y = 10;
         frame.size.height -= 20;
@@ -212,7 +218,7 @@
         }
         else
         {
-            text = [NSString stringWithFormat:@"Sld None"];
+            text = [NSString stringWithFormat:@"No Shield"];
         }
         UILabel* lb = [self labelWithIndex:3 WithText:text];
         [baseView addSubview:lb];
@@ -259,6 +265,39 @@
             if (cost >= 0)
             {
                 NSString* text = [NSString stringWithFormat:@"%d", cost];
+                UILabel* lb = [self labelWithIndex:4 WithText:text];
+                CGRect f = lb.frame;
+                // money icon
+                {
+                    f.origin.x -= 2;
+                    CGRect coinf = f;
+                    coinf.size.width = coinf.size.height = 16;
+                    UIImage* img = [UIImage imageNamed:@"goldCoin5.png"];
+                    UIImageView* iv = [[[UIImageView alloc] initWithFrame:coinf] autorelease];
+                    [iv setImage:img];
+                    [baseView addSubview:iv];
+                }
+                f.origin.x += 16;
+                [lb setFrame:f];
+                [baseView addSubview:lb];
+                coinLabel = lb;
+                if (hg::UserData::sharedUserData()->getMoney() < cost)
+                {
+                    [coinLabel setTextColor:[UIColor redColor]];
+                }
+                else
+                {
+                    [coinLabel setTextColor:[UIColor whiteColor]];
+                }
+            }
+            break;
+        }
+        case AllyViewModeSell:
+        {
+            int cost = hg::UserData::sharedUserData()->getSellValue(info);
+            if (cost >= 0)
+            {
+                NSString* text = [NSString stringWithFormat:@"+%d", cost];
                 UILabel* lb = [self labelWithIndex:4 WithText:text];
                 CGRect f = lb.frame;
                 // money icon
@@ -482,6 +521,27 @@
             break;
         }
         ////////////////////
+        // sell fighter
+        case AllyViewModeSell:
+        {
+            hg::UserData* u = hg::UserData::sharedUserData();
+            int cost = u->getSellValue(_fighterInfo);
+            NSString* msg = [NSString stringWithFormat:@"Are you sure to sell this for %d Gold?", cost];
+            DialogView* dialog = [[[DialogView alloc] initWithMessage:msg] autorelease];
+            [dialog addButtonWithText:@"Sell" withAction:^{
+                u->sell(_fighterInfo);
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [[StatusView GetInstance] loadUserInfo];
+                });
+                [AllyTableView ReloadData];
+            }];
+            [dialog addButtonWithText:@"Cancel" withAction:^{
+                // nothing
+            }];
+            [dialog show];
+            break;
+        }
+            ////////////////////
         // select fighter
         case AllyViewModeSelectPlayer:
         {

@@ -35,18 +35,11 @@ namespace hg {
             
         }
         
-        inline void init(int type, BulletType bulletType, float pixelX, float pixelY)
+        inline void init(int type, int bulletType, float pixelX, float pixelY, float speed, int power, float fireInterval)
         {
-            switch (type) {
-                case WeaponTypeNormal:
-                    speed = v(0.6);
-                    fireInterval = 0.2;
-                    power = 100;
-                    break;
-                default:
-                    assert(0);
-                    break;
-            }
+            this->speed = v(speed);
+            this->fireInterval = fireInterval;
+            this->power = power;
             this->type = type;
             this->bulletType = bulletType;
             relativePosition.x = pixelX*PIXEL_SCALE;
@@ -108,7 +101,7 @@ namespace hg {
         double lastFireTime;
         double fireInterval;
         int type;
-        BulletType bulletType;
+        int bulletType;
         float aspectDegree;
     };
 }

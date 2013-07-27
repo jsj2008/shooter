@@ -105,7 +105,36 @@ namespace hg {
             processOwner->retain();
             this->pFighterInfo = pInfo;
             
+            // init
+            textureName = pInfo->textureName;
+            textureSrcOffset = {pInfo->textureSrcOffsetX, pInfo->textureSrcOffsetY};
+            textureSrcSize = {pInfo->textureSrcWidth, pInfo->textureSrcHeight};
+            setSizeByPixel(pInfo->showPixelWidth, pInfo->showPixelHeight);
+            setCollisionId(pInfo->collisionId);
+            this->_isShip = pInfo->isShip;
+            
+            life = pInfo->life;
+            lifeMax = pInfo->lifeMax;
+            shield = pInfo->shield;
+            shieldMax = pInfo->shieldMax;
+            speed = pInfo->speed;
+            
+            for (WeaponInfoList::iterator it = pInfo->weaponList.begin(); it != pInfo->weaponList.end(); ++it)
+            {
+                Weapon* wp = new Weapon();
+                wp->init((*it).weaponType,
+                         (*it).bulletType,
+                         (*it).x,
+                         (*it).y,
+                         (*it).speed,
+                         (*it).power,
+                         (*it).fireInterval);
+                weaponList.push_back(wp);
+                wp->retain();
+            }
+            
             // 種類別の初期化
+            /*
             switch (type)
             {
                 case FighterTypeRobo1:
@@ -212,7 +241,7 @@ namespace hg {
                 shieldMax = pInfo->shieldMax;
                 shieldHeal = pInfo->shieldHeal;
                 speed     = v(pInfo->speed);
-            }
+            }*/
             
             pSprite = new HGSprite();
             pSprite->setType(SPRITE_TYPE_BILLBOARD);
