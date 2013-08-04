@@ -176,6 +176,7 @@ static NSObject* lock = nil;
                                     BattleResult br = getResult();
                                     UserData* u = UserData::sharedUserData();
                                     u->addMoney(br.earnedMoney);
+                                    u->checkLevelup();
                                 }
                                 
                                 // フェードアウト

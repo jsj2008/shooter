@@ -21,6 +21,7 @@
 #import "GameView.h"
 #import "MenuButton.h"
 #import "DialogView.h"
+#import "MessageView.h"
 
 const float MenuAnimationDuration = 0.2;
 const float MenuButtonWidth = 180;
@@ -539,6 +540,23 @@ static MainViewController* instance = nil;
             [self showBackgroundView];
             [self showMainView];
             [curtain removeFromSuperview];
+            // レベルアップ情報を表示
+            if (hg::UserData::sharedUserData()->hasLevelUpInfo())
+            {
+                NSMutableArray* msgList = [NSMutableArray arrayWithObjects: nil];
+                // レベルアップメッセージを作成
+                while (1) {
+                    if (!hg::UserData::sharedUserData()->hasLevelUpInfo()) {
+                        break;
+                    }
+                    std::string msg = hg::UserData::sharedUserData()->popLevelupMessage();
+                    [msgList addObject:[NSString stringWithCString:msg.c_str() encoding:NSUTF8StringEncoding]];
+                }
+                
+                MessageView* msgView = [[[MessageView alloc] initWithMessageList:msgList] autorelease];
+                [msgView show];
+            }
+            
         }] autorelease];
         [self.view addSubview:gameView];
     }];

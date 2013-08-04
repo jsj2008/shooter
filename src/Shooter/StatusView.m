@@ -45,7 +45,7 @@ static StatusView* instance = NULL;
 - (void)dealloc
 {
     [moneyLabel dealloc];
-    [moneyLabel release];
+    //[moneyLabel release];
     [super dealloc];
 }
 

@@ -137,14 +137,14 @@
     {
         labelIndex++;
         double dmg = hg::UserData::sharedUserData()->getDamagePerSecond(info);
-        UILabel* lb = [self labelWithIndex:labelIndex WithText:[NSString stringWithFormat:@"Damage %.02f/sec", dmg]];
+        UILabel* lb = [self labelWithIndex:labelIndex WithText:[NSString stringWithFormat:@"Attack %.2lf/sec", dmg]];
         [self.baseView addSubview:lb];
     }
     // speed
     {
         labelIndex++;
         double val = info->speed * 2 * 60 * 60;
-        UILabel* lb = [self labelWithIndex:labelIndex WithText:[NSString stringWithFormat:@"Speed %.02f Km/h", val]];
+        UILabel* lb = [self labelWithIndex:labelIndex WithText:[NSString stringWithFormat:@"Speed %.2lf Km/h", val]];
         [self.baseView addSubview:lb];
     }
     // value

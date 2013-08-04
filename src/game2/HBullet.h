@@ -17,6 +17,9 @@
 namespace hg {
     
     ////////////////////
+    class Fighter;
+    extern void retainFighter(Fighter* fighter);
+    extern void releaseFighter(Fighter* fighter);
     
     class Bullet : public Actor
     {
@@ -30,17 +33,17 @@ namespace hg {
         }
         ~Bullet()
         {
-            pOwner->release();
+            releaseFighter(pOwner);
             pMoveOwner->release();
             //Actor::~Actor();
         }
-        inline void init(int type, float speed, float distance, int power, Actor* pOwner, float x, float y, float directionDegree, SideType side)
+        inline void init(int type, float speed, float distance, int power, Fighter* pOwner, float x, float y, float directionDegree, SideType side)
         {
             assert(pOwner);
             base::init(pLayerBullet);
             this->power = power;
             this->pOwner = pOwner;
-            pOwner->retain();
+            retainFighter(pOwner);
             this->type = type;
             this->directionDegree = directionDegree;
             this->directionRadian = toRad(directionDegree);
@@ -152,7 +155,7 @@ namespace hg {
         {
             return power;
         }
-        inline Actor* getOwner()
+        inline Fighter* getOwner()
         {
             return pOwner;
         }
@@ -197,7 +200,7 @@ namespace hg {
         int power;
         float speed;
         int type;
-        Actor* pOwner;
+        Fighter* pOwner;
         HGProcessOwner* pMoveOwner;
         SideType side;
         int life;

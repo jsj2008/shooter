@@ -31,8 +31,10 @@ namespace hg {
     
     typedef struct LevelupInfo
     {
+        hg::FighterInfo beforeInfo;
         hg::FighterInfo* fighterInfo;
-        std::string text;
+        long addExp;
+        bool isLevelUp;
     } LevelupInfo;
     
     typedef std::vector<LevelupInfo> LevelupInfoList;
@@ -88,12 +90,20 @@ namespace hg {
         int getRepairAllCost();
         int getCost(FighterInfo* info);
         int getExp(FighterInfo* info);
+        int getDamageExp(FighterInfo* info, int damage);
         void addExp(FighterInfo* info, int exp);
-        LevelupInfoList checkLevelup();
+        void checkLevelup();
         double getDamagePerSecond(FighterInfo* info);
         FighterInfo* getPlayerInfo();
         static void setDefaultInfo(FighterInfo* pInfo, int type);
+        void deployAllFighter();
+        void undeployAllFighter();
+        std::string popLevelupMessage();
+        bool hasLevelUpInfo();
+        LevelupInfo popLevelupInfo();
+        //std::string fighterDataToCSV();
     private:
+        LevelupInfoList levelUpList;
         int current_point = 0;
         int stage_id = 0;
         FighterListSortType currentSortType;

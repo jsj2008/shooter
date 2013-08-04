@@ -46,34 +46,62 @@ namespace hg {
         FighterTypeShip1,
     } FighterType;
     
+    // Bullet
+    typedef enum BulletType
+    {
+        BulletTypeNormal,
+        BulletTypeMagic,
+        BulletTypeVulcan,
+    } BulletType;
+    
+    // Weapon
+    typedef enum WeaponType
+    {
+        WeaponTypeNormal,
+    } WeaponType;
+    
+    
     typedef struct WeaponInfo
     {
         WeaponInfo(
             int _weaponType,
             int _bulletType,
-            int _power,
             double _x,
             double _y,
             float _speed,
             float _fireInterval):
         bulletType(_bulletType),
         weaponType(_weaponType),
-        power(_power),
         x(_x),
         y(_y),
         speed(_speed),
+        bulletPower(0),
         fireInterval(_fireInterval)
-        {}
+        {
+            float ratio = 1;
+            switch (_bulletType)
+            {
+                case BulletTypeNormal:
+                    break;
+                case BulletTypeMagic:
+                    ratio = 3;
+                    break;
+                case BulletTypeVulcan:
+                    ratio = 0.5;
+                    break;
+            }
+            bulletPower = ratio;
+        }
         int bulletType;
         int weaponType;
-        int power;
         float speed;
         float fireInterval;
+        float bulletPower;
         double x;
         double y;
-        float getDamagePerSecond()
+        float getDamagePerSecond(int power)
         {
-            return (float)power/fireInterval;
+            return (float)ceil(power*bulletPower)/fireInterval;
         }
     } WeaponInfo;
     
@@ -101,20 +129,6 @@ namespace hg {
         CollisionIdEnd,
     } CollisionId;
     
-    // Bullet
-    typedef enum BulletType
-    {
-        BulletTypeNormal,
-        BulletTypeMagic,
-        BulletTypeVulcan,
-    } BulletType;
-    
-    // Weapon
-    typedef enum WeaponType
-    {
-        WeaponTypeNormal,
-    } WeaponType;
-    
     typedef struct FighterInfo
     {
         FighterInfo():
@@ -128,7 +142,7 @@ namespace hg {
         speed(0),
         power(1),
         exp(0),
-        expNext(0),
+        expNext(300),
         isReady(false),
         isPlayer(false),
         isOnBattleGround(0),
@@ -145,7 +159,13 @@ namespace hg {
         killCnt(0),
         totalKill(0),
         totalDie(0),
-        cpu_lv(0)
+        cpu_lv(0),
+        tmpExp(0),
+        powerPotential(100),
+        defencePotential(100),
+        seed(1331124),
+        isStatusChanged(true),
+        cachedCost(0)
         {
         }
         int fighterType;
@@ -156,6 +176,7 @@ namespace hg {
         int shield;
         int shieldMax;
         int shieldHeal;
+        long tmpExp;
         long exp;
         long expNext;
         bool isReady;
@@ -180,6 +201,12 @@ namespace hg {
         int totalKill;
         int totalDie;
         int cpu_lv;
+        int powerPotential;
+        int defencePotential;
+        int seed;
+        bool isStatusChanged;
+        int cachedCost;
+        int cachedDamageExpPerLife;
     } FighterInfo;
     
     typedef std::vector<FighterInfo*> SpawnGroup;
@@ -215,6 +242,8 @@ namespace hg {
     extern CellManager<Fighter> friendCellManager;
     
     extern BattleResult battleResult;
+    
+    
     
 }
 

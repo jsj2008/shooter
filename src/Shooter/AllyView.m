@@ -557,10 +557,11 @@
                 else
                 {
                     _fighterInfo->isPlayer = true;
+                    /*
                     if (_fighterInfo->isReady)
                     {
                         hg::UserData::sharedUserData()->setUnReady(_fighterInfo);
-                    }
+                    }*/
                 }
             }
             [AllyTableView ReloadData];

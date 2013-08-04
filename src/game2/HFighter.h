@@ -127,7 +127,7 @@ namespace hg {
                          (*it).x,
                          (*it).y,
                          (*it).speed,
-                         (*it).power,
+                         ceil(pInfo->power*(*it).bulletPower),
                          (*it).fireInterval);
                 weaponList.push_back(wp);
                 wp->retain();
@@ -962,5 +962,12 @@ namespace hg {
         }
         
     };
+    
+    // global function
+    float getPositionX(Fighter* fighter);
+    float getPositionY(Fighter* fighter);
+    void retainFighter(Fighter* fighter);
+    void releaseFighter(Fighter* fighter);
+    
 }
 #endif /* defined(__Shooter__HFighter__) */

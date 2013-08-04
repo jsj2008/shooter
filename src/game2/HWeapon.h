@@ -16,6 +16,10 @@
 
 namespace hg {
     
+    class Fighter;
+    extern float getPositionX(Fighter* fighter);
+    extern float getPositionY(Fighter* fighter);
+    
     class Weapon : public HGObject
     {
     public:
@@ -61,7 +65,7 @@ namespace hg {
             return relativePosition.y;
         }
         
-        inline void fire(Actor* pOwner, SideType side)
+        inline void fire(Fighter* pOwner, SideType side)
         {
             if (getNowTime() - lastFireTime < fireInterval)
             {
@@ -69,8 +73,8 @@ namespace hg {
             }
             lastFireTime = getNowTime();
             Bullet* bp = new Bullet();
-            float x = pOwner->getPositionX() + relativePosition.x;
-            float y = pOwner->getPositionY() + relativePosition.y;
+            float x = getPositionX(pOwner) + relativePosition.x;
+            float y = getPositionY(pOwner) + relativePosition.y;
             bp->init(bulletType, speed, 50, power, pOwner, x, y, this->aspectDegree, side);
             switch (side) {
                 case SideTypeEnemy:

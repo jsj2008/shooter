@@ -172,6 +172,55 @@ static AllyTableView* instance;
         }];
     }
     
+    if (viewMode == AllyViewModeDeployAlly)
+    {
+        // select all
+        {
+            ImageButtonView* backImgView = [[ImageButtonView alloc] initWithFrame:CGRectMake(0, 0, 66, 66)];
+            UIImage* img = [UIImage imageNamed:@"checkmark.png"];
+            
+            [backImgView setBackgroundColor:[UIColor whiteColor]];
+            [backImgView setFrame:CGRectMake(frame.size.width - 76, frame.size.height - 84 - 10 - 66 - 10 - 66, 66, 66)];
+            [backImgView.layer setCornerRadius:8];
+            [backImgView.layer setBorderColor:[UIColor colorWithHexString:@"#222222"].CGColor];
+            [backImgView.layer setBorderWidth:3];
+            
+            [backImgView setImage:img];
+            [backImgView setContentMode:UIViewContentModeScaleAspectFit];
+            [backImgView setUserInteractionEnabled:YES];
+            
+            [self addSubview:backImgView];
+            
+            [backImgView setOnTapAction:^(ImageButtonView *target) {
+                hg::UserData::sharedUserData()->deployAllFighter();
+                [self reloadData];
+            }];
+        }
+        
+        // undeploy all
+        {
+            ImageButtonView* backImgView = [[ImageButtonView alloc] initWithFrame:CGRectMake(0, 0, 66, 66)];
+            UIImage* img = [UIImage imageNamed:@"checkmark.png"];
+            
+            [backImgView setBackgroundColor:[UIColor whiteColor]];
+            [backImgView setFrame:CGRectMake(frame.size.width - 76, frame.size.height - 84 - 10 - 66 - 10 - 66 - 10 - 66, 66, 66)];
+            [backImgView.layer setCornerRadius:8];
+            [backImgView.layer setBorderColor:[UIColor colorWithHexString:@"#222222"].CGColor];
+            [backImgView.layer setBorderWidth:3];
+            
+            [backImgView setImage:img];
+            [backImgView setContentMode:UIViewContentModeScaleAspectFit];
+            [backImgView setUserInteractionEnabled:YES];
+            
+            [self addSubview:backImgView];
+            
+            [backImgView setOnTapAction:^(ImageButtonView *target) {
+                hg::UserData::sharedUserData()->undeployAllFighter();
+                [self reloadData];
+            }];
+        }
+    }
+    
     [self setBackgroundColor:[UIColor clearColor]];
 }
 

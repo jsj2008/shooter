@@ -331,19 +331,51 @@ namespace hg {
         {
             showHitAnimation(pBullet);
         }
-        pFighter->addLife(pBullet->getPower() * -1);
+        int dmg = pBullet->getPower();
+        pFighter->addLife(dmg*-1);
         pFighter->noticeAttackedBy(pBullet->getOwner());
+        
+        if (pFighter->getSide() == SideTypeEnemy)
+        {
+            // 経験値加算
+            Fighter* a = pBullet->getOwner();
+            if (a)
+            {
+                UserData* u = UserData::sharedUserData();
+                FighterInfo* attackerInfo = a->getFighterInfo();
+                if (attackerInfo)
+                {
+                    attackerInfo->tmpExp += u->getDamageExp(pFighter->getFighterInfo(), dmg);
+                }
+            }
+        }
+        
         // 死亡カウント
         if (pFighter->getLife() <= 0)
         {
             if (pFighter->getSide() == SideTypeEnemy)
             {
+                UserData* u = UserData::sharedUserData();
                 battleResult.killedEnemy++;
-                battleResult.earnedMoney += ceil(hg::UserData::sharedUserData()->getCost(pFighter->getFighterInfo())*0.05);
+                battleResult.earnedMoney += ceil(u->getCost(pFighter->getFighterInfo())*0.05);
+                // 当てた方の経験値加算
+                Fighter* a = pBullet->getOwner();
+                if (a)
+                {
+                    FighterInfo* attackerInfo = a->getFighterInfo();
+                    if (attackerInfo)
+                    {
+                        attackerInfo->tmpExp += u->getExp(pFighter->getFighterInfo());
+                        attackerInfo->killCnt++;
+                        attackerInfo->totalKill++;
+                    }
+                }
             }
             else
             {
                 battleResult.killedFriend++;
+                pFighter->getFighterInfo()->dieCnt++;
+                pFighter->getFighterInfo()->totalDie++;
             }
         }
     }

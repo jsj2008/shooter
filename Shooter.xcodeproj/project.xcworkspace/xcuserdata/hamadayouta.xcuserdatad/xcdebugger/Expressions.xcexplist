@@ -219,6 +219,14 @@
          contextName = "HGGame::registerActorToColListForSmall(HGGame::HGActor*, std::__1::map&lt;int, std::__1::vector&lt;HGGame::HGActor*, std::__1::allocator&lt;HGGame::HGActor*&gt; &gt;, std::__1::less&lt;int&gt;, std::__1::allocator&lt;std::__1::pair&lt;int const, std::__1::vector&lt;HGGame::HGActor*, std::__1::allocator&lt;HGGame::HGActor*&gt; &gt; &gt; &gt; &gt;*):HGGame.mm">
       </ContextState>
       <ContextState
+         contextName = "hg::UserData::getCost(hg::FighterInfo*):UserData.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "info-&gt;isStatusChanged">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "hg::ControlPlayerProcess::~ControlPlayerProcess():ControlPlayerProcess.h">
       </ContextState>
       <ContextState
@@ -579,6 +587,9 @@
       </ContextState>
       <ContextState
          contextName = "hg::HGProcessManager::update():HGameEngine.mm">
+      </ContextState>
+      <ContextState
+         contextName = "hg::onFighterCollidedWithBullet(hg::Fighter*, hg::Bullet*):HGame.mm">
       </ContextState>
       <ContextState
          contextName = "hg::HGDirector::sharedDirector():HGameEngine.h">

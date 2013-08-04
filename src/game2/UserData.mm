@@ -9,8 +9,14 @@
 #include "UserData.h"
 #import "HGame.h"
 #import "HGUser.h"
+#import "UserDataManager.h"
 #import <sstream>
 #import <algorithm>
+
+#import <Foundation/Foundation.h>
+//#import "CHCSVParser.h"
+
+#define STATUS_UP_PROB_BASE 1000
 
 namespace hg {
     
@@ -19,9 +25,50 @@ namespace hg {
         return (int) ((fighterInfo->level + 1) * (fighterInfo->level + 1) * 40) + 500;
     }
     
+    void levelupInner(hg::FighterInfo* fighterInfo)
+    {
+        // ステータス変更
+        std::srand(fighterInfo->seed);
+        // 攻撃力
+        if (std::rand() % STATUS_UP_PROB_BASE <= 1000 + fighterInfo->powerPotential)
+        {
+            int up = ceil(std::rand()%fighterInfo->powerPotential);
+            fighterInfo->power += up;
+        }
+        // life
+        if (std::rand() % STATUS_UP_PROB_BASE <= 3000 + fighterInfo->defencePotential)
+        {
+            fighterInfo->lifeMax += std::rand()%(fighterInfo->defencePotential*fighterInfo->defencePotential/20);
+        }
+        // shield
+        if (std::rand() % STATUS_UP_PROB_BASE <= 100 + (fighterInfo->defencePotential/10))
+        {
+            fighterInfo->shieldMax += std::rand()%fighterInfo->defencePotential;
+        }
+        // shieldHeal
+        if (std::rand() % STATUS_UP_PROB_BASE <= 300 + (fighterInfo->defencePotential/30))
+        {
+            fighterInfo->shieldHeal += (std::rand()%fighterInfo->defencePotential/30);
+        }
+        fighterInfo->isStatusChanged = true;
+    }
+    
     LevelupInfo levelup(hg::FighterInfo* fighterInfo)
     {
         hg::FighterInfo before = *fighterInfo;
+        if (fighterInfo->level > 10000)
+        {
+            return {
+                before,
+                fighterInfo,
+                0,
+                false,
+            };
+        }
+        long addExp = fighterInfo->tmpExp;
+        fighterInfo->exp += addExp;
+        fighterInfo->tmpExp = 0;
+        bool isLevelup = false;
         while (1)
         {
             if (fighterInfo->exp < fighterInfo->expNext)
@@ -29,16 +76,22 @@ namespace hg {
                 break;
             }
             // levelup
+            isLevelup = true;
             fighterInfo->level++;
+            levelupInner(fighterInfo);
             
             // set next exp
             fighterInfo->exp -= fighterInfo->expNext;
             fighterInfo->expNext = getNextExp(fighterInfo);
         }
         return {
-            
+            before,
+            fighterInfo,
+            addExp,
+            isLevelup,
         };
     }
+    
     
     UserData* UserData::instance = NULL;
     UserData* UserData::sharedUserData()
@@ -104,7 +157,23 @@ namespace hg {
             shopList.push_back(i);
         }
         
+        // test
+        userdata::writeTextData("test", "brabrabra");
+        std::string data = userdata::readTextData("test");
     }
+    
+    /*
+    std::string UserData::fighterDataToCSV()
+    {
+        CHCSVWriter* w = [[[CHCSVWriter alloc] init] autorelease];
+        for (FighterList::iterator it = fighterList.begin(); it != fighterList.end(); ++it)
+        {
+            FighterInfo* info = *it;
+            [w writeField:[NSString stringWithFormat:@"%s", info->name.c_str()]];
+            [w finishLine];
+        }
+        std::string ret = [w ]
+    }*/
     
     FighterInfo* UserData::getPlayerFighterInfo()
     {
@@ -188,24 +257,67 @@ namespace hg {
     }
     int UserData::getExp(FighterInfo* info)
     {
-        int cost = this->getCost(info);
+        int cost = getCost(info);
         double ret = (double)cost * 0.025;
         return ceil(ret);
+    }
+    int UserData::getDamageExp(FighterInfo* info, int damage)
+    {
+        getCost(info); // for calculation
+        return damage*info->cachedDamageExpPerLife;
     }
     void UserData::addExp(FighterInfo* info, int exp)
     {
         info->exp += exp;
     }
-    LevelupInfoList UserData::checkLevelup()
+    bool UserData::hasLevelUpInfo()
+    {
+        if (this->levelUpList.size() == 0)
+            return false;
+        return true;
+    }
+    std::string UserData::popLevelupMessage()
+    {
+        LevelupInfo info = this->popLevelupInfo();
+        char levelupMessageChar[1000];
+        std::stringstream ss;
+        ss << "%s has reached Level %d!!\n"
+           << "\tLevel :%d → %d\n"
+           << "\tShield :%d → %d\n"
+           << "\tAtk/Sec :%.2lf → %.2lf\n"
+           << "\tBarriar :%d → %d\n"
+        ;
+        sprintf(levelupMessageChar,
+                ss.str().c_str(),
+                info.beforeInfo.name.c_str(), info.fighterInfo->level,
+                info.beforeInfo.level, info.fighterInfo->level,
+                info.beforeInfo.lifeMax, info.fighterInfo->lifeMax,
+                this->getDamagePerSecond(&(info.beforeInfo)), this->getDamagePerSecond(info.fighterInfo),
+                info.beforeInfo.shieldMax, info.fighterInfo->shieldMax
+                );
+        std::string ret = std::string(levelupMessageChar);
+        return ret;
+    }
+    
+    LevelupInfo UserData::popLevelupInfo()
+    {
+        assert(this->hasLevelUpInfo());
+        LevelupInfo info = levelUpList.back();
+        levelUpList.pop_back();
+        return info;
+    }
+    void UserData::checkLevelup()
     {
         LevelupInfoList list;
         list.clear();
         for (FighterList::iterator it = fighterList.begin(); it != fighterList.end(); ++it)
         {
-            // expが足りているか
-            
+            LevelupInfo info = levelup(*it);
+            if (info.isLevelUp) {
+                list.push_back(info);
+            }
         }
-        return list;
+        levelUpList = list;
     }
     int UserData::getBuyCost(hg::FighterInfo* fInfo)
     {
@@ -307,30 +419,36 @@ namespace hg {
         double sum = 0;
         for (WeaponInfoList::iterator it = info->weaponList.begin(); it != info->weaponList.end(); ++it)
         {
-            sum += (*it).getDamagePerSecond();
+            sum += (*it).getDamagePerSecond(info->power);
         }
         return sum;
     }
     int UserData::getCost(FighterInfo* info)
     {
-        int cost = info->lifeMax * 3;
-        cost += info->shieldMax * 200;
-        cost += info->speed * 10000;
-        int num = 0;
-        for (WeaponInfoList::iterator it = info->weaponList.begin(); it != info->weaponList.end(); ++it)
-        {
-            num++;
-            double tmp = (*it).getDamagePerSecond()*50*num*num;
-            cost += tmp;
+        if (info->isStatusChanged) {
+            int cost = info->lifeMax * 3;
+            cost += info->shieldMax * 200;
+            cost += info->speed * 10000;
+            int num = 0;
+            for (WeaponInfoList::iterator it = info->weaponList.begin(); it != info->weaponList.end(); ++it)
+            {
+                num++;
+                double tmp = (*it).getDamagePerSecond(info->power)*500*num*num;
+                cost += tmp;
+            }
+            cost += info->shieldHeal * 300000;
+            cost += (info->textureSrcHeight * info->textureSrcWidth)*5;
+            cost += info->cpu_lv * 1000;
+            if (info->isShip)
+            {
+                cost *= 1.2;
+            }
+            info->cachedCost = ceil(cost*0.1);
+            info->isStatusChanged = false;
+            
+            info->cachedDamageExpPerLife = ceil(this->getExp(info) / info->lifeMax);
         }
-        cost += info->shieldHeal * 300000;
-        cost += (info->textureSrcHeight * info->textureSrcWidth)*5;
-        cost += info->cpu_lv * 1000;
-        if (info->isShip)
-        {
-            cost *= 1.2;
-        }
-        return ceil(cost*0.1);
+        return info->cachedCost;
     }
     void UserData::setReady(FighterInfo* fighterInfo)
     {
@@ -372,9 +490,11 @@ namespace hg {
         switch (sortType) {
             case FighterListSortTypeReady:
                 std::sort(fighterList.begin(), fighterList.end(), compare_by_ready);
+                std::sort(readyList.begin(), readyList.end(), compare_by_ready);
                 break;
             case FighterListSortTypeLife:
                 std::sort(fighterList.begin(), fighterList.end(), compare_by_life);
+                std::sort(readyList.begin(), readyList.end(), compare_by_life);
                 break;
             default:
                 break;
@@ -423,7 +543,29 @@ namespace hg {
     }
     FighterList UserData::getReadyList()
     {
-        return readyList;
+        FighterList l;
+        for (FighterList::iterator it = readyList.begin(); it != readyList.end(); it++)
+        {
+            if ((*it)->isPlayer) continue;
+            l.push_back(*it);
+        }
+        return l;
+    }
+    void UserData::deployAllFighter()
+    {
+        for (FighterList::iterator it = readyList.begin(); it != readyList.end(); it++)
+        {
+            if ((*it)->isPlayer) continue;
+            (*it)->isOnBattleGround = true;
+        }
+    }
+    void UserData::undeployAllFighter()
+    {
+        for (FighterList::iterator it = readyList.begin(); it != readyList.end(); it++)
+        {
+            if ((*it)->isPlayer) continue;
+            (*it)->isOnBattleGround = false;
+        }
     }
     
     void UserData::setDefaultInfo(FighterInfo* pInfo, int type)
@@ -442,12 +584,13 @@ namespace hg {
                 pInfo->showPixelWidth = 128;
                 pInfo->showPixelHeight = 128;
                 pInfo->collisionId = CollisionId_P_ROBO1;
+                pInfo->power = 100;
                 
                 pInfo->life = pInfo->lifeMax = 1000;
                 pInfo->shield = pInfo->shieldMax = 0;
                 pInfo->speed = 0.1;
                 
-                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeNormal, BulletTypeMagic, 100, 0, 0, 0.9, 0.05));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeNormal, BulletTypeMagic, 0, 0, 0.9, 0.05));
                 break;
             }
             case FighterTypeRobo2:
@@ -460,12 +603,13 @@ namespace hg {
                 pInfo->showPixelHeight = 256;
                 pInfo->showPixelWidth = 256;
                 pInfo->collisionId = CollisionId_E_ROBO2;
+                pInfo->power = 50;
                 
                 pInfo->life = pInfo->lifeMax = 1000;
                 pInfo->shield = pInfo->shieldMax = 0;
                 pInfo->speed = 0.13;
                 
-                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeNormal, BulletTypeNormal, 50, 0, 0, 0.6, 0.2));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeNormal, BulletTypeNormal, 0, 0, 0.6, 0.2));
                 
                 break;
             }
@@ -479,17 +623,18 @@ namespace hg {
                 pInfo->showPixelWidth = 204*10;
                 pInfo->showPixelHeight = 78*10;
                 pInfo->collisionId = CollisionId_E_SENKAN;
+                pInfo->power = 50;
                 
                 pInfo->life = pInfo->lifeMax = 10000;
                 pInfo->shield = pInfo->shieldMax = 10000;
                 pInfo->speed = 0.13;
                 pInfo->shieldHeal = 1.5;
                 
-                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeNormal, BulletTypeVulcan, 50, 45*10, 0, 0.4, 0.08));
-                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeNormal, BulletTypeVulcan, 50, -45*10, 0, 0.4, 0.08));
-                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeNormal, BulletTypeVulcan, 50, -90*10, 0, 0.4, 0.08));
-                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeNormal, BulletTypeVulcan, 50, 90*10, 0, 0.4, 0.08));
-                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeNormal, BulletTypeVulcan, 50, 0, 0, 0.4, 0.08));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeNormal, BulletTypeVulcan, 45*10, 0, 0.4, 0.08));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeNormal, BulletTypeVulcan, -45*10, 0, 0.4, 0.08));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeNormal, BulletTypeVulcan, -90*10, 0, 0.4, 0.08));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeNormal, BulletTypeVulcan, 90*10, 0, 0.4, 0.08));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeNormal, BulletTypeVulcan, 0, 0, 0.4, 0.08));
                 
                 pInfo->isShip = true;
                 break;
