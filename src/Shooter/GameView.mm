@@ -20,8 +20,10 @@
 #import "MenuButton.h"
 #import "ImageButtonView.h"
 #import "AllyTableView.h"
+#import "DialogView.h"
 
 #define DEPLOY_BTN_SIZE 50
+#define CAMERA_ADJUST_BTN_SIZE 35
 
 
 @interface GameView()
@@ -50,6 +52,9 @@
     CGRect baseFrame;
     
     UIView* baseCurtain;
+    
+    bool upCamera;
+    bool downCamera;
     
 }
 @end
@@ -111,6 +116,9 @@ static NSObject* lock = nil;
     {
         // initialize game
         {
+            upCamera = false;
+            downCamera = false;
+            
             // 出現リスト読み込み
             NSBundle* bundle = [NSBundle mainBundle];
             NSString* path = [bundle pathForResource:@"enemyList" ofType:@"json"];
@@ -164,6 +172,14 @@ static NSObject* lock = nil;
                             hg::update(keyState);
                             keyState.shouldDeployFriend = false;
                             keyState.shouldCollectFriend = false;
+                            if (upCamera) {
+                                hg::UserData::sharedUserData()->upCamera();
+                                hg::setCameraZPostion(hg::UserData::sharedUserData()->getCameraPosition());
+                            }
+                            if (downCamera) {
+                                hg::UserData::sharedUserData()->downCamera();
+                                hg::setCameraZPostion(hg::UserData::sharedUserData()->getCameraPosition());
+                            }
                             [_glview draw];
                             if (hg::isGameEnd())
                             {
@@ -174,9 +190,9 @@ static NSObject* lock = nil;
                                 {
                                     using namespace hg;
                                     BattleResult br = getResult();
-                                    UserData* u = UserData::sharedUserData();
-                                    u->addMoney(br.earnedMoney);
-                                    u->checkLevelup();
+                                    UserData::sharedUserData()->setBattleResult(br);
+                                    // データ保存
+                                    UserData::sharedUserData()->saveData();
                                 }
                                 
                                 // フェードアウト
@@ -233,13 +249,17 @@ static NSObject* lock = nil;
         }
         
         float btnGap = 12;
+        float x = baseFrame.size.width;
+        float y = baseFrame.size.height;
         // 発射ボタン
         {
             CGRect frame;
             frame.size.width = 100;
             frame.size.height = 100;
-            frame.origin.x = baseFrame.size.width - frame.size.width - btnGap;
-            frame.origin.y = baseFrame.size.height - frame.size.height - btnGap;
+            x = x - frame.size.width - btnGap;
+            y = y - frame.size.height - btnGap;
+            frame.origin.x = x;
+            frame.origin.y = y;
             
             UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
             button.frame = frame;
@@ -274,11 +294,13 @@ static NSObject* lock = nil;
         
         // deploy
         {
+            x = x + DEPLOY_BTN_SIZE;
+            y = y - btnGap - DEPLOY_BTN_SIZE;
             CGRect frame;
             frame.size.width = DEPLOY_BTN_SIZE;
             frame.size.height = DEPLOY_BTN_SIZE;
-            frame.origin.x = baseFrame.size.width - frame.size.width - btnGap;
-            frame.origin.y = baseFrame.size.height - frame.size.height - btnGap - 160;
+            frame.origin.x = x;
+            frame.origin.y = y;
             
             ImageButtonView* backImgView = [[ImageButtonView alloc] initWithFrame:CGRectMake(0, 0, 66, 66)];
             UIImage* img = [UIImage imageNamed:@"checkmark.png"];
@@ -334,12 +356,153 @@ static NSObject* lock = nil;
             }];
         }
         
+        // retreat
+        {
+            y = y - btnGap - DEPLOY_BTN_SIZE;
+            CGRect frame;
+            frame.size.width = DEPLOY_BTN_SIZE;
+            frame.size.height = DEPLOY_BTN_SIZE;
+            frame.origin.x = x;
+            frame.origin.y = y;
+            
+            ImageButtonView* backImgView = [[ImageButtonView alloc] initWithFrame:CGRectMake(0, 0, 66, 66)];
+            UIImage* img = [UIImage imageNamed:@"checkmark.png"];
+            
+            [backImgView setBackgroundColor:[UIColor whiteColor]];
+            [backImgView setFrame:frame];
+            [backImgView.layer setCornerRadius:8];
+            [backImgView.layer setBorderColor:[UIColor colorWithHexString:@"#222222"].CGColor];
+            [backImgView.layer setBorderWidth:3];
+            
+            [backImgView setImage:img];
+            [backImgView setContentMode:UIViewContentModeScaleAspectFit];
+            [backImgView setUserInteractionEnabled:YES];
+            
+            [baseView addSubview:backImgView];
+            
+            [backImgView setOnTapAction:^(ImageButtonView *target) {
+                hg::setPause(true);
+                [baseCurtain setUserInteractionEnabled:true];
+                [UIView animateWithDuration:0.2 animations:^{
+                    [baseCurtain setBackgroundColor:[UIColor blackColor]];
+                    [baseCurtain setAlpha:0.8];
+                }];
+                
+                // 退却するか確認して退却
+                DialogView* dialog = [[[DialogView alloc] initWithMessage:@"Are you sure to reatreat?"] autorelease];
+                [dialog addButtonWithText:@"OK" withAction:^{
+                    [UIView animateWithDuration:0.2 animations:^{
+                        [baseCurtain setAlpha:0];
+                        [baseCurtain setUserInteractionEnabled:false];
+                    } completion:^(BOOL finished) {
+                        hg::setPause(false);
+                        // 退却
+                        hg::retreat();
+                    }];
+                }];
+                [dialog addButtonWithText:@"Cancel" withAction:^{
+                    // animate
+                    [UIView animateWithDuration:0.2 animations:^{
+                        [baseCurtain setAlpha:0];
+                        [baseCurtain setUserInteractionEnabled:false];
+                    } completion:^(BOOL finished) {
+                        hg::setPause(false);
+                    }];
+                }];
+                [dialog setCancelAction:^{
+                    // animate
+                    [UIView animateWithDuration:0.2 animations:^{
+                        [baseCurtain setAlpha:0];
+                        [baseCurtain setUserInteractionEnabled:false];
+                    } completion:^(BOOL finished) {
+                        hg::setPause(false);
+                    }];
+                }];
+                dialog.closeOnTapBackground = false;
+                [dialog show];
+                
+            }];
+        }
+        
         // curtain
         {
             baseCurtain = [[UIView alloc] initWithFrame:baseFrame];
             [self addSubview:baseCurtain];
             [baseCurtain setUserInteractionEnabled:false];
         }
+        
+        //////////////////////////////////////////////////
+        // left
+        //////////////////////////////////////////////////
+        
+        float lbtnGap = 12;
+        float lx = 10;
+        float ly = baseFrame.size.height;
+        
+        // down camera
+        {
+            ly = ly - lbtnGap - CAMERA_ADJUST_BTN_SIZE;
+            CGRect frame;
+            frame.size.width = CAMERA_ADJUST_BTN_SIZE;
+            frame.size.height = CAMERA_ADJUST_BTN_SIZE;
+            frame.origin.x = lx;
+            frame.origin.y = ly;
+            
+            ImageButtonView* backImgView = [[ImageButtonView alloc] initWithFrame:CGRectMake(0, 0, 66, 66)];
+            UIImage* img = [UIImage imageNamed:@"checkmark.png"];
+            
+            [backImgView setBackgroundColor:[UIColor whiteColor]];
+            [backImgView setFrame:frame];
+            [backImgView.layer setCornerRadius:8];
+            [backImgView.layer setBorderColor:[UIColor colorWithHexString:@"#222222"].CGColor];
+            [backImgView.layer setBorderWidth:3];
+            
+            [backImgView setImage:img];
+            [backImgView setContentMode:UIViewContentModeScaleAspectFit];
+            [backImgView setUserInteractionEnabled:YES];
+            
+            [baseView addSubview:backImgView];
+            
+            [backImgView setOnToutchBegan:^(ImageButtonView *target) {
+                downCamera = true;
+            }];
+            [backImgView setOnToutchEnd:^(ImageButtonView *target) {
+                downCamera = false;
+            }];
+        }
+        
+        // up camera
+        {
+            ly = ly - lbtnGap - CAMERA_ADJUST_BTN_SIZE;
+            CGRect frame;
+            frame.size.width = CAMERA_ADJUST_BTN_SIZE;
+            frame.size.height = CAMERA_ADJUST_BTN_SIZE;
+            frame.origin.x = lx;
+            frame.origin.y = ly;
+            
+            ImageButtonView* backImgView = [[ImageButtonView alloc] initWithFrame:CGRectMake(0, 0, 66, 66)];
+            UIImage* img = [UIImage imageNamed:@"checkmark.png"];
+            
+            [backImgView setBackgroundColor:[UIColor whiteColor]];
+            [backImgView setFrame:frame];
+            [backImgView.layer setCornerRadius:8];
+            [backImgView.layer setBorderColor:[UIColor colorWithHexString:@"#222222"].CGColor];
+            [backImgView.layer setBorderWidth:3];
+            
+            [backImgView setImage:img];
+            [backImgView setContentMode:UIViewContentModeScaleAspectFit];
+            [backImgView setUserInteractionEnabled:YES];
+            
+            [baseView addSubview:backImgView];
+            
+            [backImgView setOnToutchBegan:^(ImageButtonView *target) {
+                upCamera = true;
+            }];
+            [backImgView setOnToutchEnd:^(ImageButtonView *target) {
+                upCamera = false;
+            }];
+        }
+        
         
     }
     

@@ -12,6 +12,7 @@
 #import "MainViewController.h"
 
 #import "HGLView.h"
+#import "StatusView.h"
 
 @interface AppDelegate()
 {
@@ -63,6 +64,10 @@ HGLView* _glView;
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    StatusView* sv = [StatusView GetInstance];
+    if (sv) {
+        [sv loadUserInfo];
+    }
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application

@@ -75,19 +75,19 @@ namespace hg {
             switch (type) {
                 case BulletTypeMagic:
                 {
-                    setSizeByPixel(560, 560);
-                    setCollisionId(CollisionId_BulletNormal);
+                    setSizeByPixel(200, 200);
+                    setCollisionId(CollisionId_BulletMagic);
                     
                     // core
                     AlphaMapSprite* pSpr = new AlphaMapSprite();
                     pSpr->init("sparkle.png", {0.95, 0.95, 1.0, 1.0});
-                    pSpr->setScale(getWidth()*2, getHeight()*2);
+                    pSpr->setScale(getWidth()*15, getHeight()*15);
                     getNode()->addChild(pSpr);
                     {
                         // 縮小
                         HGProcessOwner* po = new HGProcessOwner();
                         ChangeScaleProcess* ssp2 = new ChangeScaleProcess();
-                        ssp2->init(po, pSpr, getWidth()*1.1, getHeight()*1.1, v(15));
+                        ssp2->init(po, pSpr, getWidth()*5, getHeight()*5, v(15));
                         ssp2->setEaseFunc(&ease_out);
                         HGProcessManager::sharedProcessManager()->addProcess(ssp2);
                     }

@@ -14,6 +14,8 @@
 
 +(void)Start;
 +(void)PresentViewController:(UIViewController*) vc;
++ (void)RemoveBackgroundView;
++ (void)ShowBackgroundView;
 
 @end
 

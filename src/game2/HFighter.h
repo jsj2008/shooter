@@ -48,7 +48,6 @@ namespace hg {
         _isPlayer(false),
         pFighterHated(NULL),
         explodeProcessCount(0),
-        shieldHeal(0),
         pFighterInfo(NULL),
         shouldUpdateInfo(false)
         {
@@ -132,116 +131,6 @@ namespace hg {
                 weaponList.push_back(wp);
                 wp->retain();
             }
-            
-            // 種類別の初期化
-            /*
-            switch (type)
-            {
-                case FighterTypeRobo1:
-                {
-                    textureName = "p_robo1.png";
-                    textureSrcOffset = {0, 0};
-                    textureSrcSize = {16, 16};
-                    setSizeByPixel(128, 128);
-                    setCollisionId(CollisionId_P_ROBO1);
-                    
-                    life = lifeMax = 1000;
-                    shield = shieldMax = 0;
-                    speed = 0.1;
-                    
-                    Weapon* wp = new Weapon();
-                    wp->init(WeaponTypeNormal, BulletTypeMagic, 0, 0);
-                    weaponList.push_back(wp);
-                    wp->retain();
-                    break;
-                }
-                case FighterTypeRobo2:
-                {
-                    textureName = "e_robo2.png";
-                    textureSrcOffset = {0, 0};
-                    textureSrcSize = {64, 64};
-                    setSizeByPixel(256, 256);
-                    setCollisionId(CollisionId_E_ROBO2);
-                    
-                    life = lifeMax = 1000;
-                    shield = shieldMax = 0;
-                    speed = 0.13;
-                    
-                    Weapon* wp = new Weapon();
-                    wp->init(WeaponTypeNormal, BulletTypeNormal, 0, 0);
-                    weaponList.push_back(wp);
-                    wp->retain();
-                    break;
-                }
-                case FighterTypeShip1:
-                {
-                    float sizeRatio = 10;
-                    textureName = "e_senkan1_4.png";
-                    textureSrcOffset = {0, 0};
-                    textureSrcSize = {204, 78};
-                    setSizeByPixel(204*sizeRatio, 78*sizeRatio);
-                    setCollisionId(CollisionId_E_SENKAN);
-                    
-                    life = lifeMax = 10000;
-                    shield = shieldMax = 10000;
-                    speed = 0.13;
-                    shieldHeal = 1.5;
-                    
-                    {
-                        Weapon* wp = new Weapon();
-                        wp->init(WeaponTypeNormal, BulletTypeVulcan, 45*sizeRatio, 0);
-                        weaponList.push_back(wp);
-                        wp->retain();
-                    }
-                    
-                    {
-                        Weapon* wp = new Weapon();
-                        wp->init(WeaponTypeNormal, BulletTypeVulcan, -45*sizeRatio, 0);
-                        weaponList.push_back(wp);
-                        wp->retain();
-                    }
-                    
-                    {
-                        Weapon* wp = new Weapon();
-                        wp->init(WeaponTypeNormal, BulletTypeVulcan, -90*sizeRatio, 0);
-                        wp->setInterval(0.1);
-                        weaponList.push_back(wp);
-                        wp->retain();
-                    }
-                    
-                    
-                    {
-                        Weapon* wp = new Weapon();
-                        wp->init(WeaponTypeNormal, BulletTypeVulcan, 0, 0);
-                        wp->setInterval(0.1);
-                        weaponList.push_back(wp);
-                        wp->retain();
-                    }
-                    
-                    {
-                        Weapon* wp = new Weapon();
-                        wp->init(WeaponTypeNormal, BulletTypeVulcan, 90*sizeRatio, 0);
-                        wp->setInterval(0.6);
-                        weaponList.push_back(wp);
-                        wp->retain();
-                    }
-                    
-                    _isShip = true;
-                    break;
-                }
-                default:
-                    assert(0);
-            }
-            
-            if (side == SideTypeFriend)
-            {
-                life      = pInfo->life;
-                lifeMax   = pInfo->lifeMax;
-                shield    = pInfo->shield;
-                shieldMax = pInfo->shieldMax;
-                shieldHeal = pInfo->shieldHeal;
-                speed     = v(pInfo->speed);
-            }*/
             
             pSprite = new HGSprite();
             pSprite->setType(SPRITE_TYPE_BILLBOARD);
@@ -536,78 +425,38 @@ namespace hg {
             {
                 for (int i = 0; i < 2; i++)
                 {
-                float r = toRad(rand(0, 359));
-                float tx = cos(r) * getWidth() + getPositionX();
-                float ty = sin(r) * getHeight() + getPositionY();
-                {
-                    AlphaMapSprite* pSpr = new AlphaMapSprite();
-                    pSpr->init("star_cross.png", (Color){0.9, 0.9, 1.0, 1.0});
-                    pSpr->setPosition(tx, ty);
-                    pSpr->setScale(0, 0);
-                    pSpr->setRotateZ(toRad(rand(0, 359)));
-                    pLayerEffect->addChild(pSpr);
+                    float r = toRad(rand(0, 359));
+                    float tx = cos(r) * getWidth() + getPositionX();
+                    float ty = sin(r) * getHeight() + getPositionY();
                     {
-                        // 回転
-                        HGProcessOwner* po = new HGProcessOwner();
-                        RotateNodeProcess* rnp = new RotateNodeProcess();
-                        Vector r = Vector(0,0,-9300);
-                        rnp->init(po, pSpr, r, f(40));
-                        rnp->setEaseFunc(&ease_out);
-                        HGProcessManager::sharedProcessManager()->addProcess(rnp);
-                    }
-                    {
-                        float size = rand(PXL2REAL(80), PXL2REAL(170));
-                        // 拡大
-                        HGProcessOwner* po = new HGProcessOwner();
-                        ChangeScaleProcess* ssp = new ChangeScaleProcess();
-                        ssp->init(po, pSpr, size, size, f(10));
-                        ssp->setEaseFunc(&ease_out);
-                        
-                        // 縮小
-                        ChangeScaleProcess* ssp2 = new ChangeScaleProcess();
-                        ssp2->init(po, pSpr, 0, 0, f(25));
-                        ssp2->setEaseFunc(&ease_in);
-                        ssp->setNext(ssp2);
-                        
-                        // 削除
-                        NodeRemoveProcess* nrp = new NodeRemoveProcess();
-                        nrp->init(po, pSpr);
-                        ssp2->setNext(nrp);
-                        
-                        // プロセス開始
-                        HGProcessManager::sharedProcessManager()->addProcess(ssp);
-                    }
-                }
-                }
-                
-                /*
-                {
-                    AlphaMapSprite* pSpr = new AlphaMapSprite();
-                    pSpr->init("star.png", (Color){0.9, 0.9, 1.0, 0.5});
-                    pSpr->setPosition(tx, ty);
-                    pSpr->setScale(0, 0);
-                    pSpr->setRotateZ(toRad(rand(0, 359)));
-                    pLayerEffect->addChild(pSpr);
-                    {
+                        AlphaMapSprite* pSpr = new AlphaMapSprite();
+                        pSpr->init("star_cross.png", (Color){0.9, 0.9, 1.0, 1.0});
+                        pSpr->setPosition(tx, ty);
+                        pSpr->setScale(0, 0);
+                        pSpr->setRotateZ(toRad(rand(0, 359)));
+                        pLayerEffect->addChild(pSpr);
                         {
-                            float size = PXL2REAL(420);
+                            // 回転
+                            HGProcessOwner* po = new HGProcessOwner();
+                            RotateNodeProcess* rnp = new RotateNodeProcess();
+                            Vector r = Vector(0,0,-9300);
+                            rnp->init(po, pSpr, r, f(40));
+                            rnp->setEaseFunc(&ease_out);
+                            HGProcessManager::sharedProcessManager()->addProcess(rnp);
+                        }
+                        {
+                            float size = rand(PXL2REAL(80), PXL2REAL(170));
                             // 拡大
                             HGProcessOwner* po = new HGProcessOwner();
                             ChangeScaleProcess* ssp = new ChangeScaleProcess();
-                            ssp->init(po, pSpr, size, size, f(50));
+                            ssp->init(po, pSpr, size, size, f(10));
                             ssp->setEaseFunc(&ease_out);
                             
-                            // プロセス開始
-                            HGProcessManager::sharedProcessManager()->addProcess(ssp);
-                        }
-                        
-                        {
-                            HGProcessOwner* po = new HGProcessOwner();
                             // 縮小
-                            SpriteChangeOpacityProcess* ssp2 = new SpriteChangeOpacityProcess();
-                            ssp2->setWaitFrame(f(30));
-                            ssp2->init(po, pSpr, 0, f(20));
+                            ChangeScaleProcess* ssp2 = new ChangeScaleProcess();
+                            ssp2->init(po, pSpr, 0, 0, f(25));
                             ssp2->setEaseFunc(&ease_in);
+                            ssp->setNext(ssp2);
                             
                             // 削除
                             NodeRemoveProcess* nrp = new NodeRemoveProcess();
@@ -615,11 +464,11 @@ namespace hg {
                             ssp2->setNext(nrp);
                             
                             // プロセス開始
-                            HGProcessManager::sharedProcessManager()->addProcess(ssp2);
+                            HGProcessManager::sharedProcessManager()->addProcess(ssp);
                         }
                     }
-                }*/
-                
+                }
+            
             }
         }
         
@@ -911,10 +760,11 @@ namespace hg {
             }
         }
         
+        // 1秒ごとに呼び出される
         inline void healShield()
         {
             assert(hasShield());
-            shield += shieldHeal;
+            shield += ceil(shieldMax*0.02);
             if (shield > shieldMax)
             {
                 shield = shieldMax;
@@ -945,7 +795,6 @@ namespace hg {
         int explodeProcessCount;
         float shield;
         float shieldMax;
-        float shieldHeal;
         double lastTimeShieldHeal = 0;
         bool _isPlayer;
         Fighter* pFighterHated;

@@ -12,6 +12,9 @@
 
 - (id)initWithMessage:(NSString*)message;
 - (void)addButtonWithText:(NSString*)text withAction:(void (^)(void))action;
+- (void)setCancelAction:(void (^)(void))_onCancel;
 - (void)show;
+
+@property(readwrite)bool closeOnTapBackground;
 
 @end

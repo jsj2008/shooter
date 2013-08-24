@@ -12,6 +12,8 @@
 {
     UIView* highlightView;
     void (^onTap)(ImageButtonView* target);
+    void (^onTouchBegan)(ImageButtonView* target);
+    void (^onTouchEnd)(ImageButtonView* target);
 }
 @end
 
@@ -22,6 +24,18 @@
     self = [super init];
     if (self)
     {
+        onTouchBegan = nil;
+        onTouchEnd = nil;
+        {
+            // highlight タッチされたときのハイライト用
+            CGRect f = self.frame;
+            f.origin.x = 0; f.origin.y = 0;
+            highlightView = [[[UIView alloc] initWithFrame:f] autorelease];
+            [highlightView setBackgroundColor:[UIColor whiteColor]];
+            [highlightView setAlpha:0];
+            [highlightView setUserInteractionEnabled:NO];
+            [self addSubview:highlightView];
+        }
     }
     return self;
 }
@@ -35,16 +49,6 @@
 - (void)setOnTapAction:(void(^)(ImageButtonView* target)) _onTap
 {
     onTap = [_onTap copy];
-    {
-        // highlight タッチされたときのハイライト用
-        CGRect f = self.frame;
-        f.origin.x = 0; f.origin.y = 0;
-        highlightView = [[[UIView alloc] initWithFrame:f] autorelease];
-        [highlightView setBackgroundColor:[UIColor whiteColor]];
-        [highlightView setAlpha:0];
-        [highlightView setUserInteractionEnabled:NO];
-        [self addSubview:highlightView];
-    }
     // touch
     {
         UITapGestureRecognizer *tr = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap:)] autorelease];
@@ -60,6 +64,20 @@
         [highlightView setAlpha:0.3];
     } completion:^(BOOL finished) {
     }];
+    if (onTouchBegan) {
+        onTouchBegan(self);
+    }
+}
+
+
+- (void)setOnToutchBegan:(void(^)(ImageButtonView* target)) _callback
+{
+    onTouchBegan = [_callback copy];
+}
+
+- (void)setOnToutchEnd:(void(^)(ImageButtonView* target)) _callback
+{
+    onTouchEnd = [_callback copy];
 }
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
@@ -70,6 +88,9 @@
         [self setTransform:t];
     } completion:^(BOOL finished) {
     }];
+    if (onTouchEnd) {
+        onTouchEnd(self);
+    }
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
@@ -80,8 +101,10 @@
         [self setTransform:t];
     } completion:^(BOOL finished) {
     }];
+    if (onTouchEnd) {
+        onTouchEnd(self);
+    }
 }
-
 
 - (void)onTap:(UIGestureRecognizer*)sender
 {
@@ -99,7 +122,9 @@
     }];
     
     // callback
-    onTap(self);
+    dispatch_async(dispatch_get_main_queue(), ^{
+        onTap(self);
+    });
 }
 
 

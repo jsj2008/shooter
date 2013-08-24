@@ -120,6 +120,8 @@ static AllyTableView* instance;
     //[tbv setBackgroundColor:[UIColor blackColor]];
     [tbv setTransform:CGAffineTransformRotate(CGAffineTransformIdentity, -90*M_PI/180)];
     [tbv setCenter:CGPointMake(tbCont.frame.size.width/2, tbCont.frame.size.height/2)];
+    [tbv setIndicatorStyle:UIScrollViewIndicatorStyleWhite];
+    [tbv setPagingEnabled:NO];
     allyTableView = tbv;
     [tbCont addSubview:tbv];
     

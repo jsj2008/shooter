@@ -975,16 +975,18 @@ namespace HGGame {
         glDisable(GL_DEPTH_TEST);
         
         // set camera
+        /*
         if (_player)
         {
             _cameraPosition.x = _player->position.x * -1;
-            _cameraPosition.y = _player->position.y * -1 + 8;
+            _cameraPosition.y = _player->position.y * -1 + 28;
             _cameraPosition.z = -20;
             _cameraRotate.x = -15 * M_PI/180;
+            _cameraRotate.x = atan2(_cameraPosition.y - _player->position.y * -1, _cameraPosition.z - ZPOS);
             hgles::cameraPosition = _cameraPosition;
             hgles::cameraRotate = _cameraRotate;
             hgles::HGLES::updateCameraMatrix();
-        }
+        }*/
         
             // draw bg
             /*

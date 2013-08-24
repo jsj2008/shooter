@@ -23,10 +23,14 @@ namespace hg {
     typedef struct StageInfo
     {
         int stage_id;
-        int enemy_level;
         int win_point;
         int lose_point;
+        int retrieve_point;
         std::string stage_name;
+        std::string stage_name_short;
+        std::string model_name;
+        float small_size;
+        float big_size;
     } StageInfo;
     
     typedef struct LevelupInfo
@@ -40,7 +44,6 @@ namespace hg {
     typedef std::vector<LevelupInfo> LevelupInfoList;
     typedef std::vector<StageInfo> StageInfoList;
     
-    typedef std::vector<hg::FighterInfo*> FighterList;
     typedef enum FighterListSortType
     {
         FighterListSortTypeFirst,
@@ -56,19 +59,23 @@ namespace hg {
     public:
         static UserData* sharedUserData();
         void loadData();
+        bool saveData();
+        static bool DeleteAllData();
         FighterList getFighterList();
         FighterList getReadyList();
         FighterList getShopList();
-        int getMoney()
+        long getMoney()
         {
             return money;
         }
-        void addMoney(int add)
+        void addMoney(long add)
         {
             money += add;
+            if (money < 0) money = 0;
         }
+        void returnToBase();
+        int getStageNum();
         int getRepairCost(hg::FighterInfo* fInfo);
-        StageInfoList getStageInfoList();
         int getBuyCost(hg::FighterInfo* fInfo);
         int getSellValue(hg::FighterInfo* fInfo);
         void initBeforeBattle();
@@ -82,9 +89,8 @@ namespace hg {
         void sortFighterList();
         double getCurrentClearRatio();
         int getStageId();
-        StageInfo getStageInfo(int stage_id);
+        StageInfo getStageInfo(int stageId);
         StageInfo getStageInfo();
-        void setStageId(int next_stage_id);
         void addPoint(int add);
         FighterInfo* getPlayerFighterInfo();
         int getRepairAllCost();
@@ -101,16 +107,24 @@ namespace hg {
         std::string popLevelupMessage();
         bool hasLevelUpInfo();
         LevelupInfo popLevelupInfo();
+        void setBattleResult(BattleResult br);
         //std::string fighterDataToCSV();
+        int getKillReward(hg::FighterInfo* fInfo);
+        void upCamera();
+        void downCamera();
+        float getCameraPosition();
+        void setStageId(int next_stage_id);
     private:
         LevelupInfoList levelUpList;
-        int current_point = 0;
+        int complete_point = 0;
         int stage_id = 0;
+        StageInfo currentStageInfo;
         FighterListSortType currentSortType;
         FighterList shopList;
         FighterList readyList;
         FighterList fighterList;
-        int money = 900000;
+        long money = 900000;
+        float cameraPositionY = -18;
         int enemyLevel = 0;
         static UserData* instance;
         friend LevelupInfo levelup(hg::FighterInfo* fighterInfo);

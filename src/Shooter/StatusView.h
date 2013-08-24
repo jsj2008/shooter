@@ -13,6 +13,8 @@ const int StatusViewHeight = 20;
 @interface StatusView : UIView
 
 - (void)loadUserInfo;
+- (void)hideProgress;
+- (void)showProgress;
 + (id)GetInstance;
 + (id)CreateInstance;
 

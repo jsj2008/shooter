@@ -12,15 +12,18 @@
          contextName = "IndexBuffer::IndexBuffer(unsigned char const*, int):IndexBuffer.mm">
          <PersistentStrings>
             <PersistentString
+               value = "sizeof(Index)">
+            </PersistentString>
+            <PersistentString
                value = "sizeof(Vertex)">
             </PersistentString>
             <PersistentString
                value = "indices[1]">
             </PersistentString>
-            <PersistentString
-               value = "sizeof(Index)">
-            </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "userdata::readTextData(std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; const&amp;):UserDataManager.mm">
       </ContextState>
       <ContextState
          contextName = "hg::Fighter::tick():HFighter.h">
@@ -64,6 +67,9 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "hg::UserData::popLevelupMessage():UserData.cpp">
+      </ContextState>
+      <ContextState
          contextName = "hg::UserData::buy(hg::FighterInfo*):UserData.cpp">
          <PersistentStrings>
             <PersistentString
@@ -104,10 +110,19 @@
          contextName = "HGGame::registerActorToColList(HGGame::HGActor*, std::__1::map&lt;int, std::__1::vector&lt;HGGame::HGActor*, std::__1::allocator&lt;HGGame::HGActor*&gt; &gt;, std::__1::less&lt;int&gt;, std::__1::allocator&lt;std::__1::pair&lt;int const, std::__1::vector&lt;HGGame::HGActor*, std::__1::allocator&lt;HGGame::HGActor*&gt; &gt; &gt; &gt; &gt;*):HGGame.mm">
       </ContextState>
       <ContextState
+         contextName = "hg::UserData::popLevelupInfo():UserData.cpp">
+      </ContextState>
+      <ContextState
          contextName = "hg::CellManager::getCellNumber(hg::HGPoint&amp;):HGame.mm">
       </ContextState>
       <ContextState
+         contextName = "hg::UserData::loadData():UserData.cpp">
+      </ContextState>
+      <ContextState
          contextName = "hg::FighterAccelProcess::onUpdate():HGame.mm">
+      </ContextState>
+      <ContextState
+         contextName = "__32-[MainViewController stageStart]_block_invoke_2314:MainViewController.mm">
       </ContextState>
       <ContextState
          contextName = "HGGame::HGFighter::draw():HGFighter.mm">
@@ -116,36 +131,13 @@
          contextName = "HGGame::HGSpawn::draw():HGSpawn.mm">
       </ContextState>
       <ContextState
-         contextName = "HGGame::drawLife(hgles::HGLVector3*, HGGame::t_size2d*, float):HGGame.mm">
-      </ContextState>
-      <ContextState
-         contextName = "HGLES::pushMatrix():HGLES.mm">
-      </ContextState>
-      <ContextState
-         contextName = "hgles::HGLTexture::createTextureWithAsset(std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;):HGLTexture.mm">
-      </ContextState>
-      <ContextState
-         contextName = "-[AllyView setFighterInfo:]:AllyView.m">
-      </ContextState>
-      <ContextState
-         contextName = "ObjLoader::addMeshTo(Object3D*, std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;):ObjLoader.mm">
-         <PersistentStrings>
-            <PersistentString
-               value = "materials">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "HGGame::HGCPU::update():HGCPU.mm">
-      </ContextState>
-      <ContextState
          contextName = "hg::CellManager&lt;hg::Fighter&gt;::addToCellList(hg::Fighter*):CellManager.h">
          <PersistentStrings>
             <PersistentString
-               value = "sizeOfCell">
+               value = "actor-&gt;getPositionY()">
             </PersistentString>
             <PersistentString
-               value = "actor-&gt;getPositionY()">
+               value = "sizeOfCell">
             </PersistentString>
             <PersistentString
                value = "halfWidth">
@@ -157,6 +149,32 @@
                value = "actor-&gt;getPositionX()">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "HGGame::drawLife(hgles::HGLVector3*, HGGame::t_size2d*, float):HGGame.mm">
+      </ContextState>
+      <ContextState
+         contextName = "hgles::HGLTexture::createTextureWithAsset(std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;):HGLTexture.mm">
+      </ContextState>
+      <ContextState
+         contextName = "HGLES::pushMatrix():HGLES.mm">
+      </ContextState>
+      <ContextState
+         contextName = "userdata::writeTextData(std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; const&amp;, std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; const&amp;):UserDataManager.mm">
+      </ContextState>
+      <ContextState
+         contextName = "HGGame::HGCPU::update():HGCPU.mm">
+      </ContextState>
+      <ContextState
+         contextName = "ObjLoader::addMeshTo(Object3D*, std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;):ObjLoader.mm">
+         <PersistentStrings>
+            <PersistentString
+               value = "materials">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[AllyView setFighterInfo:]:AllyView.m">
       </ContextState>
       <ContextState
          contextName = "hg::Bullet::init(hg::BulletType, float, int, hg::Actor*, float, float, float, hg::SideType):HBullet.h">
@@ -216,9 +234,6 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "HGGame::registerActorToColListForSmall(HGGame::HGActor*, std::__1::map&lt;int, std::__1::vector&lt;HGGame::HGActor*, std::__1::allocator&lt;HGGame::HGActor*&gt; &gt;, std::__1::less&lt;int&gt;, std::__1::allocator&lt;std::__1::pair&lt;int const, std::__1::vector&lt;HGGame::HGActor*, std::__1::allocator&lt;HGGame::HGActor*&gt; &gt; &gt; &gt; &gt;*):HGGame.mm">
-      </ContextState>
-      <ContextState
          contextName = "hg::UserData::getCost(hg::FighterInfo*):UserData.cpp">
          <PersistentStrings>
             <PersistentString
@@ -227,7 +242,7 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "hg::ControlPlayerProcess::~ControlPlayerProcess():ControlPlayerProcess.h">
+         contextName = "HGGame::registerActorToColListForSmall(HGGame::HGActor*, std::__1::map&lt;int, std::__1::vector&lt;HGGame::HGActor*, std::__1::allocator&lt;HGGame::HGActor*&gt; &gt;, std::__1::less&lt;int&gt;, std::__1::allocator&lt;std::__1::pair&lt;int const, std::__1::vector&lt;HGGame::HGActor*, std::__1::allocator&lt;HGGame::HGActor*&gt; &gt; &gt; &gt; &gt;*):HGGame.mm">
       </ContextState>
       <ContextState
          contextName = "HGGame::render():HGGame.mm">
@@ -239,6 +254,9 @@
                value = "_enemyBulletsInActive">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "hg::ControlPlayerProcess::~ControlPlayerProcess():ControlPlayerProcess.h">
       </ContextState>
       <ContextState
          contextName = "hg::HGSprite::render():HGameEngine.h">
@@ -280,16 +298,10 @@
          contextName = "hg::ControlPlayerProcess::onUpdate():ControlPlayerProcess.h">
       </ContextState>
       <ContextState
-         contextName = "hg::BattleState::onUpdate():HGame.mm">
+         contextName = "userdata::insertFighterInfo(int, int, hg::FighterInfo*):UserDataManager.mm">
          <PersistentStrings>
             <PersistentString
-               value = "SpawnGroup">
-            </PersistentString>
-            <PersistentString
-               value = "spawnData">
-            </PersistentString>
-            <PersistentString
-               value = "HGProcessManager::sharedProcessManager()">
+               value = "now_db">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -298,6 +310,20 @@
          <PersistentStrings>
             <PersistentString
                value = "HGGame">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "hg::BattleState::onUpdate():HGame.mm">
+         <PersistentStrings>
+            <PersistentString
+               value = "spawnData">
+            </PersistentString>
+            <PersistentString
+               value = "HGProcessManager::sharedProcessManager()">
+            </PersistentString>
+            <PersistentString
+               value = "SpawnGroup">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -416,6 +442,9 @@
                value = "button.tag">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[MessageView onTap:]:MessageView.m">
       </ContextState>
       <ContextState
          contextName = "-[AllyView touchAlly:]:AllyView.m">
@@ -634,6 +663,20 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[FMDatabase executeUpdate:error:withArgumentsInArray:orDictionary:orVAList:]:FMDatabase.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "queryCount">
+            </PersistentString>
+            <PersistentString
+               value = "arrayArgs">
+            </PersistentString>
+            <PersistentString
+               value = "args">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[TestViewController render]:TestViewController.mm">
       </ContextState>
       <ContextState
@@ -668,6 +711,9 @@
       </ContextState>
       <ContextState
          contextName = "HGGame::get_cell_of_pointer(HGGame::t_pos2d*):HGGame.mm">
+      </ContextState>
+      <ContextState
+         contextName = "-[FMDatabase bindObject:toColumn:inStatement:]:FMDatabase.m">
       </ContextState>
       <ContextState
          contextName = "hg::HGNode::removeFromParent():HGameEngine.h">

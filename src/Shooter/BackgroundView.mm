@@ -3,6 +3,7 @@
 #import <QuartzCore/QuartzCore.h>
 
 #import <vector>
+#import "UserData.h"
 
 // openGL
 #import "HGLView.h"
@@ -25,6 +26,9 @@
     
     // fighter
     hgles::HGLObject3D* fighterObject;
+    
+    //
+    //hgles::HGLObject3D* planetObj;
     
     bool isEnd;
     bool is3DInitialized;
@@ -158,14 +162,29 @@ std::vector<Fighter> fighter_list;
         }
     }
     
-    // model
+    float currentClearRatio = hg::UserData::sharedUserData()->getCurrentClearRatio();
+    
+    // planet
+    /*
+    hg::StageInfo stageInfo = hg::UserData::sharedUserData()->getStageInfo();
+    planetObj = HGLObjLoader::load([NSString stringWithCString:stageInfo.model_name.c_str() encoding:NSUTF8StringEncoding]);
+    planetObj->position.z = -600;
+    planetObj->rotate.y = [self rand:0 to:10] * 0.1;
+    
+    // size
+    float size = stageInfo.small_size  + stageInfo.big_size * currentClearRatio;
+    size = 100;
+    planetObj->scale.set(size, size, size);
+    */
+    
+    // fighter
     srand((unsigned int)time(NULL));
     HGLObject3D* model = HGLObjLoader::load(@"ship-animated");
     fighterObject = model;
     fighterObject->useLight = 1;
     
     fighter_list.clear();
-    int num = 40;
+    int num = 10 + 50 * currentClearRatio;
     for (int i = 0; i < num; i++)
     {
         Fighter f;
@@ -232,6 +251,14 @@ float fighterMoveDiffZ = -0.05;
         
         // 3d
         glEnable(GL_DEPTH_TEST);
+        
+        /*
+        planetObj->rotate.y += 0.003;
+        planetObj->rotate.z += 0.0005;
+        planetObj->rotate.x += 0.0003;
+        planetObj->draw();
+        */
+        
         for (std::vector<Fighter>::iterator it = fighter_list.begin(); it != fighter_list.end(); it++)
         {
             (*it).position.z += (*it).spd;
@@ -263,6 +290,7 @@ float fighterMoveDiffZ = -0.05;
         }
         nebula.clear();
         delete fighterObject;
+        //delete planetObj;
     }
 }
 

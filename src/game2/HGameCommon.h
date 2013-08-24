@@ -13,6 +13,7 @@
 #include "HActorList.h"
 #include "CellManager.h"
 #include <deque>
+#include <stdlib.h>
 
 #define IS_DEBUG_COLLISION 0
 #define ENEMY_NUM 10
@@ -82,9 +83,10 @@ namespace hg {
             switch (_bulletType)
             {
                 case BulletTypeNormal:
+                    ratio = 1;
                     break;
                 case BulletTypeMagic:
-                    ratio = 3;
+                    ratio = 5;
                     break;
                 case BulletTypeVulcan:
                     ratio = 0.5;
@@ -110,6 +112,7 @@ namespace hg {
     typedef struct BattleResult
     {
         bool isWin = false;
+        bool isRetreat = false;
         int earnedMoney = 0;
         int yourShot = 0;
         int allShotMoney = 0;
@@ -121,6 +124,7 @@ namespace hg {
     {
         CollisionIdStart,
         CollisionIdNone,
+        CollisionId_BulletMagic,
         CollisionId_BulletNormal,
         CollisionId_BulletVulcan,
         CollisionId_P_ROBO1,
@@ -161,12 +165,14 @@ namespace hg {
         totalDie(0),
         cpu_lv(0),
         tmpExp(0),
-        powerPotential(100),
-        defencePotential(100),
+        powerPotential(0),
+        defencePotential(0),
+        shieldPotential(0),
         seed(1331124),
         isStatusChanged(true),
         cachedCost(0)
         {
+            seed = std::rand()%INT32_MAX;
         }
         int fighterType;
         int level;
@@ -203,12 +209,14 @@ namespace hg {
         int cpu_lv;
         int powerPotential;
         int defencePotential;
+        int shieldPotential;
         int seed;
         bool isStatusChanged;
         int cachedCost;
         int cachedDamageExpPerLife;
     } FighterInfo;
     
+    typedef std::vector<FighterInfo*> FighterList;
     typedef std::vector<FighterInfo*> SpawnGroup;
     typedef std::deque<SpawnGroup> SpawnData;
     typedef std::vector<FighterInfo*> FriendData;

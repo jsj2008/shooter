@@ -43,6 +43,7 @@ const float MessageHeight = 100;
         self.textList = [[NSMutableArray alloc] init];
         _numButton = 0;
         onCancel = NULL;
+        self.closeOnTapBackground = true;
     }
     return self;
 }
@@ -88,6 +89,7 @@ const float MessageHeight = 100;
 
 - (void)onTapBackground:(UIGestureRecognizer*)sender
 {
+    if (!self.closeOnTapBackground) return;
     // close
     [_curtain removeFromSuperview];
     [UIView animateWithDuration:0.2 animations:^{

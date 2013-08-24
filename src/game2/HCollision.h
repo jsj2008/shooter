@@ -89,7 +89,7 @@ namespace hg {
             return false;
         }
         
-        inline void addDebugMark(CollisionId ida, HGNode* node, float width, float height)
+        inline void addDebugMark(int ida, HGNode* node, float width, float height)
         {
             assert(ida != CollisionIdNone);
             Collision* col = list[ida];
@@ -121,6 +121,11 @@ namespace hg {
                     case CollisionId_BulletNormal:
                         c = new Collision();
                         c->push_back({-6, -6, 172, 172});
+                        list.push_back(c);
+                        break;
+                    case CollisionId_BulletMagic:
+                        c = new Collision();
+                        c->push_back({0, 0, 200, 200});
                         list.push_back(c);
                         break;
                     case CollisionId_BulletVulcan:

@@ -17,10 +17,12 @@ namespace hg
     void initialize(SpawnData sd, FighterInfo* pl);
     void render();
     void deployFriends();
+    void retreat();
     void update(KeyInfo keyState);
     bool isGameEnd();
     BattleResult getResult();
     void cleanup();
     void setPause(bool shouldPause);
+    void setCameraZPostion(float val);
 }
 #endif

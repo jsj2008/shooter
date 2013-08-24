@@ -182,6 +182,7 @@ namespace hg {
     HGNode* pLayerEnemy = NULL;
     HGNode* pLayerBullet = NULL;
     HGNode* pLayerEffect = NULL;
+    HG3DModel* pPlanetModel;
     Rader* pRader = NULL;
     SpawnData spawnData;
     float spawningEnemyCount = 0;
@@ -208,6 +209,8 @@ namespace hg {
     KeyInfo keyInfo = {};
     HGSize sizeOfField(0,0);
     HGPoint pointOfFieldCenter(0,0);
+    
+    float cameraZposition = -25;
     
     // アニメ
     void showHitAnimation(Actor* a)
@@ -357,7 +360,7 @@ namespace hg {
             {
                 UserData* u = UserData::sharedUserData();
                 battleResult.killedEnemy++;
-                battleResult.earnedMoney += ceil(u->getCost(pFighter->getFighterInfo())*0.05);
+                battleResult.earnedMoney += u->getKillReward(pFighter->getFighterInfo());
                 // 当てた方の経験値加算
                 Fighter* a = pBullet->getOwner();
                 if (a)
@@ -711,7 +714,7 @@ namespace hg {
                     HGProcessOwner* po = new HGProcessOwner();
                     CallFunctionRepeadedlyProcess<Fn>* cfrp = new CallFunctionRepeadedlyProcess<Fn>();
                     cfrp->init(po, &Fn::exec, fn);
-                    cfrp->setWaitFrame(f(70));
+                    cfrp->setWaitFrame(f(150));
                     
                     // プロセス開始
                     HGProcessManager::sharedProcessManager()->addProcess(cfrp);
@@ -724,7 +727,7 @@ namespace hg {
                     pNodeText->setScaleByTextSize(8);
                     pNodeText->setPosition(0, 0);
                     pNodeText->setAnchor(0.5, 0.5);
-                    pNodeText->setblendcolor({64, 64, 64});
+                    pNodeText->setblendcolor({(float)0x6a/255.f, (float)0x93/255.f, (float)0xd4/255.f});
                     pLayerUIRoot->addChild(pNodeText);
                 }
                 collectAllFriends();
@@ -755,6 +758,95 @@ namespace hg {
     
     ////////////////////
     // ステート
+    class RetreatState : public HGState
+    {
+        ~RetreatState()
+        {
+            
+        }
+        void onUpdate()
+        {
+            if (this->getFrameCount() == 0)
+            {
+                battleResult.isRetreat = true;
+                
+                class Fn : public HGObject
+                {
+                public:
+                    Fn() {}
+                    bool exec()
+                    {
+                        isEnd = true;
+                        return true;
+                    }
+                };
+                
+                // 終了
+                {
+                    Fn* fn = new Fn();
+                    HGProcessOwner* po = new HGProcessOwner();
+                    CallFunctionRepeadedlyProcess<Fn>* cfrp = new CallFunctionRepeadedlyProcess<Fn>();
+                    cfrp->init(po, &Fn::exec, fn);
+                    cfrp->setWaitFrame(f(70));
+                    
+                    // プロセス開始
+                    HGProcessManager::sharedProcessManager()->addProcess(cfrp);
+                }
+                
+                // retreat
+                {
+                    HGText* pNodeText = new HGText();
+                    pNodeText->initWithString("Retreat");
+                    pNodeText->setScaleByTextSize(8);
+                    pNodeText->setPosition(0, 0);
+                    pNodeText->setAnchor(0.5, 0.5);
+                    pNodeText->setblendcolor({(float)0xcd/255.f, (float)0x35/255.f, (float)0xd3/255.f});
+                    //pNodeText->setblendcolor({0.5,0,0});
+                    pLayerUIRoot->addChild(pNodeText);
+                }
+                
+                
+                // 仲間を退却させる
+                {
+                    UserData* userData = UserData::sharedUserData();
+                    FighterList fList = userData->getFighterList();
+                    for (FighterList::iterator it = fList.begin(); it != fList.end(); ++it)
+                    {
+                        FighterInfo* pFighterInfo = (*it);
+                        if (pFighterInfo->life <= 0 || pFighterInfo->isPlayer)
+                        {
+                            continue;
+                        }
+                        pFighterInfo->isOnBattleGround = false;
+                    }
+                    deployAllFriends();
+                }
+                
+                // 自分も撤退する
+                if (pPlayer && pPlayer->isActive() && pPlayer->getLife() > 0)
+                {
+                    pPlayer->disappear();
+                }
+                
+            }
+            HGProcessManager::sharedProcessManager()->update();
+            addActorsToCells();
+            checkCollision(enemyFighterList, friendBulletCellManager);
+            checkCollision(friendFighterList, enemyBulletCellManager);
+            
+            // update Rader
+            if (this->getFrameCount() % f(10) == 0)
+            {
+                pRader->updateRader(enemyCellManager, friendCellManager);
+            }
+            
+        }
+        std::string getName()
+        {
+            return "RetreatState";
+        }
+    };
+    
     class WinState : public HGState
     {
         ~WinState()
@@ -783,7 +875,7 @@ namespace hg {
                     HGProcessOwner* po = new HGProcessOwner();
                     CallFunctionRepeadedlyProcess<Fn>* cfrp = new CallFunctionRepeadedlyProcess<Fn>();
                     cfrp->init(po, &Fn::exec, fn);
-                    cfrp->setWaitFrame(f(70));
+                    cfrp->setWaitFrame(f(150));
                     
                     // プロセス開始
                     HGProcessManager::sharedProcessManager()->addProcess(cfrp);
@@ -796,7 +888,7 @@ namespace hg {
                     pNodeText->setScaleByTextSize(8);
                     pNodeText->setPosition(0, 0);
                     pNodeText->setAnchor(0.5, 0.5);
-                    pNodeText->setblendcolor({255, 0, 0});
+                    pNodeText->setblendcolor({1, 0, 0});
                     pLayerUIRoot->addChild(pNodeText);
                 }
                 
@@ -921,6 +1013,7 @@ namespace hg {
 
     ////////////////////
     // 初期化
+    //hgles::HGLObject3D* planetObj = NULL;
     void initialize(SpawnData sd, FighterInfo* pl)
     {
         NSLog(@"INITIALIZE START");
@@ -1094,6 +1187,22 @@ namespace hg {
             pLayerBackground->addChild(pSprite);
         }
         
+        // planet
+        {
+            HG3DModel* mdl = new HG3DModel();
+            mdl->init("globe");
+            float clearRatio = hg::UserData::sharedUserData()->getCurrentClearRatio();
+            hg::StageInfo info = hg::UserData::sharedUserData()->getStageInfo();
+            float scale = info.small_size + 1 * info.big_size;
+            mdl->setScale(scale, scale, scale);
+            mdl->setPosition(FIELD_SIZE + 100, FIELD_SIZE/2 + 200, -400);
+            mdl->setRotateX(rand(0, 100) * 0.1);
+            mdl->setRotateY(rand(0, 100) * 0.1);
+            mdl->setRotateZ(rand(0, 100) * 0.1);
+            pPlanetModel = mdl;
+            pLayerBackground->addChild(mdl);
+        }
+        
         // フィールド境界
         {
             HGSprite* pSprite = new HGSprite();
@@ -1112,6 +1221,20 @@ namespace hg {
                 cscp->setEaseFunc(&ease_linear);
                 HGProcessManager::sharedProcessManager()->addProcess(cscp);
             }
+        }
+        {
+#warning test
+            /*
+            // planet
+            hg::StageInfo stageInfo = hg::UserData::sharedUserData()->getStageInfo();
+            planetObj = hgles::HGLObjLoader::load([NSString stringWithCString:stageInfo.model_name.c_str() encoding:NSUTF8StringEncoding]);
+            planetObj->position.z = -600;
+            
+            // size
+            float currentClearRatio = hg::UserData::sharedUserData()->getCurrentClearRatio();
+            float size = stageInfo.small_size  + stageInfo.big_size * currentClearRatio;
+            planetObj->scale.set(size, size, size);
+            */
         }
         
         // player
@@ -1160,6 +1283,17 @@ namespace hg {
         shouldDeployFriends = true;
     }
     
+    void setCameraZPostion(float val)
+    {
+        cameraZposition = val;
+    }
+    
+    void retreat()
+    {
+        HGStateManager::sharedStateManger()->pop();
+        HGStateManager::sharedStateManger()->push(new RetreatState());
+    }
+    
     ////////////////////
     // 更新
     void update(KeyInfo keyState)
@@ -1196,22 +1330,34 @@ namespace hg {
         {
             pLayerBattleRoot->setCameraPosition(pPlayer->getPositionX() * -1,
                                                 pPlayer->getPositionY() * -1 + 7,
-                                                -18);
-            pLayerBattleRoot->setCameraRotate(-15 * M_PI/180, 0, 0);
+                                                cameraZposition);
+            pLayerBattleRoot->setCameraRotate(
+                atan2(-7, -1*cameraZposition), 0, 0
+            );
+        }
+        
+        // rotate planet
+        if (pPlanetModel) {
+            pPlanetModel->setRotateX(pPlanetModel->getRotateX() + 0.0003);
+            pPlanetModel->setRotateY(pPlanetModel->getRotateY() + 0.005);
+            pPlanetModel->setRotateZ(pPlanetModel->getRotateZ() + 0.0002);
         }
         
         // ノードを描画
         HGDirector::sharedDirector()->drawRootNode();
         
+        {
+            //planetObj->draw();
+        }
         /*
          // 光源なし
-        glUniform1f(hgles::currentContext->uUseLight, 1.0);
-        // 2d
-        glEnable(GL_DEPTH_TEST);
-        if (testObject == NULL)
-        {
-            testObject = hgles::HGLObjLoader::load(@"block.obj");
-            testObject->position = pPlayer->getNode()->getPosition();
+         glUniform1f(hgles::currentContext->uUseLight, 1.0);
+         // 2d
+         glEnable(GL_DEPTH_TEST);
+         if (testObject == NULL)
+         {
+         testObject = hgles::HGLObjLoader::load(@"block.obj");
+         testObject->position = pPlayer->getNode()->getPosition();
             testObject->scale.set(100,100,100);
             testObject->useLight = 1;
         }

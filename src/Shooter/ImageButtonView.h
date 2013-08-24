@@ -11,5 +11,7 @@
 @interface ImageButtonView : UIImageView
 
 - (void)setOnTapAction:(void(^)(ImageButtonView* target)) _onTap;
+- (void)setOnToutchBegan:(void(^)(ImageButtonView* target)) _callback;
+- (void)setOnToutchEnd:(void(^)(ImageButtonView* target)) _callback;
 
 @end

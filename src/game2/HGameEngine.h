@@ -3,6 +3,8 @@
 
 #import "HGLES.h"
 #import "HGLGraphics2D.h"
+#import "HGLObject3D.h"
+#import "HGLObjLoader.h"
 
 #import "HTypes.h"
 
@@ -759,6 +761,10 @@ namespace hg
                 texture.blendColor = blendColor;
                 texture.isAlphaMap = isAlphaMap;
             }
+            if (hgles::ProgramType2D != hgles::getCurrentProgramType())
+            {
+                hgles::setCurrentContext(hgles::ProgramType2D);
+            }
             switch (type)
             {
                 case SPRITE_TYPE_BILLBOARD:
@@ -841,6 +847,75 @@ namespace hg
         }
         
     };
+    
+    ////////////////////
+    // 3Dモデル
+    
+    class HG3DModel: public HGNode
+    {
+    public:
+        HG3DModel():
+        HGNode()
+        {
+        };
+        inline virtual void init(std::string modelName)
+        {
+            this->modelName = modelName;
+            // planet
+            obj = hgles::HGLObjLoader::load([NSString stringWithCString:modelName.c_str() encoding:NSUTF8StringEncoding]);
+        }
+        ~HG3DModel()
+        {
+            delete obj;
+        }
+        inline void setScale(float x, float y, float z)
+        {
+            obj->scale.set(x, y, z);
+        }
+        inline void setRotate(float x, float y, float z)
+        {
+            obj->rotate.set(x, y, z);
+        }
+        inline void setRotateX(float x)
+        {
+            obj->rotate.x = x;
+        }
+        inline void setRotateY(float y)
+        {
+            obj->rotate.y = y;
+        }
+        inline void setRotateZ(float z)
+        {
+            obj->rotate.z = z;
+        }
+        inline float getRotateX()
+        {
+            return obj->rotate.x;
+        }
+        inline float getRotateY()
+        {
+            return obj->rotate.y;
+        }
+        inline float getRotateZ()
+        {
+            return obj->rotate.z;
+        }
+        inline void setPosition(float x, float y, float z)
+        {
+            obj->position.set(x, y, z);
+        }
+    protected:
+        inline void render()
+        {
+            glEnable(GL_DEPTH_TEST);
+            obj->draw();
+            glDisable(GL_DEPTH_TEST);
+        }
+    private:
+        hgles::HGLObject3D* obj = NULL;
+        std::string modelName;
+    };
+    
     
     ////////////////////
     // グローバルノード
