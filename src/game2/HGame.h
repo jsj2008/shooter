@@ -24,5 +24,7 @@ namespace hg
     void cleanup();
     void setPause(bool shouldPause);
     void setCameraZPostion(float val);
+    float getHPRatio();
+    float getShieldRatio();
 }
 #endif

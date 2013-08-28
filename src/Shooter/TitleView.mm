@@ -94,10 +94,10 @@ t_title_btn title_btn_info[] = {
 {
     
     // logo
-    UIImage* img = [UIImage imageNamed:@"logo.png"];
+    UIImage* img = [UIImage imageNamed:@"ShooterTitle.jpg"];
     UIImageView* imgView = [[[UIImageView alloc] initWithImage:img] autorelease];
     float w = self.frame.size.width;
-    float h = w/480*320;
+    float h = w/884*944;
     [self addSubview:imgView];
     CGRect logoFrame = CGRectMake(0,0,w,h);
     [imgView setFrame:logoFrame];

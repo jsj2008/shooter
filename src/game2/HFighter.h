@@ -285,6 +285,10 @@ namespace hg {
         {
             return life;
         }
+        inline float getLifeRatio()
+        {
+            return (float)life/(float)pFighterInfo->lifeMax;
+        }
         inline void setPlayer()
         {
             _isPlayer = true;
@@ -421,7 +425,7 @@ namespace hg {
         inline void showTracks(float rad)
         {
             // 軌跡
-            if (!_isShip && side == SideTypeFriend && rand(0, 100) <= 50)
+            if (side == SideTypeFriend && rand(0, 100) <= 50)
             {
                 for (int i = 0; i < 2; i++)
                 {
@@ -678,7 +682,7 @@ namespace hg {
                     float d = toDeg(r)-90;
                     (*it)->setAspect(d);
                 }
-                (*it)->fire(this, side);
+                (*it)->fire(this, side, _isPlayer);
             }
         }
         
@@ -687,7 +691,7 @@ namespace hg {
             for (WeaponList::iterator it = weaponList.begin(); it != weaponList.end(); ++it)
             {
                 (*it)->setAspect(this->aspectDegree);
-                (*it)->fire(this, side);
+                (*it)->fire(this, side, _isPlayer);
             }
         }
         
@@ -706,10 +710,15 @@ namespace hg {
             return shield > 0;
         }
         
+        inline float getShieldRatio()
+        {
+            return (float)shield/(float)pFighterInfo->shieldMax;
+        }
+        
         inline HGRect getShieldRect()
         {
             assert(hasShield());
-            HGRect r = {this->getPositionX() - this->getWidth()/2 - SHILD_SIZE_GAP, this->getPositionY() - SHILD_SIZE_GAP,
+            HGRect r = {this->getPositionX() - this->getWidth()/2 - SHILD_SIZE_GAP, this->getPositionY() - this->getHeight()/2 - SHILD_SIZE_GAP,
                        this->getWidth() + SHILD_SIZE_GAP, this->getHeight() + SHILD_SIZE_GAP};
             return r;
         }
@@ -764,7 +773,7 @@ namespace hg {
         inline void healShield()
         {
             assert(hasShield());
-            shield += ceil(shieldMax*0.02);
+            shield += ceil(shieldMax*0.005);
             if (shield > shieldMax)
             {
                 shield = shieldMax;

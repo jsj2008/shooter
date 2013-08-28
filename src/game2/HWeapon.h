@@ -65,13 +65,8 @@ namespace hg {
             return relativePosition.y;
         }
         
-        inline void fire(Fighter* pOwner, SideType side)
+        Bullet* createBullet()
         {
-            if (getNowTime() - lastFireTime < fireInterval)
-            {
-                return;
-            }
-            lastFireTime = getNowTime();
             Bullet* bp = new Bullet();
             float x = getPositionX(pOwner) + relativePosition.x;
             float y = getPositionY(pOwner) + relativePosition.y;
@@ -79,14 +74,34 @@ namespace hg {
             switch (side) {
                 case SideTypeEnemy:
                     enemyBulletList.addActor(bp);
+                    battleResult.enemyShot++;
                     break;
                 case SideTypeFriend:
                     friendBulletList.addActor(bp);
-                   break;
+                    if (isPlayer) {
+                        battleResult.myShot++;
+                    }
+                    battleResult.allShot++;
+                    battleResult.allShotPower += power;
+                    break;
                 default:
                     assert(0);
                     break;
             }
+            return bp;
+        }
+        
+        inline void fire(Fighter* pOwner, SideType side, bool isPlayer)
+        {
+            if (getNowTime() - lastFireTime < fireInterval)
+            {
+                return;
+            }
+            this->pOwner = pOwner;
+            this->side = side;
+            this->isPlayer = isPlayer;
+            lastFireTime = getNowTime();
+            normalShot();
         }
         
         inline void setInterval(float interval)
@@ -99,6 +114,13 @@ namespace hg {
             this->aspectDegree = degree;
         }
         
+        ////////////////////
+        void normalShot()
+        {
+            createBullet();
+        }
+        
+        ////////////////////
         float speed;
         int power;
         HGPoint relativePosition;
@@ -107,6 +129,12 @@ namespace hg {
         int type;
         int bulletType;
         float aspectDegree;
+        
+        ////////////////////
+    private:
+        Fighter* pOwner;
+        SideType side;
+        bool isPlayer;
     };
 }
 

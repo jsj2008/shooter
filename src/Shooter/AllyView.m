@@ -6,6 +6,7 @@
 //  Copyright (c) 2013年 hayogame. All rights reserved.
 //
 
+#import "Common.h"
 #import "AllyView.h"
 #import "AllyTableView.h"
 #import "UserData.h"
@@ -575,7 +576,8 @@
 
 - (void)setShowColor:(UIColor *)color
 {
-    UIColor* lifeColor = [UIColor colorWithHexString:@"#269926"];
+    //UIColor* lifeColor = [UIColor colorWithHexString:@"#269926"];
+    UIColor* lifeColor = MAIN_FONT_COLOR;
     if (_fighterInfo->life == 0)
     {
         lifeColor = [UIColor colorWithHexString:@"#ff4040"];

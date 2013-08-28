@@ -25,6 +25,10 @@
 #define DEPLOY_BTN_SIZE 50
 #define CAMERA_ADJUST_BTN_SIZE 35
 
+#define GAUGE_FRAME_WIDTH 20
+#define GAUGE_FRAME_HEIGHT 160
+#define GAUGE_BAR_WIDTH 10
+#define GAUGE_BAR_HEIGHT 150
 
 @interface GameView()
 {
@@ -56,6 +60,13 @@
     bool upCamera;
     bool downCamera;
     
+    CGRect hpGaugeFrameRect;
+    CGRect shieldGaugeFrameRect;
+    CGRect hpGaugeRect;
+    CGRect shieldGaugeRect;
+    UIView* hpGaugeBar;
+    UIView* shieldGaugeBar;
+    
 }
 @end
 
@@ -74,6 +85,12 @@ static NSObject* lock = nil;
     }
     [baseView release];
     [baseCurtain release];
+    if (hpGaugeBar) {
+        [hpGaugeBar release];
+    }
+    if (shieldGaugeBar) {
+        [shieldGaugeBar release];
+    }
     [super dealloc];
 }
 
@@ -141,6 +158,7 @@ static NSObject* lock = nil;
                     spawnData.push_back(hg::SpawnGroup());
                 }
                 spawnData[tmpGroup].push_back(f);
+                break;
             }
             
             // initialize game
@@ -181,6 +199,13 @@ static NSObject* lock = nil;
                                 hg::setCameraZPostion(hg::UserData::sharedUserData()->getCameraPosition());
                             }
                             [_glview draw];
+                            
+                            // update life bar
+                            dispatch_async(dispatch_get_main_queue()
+                                           , ^{
+                                               [self updateGauge];
+                                           });
+                            
                             if (hg::isGameEnd())
                             {
                                 NSLog(@"is game end");
@@ -424,6 +449,44 @@ static NSObject* lock = nil;
             }];
         }
         
+        // hp gauge
+        {
+            hpGaugeFrameRect = CGRectMake(10, 10, GAUGE_FRAME_WIDTH, GAUGE_FRAME_HEIGHT);
+            hpGaugeRect = CGRectMake(10 + (GAUGE_FRAME_WIDTH - GAUGE_BAR_WIDTH)/2, 10 + (GAUGE_FRAME_HEIGHT - GAUGE_BAR_HEIGHT)/2, GAUGE_BAR_WIDTH, GAUGE_BAR_HEIGHT);
+            UIView* gaugeFrame = [[[UIView alloc] initWithFrame:hpGaugeFrameRect] autorelease];
+            [gaugeFrame setBackgroundColor:[UIColor clearColor]];
+            [gaugeFrame.layer setBorderColor:[UIColor whiteColor].CGColor];
+            [gaugeFrame.layer setBorderWidth:2];
+            [gaugeFrame.layer setCornerRadius:GAUGE_FRAME_WIDTH/2];
+            [baseView addSubview:gaugeFrame];
+            
+            hpGaugeBar = [[[UIView alloc] initWithFrame:hpGaugeRect] autorelease];
+            [hpGaugeBar setBackgroundColor:[UIColor greenColor]];
+            [hpGaugeBar.layer setBorderWidth:0];
+            [hpGaugeBar.layer setCornerRadius:GAUGE_BAR_WIDTH/2];
+            [baseView addSubview:hpGaugeBar];
+        }
+        
+        // shield gauge
+        if (hg::UserData::sharedUserData()->getPlayerInfo()->shieldMax > 0) {
+            shieldGaugeFrameRect = CGRectMake(10 + GAUGE_FRAME_WIDTH + 2, 10, GAUGE_FRAME_WIDTH, GAUGE_FRAME_HEIGHT);
+            shieldGaugeRect = CGRectMake(10 + GAUGE_FRAME_WIDTH + 2 + (GAUGE_FRAME_WIDTH - GAUGE_BAR_WIDTH)/2, 10 + (GAUGE_FRAME_HEIGHT - GAUGE_BAR_HEIGHT)/2, GAUGE_BAR_WIDTH, GAUGE_BAR_HEIGHT);
+            UIView* gaugeFrame = [[[UIView alloc] initWithFrame:shieldGaugeFrameRect] autorelease];
+            [gaugeFrame setBackgroundColor:[UIColor clearColor]];
+            [gaugeFrame.layer setBorderColor:[UIColor whiteColor].CGColor];
+            [gaugeFrame.layer setBorderWidth:2];
+            [gaugeFrame.layer setCornerRadius:GAUGE_FRAME_WIDTH/2];
+            [baseView addSubview:gaugeFrame];
+            
+            shieldGaugeBar = [[[UIView alloc] initWithFrame:shieldGaugeRect] autorelease];
+            [shieldGaugeBar setBackgroundColor:[UIColor blueColor]];
+            [shieldGaugeBar.layer setBorderWidth:0];
+            [shieldGaugeBar.layer setCornerRadius:GAUGE_BAR_WIDTH/2];
+            [baseView addSubview:shieldGaugeBar];
+        } else {
+            shieldGaugeBar = nil;
+        }
+        
         // curtain
         {
             baseCurtain = [[UIView alloc] initWithFrame:baseFrame];
@@ -506,6 +569,31 @@ static NSObject* lock = nil;
         
     }
     
+}
+
+- (void)updateGauge
+{
+    if (hpGaugeBar) {
+        float lifeRatio = hg::getHPRatio();
+        CGRect r = hpGaugeRect;
+        r.size.height = lifeRatio * r.size.height;
+        r.origin.y = hpGaugeRect.origin.y + (hpGaugeRect.size.height - r.size.height);
+        [hpGaugeBar setFrame:r];
+        if (lifeRatio <= 0.3) {
+            [hpGaugeBar setBackgroundColor:[UIColor redColor]];
+        } else if (lifeRatio <= 0.5) {
+            [hpGaugeBar setBackgroundColor:[UIColor yellowColor]];
+        } else {
+            [hpGaugeBar setBackgroundColor:[UIColor greenColor]];
+        }
+    }
+    if (shieldGaugeBar) {
+        float lifeRatio = hg::getShieldRatio();
+        CGRect r = shieldGaugeRect;
+        r.size.height = lifeRatio * r.size.height;
+        r.origin.y = shieldGaugeRect.origin.y + (shieldGaugeRect.size.height - r.size.height);
+        [shieldGaugeBar setFrame:r];
+    }
 }
 
 - (void) startFire

@@ -240,11 +240,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/Shooter/GameView.mm"
-         timestampString = "398767507.960412"
+         timestampString = "399331206.554181"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "210"
-         endingLineNumber = "210"
+         startingLineNumber = "235"
+         endingLineNumber = "235"
          landmarkName = "-initialize"
          landmarkType = "5">
       </FileBreakpoint>
@@ -292,11 +292,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/Shooter/GameView.mm"
-         timestampString = "398767507.960412"
+         timestampString = "399330128.370605"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "92"
-         endingLineNumber = "92"
+         startingLineNumber = "109"
+         endingLineNumber = "109"
          landmarkName = "-initWithOnEndAction:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -305,11 +305,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/Shooter/GameView.mm"
-         timestampString = "398767507.960412"
+         timestampString = "399330128.370605"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "166"
-         endingLineNumber = "166"
+         startingLineNumber = "184"
+         endingLineNumber = "184"
          landmarkName = "-initialize"
          landmarkType = "5">
       </FileBreakpoint>
@@ -318,11 +318,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/Shooter/GameView.mm"
-         timestampString = "398767507.960412"
+         timestampString = "399330128.370605"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "123"
-         endingLineNumber = "123"
+         startingLineNumber = "140"
+         endingLineNumber = "140"
          landmarkName = "-initialize"
          landmarkType = "5">
       </FileBreakpoint>
@@ -331,11 +331,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/Shooter/MainViewController.mm"
-         timestampString = "399014683.937276"
+         timestampString = "399302440.791064"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "156"
-         endingLineNumber = "156"
+         startingLineNumber = "161"
+         endingLineNumber = "161"
          landmarkName = "-showBackgroundView"
          landmarkType = "5">
       </FileBreakpoint>
@@ -357,11 +357,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/Shooter/AllyView.m"
-         timestampString = "396084242.496758"
+         timestampString = "399324718.136449"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "233"
-         endingLineNumber = "233"
+         startingLineNumber = "234"
+         endingLineNumber = "234"
          landmarkName = "-setFighterInfo:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -370,11 +370,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/Shooter/AllyView.m"
-         timestampString = "396084242.496758"
+         timestampString = "399324718.136449"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "231"
-         endingLineNumber = "231"
+         startingLineNumber = "232"
+         endingLineNumber = "232"
          landmarkName = "-setFighterInfo:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -383,11 +383,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/Shooter/AllyView.m"
-         timestampString = "396084242.496758"
+         timestampString = "399324718.136449"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "132"
-         endingLineNumber = "132"
+         startingLineNumber = "133"
+         endingLineNumber = "133"
          landmarkName = "-setFighterInfo:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -396,11 +396,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/Shooter/AllyView.m"
-         timestampString = "396084242.496758"
+         timestampString = "399324718.136449"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "106"
-         endingLineNumber = "106"
+         startingLineNumber = "107"
+         endingLineNumber = "107"
          landmarkName = "-labelWithIndex:WithText:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -409,11 +409,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/Shooter/AllyView.m"
-         timestampString = "396084242.496758"
+         timestampString = "399324718.136449"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "103"
-         endingLineNumber = "103"
+         startingLineNumber = "104"
+         endingLineNumber = "104"
          landmarkName = "@implementation AllyView"
          landmarkType = "3">
       </FileBreakpoint>
@@ -422,11 +422,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/Shooter/AllyView.m"
-         timestampString = "396084242.496758"
+         timestampString = "399324718.136449"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "100"
-         endingLineNumber = "100"
+         startingLineNumber = "101"
+         endingLineNumber = "101"
          landmarkName = "-reloadData"
          landmarkType = "5">
       </FileBreakpoint>
@@ -435,11 +435,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/Shooter/DialogView.m"
-         timestampString = "398971799.585761"
+         timestampString = "399324718.136449"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "114"
-         endingLineNumber = "114"
+         startingLineNumber = "115"
+         endingLineNumber = "115"
          landmarkName = "-show"
          landmarkType = "5">
       </FileBreakpoint>
@@ -448,11 +448,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/Shooter/DialogView.m"
-         timestampString = "398971799.585761"
+         timestampString = "399324718.136449"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "175"
-         endingLineNumber = "175"
+         startingLineNumber = "176"
+         endingLineNumber = "176"
          landmarkName = "-show"
          landmarkType = "5">
       </FileBreakpoint>
@@ -461,37 +461,37 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/Shooter/DialogView.m"
-         timestampString = "398971799.585761"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "171"
-         endingLineNumber = "171"
-         landmarkName = "-show"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "src/Shooter/DialogView.m"
-         timestampString = "398971799.585761"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "173"
-         endingLineNumber = "173"
-         landmarkName = "-show"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "src/Shooter/DialogView.m"
-         timestampString = "398971799.585761"
+         timestampString = "399324718.136449"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "172"
          endingLineNumber = "172"
+         landmarkName = "-show"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/Shooter/DialogView.m"
+         timestampString = "399324718.136449"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "174"
+         endingLineNumber = "174"
+         landmarkName = "-show"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/Shooter/DialogView.m"
+         timestampString = "399324718.136449"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "173"
+         endingLineNumber = "173"
          landmarkName = "-show"
          landmarkType = "5">
       </FileBreakpoint>
@@ -760,11 +760,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/game2/HGame.mm"
-         timestampString = "399018468.14604"
+         timestampString = "399332631.305865"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "614"
-         endingLineNumber = "614"
+         startingLineNumber = "627"
+         endingLineNumber = "627"
          landmarkName = "deployAllFriends()"
          landmarkType = "7">
       </FileBreakpoint>
@@ -773,11 +773,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/game2/HGame.mm"
-         timestampString = "399018468.14604"
+         timestampString = "399332631.305865"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "983"
-         endingLineNumber = "983"
+         startingLineNumber = "996"
+         endingLineNumber = "996"
          landmarkName = "onUpdate()"
          landmarkType = "5">
       </FileBreakpoint>
@@ -786,11 +786,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/game2/HGame.mm"
-         timestampString = "399018468.14604"
+         timestampString = "399332631.305865"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "636"
-         endingLineNumber = "636"
+         startingLineNumber = "649"
+         endingLineNumber = "649"
          landmarkName = "deployAllFriends()"
          landmarkType = "7">
       </FileBreakpoint>
@@ -799,11 +799,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/game2/HGame.mm"
-         timestampString = "399018468.14604"
+         timestampString = "399332631.305865"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "633"
-         endingLineNumber = "633"
+         startingLineNumber = "646"
+         endingLineNumber = "646"
          landmarkName = "deployAllFriends()"
          landmarkType = "7">
       </FileBreakpoint>
@@ -812,11 +812,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/Shooter/AllyView.m"
-         timestampString = "396084242.496758"
+         timestampString = "399324718.136449"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "147"
-         endingLineNumber = "147"
+         startingLineNumber = "148"
+         endingLineNumber = "148"
          landmarkName = "-setFighterInfo:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -825,11 +825,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/Shooter/AllyView.m"
-         timestampString = "396084242.496758"
+         timestampString = "399324718.136449"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "239"
-         endingLineNumber = "239"
+         startingLineNumber = "240"
+         endingLineNumber = "240"
          landmarkName = "-setFighterInfo:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -927,11 +927,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/Shooter/GameView.mm"
-         timestampString = "398767507.960412"
+         timestampString = "399331206.554181"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "188"
-         endingLineNumber = "188"
+         startingLineNumber = "213"
+         endingLineNumber = "213"
          landmarkName = "-initialize"
          landmarkType = "5">
       </FileBreakpoint>
@@ -940,11 +940,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/Shooter/GameView.mm"
-         timestampString = "398767507.960412"
+         timestampString = "399331206.554181"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "185"
-         endingLineNumber = "185"
+         startingLineNumber = "210"
+         endingLineNumber = "210"
          landmarkName = "-initialize"
          landmarkType = "5">
       </FileBreakpoint>
@@ -953,11 +953,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/Shooter/GameView.mm"
-         timestampString = "398767507.960412"
+         timestampString = "399331206.554181"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "222"
-         endingLineNumber = "222"
+         startingLineNumber = "247"
+         endingLineNumber = "247"
          landmarkName = "-initialize"
          landmarkType = "5">
       </FileBreakpoint>
@@ -966,11 +966,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/Shooter/GameView.mm"
-         timestampString = "398767507.960412"
+         timestampString = "399331206.554181"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "223"
-         endingLineNumber = "223"
+         startingLineNumber = "248"
+         endingLineNumber = "248"
          landmarkName = "-initialize"
          landmarkType = "5">
       </FileBreakpoint>
@@ -979,11 +979,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/Shooter/GameView.mm"
-         timestampString = "398767507.960412"
+         timestampString = "399331206.554181"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "217"
-         endingLineNumber = "217"
+         startingLineNumber = "242"
+         endingLineNumber = "242"
          landmarkName = "-initialize"
          landmarkType = "5">
       </FileBreakpoint>
@@ -1018,11 +1018,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/Shooter/AllyView.m"
-         timestampString = "396084291.386741"
+         timestampString = "399324718.136449"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "149"
-         endingLineNumber = "149"
+         startingLineNumber = "150"
+         endingLineNumber = "150"
          landmarkName = "-setFighterInfo:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -1121,32 +1121,6 @@
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "src/game2/HGame.mm"
-         timestampString = "399018468.14604"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "371"
-         endingLineNumber = "371"
-         landmarkName = "onFighterCollidedWithBullet(Fighter* pFighter, Bullet* pBullet)"
-         landmarkType = "7">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "src/game2/HGame.mm"
-         timestampString = "399018468.14604"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "351"
-         endingLineNumber = "351"
-         landmarkName = "onFighterCollidedWithBullet(Fighter* pFighter, Bullet* pBullet)"
-         landmarkType = "7">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
          filePath = "src/game2/UserData.cpp"
          timestampString = "397321699.142583"
          startingColumnNumber = "9223372036854775807"
@@ -1172,11 +1146,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/Shooter/GameView.mm"
-         timestampString = "398767507.960412"
+         timestampString = "399330128.370605"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "69"
-         endingLineNumber = "69"
+         startingLineNumber = "80"
+         endingLineNumber = "80"
          landmarkName = "-dealloc"
          landmarkType = "5">
       </FileBreakpoint>
@@ -1185,11 +1159,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/Shooter/MessageView.m"
-         timestampString = "397297949.026529"
+         timestampString = "399328870.847552"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "53"
-         endingLineNumber = "53"
+         startingLineNumber = "55"
+         endingLineNumber = "55"
          landmarkName = "-onTap:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -1198,11 +1172,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/Shooter/MessageView.m"
-         timestampString = "397297949.026529"
+         timestampString = "399328870.847552"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "43"
-         endingLineNumber = "43"
+         startingLineNumber = "45"
+         endingLineNumber = "45"
          landmarkName = "-dealloc"
          landmarkType = "5">
       </FileBreakpoint>
@@ -1263,11 +1237,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/game2/UserDataManager.mm"
-         timestampString = "398712343.304671"
+         timestampString = "399275721.76122"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "100"
-         endingLineNumber = "100"
+         startingLineNumber = "101"
+         endingLineNumber = "101"
          landmarkName = "initDatabase()"
          landmarkType = "7">
       </FileBreakpoint>
@@ -1289,11 +1263,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/game2/UserDataManager.mm"
-         timestampString = "398942523.18546"
+         timestampString = "399275721.76122"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "154"
-         endingLineNumber = "154"
+         startingLineNumber = "156"
+         endingLineNumber = "156"
          landmarkName = "insertFighterInfo(int inc_id, int fighterRecordType, hg::FighterInfo* info)"
          landmarkType = "7">
       </FileBreakpoint>
@@ -1302,11 +1276,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/game2/UserDataManager.mm"
-         timestampString = "398712343.304671"
+         timestampString = "399275721.76122"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "145"
-         endingLineNumber = "145"
+         startingLineNumber = "146"
+         endingLineNumber = "146"
          landmarkName = "insertFighterInfo(int inc_id, int fighterRecordType, hg::FighterInfo* info)"
          landmarkType = "7">
       </FileBreakpoint>
@@ -1315,11 +1289,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/game2/UserDataManager.mm"
-         timestampString = "398943479.913136"
+         timestampString = "399275721.76122"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "180"
-         endingLineNumber = "180"
+         startingLineNumber = "183"
+         endingLineNumber = "183"
          landmarkName = "insertFighterInfo(int inc_id, int fighterRecordType, hg::FighterInfo* info)"
          landmarkType = "7">
       </FileBreakpoint>
@@ -1328,11 +1302,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/game2/UserDataManager.mm"
-         timestampString = "398712343.304671"
+         timestampString = "399275721.76122"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "103"
-         endingLineNumber = "103"
+         startingLineNumber = "104"
+         endingLineNumber = "104"
          landmarkName = "initDatabase()"
          landmarkType = "7">
       </FileBreakpoint>
@@ -1367,12 +1341,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/game2/UserData.mm"
-         timestampString = "399051650.88009"
+         timestampString = "399365353.143709"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "243"
-         endingLineNumber = "243"
-         landmarkName = "UserData::DeleteAllData()"
+         startingLineNumber = "463"
+         endingLineNumber = "463"
+         landmarkName = "UserData::loadData()"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -1380,11 +1354,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/game2/UserData.mm"
-         timestampString = "399051650.88009"
+         timestampString = "399365353.143709"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "303"
-         endingLineNumber = "303"
+         startingLineNumber = "523"
+         endingLineNumber = "523"
          landmarkName = "UserData::saveData()"
          landmarkType = "5">
       </FileBreakpoint>
@@ -1393,11 +1367,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/game2/UserDataManager.mm"
-         timestampString = "398712343.304671"
+         timestampString = "399275721.76122"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "104"
-         endingLineNumber = "104"
+         startingLineNumber = "105"
+         endingLineNumber = "105"
          landmarkName = "initDatabase()"
          landmarkType = "7">
       </FileBreakpoint>
@@ -1419,24 +1393,22 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/game2/UserData.mm"
-         timestampString = "399051650.88009"
+         timestampString = "399365353.143709"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "271"
-         endingLineNumber = "271"
-         landmarkName = "UserData::saveData()"
-         landmarkType = "5">
+         startingLineNumber = "491"
+         endingLineNumber = "491">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/Shooter/GameView.mm"
-         timestampString = "398767507.960412"
+         timestampString = "399331206.554181"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "394"
-         endingLineNumber = "394"
+         startingLineNumber = "419"
+         endingLineNumber = "419"
          landmarkName = "-initialize"
          landmarkType = "5">
       </FileBreakpoint>
@@ -1445,11 +1417,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/game2/HGame.mm"
-         timestampString = "399018468.14604"
+         timestampString = "399332631.305865"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "804"
-         endingLineNumber = "804"
+         startingLineNumber = "817"
+         endingLineNumber = "817"
          landmarkName = "onUpdate()"
          landmarkType = "5">
       </FileBreakpoint>
@@ -1458,11 +1430,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/game2/HGame.mm"
-         timestampString = "399018468.14604"
+         timestampString = "399332631.305865"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "803"
-         endingLineNumber = "803"
+         startingLineNumber = "816"
+         endingLineNumber = "816"
          landmarkName = "onUpdate()"
          landmarkType = "5">
       </FileBreakpoint>
@@ -1471,12 +1443,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/game2/UserData.mm"
-         timestampString = "399051650.88009"
+         timestampString = "399365353.143709"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "343"
-         endingLineNumber = "343"
-         landmarkName = "UserData::getCurrentClearRatio()"
+         startingLineNumber = "581"
+         endingLineNumber = "581"
+         landmarkName = "UserData::getPlayerFighterInfo()"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -1484,11 +1456,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/Shooter/StatusView.m"
-         timestampString = "399050419.852052"
+         timestampString = "399324199.378031"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "271"
-         endingLineNumber = "271"
+         startingLineNumber = "300"
+         endingLineNumber = "300"
          landmarkName = "-loadUserInfo"
          landmarkType = "5">
       </FileBreakpoint>
@@ -1497,11 +1469,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/Shooter/StatusView.m"
-         timestampString = "399050419.852052"
+         timestampString = "399324199.378031"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "269"
-         endingLineNumber = "269"
+         startingLineNumber = "298"
+         endingLineNumber = "298"
          landmarkName = "-loadUserInfo"
          landmarkType = "5">
       </FileBreakpoint>
@@ -1510,11 +1482,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/game2/UserData.mm"
-         timestampString = "399051650.88009"
+         timestampString = "399365353.143709"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "237"
-         endingLineNumber = "237"
+         startingLineNumber = "455"
+         endingLineNumber = "455"
          landmarkName = "UserData::loadData()"
          landmarkType = "5">
       </FileBreakpoint>
@@ -1523,11 +1495,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/Shooter/StatusView.m"
-         timestampString = "399050419.852052"
+         timestampString = "399324199.378031"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "270"
-         endingLineNumber = "270"
+         startingLineNumber = "299"
+         endingLineNumber = "299"
          landmarkName = "-loadUserInfo"
          landmarkType = "5">
       </FileBreakpoint>
@@ -1536,25 +1508,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/Shooter/StatusView.m"
-         timestampString = "399050419.852052"
+         timestampString = "399324199.378031"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "262"
-         endingLineNumber = "262"
+         startingLineNumber = "291"
+         endingLineNumber = "291"
          landmarkName = "-loadUserInfo"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "src/game2/UserData.mm"
-         timestampString = "399051650.88009"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "137"
-         endingLineNumber = "137"
-         landmarkName = "UserData::setBattleResult(BattleResult br)"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -1562,11 +1521,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/Shooter/StatusView.m"
-         timestampString = "399050243.736889"
+         timestampString = "399324199.378031"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "224"
-         endingLineNumber = "224"
+         startingLineNumber = "252"
+         endingLineNumber = "252"
          landmarkName = "-loadUserInfo"
          landmarkType = "5">
       </FileBreakpoint>
@@ -1575,11 +1534,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/game2/UserData.mm"
-         timestampString = "399051650.88009"
+         timestampString = "399365353.143709"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "294"
-         endingLineNumber = "294"
+         startingLineNumber = "514"
+         endingLineNumber = "514"
          landmarkName = "UserData::saveData()"
          landmarkType = "5">
       </FileBreakpoint>
@@ -1588,24 +1547,22 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/game2/UserData.mm"
-         timestampString = "399051650.88009"
+         timestampString = "399327862.956326"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "156"
-         endingLineNumber = "156"
-         landmarkName = "UserData::loadData()"
-         landmarkType = "5">
+         startingLineNumber = "373"
+         endingLineNumber = "373">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/game2/UserDataManager.mm"
-         timestampString = "398971389.844819"
+         timestampString = "399275721.76122"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "415"
-         endingLineNumber = "415"
+         startingLineNumber = "426"
+         endingLineNumber = "426"
          landmarkName = "updateOrInsertIntegerData(const std::string&amp; k, const long&amp; d)"
          landmarkType = "7">
       </FileBreakpoint>
@@ -1614,11 +1571,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/game2/UserDataManager.mm"
-         timestampString = "398971389.844819"
+         timestampString = "399275721.76122"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "419"
-         endingLineNumber = "419"
+         startingLineNumber = "430"
+         endingLineNumber = "430"
          landmarkName = "updateOrInsertIntegerData(const std::string&amp; k, const long&amp; d)"
          landmarkType = "7">
       </FileBreakpoint>
@@ -1626,25 +1583,12 @@
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "src/game2/UserData.mm"
-         timestampString = "399051650.88009"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "305"
-         endingLineNumber = "305"
-         landmarkName = "UserData::saveData()"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
          filePath = "src/game2/UserDataManager.mm"
-         timestampString = "398971389.844819"
+         timestampString = "399275721.76122"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "432"
-         endingLineNumber = "432"
+         startingLineNumber = "443"
+         endingLineNumber = "443"
          landmarkName = "updateOrInsertIntegerData(const std::string&amp; k, const long&amp; d)"
          landmarkType = "7">
       </FileBreakpoint>
@@ -1653,11 +1597,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/game2/UserData.mm"
-         timestampString = "399051650.88009"
+         timestampString = "399365353.143709"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "306"
-         endingLineNumber = "306"
+         startingLineNumber = "544"
+         endingLineNumber = "544"
          landmarkName = "UserData::saveData()"
          landmarkType = "5">
       </FileBreakpoint>
@@ -1666,11 +1610,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/game2/UserData.mm"
-         timestampString = "399051650.88009"
+         timestampString = "399365353.143709"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "293"
-         endingLineNumber = "293"
+         startingLineNumber = "513"
+         endingLineNumber = "513"
          landmarkName = "UserData::saveData()"
          landmarkType = "5">
       </FileBreakpoint>
@@ -1679,12 +1623,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/Shooter/MainViewController.mm"
-         timestampString = "399014683.937276"
+         timestampString = "399320536.812669"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "600"
-         endingLineNumber = "600"
-         landmarkName = "-showMainView"
+         startingLineNumber = "668"
+         endingLineNumber = "668"
+         landmarkName = "-showMainView:showMessage:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -1692,11 +1636,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/Shooter/StatusView.m"
-         timestampString = "399050243.736889"
+         timestampString = "399324199.378031"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "227"
-         endingLineNumber = "227"
+         startingLineNumber = "256"
+         endingLineNumber = "256"
          landmarkName = "-loadUserInfo"
          landmarkType = "5">
       </FileBreakpoint>
@@ -1705,11 +1649,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/Shooter/StatusView.m"
-         timestampString = "399050243.736889"
+         timestampString = "399324199.378031"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "230"
-         endingLineNumber = "230"
+         startingLineNumber = "259"
+         endingLineNumber = "259"
          landmarkName = "-loadUserInfo"
          landmarkType = "5">
       </FileBreakpoint>
@@ -1718,11 +1662,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/Shooter/StatusView.m"
-         timestampString = "399050419.852052"
+         timestampString = "399324199.378031"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "258"
-         endingLineNumber = "258"
+         startingLineNumber = "287"
+         endingLineNumber = "287"
          landmarkName = "-loadUserInfo"
          landmarkType = "5">
       </FileBreakpoint>
@@ -1731,11 +1675,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/game2/UserDataManager.mm"
-         timestampString = "398971389.844819"
+         timestampString = "399275721.76122"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "327"
-         endingLineNumber = "327"
+         startingLineNumber = "338"
+         endingLineNumber = "338"
          landmarkName = "readFighter(int fighterRecordType)"
          landmarkType = "7">
       </FileBreakpoint>
@@ -1744,7 +1688,20 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/game2/UserDataManager.mm"
-         timestampString = "398971389.844819"
+         timestampString = "399275721.76122"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "309"
+         endingLineNumber = "309"
+         landmarkName = "readFighter(int fighterRecordType)"
+         landmarkType = "7">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/game2/UserDataManager.mm"
+         timestampString = "399275721.76122"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "306"
@@ -1757,24 +1714,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/game2/UserDataManager.mm"
-         timestampString = "398971389.844819"
+         timestampString = "399275721.76122"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "303"
-         endingLineNumber = "303"
-         landmarkName = "readFighter(int fighterRecordType)"
-         landmarkType = "7">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "src/game2/UserDataManager.mm"
-         timestampString = "398971389.844819"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "305"
-         endingLineNumber = "305"
+         startingLineNumber = "308"
+         endingLineNumber = "308"
          landmarkName = "readFighter(int fighterRecordType)"
          landmarkType = "7">
       </FileBreakpoint>
@@ -1783,87 +1727,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/game2/UserData.mm"
-         timestampString = "398765964.519882"
+         timestampString = "399365353.143709"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "45"
-         endingLineNumber = "45"
-         landmarkName = "ceiling(int value, int figure)"
-         landmarkType = "7">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "src/game2/UserData.mm"
-         timestampString = "398765964.519882"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "43"
-         endingLineNumber = "43">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "src/Shooter/MainViewController.mm"
-         timestampString = "399014683.937276"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "486"
-         endingLineNumber = "486"
-         landmarkName = "-showMenu"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "src/Shooter/MainViewController.mm"
-         timestampString = "399014683.937276"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "491"
-         endingLineNumber = "491"
-         landmarkName = "-showMenu"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "src/Shooter/MainViewController.mm"
-         timestampString = "399014683.937276"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "498"
-         endingLineNumber = "498"
-         landmarkName = "-showMenu"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "src/Shooter/MainViewController.mm"
-         timestampString = "399014683.937276"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "489"
-         endingLineNumber = "489"
-         landmarkName = "-showMenu"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "src/game2/UserData.mm"
-         timestampString = "399051650.88009"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "282"
-         endingLineNumber = "282"
+         startingLineNumber = "502"
+         endingLineNumber = "502"
          landmarkName = "UserData::saveData()"
          landmarkType = "5">
       </FileBreakpoint>
@@ -1872,11 +1740,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/game2/UserDataManager.mm"
-         timestampString = "398942523.18546"
+         timestampString = "399275721.76122"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "153"
-         endingLineNumber = "153"
+         startingLineNumber = "155"
+         endingLineNumber = "155"
          landmarkName = "insertFighterInfo(int inc_id, int fighterRecordType, hg::FighterInfo* info)"
          landmarkType = "7">
       </FileBreakpoint>
@@ -1924,11 +1792,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/Shooter/StageTableView.m"
-         timestampString = "399015326.734873"
+         timestampString = "399323909.161055"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "185"
-         endingLineNumber = "185"
+         startingLineNumber = "186"
+         endingLineNumber = "186"
          landmarkName = "-tableView:cellForRowAtIndexPath:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -1937,11 +1805,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/Shooter/StageTableView.m"
-         timestampString = "399015326.734873"
+         timestampString = "399323909.161055"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "104"
-         endingLineNumber = "104"
+         startingLineNumber = "105"
+         endingLineNumber = "105"
          landmarkName = "-viewDidLoad"
          landmarkType = "5">
       </FileBreakpoint>
@@ -1950,33 +1818,7 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/Shooter/StageTableView.m"
-         timestampString = "399015326.734873"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "190"
-         endingLineNumber = "190"
-         landmarkName = "-tableView:cellForRowAtIndexPath:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "src/game2/UserData.mm"
-         timestampString = "399051650.88009"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "369"
-         endingLineNumber = "369"
-         landmarkName = "UserData::getStageInfo(int stage_id)"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "src/Shooter/StageTableView.m"
-         timestampString = "399015326.734873"
+         timestampString = "399323909.161055"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "191"
@@ -1988,12 +1830,38 @@
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "src/game2/UserDataManager.mm"
-         timestampString = "398945500.216391"
+         filePath = "src/game2/UserData.mm"
+         timestampString = "399365353.143709"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "178"
-         endingLineNumber = "178"
+         startingLineNumber = "631"
+         endingLineNumber = "631"
+         landmarkName = "UserData::getRetreatCount()"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/Shooter/StageTableView.m"
+         timestampString = "399323909.161055"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "192"
+         endingLineNumber = "192"
+         landmarkName = "-tableView:cellForRowAtIndexPath:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/game2/UserDataManager.mm"
+         timestampString = "399275721.76122"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "180"
+         endingLineNumber = "180"
          landmarkName = "insertFighterInfo(int inc_id, int fighterRecordType, hg::FighterInfo* info)"
          landmarkType = "7">
       </FileBreakpoint>
@@ -2002,11 +1870,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/game2/UserDataManager.mm"
-         timestampString = "398971389.844819"
+         timestampString = "399275721.76122"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "320"
-         endingLineNumber = "320"
+         startingLineNumber = "323"
+         endingLineNumber = "323"
          landmarkName = "readFighter(int fighterRecordType)"
          landmarkType = "7">
       </FileBreakpoint>
@@ -2028,11 +1896,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/game2/UserData.mm"
-         timestampString = "399051650.88009"
+         timestampString = "399365353.143709"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "409"
-         endingLineNumber = "409"
+         startingLineNumber = "639"
+         endingLineNumber = "639"
          landmarkName = "UserData::getStageInfo(int stage_id)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -2054,11 +1922,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/Shooter/StatusView.m"
-         timestampString = "399050243.736889"
+         timestampString = "399324199.378031"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "83"
-         endingLineNumber = "83"
+         startingLineNumber = "85"
+         endingLineNumber = "85"
          landmarkName = "-init"
          landmarkType = "5">
       </FileBreakpoint>
@@ -2125,6 +1993,526 @@
          startingLineNumber = "261"
          endingLineNumber = "261"
          landmarkName = "-renderThis"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/game2/UserData.mm"
+         timestampString = "399365353.143709"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "1037"
+         endingLineNumber = "1037"
+         landmarkName = "UserData::setUnReady(FighterInfo* fighterInfo)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/game2/UserData.mm"
+         timestampString = "399365353.143709"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "1039"
+         endingLineNumber = "1039"
+         landmarkName = "UserData::setUnReady(FighterInfo* fighterInfo)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/game2/UserDataManager.mm"
+         timestampString = "399275721.76122"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "253"
+         endingLineNumber = "253"
+         landmarkName = "readFighter(int fighterRecordType)"
+         landmarkType = "7">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/game2/UserDataManager.mm"
+         timestampString = "399275721.76122"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "254"
+         endingLineNumber = "254"
+         landmarkName = "readFighter(int fighterRecordType)"
+         landmarkType = "7">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/game2/UserData.mm"
+         timestampString = "399365353.143709"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "435"
+         endingLineNumber = "435"
+         landmarkName = "UserData::loadData()"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/game2/UserDataManager.mm"
+         timestampString = "399275721.76122"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "189"
+         endingLineNumber = "189"
+         landmarkName = "readFighter(int fighterRecordType)"
+         landmarkType = "7">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/Shooter/ClearView.m"
+         timestampString = "399327399.131684"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "152"
+         endingLineNumber = "152"
+         landmarkName = "-initWithFrame:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/Shooter/ClearView.m"
+         timestampString = "399327399.131684"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "248"
+         endingLineNumber = "248"
+         landmarkName = "-onTap:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/Shooter/ClearView.m"
+         timestampString = "399327399.131684"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "239"
+         endingLineNumber = "239"
+         landmarkName = "-initWithFrame:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/game2/UserData.mm"
+         timestampString = "399365353.143709"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "844"
+         endingLineNumber = "844"
+         landmarkName = "UserData::buy(hg::FighterInfo* fInfo)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/game2/UserData.mm"
+         timestampString = "399365353.143709"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "851"
+         endingLineNumber = "851"
+         landmarkName = "UserData::getRepairCost(hg::FighterInfo* fInfo)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/game2/UserData.mm"
+         timestampString = "399365353.143709"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "850"
+         endingLineNumber = "850"
+         landmarkName = "UserData::getRepairCost(hg::FighterInfo* fInfo)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/game2/UserData.mm"
+         timestampString = "399295952.986754"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "51"
+         endingLineNumber = "51"
+         landmarkName = "ceiling(int value, int figure)"
+         landmarkType = "7">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/game2/HGame.mm"
+         timestampString = "399332631.305865"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "1206"
+         endingLineNumber = "1206"
+         landmarkName = "initialize(SpawnData sd, FighterInfo* pl)"
+         landmarkType = "7">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/game2/HGame.mm"
+         timestampString = "399332631.305865"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "1208"
+         endingLineNumber = "1208"
+         landmarkName = "initialize(SpawnData sd, FighterInfo* pl)"
+         landmarkType = "7">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/game2/HGameEngine.h"
+         timestampString = "399100355.79305"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "865"
+         endingLineNumber = "865"
+         landmarkName = "init(std::string modelName)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/hgles/HGLObjLoader.mm"
+         timestampString = "399100831.015684"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "308"
+         endingLineNumber = "308"
+         landmarkName = "HGLObjLoader::loadMtl(std::string* name)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/game2/HGame.mm"
+         timestampString = "399332631.305865"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "1222"
+         endingLineNumber = "1222"
+         landmarkName = "initialize(SpawnData sd, FighterInfo* pl)"
+         landmarkType = "7">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/game2/HGameEngine.h"
+         timestampString = "399100906.724949"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "911"
+         endingLineNumber = "911"
+         landmarkName = "render()"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/hgles/HGLTexture.mm"
+         timestampString = "399101249.974666"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "31"
+         endingLineNumber = "31"
+         landmarkName = "HGLTexture::createTextureWithAsset(std::string name)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/game2/HGameEngine.h"
+         timestampString = "399101626.503505"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "863"
+         endingLineNumber = "863"
+         landmarkName = "init(std::string modelName)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/Shooter/ReportView.m"
+         timestampString = "399319118.274607"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "164"
+         endingLineNumber = "164"
+         landmarkName = "-initWithFrame:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/game2/UserData.mm"
+         timestampString = "399295952.986754"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "158"
+         endingLineNumber = "158"
+         landmarkName = "UserData::setBattleResult(BattleResult br)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/game2/UserData.mm"
+         timestampString = "399327862.956326"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "237"
+         endingLineNumber = "237"
+         landmarkName = "UserData::setBattleResult(BattleResult br)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/game2/UserData.mm"
+         timestampString = "399301428.380262"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "164"
+         endingLineNumber = "164"
+         landmarkName = "UserData::setBattleResult(BattleResult br)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/game2/UserData.mm"
+         timestampString = "399327862.956326"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "235"
+         endingLineNumber = "235"
+         landmarkName = "UserData::setBattleResult(BattleResult br)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/Shooter/ReportView.m"
+         timestampString = "399319118.274607"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "126"
+         endingLineNumber = "126"
+         landmarkName = "-initWithFrame:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/Shooter/PlayerDetailView.m"
+         timestampString = "399319071.825899"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "277"
+         endingLineNumber = "277"
+         landmarkName = "-onTap:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/Shooter/PlayerDetailView.m"
+         timestampString = "399319071.825899"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "252"
+         endingLineNumber = "252"
+         landmarkName = "-loadGrade"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/Shooter/PlayerDetailView.m"
+         timestampString = "399319071.825899"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "253"
+         endingLineNumber = "253"
+         landmarkName = "-loadGrade"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/Shooter/PlayerDetailView.m"
+         timestampString = "399319071.825899"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "75"
+         endingLineNumber = "75"
+         landmarkName = "-initWithFrame:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/Shooter/PlayerDetailView.m"
+         timestampString = "399319071.825899"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "157"
+         endingLineNumber = "157"
+         landmarkName = "-initWithFrame:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/game2/UserData.mm"
+         timestampString = "399310686.040876"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "191"
+         endingLineNumber = "191"
+         landmarkName = "UserData::setBattleResult(BattleResult br)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/game2/UserData.mm"
+         timestampString = "399310688.70526"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "160"
+         endingLineNumber = "160"
+         landmarkName = "UserData::setBattleResult(BattleResult br)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/game2/UserData.mm"
+         timestampString = "399365353.143709"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "788"
+         endingLineNumber = "788"
+         landmarkName = "UserData::popRewardMessage()"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/Shooter/MessageView.m"
+         timestampString = "399328870.847552"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "133"
+         endingLineNumber = "133"
+         landmarkName = "-show"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/Shooter/GameView.mm"
+         timestampString = "399331206.554181"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "454"
+         endingLineNumber = "454"
+         landmarkName = "-initialize"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/game2/ControlPlayerProcess.h"
+         timestampString = "399332040.45434"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "52"
+         endingLineNumber = "52"
+         landmarkName = "onUpdate()"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/game2/ControlPlayerProcess.h"
+         timestampString = "399332044.048074"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "57"
+         endingLineNumber = "57"
+         landmarkName = "onUpdate()"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/game2/ControlPlayerProcess.h"
+         timestampString = "399332184.467306"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "53"
+         endingLineNumber = "53"
+         landmarkName = "onUpdate()"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

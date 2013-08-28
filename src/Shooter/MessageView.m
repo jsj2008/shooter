@@ -6,17 +6,19 @@
 //  Copyright (c) 2013年 hayogame. All rights reserved.
 //
 
+#import "Common.h"
 #import "MessageView.h"
 #import "MenuButton.h"
 #import "UIColor+MyCategory.h"
 #import <QuartzCore/QuartzCore.h>
 
-const float MessageBoxHeight = 240;
+const float MessageBoxHeight = 140;
 const float MessageBoxWidth = 320;
-const float MessageHeight = 230;
+const float MessageHeight = 180;
 
 @interface MessageView()
 {
+    CGRect defaultMessageRect;
 }
 
 @property(assign)UIView* menuBase;
@@ -51,8 +53,10 @@ const float MessageHeight = 230;
 {
     // close
     if ([self.messageList count] > 0) {
+        [_msgLabel setFrame:defaultMessageRect];
         [_msgLabel setText:[self.messageList objectAtIndex:0]];
         [self.messageList removeObjectAtIndex:0];
+        [_msgLabel sizeToFit];
     }
     else {
         [_curtain removeFromSuperview];
@@ -116,10 +120,10 @@ const float MessageHeight = 230;
     
     // message box
     CGRect msgBoxRect = CGRectMake(
-            frame.size.width/2 - MessageBoxWidth/2, frame.size.height/2 - MessageBoxHeight/2, MessageBoxWidth, MessageBoxHeight);
+            frame.size.width/2 - MessageBoxWidth/2, frame.size.height - MessageBoxHeight, MessageBoxWidth, MessageBoxHeight);
     UIView* messageBox = [[[UIView alloc] initWithFrame:msgBoxRect] autorelease];
     [messageBox setBackgroundColor:[UIColor blackColor]];
-    [messageBox.layer setBorderColor:[UIColor colorWithHexString:@"#00ff00"].CGColor];
+    [messageBox.layer setBorderColor:MAIN_BORDER_COLOR.CGColor];
     [messageBox.layer setBorderWidth:2];
     [_menuBase addSubview:messageBox];
     [messageBox setUserInteractionEnabled:FALSE];
@@ -128,20 +132,23 @@ const float MessageHeight = 230;
     {
         CGRect msgRect = msgBoxRect;
         
-        msgRect.size.width -= 10;
+        msgRect.size.width = MessageBoxWidth - 10;
         msgRect.origin.x = 5;
-        msgRect.size.height = MessageHeight;
+        msgRect.size.height = MessageBoxHeight - 10;
         msgRect.origin.y = 5;
+        defaultMessageRect = msgRect;
         
         UILabel* msgLbl = [[[UILabel alloc] initWithFrame:msgRect] autorelease];
         [msgLbl setBackgroundColor:[UIColor clearColor]];
-        [msgLbl setTextColor:[UIColor colorWithHexString:@"#00ff00"]];
+        [msgLbl setTextColor:MAIN_FONT_COLOR];
         [msgLbl setNumberOfLines:0];
         [msgLbl setLineBreakMode:NSLineBreakByWordWrapping];
-        UIFont* font = [UIFont fontWithName:@"Copperplate-Bold" size:14];
+        UIFont* font = [UIFont fontWithName:@"Copperplate-Bold" size:18];
+        [msgLbl setAdjustsFontSizeToFitWidth:YES];
         [msgLbl setTextAlignment:NSTextAlignmentLeft];
         [msgLbl setFont:font];
         [msgLbl setText:[self.messageList objectAtIndex:0]];
+        [msgLbl sizeToFit];
         [self.messageList removeObjectAtIndex:0];
         
         [self.msgLabel setUserInteractionEnabled:false];

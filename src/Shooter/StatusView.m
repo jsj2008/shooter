@@ -6,15 +6,18 @@
 //  Copyright (c) 2013年 hayogame. All rights reserved.
 //
 
+#import "Common.h"
 #import <QuartzCore/QuartzCore.h>
 #import "UIColor+MyCategory.h"
 #import "StatusView.h"
 #import "UserData.h"
+//#import "PlayerDetailView.h"
 
 @interface StatusView()
 {
     CGRect frame;
     UILabel* moneyLabel;
+    UILabel* scoreLabel;
     UILabel* progressLabel;
     UILabel* stageLevelLabel;
     CGRect progressFrameFrame;
@@ -22,7 +25,6 @@
     CALayer* progressBarLayer;
     CGRect progressBarFrame;
     UIView* progressBase;
-    
 }
 @end
 
@@ -30,9 +32,9 @@
 
 static StatusView* instance = NULL;
 const float ProgressFrameHeight = 20;
-const float ProgressFrameWidth = 200;
+const float ProgressFrameWidth = 160;
 const float ProgressBarHeight = 12;
-const float ProgressBarWidth = 182;
+const float ProgressBarWidth = 146;
 
 + (id)CreateInstance
 {
@@ -92,15 +94,16 @@ const float ProgressBarWidth = 182;
         }];
         
         // bar
+        /*
         {
-            UIView* v = [[[UIView alloc] initWithFrame:CGRectMake(-10, 21, 150, 6)] autorelease];
+            UIView* v = [[[UIView alloc] initWithFrame:CGRectMake(-10, 15, 150, 4)] autorelease];
             [v setBackgroundColor:[UIColor colorWithHexString:@"#cc44bb"]];
             [v.layer setCornerRadius:2];
             [self addSubview:v];
-        }
+        }*/
         // money icon
         {
-            CGRect f = CGRectMake(10, 5, 20, 20);
+            CGRect f = CGRectMake(10, 0, 20, 20);
             UIImage* img = [[UIImage imageNamed:@"goldCoin5.png"] autorelease];
             UIImageView* iv = [[[UIImageView alloc] initWithFrame:f] autorelease];
             [iv setImage:img];
@@ -113,16 +116,39 @@ const float ProgressBarWidth = 182;
             UIFont* font = [UIFont fontWithName:@"HiraKakuProN-W6" size:11];
             [moneyLabel setFont:font];
             [moneyLabel setTextAlignment:NSTextAlignmentLeft];
-            [moneyLabel setFrame:CGRectMake(26, 10, 200, 16)];
+            [moneyLabel setFrame:CGRectMake(26, 5, 200, 16)];
             [moneyLabel setBackgroundColor:[UIColor clearColor]];
-            [moneyLabel setTextColor:[UIColor colorWithHexString:@"#ddddff"]];
+            [moneyLabel setTextColor:MAIN_FONT_COLOR];
             [self addSubview:moneyLabel];
         }
         
         progressBase = [[UIView alloc] initWithFrame:frame];
         [self addSubview:progressBase];
-        progressFrameFrame = CGRectMake(frame.size.width - ProgressFrameWidth - 10, 20, ProgressFrameWidth, ProgressFrameHeight);
-        progressBarFrame = CGRectMake(frame.size.width - ProgressFrameWidth - 1, 25, ProgressBarWidth, ProgressBarHeight);
+        progressFrameFrame = CGRectMake(frame.size.width - ProgressFrameWidth - 10, 15, ProgressFrameWidth, ProgressFrameHeight);
+        progressBarFrame = CGRectMake(frame.size.width - ProgressFrameWidth - 3, 20, ProgressBarWidth, ProgressBarHeight);
+        
+        // bar2
+        /*
+        {
+            UIView* v = [[[UIView alloc] initWithFrame:CGRectMake(-10, 31, 150, 4)] autorelease];
+            [v setBackgroundColor:[UIColor colorWithHexString:@"#44ccbb"]];
+            [v.layer setCornerRadius:2];
+            [progressBase addSubview:v];
+        }*/
+        
+        // score
+        {
+            scoreLabel = [[UILabel alloc] init];
+            UIFont* font = [UIFont fontWithName:@"HiraKakuProN-W6" size:11];
+            [scoreLabel setFont:font];
+            [scoreLabel setTextAlignment:NSTextAlignmentLeft];
+            [scoreLabel setFrame:CGRectMake(26, 20, 200, 16)];
+            [scoreLabel setBackgroundColor:[UIColor clearColor]];
+            [scoreLabel setTextColor:MAIN_FONT_COLOR];
+            [progressBase addSubview:scoreLabel];
+        }
+        
+        // grade
         
         // progress bar background
         {
@@ -195,9 +221,11 @@ const float ProgressBarWidth = 182;
             UIFont* font = [UIFont fontWithName:@"HiraKakuProN-W6" size:11];
             [stageLevelLabel setFont:font];
             [stageLevelLabel setTextAlignment:NSTextAlignmentLeft];
-            [stageLevelLabel setFrame:CGRectMake(frame.size.width - 200, 10, 200, StatusViewHeight)];
+            //[stageLevelLabel setFrame:CGRectMake(frame.size.width - 200, 5, 200, StatusViewHeight)];
+            [stageLevelLabel setAdjustsFontSizeToFitWidth:YES];
+            [stageLevelLabel setFrame:CGRectMake(progressBarFrame.origin.x + 10, 5, 200, StatusViewHeight)];
             [stageLevelLabel setBackgroundColor:[UIColor clearColor]];
-            [stageLevelLabel setTextColor:[UIColor colorWithHexString:@"#ddddff"]];
+            [stageLevelLabel setTextColor:MAIN_FONT_COLOR];
             //[self addSubview:stageLevelLabel];
             [progressBase addSubview:stageLevelLabel];
         }
@@ -223,6 +251,7 @@ const float ProgressBarWidth = 182;
 {
     hg::UserData* u = hg::UserData::sharedUserData();
     [moneyLabel setText:[NSString stringWithFormat:@"%ld Gold", u->getMoney()]];
+    [scoreLabel setText:[NSString stringWithFormat:@"%ld Pt", u->getTotalScore()]];
     
     double clearRatio = u->getCurrentClearRatio();
     {

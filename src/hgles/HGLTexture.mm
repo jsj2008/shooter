@@ -50,6 +50,7 @@ namespace hgles {
             height = CGImageGetHeight(image);
             tex->width = width;
             tex->height = height;
+            tex->textureName = name;
             
             if(image) {
                 spriteData = (GLubyte*)calloc(1, width*height*4);

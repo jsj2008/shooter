@@ -9,6 +9,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "MenuButton.h"
 #import "UIColor+MyCategory.h"
+#import "Common.h"
 
 @interface MenuButton()
 {
@@ -40,7 +41,7 @@
             UILabel * l = [[[UILabel alloc] init] autorelease];
             UIFont* font = [UIFont fontWithName:@"Copperplate-Bold" size:17];
             [l setFont:font];
-            [l setTextColor:[UIColor colorWithHexString:@"#ddddff"]];
+            [l setTextColor:MAIN_FONT_COLOR];
             [l setText:@"Battle"];
             [l setTextAlignment:NSTextAlignmentCenter];
             [l setFrame:CGRectMake(0, 0, frm.size.width, frm.size.height)];
@@ -50,7 +51,7 @@
         }
         // design
         {
-            [m.layer setBorderColor:[UIColor colorWithHexString:@"#8888dd"].CGColor];
+            [m.layer setBorderColor:MAIN_BORDER_COLOR.CGColor];
             [m.layer setBorderWidth:2];
             //[m.layer setBackgroundColor:[UIColor colorWithHexString:@"#343488"].CGColor];
             [m.layer setBackgroundColor:[UIColor clearColor].CGColor];

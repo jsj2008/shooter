@@ -14,8 +14,10 @@
 #include "CellManager.h"
 #include <deque>
 #include <stdlib.h>
+#include <time.h>
 
-#define IS_DEBUG_COLLISION 0
+#define IS_DEBUG_SHOOTER 1
+#define IS_DEBUG_COLLISION 1
 #define ENEMY_NUM 10
 #define BULLET_NUM 100
 #define ENEMY_BULLET_NUM 100
@@ -45,6 +47,7 @@ namespace hg {
         FighterTypeRobo1,
         FighterTypeRobo2,
         FighterTypeShip1,
+        FighterTypeRobo3,
     } FighterType;
     
     // Bullet
@@ -114,10 +117,20 @@ namespace hg {
         bool isWin = false;
         bool isRetreat = false;
         int earnedMoney = 0;
-        int yourShot = 0;
+        int finalIncome = 0;
+        int myShot = 0;
+        int myHit = 0;
+        int allShot = 0;
+        int allHit = 0;
+        int allShotPower = 0;
         int allShotMoney = 0;
+        int enemyShot = 0;
+        int enemyHit = 0;
         int killedFriend = 0;
         int killedEnemy = 0;
+        int killedValue = 0;
+        int deadValue = 0;
+        int battleScore = 0;
     } BattleResult;
     
     typedef enum CollisionId
@@ -130,6 +143,7 @@ namespace hg {
         CollisionId_P_ROBO1,
         CollisionId_E_SENKAN,
         CollisionId_E_ROBO2,
+        CollisionId_P_ROBO3,
         CollisionIdEnd,
     } CollisionId;
     

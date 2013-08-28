@@ -6,6 +6,7 @@
 //  Copyright (c) 2013年 hayogame. All rights reserved.
 //
 
+#import "Common.h"
 #import "AllyDetailView.h"
 #import "UIColor+MyCategory.h"
 #import <QuartzCore/QuartzCore.h>
@@ -73,7 +74,7 @@
         self.baseView = base;
         [self.baseView setCenter:CGPointMake(frame.size.width/2, frame.size.height/2)];
         [self.baseView.layer setBorderWidth:1];
-        [self.baseView.layer setBorderColor:[UIColor colorWithHexString:@"#87ea00"].CGColor];
+        [self.baseView.layer setBorderColor:MAIN_BORDER_COLOR.CGColor];
     }
     
     // animation
@@ -206,7 +207,7 @@
     [lb setText:text];
     [lb setBackgroundColor:[UIColor clearColor]];
     [lb setUserInteractionEnabled:NO];
-    [lb setTextColor:[UIColor colorWithHexString:@"#87ea00"]];
+    [lb setTextColor:MAIN_FONT_COLOR];
     return lb;
 }
 

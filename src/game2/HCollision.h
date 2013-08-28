@@ -133,9 +133,16 @@ namespace hg {
                         c->push_back({-2, -2, 64, 64});
                         list.push_back(c);
                         break;
+                    // astray
                     case CollisionId_P_ROBO1:
                         c = new Collision();
-                        c->push_back({20, 20, 88, 88});
+                        c->push_back({88, 88, 80, 80});
+                        list.push_back(c);
+                        break;
+                    // viper
+                    case CollisionId_P_ROBO3:
+                        c = new Collision();
+                        c->push_back({104, 104, 48, 48});
                         list.push_back(c);
                         break;
                     case CollisionId_E_SENKAN:

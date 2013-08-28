@@ -6,6 +6,7 @@
 //  Copyright (c) 2013年 hayogame. All rights reserved.
 //
 
+#import "Common.h"
 #import "DialogView.h"
 #import "MenuButton.h"
 #import "UIColor+MyCategory.h"
@@ -158,7 +159,7 @@ const float MessageHeight = 100;
             frame.size.width/2 - MessageBoxWidth/2, frame.size.height/2 - MessageBoxHeight/2, MessageBoxWidth, MessageBoxHeight);
     UIView* messageBox = [[[UIView alloc] initWithFrame:msgBoxRect] autorelease];
     [messageBox setBackgroundColor:[UIColor blackColor]];
-    [messageBox.layer setBorderColor:[UIColor colorWithHexString:@"#00ff00"].CGColor];
+    [messageBox.layer setBorderColor:MAIN_BORDER_COLOR.CGColor];
     [messageBox.layer setBorderWidth:2];
     [_menuBase addSubview:messageBox];
     
@@ -173,7 +174,7 @@ const float MessageHeight = 100;
         
         UILabel* msgLbl = [[[UILabel alloc] initWithFrame:msgRect] autorelease];
         [msgLbl setBackgroundColor:[UIColor clearColor]];
-        [msgLbl setTextColor:[UIColor colorWithHexString:@"#00ff00"]];
+        [msgLbl setTextColor:MAIN_FONT_COLOR];
         [msgLbl setNumberOfLines:0];
         [msgLbl setLineBreakMode:NSLineBreakByWordWrapping];
         UIFont* font = [UIFont fontWithName:@"Copperplate-Bold" size:18];
@@ -196,8 +197,8 @@ const float MessageHeight = 100;
         MenuButton* btn = [[[MenuButton alloc] init] autorelease];
         [btn setFrame:CGRectMake(x, y, ButtonWidth, ButtonHeight)];
         btn.tag = index;
-        [btn setBackgroundColor:[UIColor colorWithHexString:@"#aaffaa"]];
-        [btn.layer setBorderColor:[UIColor colorWithHexString:@"#55aa55"].CGColor];
+        [btn setBackgroundColor:SUB_BACK_COLOR];
+        [btn.layer setBorderColor:SUB_FONT_COLOR.CGColor];
         [btn setOnTapAction:^(MenuButton *target) {
             void (^action)() = [_actionList objectAtIndex:index];
             // close

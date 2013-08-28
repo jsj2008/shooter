@@ -335,6 +335,7 @@ namespace hg {
             showHitAnimation(pBullet);
         }
         int dmg = pBullet->getPower();
+        int beforeLife = pFighter->getLife();
         pFighter->addLife(dmg*-1);
         pFighter->noticeAttackedBy(pBullet->getOwner());
         
@@ -342,45 +343,58 @@ namespace hg {
         {
             // 経験値加算
             Fighter* a = pBullet->getOwner();
+            UserData* u = UserData::sharedUserData();
             if (a)
             {
-                UserData* u = UserData::sharedUserData();
                 FighterInfo* attackerInfo = a->getFighterInfo();
                 if (attackerInfo)
                 {
                     attackerInfo->tmpExp += u->getDamageExp(pFighter->getFighterInfo(), dmg);
                 }
             }
+            if (a->isPlayer()) {
+                battleResult.myHit++;
+            }
+            battleResult.allHit++;
+        } else {
+            if (!pFighter->hasShield()) {
+                battleResult.enemyHit++;
+            }
         }
         
-        // 死亡カウント
-        if (pFighter->getLife() <= 0)
-        {
-            if (pFighter->getSide() == SideTypeEnemy)
+        if (beforeLife > 0) {
+            // 死亡カウント
+            UserData* u = UserData::sharedUserData();
+            if (pFighter->getLife() <= 0)
             {
-                UserData* u = UserData::sharedUserData();
-                battleResult.killedEnemy++;
-                battleResult.earnedMoney += u->getKillReward(pFighter->getFighterInfo());
-                // 当てた方の経験値加算
-                Fighter* a = pBullet->getOwner();
-                if (a)
+                if (pFighter->getSide() == SideTypeEnemy)
                 {
-                    FighterInfo* attackerInfo = a->getFighterInfo();
-                    if (attackerInfo)
+                    battleResult.killedEnemy++;
+                    battleResult.earnedMoney += u->getKillReward(pFighter->getFighterInfo());
+                    battleResult.killedValue += u->getCost(pFighter->getFighterInfo());
+                    // 当てた方の経験値加算
+                    Fighter* a = pBullet->getOwner();
+                    if (a)
                     {
-                        attackerInfo->tmpExp += u->getExp(pFighter->getFighterInfo());
-                        attackerInfo->killCnt++;
-                        attackerInfo->totalKill++;
+                        FighterInfo* attackerInfo = a->getFighterInfo();
+                        if (attackerInfo)
+                        {
+                            attackerInfo->tmpExp += u->getExp(pFighter->getFighterInfo());
+                            attackerInfo->killCnt++;
+                            attackerInfo->totalKill++;
+                        }
                     }
                 }
-            }
-            else
-            {
-                battleResult.killedFriend++;
-                pFighter->getFighterInfo()->dieCnt++;
-                pFighter->getFighterInfo()->totalDie++;
+                else
+                {
+                    battleResult.killedFriend++;
+                    pFighter->getFighterInfo()->dieCnt++;
+                    pFighter->getFighterInfo()->totalDie++;
+                    battleResult.deadValue += u->getCost(pFighter->getFighterInfo());
+                }
             }
         }
+        
     }
     
     // あたり判定
@@ -1189,18 +1203,26 @@ namespace hg {
         
         // planet
         {
-            HG3DModel* mdl = new HG3DModel();
-            mdl->init("globe");
             float clearRatio = hg::UserData::sharedUserData()->getCurrentClearRatio();
             hg::StageInfo info = hg::UserData::sharedUserData()->getStageInfo();
+            HG3DModel* mdl = new HG3DModel();
+            mdl->init(info.model_name);
             float scale = info.small_size + 1 * info.big_size;
+            if (clearRatio >= 0.90) {
+                scale = 800;
+                mdl->setPosition(FIELD_SIZE/2, FIELD_SIZE/2, -400);
+            }
+            else {
+                mdl->setPosition(FIELD_SIZE + 100, FIELD_SIZE/2 + 150, -400);
+            }
             mdl->setScale(scale, scale, scale);
-            mdl->setPosition(FIELD_SIZE + 100, FIELD_SIZE/2 + 200, -400);
-            mdl->setRotateX(rand(0, 100) * 0.1);
+            mdl->setRotateX(-2.86);
             mdl->setRotateY(rand(0, 100) * 0.1);
-            mdl->setRotateZ(rand(0, 100) * 0.1);
+            mdl->setRotateZ(-2.86);
+            //mdl->setRotateZ(rand(0, 100) * 0.1);
             pPlanetModel = mdl;
             pLayerBackground->addChild(mdl);
+            //mdl->release();
         }
         
         // フィールド境界
@@ -1310,6 +1332,21 @@ namespace hg {
         keyInfo.isFire = (keyState.isFire>0)?true:false;
         HGStateManager::sharedStateManger()->update();
     }
+    float getHPRatio()
+    {
+        if (pPlayer) {
+            return pPlayer->getLifeRatio();
+        }
+        return 0;
+    }
+    
+    float getShieldRatio()
+    {
+        if (pPlayer) {
+            return pPlayer->getShieldRatio();
+        }
+        return 0;
+    }
     
     ////////////////////
     // レンダリング
@@ -1338,9 +1375,7 @@ namespace hg {
         
         // rotate planet
         if (pPlanetModel) {
-            pPlanetModel->setRotateX(pPlanetModel->getRotateX() + 0.0003);
-            pPlanetModel->setRotateY(pPlanetModel->getRotateY() + 0.005);
-            pPlanetModel->setRotateZ(pPlanetModel->getRotateZ() + 0.0002);
+            pPlanetModel->setRotateY(pPlanetModel->getRotateY() + 0.0003);
         }
         
         // ノードを描画

@@ -15,6 +15,8 @@
 #import <vector>
 #import <string>
 
+
+
 namespace hg {
     
     const int MIN_STAGE_ID = 0;
@@ -40,8 +42,14 @@ namespace hg {
         long addExp;
         bool isLevelUp;
     } LevelupInfo;
-    
     typedef std::vector<LevelupInfo> LevelupInfoList;
+    
+    typedef struct RewardInfo
+    {
+        std::string message;
+    } RewardInfo;
+    typedef std::vector<RewardInfo> RewardInfoList;
+    
     typedef std::vector<StageInfo> StageInfoList;
     
     typedef enum FighterListSortType
@@ -72,6 +80,7 @@ namespace hg {
         {
             money += add;
             if (money < 0) money = 0;
+            money = MIN(99999999, money);
         }
         void returnToBase();
         int getStageNum();
@@ -85,6 +94,8 @@ namespace hg {
         void repairAll();
         void setReady(FighterInfo* fighterInfo);
         void setUnReady(FighterInfo* fighterInfo);
+        bool hasRewardInfo();
+        std::string popRewardMessage();
         void sortFighterList(FighterListSortType sortType);
         void sortFighterList();
         double getCurrentClearRatio();
@@ -114,7 +125,26 @@ namespace hg {
         void downCamera();
         float getCameraPosition();
         void setStageId(int next_stage_id);
+        bool isCleared();
+        BattleResult getLatestBattleResult();
+        void addBattleScore(int val);
+        long getTotalScore();
+        long getTotalDead();
+        long getTotalKill();
+        long getWinCount();
+        long getLoseCount();
+        long getRetreatCount();
+        std::string getGrade();
+        void calcGrade();
+        void addShop(int type);
     private:
+        long score = 0;
+        long totalKill = 0;
+        long totalDead = 0;
+        long winCount = 0;
+        long loseCount = 0;
+        long retreatCount = 0;
+        bool is_cleared = false;
         LevelupInfoList levelUpList;
         int complete_point = 0;
         int stage_id = 0;
@@ -123,11 +153,16 @@ namespace hg {
         FighterList shopList;
         FighterList readyList;
         FighterList fighterList;
-        long money = 900000;
+        long money = 0;
         float cameraPositionY = -18;
+        std::string grade = "";
         int enemyLevel = 0;
+        int maxAllyNum = 0;
+        int maxPowerUpNum = 0;
         static UserData* instance;
         friend LevelupInfo levelup(hg::FighterInfo* fighterInfo);
+        RewardInfoList rewardInfoList;
+        BattleResult lastBattleResult;
     };
 }
 

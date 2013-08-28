@@ -95,6 +95,7 @@ namespace userdata {
         << ",sld_potential    integer"
         << ",cpu_level     integer"
         << ",speed     integer"
+        << ",level     integer"
         << ")";
         NSString* sqlb = [NSString stringWithCString:ss.str().c_str() encoding:NSUTF8StringEncoding];
         NSString* sqlc = @"create table if not exists tb_integer(data_key text primary key, data integer)";
@@ -147,6 +148,7 @@ namespace userdata {
            << ",?" // << ",sld_potential    integer"
            << ",?" // << ",cpu_level    integer"
            << ",?" // << ",speed    integer"
+           << ",?" // << ",level    integer"
         << ")"
         ;
         //return true;
@@ -175,7 +177,8 @@ namespace userdata {
                     ,[NSNumber numberWithInt:info->defencePotential] // << ",def_potential    integer"
                     ,[NSNumber numberWithInt:info->shieldPotential] // << ",shield_potential    integer"
                     ,[NSNumber numberWithInt:info->cpu_lv] // << ",cpu level integer"
-                    ,[NSNumber numberWithInt:info->speed*100] // << ",speed    integer"
+                    ,[NSNumber numberWithInt:info->speed*10000] // << ",speed    integer"
+                    ,[NSNumber numberWithInt:info->level] // << ",level    integer"
                     ];
         return ret;
     }
@@ -319,7 +322,15 @@ namespace userdata {
             {
                 NSNumber* speed = [results objectForColumnName:@"speed"];
                 if (speed  != nil && ![speed isEqual:[NSNull null]]) {
-                    info->speed = [speed intValue] * 0.01;
+                    info->speed = [speed intValue] * 0.0001;
+                }
+            }
+            
+            // ",level    integer"
+            {
+                NSNumber* level = [results objectForColumnName:@"level"];
+                if (level  != nil && ![level isEqual:[NSNull null]]) {
+                    info->level = [level intValue];
                 }
             }
             

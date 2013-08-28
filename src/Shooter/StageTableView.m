@@ -6,6 +6,7 @@
 //  Copyright (c) 2013年 hayogame. All rights reserved.
 //
 
+#import "Common.h"
 #import "StageTableView.h"
 #import <QuartzCore/QuartzCore.h>
 #import "HGame.h"
@@ -43,8 +44,8 @@ static StageTableView* instance;
     {
         myFrame = frame;
         CGRect appFrame = [UIScreen mainScreen].bounds;
-        cell_width = appFrame.size.height;
-        cell_height = 40;
+        cell_width = appFrame.size.height - 40;
+        cell_height = 44;
         [self viewDidLoad];
         instance = self;
     }
@@ -111,7 +112,7 @@ static StageTableView* instance;
     UITableView* tbv = [[UITableView alloc] initWithFrame:scrollFrame];
     [tbv setBackgroundColor:[UIColor clearColor]];
     //[tbv setBackgroundColor:[UIColor redColor]];
-    [tbv setRowHeight:cell_height+20];
+    [tbv setRowHeight:cell_height+2];
     [tbv setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [tbv setEditing:false];
     [tbv setTableHeaderView:nil];
@@ -182,7 +183,7 @@ numberOfRowsInSection:(NSInteger)section
 -(UITableViewCell *)tableView:
 (UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell* c = [[[UITableViewCell alloc] initWithFrame:CGRectMake(0, 0, cell_width, cell_height)] autorelease];
+    UITableViewCell* c = [[[UITableViewCell alloc] initWithFrame:CGRectMake(0, 0, cell_width + 40, cell_height)] autorelease];
     [c setBackgroundColor:[UIColor clearColor]];
     [c setSelectionStyle:UITableViewCellSelectionStyleNone];
     
@@ -190,18 +191,18 @@ numberOfRowsInSection:(NSInteger)section
     hg::StageInfo info = hg::UserData::sharedUserData()->getStageInfo([indexPath row] + 1);
     
     // 背景
-    ImageButtonView* back = [[[ImageButtonView alloc] initWithFrame:CGRectMake(0, 0, cell_width, cell_height)] autorelease];
+    ImageButtonView* back = [[[ImageButtonView alloc] initWithFrame:CGRectMake(20, 0, cell_width, cell_height)] autorelease];
     //UIView* back = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, cell_width, cell_height)] autorelease];
-    [back setBackgroundColor:[UIColor clearColor]];
-    [back.layer setBorderColor: [UIColor colorWithHexString:@"#000099"].CGColor];
+    //[back setBackgroundColor:SUB_BACK_COLOR];
+    [back.layer setBorderColor: MAIN_BORDER_COLOR.CGColor];
     back.layer.borderWidth = 1;
     [back setUserInteractionEnabled:YES];
     [c addSubview:back];
     
     // stage番号
-    UILabel* stageLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, cell_width, cell_height)];
+    UILabel* stageLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 0, cell_width, cell_height)];
     [stageLabel setBackgroundColor:[UIColor clearColor]];
-    [stageLabel setTextColor:[UIColor colorWithHexString:@"#3355ff"]];
+    [stageLabel setTextColor:MAIN_FONT_COLOR];
     [stageLabel setText:[NSString stringWithCString:info.stage_name.c_str() encoding:NSUTF8StringEncoding]];
     [stageLabel autorelease];
     [back addSubview:stageLabel];
@@ -209,13 +210,14 @@ numberOfRowsInSection:(NSInteger)section
     
     // 選択時の処理
     [back setOnTapAction:^(ImageButtonView *target) {
-        NSString* msg = [[NSString stringWithFormat:@"Go to %@ Area?", [NSString stringWithCString:info.stage_name_short.c_str() encoding:NSUTF8StringEncoding]] autorelease];
+        NSString* msg = [[NSString stringWithFormat:@"Go to %@ Stage?", [NSString stringWithCString:info.stage_name_short.c_str() encoding:NSUTF8StringEncoding]] autorelease];
         DialogView* dv = [[DialogView alloc] initWithMessage:msg];
         int stage_id = target.tag;
         [dv addButtonWithText:@"OK" withAction:^{
             [self setUserInteractionEnabled:FALSE];
             onEndAction();
             hg::UserData::sharedUserData()->setStageId(stage_id);
+            hg::UserData::sharedUserData()->saveData();
             //[MainViewController RemoveBackgroundView];
             //[MainViewController ShowBackgroundView];
             StatusView* sv = [StatusView GetInstance];

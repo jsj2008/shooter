@@ -19,10 +19,13 @@
 #import "StatusView.h"
 #import "BackgroundView.h"
 #import "UIColor+MyCategory.h"
+#import "ClearView.h"
 #import "GameView.h"
 #import "MenuButton.h"
 #import "DialogView.h"
 #import "MessageView.h"
+#import "ReportView.h"
+#import "PlayerDetailView.h"
 
 const float MenuAnimationDuration = 0.2;
 const float MenuButtonWidth = 180;
@@ -56,6 +59,8 @@ const float MenuButtonGap = 10;
     // touch frame
     CGRect mainFrame;
     CGRect viewFrame;
+    
+    PlayerDetailView* playerDetailView;
 }
 @end
 
@@ -125,7 +130,7 @@ static MainViewController* instance = nil;
     
     //[self removeAllSubview];
     [self removeTitle];
-    [self showMainView];
+    [self showMainView:true showMessage:true];
 }
 
 + (void)RemoveBackgroundView
@@ -191,7 +196,7 @@ static MainViewController* instance = nil;
     });
 }
 
-- (void)showMenu
+- (void)saveData
 {
     // データ保存
     bool ret = hg::UserData::sharedUserData()->saveData();
@@ -201,6 +206,10 @@ static MainViewController* instance = nil;
         }];
         [dialog show];
     }
+}
+
+- (void)showMenu
+{
     
     dispatch_async(dispatch_get_main_queue(), ^{
         // Menu
@@ -232,7 +241,18 @@ static MainViewController* instance = nil;
                     [m setText:@"Battle"];
                     [menuBaseView addSubview:m];
                     [m setOnTapAction:^(MenuButton *target) {
-                        [self stageStart];
+                        
+                        if (hg::UserData::sharedUserData()->getCurrentClearRatio() < 1.0) {
+                            [self stageStart];
+                        }
+                        else {
+                            NSString* msg = [NSString stringWithFormat:@"You've already cleared this stage. Please Select new Stage."];
+                            DialogView* dialog = [[[DialogView alloc] initWithMessage:msg] autorelease];
+                            [dialog addButtonWithText:@"OK" withAction:^{
+                                // nothing
+                            }];
+                            [dialog show];
+                        }
                     }];
                 }
                 
@@ -262,6 +282,7 @@ static MainViewController* instance = nil;
                         [vc setOnEndAction:^{
                             [[StatusView GetInstance] showProgress];
                             [self showMenu];
+                            [self saveData];
                             // animate
                             {
                                 [vc setUserInteractionEnabled:FALSE];
@@ -285,8 +306,14 @@ static MainViewController* instance = nil;
                     [m setOnTapAction:^(MenuButton *target) {
                         // buy
                         int cost = hg::UserData::sharedUserData()->getRepairAllCost();
-                        if (hg::UserData::sharedUserData()->getMoney() >= cost)
-                        {
+                        if (cost == 0) {
+                            NSString* msg = [NSString stringWithFormat:@"No fighter needs repair."];
+                            DialogView* dialog = [[[DialogView alloc] initWithMessage:msg] autorelease];
+                            [dialog addButtonWithText:@"OK" withAction:^{
+                                // nothing
+                            }];
+                            [dialog show];
+                        } else if (hg::UserData::sharedUserData()->getMoney() >= cost) {
                             NSString* msg = [NSString stringWithFormat:@"It Costs %d gold. Are you sure to repair all?", cost];
                             DialogView* dialog = [[[DialogView alloc] initWithMessage:msg] autorelease];
                             [dialog addButtonWithText:@"OK" withAction:^{
@@ -300,8 +327,7 @@ static MainViewController* instance = nil;
                             }];
                             [dialog show];
                         }
-                        else
-                        {
+                        else {
                             NSString* msg = [NSString stringWithFormat:@"It Costs %d gold. You need more gold", cost];
                             DialogView* dialog = [[[DialogView alloc] initWithMessage:msg] autorelease];
                             [dialog addButtonWithText:@"OK" withAction:^{
@@ -338,6 +364,7 @@ static MainViewController* instance = nil;
                         }
                         [vc setOnEndAction:^{
                             [self showMenu];
+                            [self saveData];
                             [[StatusView GetInstance] showProgress];
                             // animate
                             {
@@ -377,6 +404,7 @@ static MainViewController* instance = nil;
                         }
                         [vc setOnEndAction:^{
                             [self showMenu];
+                            [self saveData];
                             [[StatusView GetInstance] showProgress];
                             // animate
                             {
@@ -422,6 +450,7 @@ static MainViewController* instance = nil;
                         }
                         [vc setOnEndAction:^{
                             [self showMenu];
+                            [self saveData];
                             [[StatusView GetInstance] showProgress];
                             // animate
                             {
@@ -461,6 +490,7 @@ static MainViewController* instance = nil;
                         }
                         [vc setOnEndAction:^{
                             [self showMenu];
+                            [self saveData];
                             [[StatusView GetInstance] showProgress];
                             // animate
                             {
@@ -483,21 +513,46 @@ static MainViewController* instance = nil;
                     [m setText:@"Return to Base"];
                     [menuBaseView addSubview:m];
                     [m setOnTapAction:^(MenuButton *target) {
-                        DialogView* dialog = [[[DialogView alloc] initWithMessage:@"In exchange for the Advance and the half of Money, All fighters will be repaired completely. Are you sure to do this?"] autorelease];
-                        [dialog addButtonWithText:@"OK" withAction:^{
-                            hg::UserData* u = hg::UserData::sharedUserData();
-                            u->returnToBase();
-                            [[StatusView GetInstance] loadUserInfo];
-                            DialogView* dialog2 = [[[DialogView alloc] initWithMessage:@"Welcome back to the Base! All fighters are repaired now!"] autorelease];
+                        NSString* msg = @"";
+                        if (hg::UserData::sharedUserData()->getCurrentClearRatio() < 1.0) {
+                            msg = @"In exchange for the Advance and the half of Money, All fighters will be repaired completely. Are you sure to do this?";
+                            DialogView* dialog = [[[DialogView alloc] initWithMessage:msg] autorelease];
+                            [dialog addButtonWithText:@"OK" withAction:^{
+                                hg::UserData* u = hg::UserData::sharedUserData();
+                                u->returnToBase();
+                                u->saveData();
+                                [[StatusView GetInstance] loadUserInfo];
+                                if (playerDetailView) {
+                                    [playerDetailView loadGrade];
+                                }
+                                DialogView* dialog2 = [[[DialogView alloc] initWithMessage:@"Welcome back to the Base! All fighters are repaired now!"] autorelease];
+                                [dialog2 addButtonWithText:@"OK" withAction:^{
+                                    // do nothing
+                                }];
+                                [dialog2 show];
+                            }];
+                            [dialog addButtonWithText:@"Cancel" withAction:^{
+                                // do nothing
+                            }];
+                            [dialog show];
+                        }
+                        // no penalty
+                        else {
+                            DialogView* dialog2 = [[[DialogView alloc] initWithMessage:@"Do you want to start over this stage again?"] autorelease];
                             [dialog2 addButtonWithText:@"OK" withAction:^{
+                                hg::UserData* u = hg::UserData::sharedUserData();
+                                u->returnToBase();
+                                u->saveData();
+                                [[StatusView GetInstance] loadUserInfo];
+                                if (playerDetailView) {
+                                    [playerDetailView loadGrade];
+                                }
+                            }];
+                            [dialog2 addButtonWithText:@"Cancel" withAction:^{
                                 // do nothing
                             }];
                             [dialog2 show];
-                        }];
-                        [dialog addButtonWithText:@"Cancel" withAction:^{
-                            // do nothing
-                        }];
-                        [dialog show];
+                        }
                     }];
                 }
                 
@@ -506,12 +561,12 @@ static MainViewController* instance = nil;
                 {
                     CGRect frm = CGRectMake(buttonX2, buttonY2, MenuButtonWidth, MenuButtonHeight);
                     MenuButton* m = [[[MenuButton alloc] initWithFrame:frm] autorelease];
-                    [m setText:@"Select Area"];
+                    [m setText:@"Select Stage"];
                     [menuBaseView addSubview:m];
                     [m setOnTapAction:^(MenuButton *target) {
                         
                         hg::UserData* u = hg::UserData::sharedUserData();
-                        if (u->getCurrentClearRatio() == 0) {
+                        if (u->getCurrentClearRatio() == 0 || u->getCurrentClearRatio() >= 1.0) {
                             
                             // show select area table view
                             [self hideMenuViewAnimate];
@@ -532,6 +587,7 @@ static MainViewController* instance = nil;
                             [vc setOnEndAction:^{
                                 [[StatusView GetInstance] showProgress];
                                 [self showMenu];
+                                [self saveData];
                                 // animate
                                 {
                                     [vc setUserInteractionEnabled:FALSE];
@@ -572,6 +628,18 @@ static MainViewController* instance = nil;
                                 hg::UserData::DeleteAllData();
                                 dispatch_async(dispatch_get_main_queue(), ^{
                                     [[StatusView GetInstance] loadUserInfo];
+                                    // reload detail view
+                                    {
+                                        if (playerDetailView) {
+                                            [playerDetailView removeFromSuperview];
+                                            [playerDetailView release];
+                                            playerDetailView = nil;
+                                        }
+                                        CGRect playderDetailViewFrame = CGRectMake(0, 0, viewFrame.size.width, viewFrame.size.height);
+                                        playerDetailView = [[PlayerDetailView alloc] initWithFrame:playderDetailViewFrame];
+                                        [self.view addSubview:playerDetailView];
+                                        [playerDetailView loadGrade];
+                                    }
                                 });
                                 DialogView* dialog = [[[DialogView alloc] initWithMessage:@"You now on fresh start! Good luck!"] autorelease];
                                 [dialog addButtonWithText:@"OK" withAction:^{
@@ -595,7 +663,7 @@ static MainViewController* instance = nil;
     
 }
 
--(void)showMainView
+-(void)showMainView:(bool)showMenu showMessage:(bool)showMessage
 {
     mainBaseView = [[[UIView alloc] initWithFrame:viewFrame] autorelease];
     [mainBaseView setBackgroundColor:[UIColor clearColor]];
@@ -606,9 +674,26 @@ static MainViewController* instance = nil;
     [mainBaseView addSubview:statusView];
     [statusView loadUserInfo];
     
-    // MENU
-    [self showMenu];
+    // player detail view
+    {
+        if (playerDetailView) {
+            [playerDetailView release];
+            playerDetailView = nil;
+        }
+        CGRect playderDetailViewFrame = CGRectMake(0, 0, viewFrame.size.width, viewFrame.size.height);
+        playerDetailView = [[PlayerDetailView alloc] initWithFrame:playderDetailViewFrame];
+        [self.view addSubview:playerDetailView];
+        [playerDetailView loadGrade];
+    }
     
+    // MENU
+    if (showMenu) {
+        [self showMenu];
+    }
+    
+    if (showMessage) {
+        [self showMessage];
+    }
     /*
     // dialog test
     DialogView* v = [[[DialogView alloc] initWithMessage:@"test?"] autorelease];
@@ -617,6 +702,25 @@ static MainViewController* instance = nil;
     }];
     [v show];*/
     
+}
+
+-(void) showMessage
+{
+    if (hg::UserData::sharedUserData()->hasLevelUpInfo())
+    {
+        NSMutableArray* msgList = [NSMutableArray arrayWithObjects: nil];
+        // レベルアップメッセージを作成
+        while (1) {
+            if (!hg::UserData::sharedUserData()->hasLevelUpInfo()) {
+                break;
+            }
+            std::string msg = hg::UserData::sharedUserData()->popLevelupMessage();
+            [msgList addObject:[NSString stringWithCString:msg.c_str() encoding:NSUTF8StringEncoding]];
+        }
+        
+        MessageView* msgView = [[[MessageView alloc] initWithMessageList:msgList] autorelease];
+        [msgView show];
+    }
 }
 
 -(void)stageStart
@@ -649,6 +753,8 @@ static MainViewController* instance = nil;
     [curtain setAlpha:0];
     [self.view addSubview:curtain];
     
+    [playerDetailView removeFromSuperview];
+    
     [UIView animateWithDuration:0.5 animations:^{
         [mainBaseView setTransform:CGAffineTransformMakeScale(0.8, 0.8)];
         [curtain setAlpha:1];
@@ -659,31 +765,40 @@ static MainViewController* instance = nil;
         
         // ゲーム開始
         gameView = [[[GameView alloc] initWithOnEndAction:^{
+            // ゲーム終了後の結果画面
+            [self saveData];
             dispatch_async(dispatch_get_main_queue(), ^{
-                // 背景復活
-                [gameView removeFromSuperview];
-                [self showBackgroundView];
-                [self showMainView];
-                [curtain removeFromSuperview];
-                // レベルアップ情報を表示
-                if (hg::UserData::sharedUserData()->hasLevelUpInfo())
-                {
-                    NSMutableArray* msgList = [NSMutableArray arrayWithObjects: nil];
-                    // レベルアップメッセージを作成
-                    while (1) {
-                        if (!hg::UserData::sharedUserData()->hasLevelUpInfo()) {
-                            break;
+                ReportView* rv = [[ReportView alloc] initWithFrame:mainFrame];
+                [self.view addSubview:rv];
+                [rv autorelease];
+                [rv setOnEndAction:^{
+                    // ゲーム終了結果画面の終了後
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        // 背景復活
+                        [gameView removeFromSuperview];
+                        [self showBackgroundView];
+                        // クリア画面
+                        if (hg::UserData::sharedUserData()->isCleared()) {
+                            [self showMainView:false showMessage:false];
+                            [curtain removeFromSuperview];
+                            ClearView* cv = [[[ClearView alloc] initWithFrame:viewFrame] autorelease];
+                            [cv setOnEndAction:^{
+                                [cv setUserInteractionEnabled:false];
+                                [cv removeFromSuperview];
+                                [self showMenu];
+                                [self showMessage];
+                            }];
+                            [self.view addSubview:cv];
                         }
-                        std::string msg = hg::UserData::sharedUserData()->popLevelupMessage();
-                        [msgList addObject:[NSString stringWithCString:msg.c_str() encoding:NSUTF8StringEncoding]];
-                    }
-                    
-                    MessageView* msgView = [[[MessageView alloc] initWithMessageList:msgList] autorelease];
-                    [msgView show];
-                }
-            });
-            
-        }] autorelease];
+                        else {
+                            // レベルアップ情報を表示
+                            [self showMainView:true showMessage:true];
+                            [curtain removeFromSuperview];
+                        }
+                    }); // dispatch_async
+                }]; // rv setOnEndAction
+            }); // dispatch_async
+        }] autorelease]; // [[GameView alloc] initWithOnEndAction:
         [self.view addSubview:gameView];
     }];
     
