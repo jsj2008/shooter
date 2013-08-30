@@ -43,6 +43,7 @@ void main(void) { // 4
         vUV = vec2(uTexMatrix*vec4(aUV, 0.0, 1.0));
     }
 
+    /* for performance
     // Color
     if (uUseLight > 0.0)
     {
@@ -67,6 +68,6 @@ void main(void) { // 4
     else
     {
         vColor = uColor;
-    }
+    }*/
 
 }

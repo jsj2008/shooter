@@ -59,7 +59,8 @@ namespace hg {
             p->init(pMoveOwner, &Bullet::move, this);
             HGProcessManager::sharedProcessManager()->addProcess(p);
             
-            static Color sideColor = {0.2, 0.2, 1.0, 0.5};
+            /*
+             static Color sideColor = {0.2, 0.2, 1.0, 0.5};
             static Color coreColor = {0.2, 0.2, 1.0, 0.5};
             if (side == SideTypeFriend)
             {
@@ -70,76 +71,252 @@ namespace hg {
             {
                 sideColor = {1.0, 0.7, 0.7, 0.5};
                 coreColor = {1,1,1,1};
-            }
+            }*/
             
             switch (type) {
-                case BulletTypeMagic:
-                {
-                    setSizeByPixel(200, 200);
-                    setCollisionId(CollisionId_BulletMagic);
-                    
-                    // core
-                    AlphaMapSprite* pSpr = new AlphaMapSprite();
-                    pSpr->init("sparkle.png", {0.95, 0.95, 1.0, 1.0});
-                    pSpr->setScale(getWidth()*15, getHeight()*15);
-                    getNode()->addChild(pSpr);
-                    {
-                        // 縮小
-                        HGProcessOwner* po = new HGProcessOwner();
-                        ChangeScaleProcess* ssp2 = new ChangeScaleProcess();
-                        ssp2->init(po, pSpr, getWidth()*5, getHeight()*5, v(15));
-                        ssp2->setEaseFunc(&ease_out);
-                        HGProcessManager::sharedProcessManager()->addProcess(ssp2);
-                    }
-                    
-                    // effect
-                    {
-                        // 回転
-                        HGProcessOwner* po = new HGProcessOwner();
-                        RotateNodeProcess* rnp = new RotateNodeProcess();
-                        Vector r = Vector(0,0,1200);
-                        rnp->init(po, pSpr, r, v(80));
-                        rnp->setEaseFunc(&ease_in);
-                        HGProcessManager::sharedProcessManager()->addProcess(rnp);
-                    }
-                    
-                    break;
-                }
-                case BulletTypeNormal:
-                {
-                    setSizeByPixel(160, 160);
-                    setCollisionId(CollisionId_BulletNormal);
-                    
-                    // core
-                    AlphaMapSprite* pSpr = new AlphaMapSprite();
-                    pSpr->init("divine.png", coreColor);
-                    pSpr->setScale(getWidth()*1.1, getHeight()*1.1);
-                    getNode()->addChild(pSpr);
-                    
-                    // light
-                    AlphaMapSprite* pSprGlow = new AlphaMapSprite();
-                    pSprGlow->init("star.png", sideColor);
-                    pSprGlow->setScale(getWidth()*3, getHeight()*3);
-                    getNode()->addChild(pSprGlow);
-                    
-                    break;
-                }
                 case BulletTypeVulcan:
+                case BulletTypeVulcan2:
+                case BulletTypeVulcan3:
+                case BulletTypeVulcan4:
+                case BulletTypeVulcan5:
+                case BulletTypeVulcan6:
+                case BulletTypeVulcan7:
+                case BulletTypeVulcan8:
                 {
                     setSizeByPixel(60, 60);
                     setCollisionId(CollisionId_BulletVulcan);
                     
                     // core
+                    HGSprite* pSprBom = new HGSprite();
+                    pSprBom->init("shotpack.png");
+                    getNode()->addChild(pSprBom);
+                    pSprBom->setScale(getWidth(), getHeight());
+                    
+                    switch (type) {
+                        case BulletTypeVulcan:
+                            pSprBom->setTextureRect(0, 20, 20, 20);
+                            break;
+                        case BulletTypeVulcan2:
+                            pSprBom->setTextureRect(0, 84, 20, 20);
+                            break;
+                        case BulletTypeVulcan3:
+                            pSprBom->setTextureRect(0, 148, 20, 20);
+                            break;
+                        case BulletTypeVulcan4:
+                            pSprBom->setTextureRect(0, 212, 20, 20);
+                            break;
+                        case BulletTypeVulcan5:
+                            pSprBom->setTextureRect(0, 276, 20, 20);
+                            break;
+                        case BulletTypeVulcan6:
+                            pSprBom->setTextureRect(0, 340, 20, 20);
+                            break;
+                        case BulletTypeVulcan7:
+                            pSprBom->setTextureRect(0, 404, 20, 20);
+                            break;
+                        case BulletTypeVulcan8:
+                            pSprBom->setTextureRect(0, 468, 20, 20);
+                            break;
+                    }
+                    
+                    break;
+                }
+                case BulletTypeNormal:
+                case BulletTypeNormal2:
+                case BulletTypeNormal3:
+                case BulletTypeNormal4:
+                case BulletTypeNormal5:
+                case BulletTypeNormal6:
+                case BulletTypeNormal7:
+                case BulletTypeNormal8:
+                {
+                    setSizeByPixel(180, 180);
+                    setCollisionId(CollisionId_BulletNormal);
+                    
+                    // core
+                    HGSprite* pSprBom = new HGSprite();
+                    pSprBom->init("shotpack.png");
+                    getNode()->addChild(pSprBom);
+                    pSprBom->setScale(getWidth(), getHeight());
+                    
+                    switch (type) {
+                        case BulletTypeNormal:
+                            pSprBom->setTextureRect(0, 20, 20, 20);
+                            break;
+                        case BulletTypeNormal2:
+                            pSprBom->setTextureRect(0, 84, 20, 20);
+                            break;
+                        case BulletTypeNormal3:
+                            pSprBom->setTextureRect(0, 148, 20, 20);
+                            break;
+                        case BulletTypeNormal4:
+                            pSprBom->setTextureRect(0, 212, 20, 20);
+                            break;
+                        case BulletTypeNormal5:
+                            pSprBom->setTextureRect(0, 276, 20, 20);
+                            break;
+                        case BulletTypeNormal6:
+                            pSprBom->setTextureRect(0, 340, 20, 20);
+                            break;
+                        case BulletTypeNormal7:
+                            pSprBom->setTextureRect(0, 404, 20, 20);
+                            break;
+                        case BulletTypeNormal8:
+                            pSprBom->setTextureRect(0, 468, 20, 20);
+                            break;
+                    }
+                    
+                    break;
+                }
+                case BulletTypeMedium:
+                case BulletTypeMedium2:
+                case BulletTypeMedium3:
+                case BulletTypeMedium4:
+                case BulletTypeMedium5:
+                case BulletTypeMedium6:
+                case BulletTypeMedium7:
+                case BulletTypeMedium8:
+                {
+                    setSizeByPixel(250, 250);
+                    setCollisionId(CollisionId_BulletMedium);
+                    
+                    // core
+                    HGSprite* pSprBom = new HGSprite();
+                    pSprBom->init("shotpack.png");
+                    getNode()->addChild(pSprBom);
+                    pSprBom->setScale(getWidth(), getHeight());
+                    
+                    switch (type) {
+                        case BulletTypeMedium:
+                            pSprBom->setTextureRect(257, 0, 64, 64);
+                            break;
+                        case BulletTypeMedium2:
+                            pSprBom->setTextureRect(257, 64, 64, 64);
+                            break;
+                        case BulletTypeMedium3:
+                            pSprBom->setTextureRect(257, 128, 64, 64);
+                            break;
+                        case BulletTypeMedium4:
+                            pSprBom->setTextureRect(257, 192, 64, 64);
+                            break;
+                        case BulletTypeMedium5:
+                            pSprBom->setTextureRect(257, 256, 64, 64);
+                            break;
+                        case BulletTypeMedium6:
+                            pSprBom->setTextureRect(257, 320, 64, 64);
+                            break;
+                        case BulletTypeMedium7:
+                            pSprBom->setTextureRect(257, 384, 64, 64);
+                            break;
+                        case BulletTypeMedium8:
+                            pSprBom->setTextureRect(257, 448, 64, 64);
+                            break;
+                    }
+                    
+                    break;
+                }
+                case BulletTypeBig:
+                case BulletTypeBig2:
+                case BulletTypeBig3:
+                case BulletTypeBig4:
+                case BulletTypeBig5:
+                case BulletTypeBig6:
+                case BulletTypeBig7:
+                case BulletTypeBig8:
+                {
+                    setSizeByPixel(400, 400);
+                    setCollisionId(CollisionId_BulletBig);
+                    
+                    // core
                     AlphaMapSprite* pSpr = new AlphaMapSprite();
-                    pSpr->init("divine.png", coreColor);
-                    pSpr->setScale(getWidth()*1.1, getHeight()*1.1);
+                    pSpr->init("sparkle.png", {1.00, 0.5, 0.5, 1.0});
+                    pSpr->setScale(getWidth()*5, getHeight()*5);
                     getNode()->addChild(pSpr);
                     
+                    break;
+                }
+                case BulletTypeLaser:
+                {
+                    setSizeByPixel(140, 140);
+                    setCollisionId(CollisionId_BulletLaser);
+                    
                     // light
-                    AlphaMapSprite* pSprGlow = new AlphaMapSprite();
-                    pSprGlow->init("star.png", sideColor);
-                    pSprGlow->setScale(getWidth()*3, getHeight()*3);
-                    getNode()->addChild(pSprGlow);
+                    AlphaMapSprite* pSpr = new AlphaMapSprite();
+                    pSpr->init("corona.png", {1.00, 0.50, 0.5, 1.0});
+                    pSpr->setScale(getWidth()*2.5, getHeight()*2.5);
+                    getNode()->addChild(pSpr);
+                    break;
+                }
+                case BulletTypeFriendVulcan:
+                {
+                    setSizeByPixel(60, 60);
+                    setCollisionId(CollisionId_BulletVulcan);
+                    
+                    // core
+                    HGSprite* pSprBom = new HGSprite();
+                    pSprBom->init("shot1.png");
+                    getNode()->addChild(pSprBom);
+                    pSprBom->setScale(getWidth(), getHeight());
+                    
+                    /*
+                    // light
+                    AlphaMapSprite* pSpr = new AlphaMapSprite();
+                    pSpr->init("sparkle.png", {9.00, 9.00, 1.0, 1.0});
+                    pSpr->setScale(getWidth()*5, getHeight()*5);
+                    getNode()->addChild(pSpr);
+                     */
+                    
+                    break;
+                }
+                case BulletTypeFriendNormal:
+                {
+                    setSizeByPixel(180, 180);
+                    setCollisionId(CollisionId_BulletNormal);
+                    
+                    // core
+                    HGSprite* pSprBom = new HGSprite();
+                    pSprBom->init("shot1.png");
+                    getNode()->addChild(pSprBom);
+                    pSprBom->setScale(getWidth(), getHeight());
+                    
+                    break;
+                }
+                case BulletTypeFriendMedium:
+                {
+                    setSizeByPixel(250, 250);
+                    setCollisionId(CollisionId_BulletMedium);
+                    
+                    // core
+                    HGSprite* pSprBom = new HGSprite();
+                    pSprBom->init("shot1.png");
+                    getNode()->addChild(pSprBom);
+                    pSprBom->setScale(getWidth(), getHeight());
+                    
+                    break;
+                }
+                case BulletTypeFriendBig:
+                {
+                    setSizeByPixel(400, 400);
+                    setCollisionId(CollisionId_BulletBig);
+                    
+                    // core
+                    AlphaMapSprite* pSpr = new AlphaMapSprite();
+                    pSpr->init("sparkle.png", {0.50, 0.50, 1.0, 1.0});
+                    pSpr->setScale(getWidth()*5, getHeight()*5);
+                    getNode()->addChild(pSpr);
+                    
+                    break;
+                }
+                case BulletTypeFriendLaser:
+                {
+                    setSizeByPixel(140, 140);
+                    setCollisionId(CollisionId_BulletLaser);
+                    
+                    // light
+                    AlphaMapSprite* pSpr = new AlphaMapSprite();
+                    pSpr->init("corona.png", {0.50, 0.50, 1.0, 1.0});
+                    pSpr->setScale(getWidth()*2.5, getHeight()*2.5);
+                    getNode()->addChild(pSpr);
                     
                     break;
                 }

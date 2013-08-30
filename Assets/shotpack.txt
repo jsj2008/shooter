@@ -1,0 +1,1415 @@
+#UserShotData
+ShotImage = ".\img\_shot3.png"
+
+
+// ä€íeÅiè¨Åj
+ShotData{
+	id=1
+	rect=(0,0,20,20)
+	delay_color=(255,32,32)
+}
+ShotData{
+	id=2
+	rect=(0,64,20,84)
+	delay_color=(192,128,32)
+}
+ShotData{
+	id=3
+	rect=(0,128,20,148)
+	delay_color=(192,192,32)
+}
+ShotData{
+	id=4
+	rect=(0,192,20,212)
+	delay_color=(32,255,32)
+}
+ShotData{
+	id=5
+	rect=(0,256,20,276)
+	delay_color=(32,192,192)
+}
+ShotData{
+	id=6
+	rect=(0,320,20,340)
+	delay_color=(32,32,255)
+}
+ShotData{
+	id=7
+	rect=(0,384,20,404)
+	delay_color=(192,32,192)
+}
+ShotData{
+	id=8
+	rect=(0,448,20,468)
+	delay_color=(192,192,192)
+}
+
+// ä€íeÅiè¨ÅEîΩì]Åj
+ShotData{
+	id=9
+	rect=(0,20,20,40)
+	delay_color=(255,32,32)
+}
+ShotData{
+	id=10
+	rect=(0,84,20,104)
+	delay_color=(192,128,32)
+}
+ShotData{
+	id=11
+	rect=(0,148,20,168)
+	delay_color=(192,192,32)
+}
+ShotData{
+	id=12
+	rect=(0,212,20,232)
+	delay_color=(32,255,32)
+}
+ShotData{
+	id=13
+	rect=(0,276,20,296)
+	delay_color=(32,192,192)
+}
+ShotData{
+	id=14
+	rect=(0,340,20,360)
+	delay_color=(32,32,255)
+}
+ShotData{
+	id=15
+	rect=(0,404,20,424)
+	delay_color=(192,32,192)
+}
+ShotData{
+	id=16
+	rect=(0,468,20,488)
+	delay_color=(192,192,192)
+}
+
+// ä€íeÅiè¨ÅEâ¡éZÅj
+ShotData{
+	id=17
+	rect=(20,0,40,20)
+	delay_color=(255,32,32)
+	render=ADD
+}
+ShotData{
+	id=18
+	rect=(20,64,40,84)
+	delay_color=(192,128,32)
+	render=ADD
+}
+ShotData{
+	id=19
+	rect=(20,128,40,148)
+	delay_color=(192,192,32)
+	render=ADD
+}
+ShotData{
+	id=20
+	rect=(20,192,40,212)
+	delay_color=(32,255,32)
+	render=ADD
+}
+ShotData{
+	id=21
+	rect=(20,256,40,276)
+	delay_color=(32,192,192)
+	render=ADD
+}
+ShotData{
+	id=22
+	rect=(20,320,40,340)
+	delay_color=(32,32,255)
+	render=ADD
+}
+ShotData{
+	id=23
+	rect=(20,384,40,404)
+	delay_color=(192,32,192)
+	render=ADD
+}
+ShotData{
+	id=24
+	rect=(20,448,40,468)
+	delay_color=(192,192,192)
+	render=ADD
+}
+
+// ä€íeÅiíÜÅj
+ShotData{
+	id=25
+	rect=(100,0,130,30)
+	delay_color=(255,32,32)
+}
+ShotData{
+	id=26
+	rect=(100,64,130,94)
+	delay_color=(192,128,32)
+}
+ShotData{
+	id=27
+	rect=(100,128,130,158)
+	delay_color=(192,192,32)
+}
+ShotData{
+	id=28
+	rect=(100,192,130,222)
+	delay_color=(32,255,32)
+}
+ShotData{
+	id=29
+	rect=(100,256,130,286)
+	delay_color=(32,192,192)
+}
+ShotData{
+	id=30
+	rect=(100,320,130,350)
+	delay_color=(32,32,255)
+}
+ShotData{
+	id=31
+	rect=(100,384,130,414)
+	delay_color=(192,32,192)
+}
+ShotData{
+	id=32
+	rect=(100,448,130,478)
+	delay_color=(192,192,192)
+}
+
+// ä€íeÅiíÜÅEîΩì]Åj
+ShotData{
+	id=33
+	rect=(100,30,130,60)
+	delay_color=(255,32,32)
+}
+ShotData{
+	id=34
+	rect=(100,94,130,124)
+	delay_color=(192,128,32)
+}
+ShotData{
+	id=35
+	rect=(100,158,130,188)
+	delay_color=(192,192,32)
+}
+ShotData{
+	id=36
+	rect=(100,222,130,252)
+	delay_color=(32,255,32)
+}
+ShotData{
+	id=37
+	rect=(100,286,130,316)
+	delay_color=(32,192,192)
+}
+ShotData{
+	id=38
+	rect=(100,350,130,380)
+	delay_color=(32,32,255)
+}
+ShotData{
+	id=39
+	rect=(100,414,130,444)
+	delay_color=(192,32,192)
+}
+ShotData{
+	id=40
+	rect=(100,478,130,508)
+	delay_color=(192,192,192)
+}
+
+// ä€íeÅiíÜÅEâ¡éZÅj
+ShotData{
+	id=41
+	rect=(130,0,160,30)
+	delay_color=(255,32,32)
+	render=ADD
+}
+ShotData{
+	id=42
+	rect=(130,64,160,94)
+	delay_color=(192,128,32)
+	render=ADD
+}
+ShotData{
+	id=43
+	rect=(130,128,160,158)
+	delay_color=(192,192,32)
+	render=ADD
+}
+ShotData{
+	id=44
+	rect=(130,192,160,222)
+	delay_color=(32,255,32)
+	render=ADD
+}
+ShotData{
+	id=45
+	rect=(130,256,160,286)
+	delay_color=(32,192,192)
+	render=ADD
+}
+ShotData{
+	id=46
+	rect=(130,320,160,350)
+	delay_color=(32,32,255)
+	render=ADD
+}
+ShotData{
+	id=47
+	rect=(130,384,160,414)
+	delay_color=(192,32,192)
+	render=ADD
+}
+ShotData{
+	id=48
+	rect=(130,448,160,478)
+	delay_color=(192,192,192)
+	render=ADD
+}
+
+// ä€íeÅiëÂÅEâ¡éZêÍópÅj
+ShotData{
+	id=49
+	rect=(257,0,321,64)
+	delay_color=(255,32,32)
+	render=ADD
+}
+ShotData{
+	id=50
+	rect=(257,64,321,128)
+	delay_color=(192,128,32)
+	render=ADD
+}
+ShotData{
+	id=51
+	rect=(257,128,321,192)
+	delay_color=(192,192,32)
+	render=ADD
+}
+ShotData{
+	id=52
+	rect=(257,192,321,256)
+	delay_color=(32,255,32)
+	render=ADD
+}
+ShotData{
+	id=53
+	rect=(257,256,321,320)
+	delay_color=(32,192,192)
+	render=ADD
+}
+ShotData{
+	id=54
+	rect=(257,320,321,384)
+	delay_color=(32,32,255)
+	render=ADD
+}
+ShotData{
+	id=55
+	rect=(257,384,321,448)
+	delay_color=(192,32,192)
+	render=ADD
+}
+ShotData{
+	id=56
+	rect=(257,448,321,512)
+	delay_color=(192,192,192)
+	render=ADD
+}
+
+// ä€íeÅiògïtÅj
+ShotData{
+	id=57
+	rect=(20,20,40,40)
+	delay_color=(255,32,32)
+}
+ShotData{
+	id=58
+	rect=(20,84,40,104)
+	delay_color=(192,128,32)
+}
+ShotData{
+	id=59
+	rect=(20,148,40,168)
+	delay_color=(192,192,32)
+}
+ShotData{
+	id=60
+	rect=(20,212,40,232)
+	delay_color=(32,255,32)
+}
+ShotData{
+	id=61
+	rect=(20,276,40,296)
+	delay_color=(32,192,192)
+}
+ShotData{
+	id=62
+	rect=(20,340,40,360)
+	delay_color=(32,32,255)
+}
+ShotData{
+	id=63
+	rect=(20,404,40,424)
+	delay_color=(192,32,192)
+}
+ShotData{
+	id=64
+	rect=(20,468,40,488)
+	delay_color=(192,192,192)
+}
+
+// ä€íeÅiã…è¨Åj
+ShotData{
+	id=65
+	rect=(86,40,96,50)
+	delay_color=(255,32,32)
+}
+ShotData{
+	id=66
+	rect=(86,104,96,114)
+	delay_color=(192,128,32)
+}
+ShotData{
+	id=67
+	rect=(86,168,96,178)
+	delay_color=(192,192,32)
+}
+ShotData{
+	id=68
+	rect=(86,232,96,242)
+	delay_color=(32,255,32)
+}
+ShotData{
+	id=69
+	rect=(86,296,96,306)
+	delay_color=(32,192,192)
+}
+ShotData{
+	id=70
+	rect=(86,360,96,370)
+	delay_color=(32,32,255)
+}
+ShotData{
+	id=71
+	rect=(86,424,96,434)
+	delay_color=(192,32,192)
+}
+ShotData{
+	id=72
+	rect=(86,488,96,498)
+	delay_color=(192,192,192)
+}
+
+// êjíe
+ShotData{
+	id=73
+	rect=(0,40,10,60)
+	delay_color=(255,32,32)
+}
+ShotData{
+	id=74
+	rect=(0,104,10,124)
+	delay_color=(192,128,32)
+}
+ShotData{
+	id=75
+	rect=(0,168,10,188)
+	delay_color=(192,192,32)
+}
+ShotData{
+	id=76
+	rect=(0,232,10,252)
+	delay_color=(32,255,32)
+}
+ShotData{
+	id=77
+	rect=(0,296,10,316)
+	delay_color=(32,192,192)
+}
+ShotData{
+	id=78
+	rect=(0,360,10,380)
+	delay_color=(32,32,255)
+}
+ShotData{
+	id=79
+	rect=(0,424,10,444)
+	delay_color=(192,32,192)
+}
+ShotData{
+	id=80
+	rect=(0,488,10,508)
+	delay_color=(192,192,192)
+}
+
+// ë»â~íeÅiè¨Åj
+ShotData{
+	id=81
+	rect=(10,40,22,60)
+	delay_color=(255,32,32)
+}
+ShotData{
+	id=82
+	rect=(10,104,22,124)
+	delay_color=(192,128,32)
+}
+ShotData{
+	id=83
+	rect=(10,168,22,188)
+	delay_color=(192,192,32)
+}
+ShotData{
+	id=84
+	rect=(10,232,22,252)
+	delay_color=(32,255,32)
+}
+ShotData{
+	id=85
+	rect=(10,296,22,316)
+	delay_color=(32,192,192)
+}
+ShotData{
+	id=86
+	rect=(10,360,22,380)
+	delay_color=(32,32,255)
+}
+ShotData{
+	id=87
+	rect=(10,424,22,444)
+	delay_color=(192,32,192)
+}
+ShotData{
+	id=88
+	rect=(10,488,22,508)
+	delay_color=(192,192,192)
+}
+
+// ë»â~íeÅiíÜÅj
+ShotData{
+	id=89
+	rect=(219,0,237,30)
+	delay_color=(255,32,32)
+}
+ShotData{
+	id=90
+	rect=(219,64,237,94)
+	delay_color=(192,128,32)
+}
+ShotData{
+	id=91
+	rect=(219,128,237,158)
+	delay_color=(192,192,32)
+}
+ShotData{
+	id=92
+	rect=(219,192,237,222)
+	delay_color=(32,255,32)
+}
+ShotData{
+	id=93
+	rect=(219,256,237,286)
+	delay_color=(32,192,192)
+}
+ShotData{
+	id=94
+	rect=(219,320,237,350)
+	delay_color=(32,32,255)
+}
+ShotData{
+	id=95
+	rect=(219,384,237,414)
+	delay_color=(192,32,192)
+}
+ShotData{
+	id=96
+	rect=(219,448,237,478)
+	delay_color=(192,192,192)
+}
+
+// ë»â~íeÅiíÜÅEîΩì]Åj
+ShotData{
+	id=97
+	rect=(219,30,237,60)
+	delay_color=(255,32,32)
+}
+ShotData{
+	id=98
+	rect=(219,94,237,124)
+	delay_color=(192,128,32)
+}
+ShotData{
+	id=99
+	rect=(219,158,237,188)
+	delay_color=(192,192,32)
+}
+ShotData{
+	id=100
+	rect=(219,222,237,252)
+	delay_color=(32,255,32)
+}
+ShotData{
+	id=101
+	rect=(219,286,237,316)
+	delay_color=(32,192,192)
+}
+ShotData{
+	id=102
+	rect=(219,350,237,380)
+	delay_color=(32,32,255)
+}
+ShotData{
+	id=103
+	rect=(219,414,237,444)
+	delay_color=(192,32,192)
+}
+ShotData{
+	id=104
+	rect=(219,478,237,508)
+	delay_color=(192,192,192)
+}
+
+// åıê¸Åiâ¡éZêÍópÅj
+ShotData{
+	id=105
+	rect=(46,42,66,58)
+	delay_color=(255,32,32)
+	render=ADD
+}
+ShotData{
+	id=106
+	rect=(46,106,66,122)
+	delay_color=(192,128,32)
+	render=ADD
+}
+ShotData{
+	id=107
+	rect=(46,170,66,186)
+	delay_color=(192,192,32)
+	render=ADD
+}
+ShotData{
+	id=108
+	rect=(46,234,66,250)
+	delay_color=(32,255,32)
+	render=ADD
+}
+ShotData{
+	id=109
+	rect=(46,298,66,314)
+	delay_color=(32,192,192)
+	render=ADD
+}
+ShotData{
+	id=110
+	rect=(46,362,66,378)
+	delay_color=(32,32,255)
+	render=ADD
+}
+ShotData{
+	id=111
+	rect=(46,426,66,442)
+	delay_color=(192,32,192)
+	render=ADD
+}
+ShotData{
+	id=112
+	rect=(46,490,66,506)
+	delay_color=(192,192,192)
+	render=ADD
+}
+
+// åıê¸ÅiîΩì]ÅEâ¡éZêÍópÅj
+ShotData{
+	id=113
+	rect=(66,42,86,58)
+	delay_color=(255,32,32)
+	render=ADD
+}
+ShotData{
+	id=114
+	rect=(66,106,86,122)
+	delay_color=(192,128,32)
+	render=ADD
+}
+ShotData{
+	id=115
+	rect=(66,170,86,186)
+	delay_color=(192,192,32)
+	render=ADD
+}
+ShotData{
+	id=116
+	rect=(66,234,86,250)
+	delay_color=(32,255,32)
+	render=ADD
+}
+ShotData{
+	id=117
+	rect=(66,298,86,314)
+	delay_color=(32,192,192)
+	render=ADD
+}
+ShotData{
+	id=118
+	rect=(66,362,86,378)
+	delay_color=(32,32,255)
+	render=ADD
+}
+ShotData{
+	id=119
+	rect=(66,426,86,442)
+	delay_color=(192,32,192)
+	render=ADD
+}
+ShotData{
+	id=120
+	rect=(66,490,86,506)
+	delay_color=(192,192,192)
+	render=ADD
+}
+
+// óÿíe
+ShotData{
+	id=121
+	rect=(60,0,80,20)
+	delay_color=(255,32,32)
+}
+ShotData{
+	id=122
+	rect=(60,64,80,84)
+	delay_color=(192,128,32)
+}
+ShotData{
+	id=123
+	rect=(60,128,80,148)
+	delay_color=(192,192,32)
+}
+ShotData{
+	id=124
+	rect=(60,192,80,212)
+	delay_color=(32,255,32)
+}
+ShotData{
+	id=125
+	rect=(60,256,80,276)
+	delay_color=(32,192,192)
+}
+ShotData{
+	id=126
+	rect=(60,320,80,340)
+	delay_color=(32,32,255)
+}
+ShotData{
+	id=127
+	rect=(60,384,80,404)
+	delay_color=(192,32,192)
+}
+ShotData{
+	id=128
+	rect=(60,448,80,468)
+	delay_color=(192,192,192)
+}
+
+// óÿíeÅiâ¡éZÅj
+ShotData{
+	id=129
+	rect=(80,0,100,20)
+	delay_color=(255,32,32)
+	render=ADD
+}
+ShotData{
+	id=130
+	rect=(80,64,100,84)
+	delay_color=(192,128,32)
+	render=ADD
+}
+ShotData{
+	id=131
+	rect=(80,128,100,148)
+	delay_color=(192,192,32)
+	render=ADD
+}
+ShotData{
+	id=132
+	rect=(80,192,100,212)
+	delay_color=(32,255,32)
+	render=ADD
+}
+ShotData{
+	id=133
+	rect=(80,256,100,276)
+	delay_color=(32,192,192)
+	render=ADD
+}
+ShotData{
+	id=134
+	rect=(80,320,100,340)
+	delay_color=(32,32,255)
+	render=ADD
+}
+ShotData{
+	id=135
+	rect=(80,384,100,404)
+	delay_color=(192,32,192)
+	render=ADD
+}
+ShotData{
+	id=136
+	rect=(80,448,100,468)
+	delay_color=(192,192,192)
+	render=ADD
+}
+
+// í±íe
+ShotData{
+	id=137
+	rect=(160,0,190,30)
+	delay_color=(255,32,32)
+}
+ShotData{
+	id=138
+	rect=(160,64,190,94)
+	delay_color=(192,128,32)
+}
+ShotData{
+	id=139
+	rect=(160,128,190,158)
+	delay_color=(192,192,32)
+}
+ShotData{
+	id=140
+	rect=(160,192,190,222)
+	delay_color=(32,255,32)
+}
+ShotData{
+	id=141
+	rect=(160,256,190,286)
+	delay_color=(32,192,192)
+}
+ShotData{
+	id=142
+	rect=(160,320,190,350)
+	delay_color=(32,32,255)
+}
+ShotData{
+	id=143
+	rect=(160,384,190,414)
+	delay_color=(192,32,192)
+}
+ShotData{
+	id=144
+	rect=(160,448,190,478)
+	delay_color=(192,192,192)
+}
+
+// í±íeÅiîΩì]Åj
+ShotData{
+	id=145
+	rect=(160,30,190,60)
+	delay_color=(255,32,32)
+}
+ShotData{
+	id=146
+	rect=(160,94,190,124)
+	delay_color=(192,128,32)
+}
+ShotData{
+	id=147
+	rect=(160,158,190,188)
+	delay_color=(192,192,32)
+}
+ShotData{
+	id=148
+	rect=(160,222,190,252)
+	delay_color=(32,255,32)
+}
+ShotData{
+	id=149
+	rect=(160,286,190,316)
+	delay_color=(32,192,192)
+}
+ShotData{
+	id=150
+	rect=(160,350,190,380)
+	delay_color=(32,32,255)
+}
+ShotData{
+	id=151
+	rect=(160,414,190,444)
+	delay_color=(192,32,192)
+}
+ShotData{
+	id=152
+	rect=(160,478,190,508)
+	delay_color=(192,192,192)
+}
+
+// ïXíe
+ShotData{
+	id=153
+	rect=(22,40,34,60)
+	delay_color=(255,32,32)
+}
+ShotData{
+	id=154
+	rect=(22,104,34,124)
+	delay_color=(192,128,32)
+}
+ShotData{
+	id=155
+	rect=(22,168,34,188)
+	delay_color=(192,192,32)
+}
+ShotData{
+	id=156
+	rect=(22,232,34,252)
+	delay_color=(32,255,32)
+}
+ShotData{
+	id=157
+	rect=(22,296,34,316)
+	delay_color=(32,192,192)
+}
+ShotData{
+	id=158
+	rect=(22,360,34,380)
+	delay_color=(32,32,255)
+}
+ShotData{
+	id=159
+	rect=(22,424,34,444)
+	delay_color=(192,32,192)
+}
+ShotData{
+	id=160
+	rect=(22,488,34,508)
+	delay_color=(192,192,192)
+}
+
+// ñÓàÛíeÅiè¨Åj
+ShotData{
+	id=161
+	rect=(60,20,80,40)
+	delay_color=(255,32,32)
+}
+ShotData{
+	id=162
+	rect=(60,84,80,104)
+	delay_color=(192,128,32)
+}
+ShotData{
+	id=163
+	rect=(60,148,80,168)
+	delay_color=(192,192,32)
+}
+ShotData{
+	id=164
+	rect=(60,212,80,232)
+	delay_color=(32,255,32)
+}
+ShotData{
+	id=165
+	rect=(60,276,80,296)
+	delay_color=(32,192,192)
+}
+ShotData{
+	id=166
+	rect=(60,340,80,360)
+	delay_color=(32,32,255)
+}
+ShotData{
+	id=167
+	rect=(60,404,80,424)
+	delay_color=(192,32,192)
+}
+ShotData{
+	id=168
+	rect=(60,468,80,488)
+	delay_color=(192,192,192)
+}
+
+// ñÓàÛíeÅiíÜÅj
+ShotData{
+	id=169
+	rect=(130,30,160,60)
+	delay_color=(255,32,32)
+}
+ShotData{
+	id=170
+	rect=(130,94,160,124)
+	delay_color=(192,128,32)
+}
+ShotData{
+	id=171
+	rect=(130,158,160,188)
+	delay_color=(192,192,32)
+}
+ShotData{
+	id=172
+	rect=(130,222,160,252)
+	delay_color=(32,255,32)
+}
+ShotData{
+	id=173
+	rect=(130,286,160,316)
+	delay_color=(32,192,192)
+}
+ShotData{
+	id=174
+	rect=(130,350,160,380)
+	delay_color=(32,32,255)
+}
+ShotData{
+	id=175
+	rect=(130,414,160,444)
+	delay_color=(192,32,192)
+}
+ShotData{
+	id=176
+	rect=(130,478,160,508)
+	delay_color=(192,192,192)
+}
+
+// êØíeÅiè¨Åj
+ShotData{
+	id=177
+	rect=(40,0,60,20)
+	delay_color=(255,32,32)
+	angular_velocity=rand(-1,-3)
+}
+ShotData{
+	id=178
+	rect=(40,64,60,84)
+	delay_color=(192,128,32)
+	angular_velocity=rand(-1,-3)
+}
+ShotData{
+	id=179
+	rect=(40,128,60,148)
+	delay_color=(192,192,32)
+	angular_velocity=rand(-1,-3)
+}
+ShotData{
+	id=180
+	rect=(40,192,60,212)
+	delay_color=(32,255,32)
+	angular_velocity=rand(-1,-3)
+}
+ShotData{
+	id=181
+	rect=(40,256,60,276)
+	delay_color=(32,192,192)
+	angular_velocity=rand(-1,-3)
+}
+ShotData{
+	id=182
+	rect=(40,320,60,340)
+	delay_color=(32,32,255)
+	angular_velocity=rand(-1,-3)
+}
+ShotData{
+	id=183
+	rect=(40,384,60,404)
+	delay_color=(192,32,192)
+	angular_velocity=rand(-1,-3)
+}
+ShotData{
+	id=184
+	rect=(40,448,60,468)
+	delay_color=(192,192,192)
+	angular_velocity=rand(-1,-3)
+}
+
+// êØíeÅiè¨ÅEîΩì]Åj
+ShotData{
+	id=185
+	rect=(40,20,60,40)
+	delay_color=(255,32,32)
+	angular_velocity=rand(-1,-3)
+}
+ShotData{
+	id=186
+	rect=(40,84,60,104)
+	delay_color=(192,128,32)
+	angular_velocity=rand(-1,-3)
+}
+ShotData{
+	id=187
+	rect=(40,148,60,168)
+	delay_color=(192,192,32)
+	angular_velocity=rand(-1,-3)
+}
+ShotData{
+	id=188
+	rect=(40,212,60,232)
+	delay_color=(32,255,32)
+	angular_velocity=rand(-1,-3)
+}
+ShotData{
+	id=189
+	rect=(40,276,60,296)
+	delay_color=(32,192,192)
+	angular_velocity=rand(-1,-3)
+}
+ShotData{
+	id=190
+	rect=(40,340,60,360)
+	delay_color=(32,32,255)
+	angular_velocity=rand(-1,-3)
+}
+ShotData{
+	id=191
+	rect=(40,404,60,424)
+	delay_color=(192,32,192)
+	angular_velocity=rand(-1,-3)
+}
+ShotData{
+	id=192
+	rect=(40,468,60,488)
+	delay_color=(192,192,192)
+	angular_velocity=rand(-1,-3)
+}
+
+// êØíeÅiíÜÅj
+ShotData{
+	id=193
+	rect=(190,0,220,30)
+	delay_color=(255,32,32)
+	angular_velocity=rand(-1,-3)
+}
+ShotData{
+	id=194
+	rect=(190,64,220,94)
+	delay_color=(192,128,32)
+	angular_velocity=rand(-1,-3)
+}
+ShotData{
+	id=195
+	rect=(190,128,220,158)
+	delay_color=(192,192,32)
+	angular_velocity=rand(-1,-3)
+}
+ShotData{
+	id=196
+	rect=(190,192,220,222)
+	delay_color=(32,255,32)
+	angular_velocity=rand(-1,-3)
+}
+ShotData{
+	id=197
+	rect=(190,256,220,286)
+	delay_color=(32,192,192)
+	angular_velocity=rand(-1,-3)
+}
+ShotData{
+	id=198
+	rect=(190,320,220,350)
+	delay_color=(32,32,255)
+	angular_velocity=rand(-1,-3)
+}
+ShotData{
+	id=199
+	rect=(190,384,220,414)
+	delay_color=(192,32,192)
+	angular_velocity=rand(-1,-3)
+}
+ShotData{
+	id=200
+	rect=(190,448,220,478)
+	delay_color=(192,192,192)
+	angular_velocity=rand(-1,-3)
+}
+
+// êØíeÅiíÜÅEîΩì]Åj
+ShotData{
+	id=201
+	rect=(190,30,220,60)
+	delay_color=(255,32,32)
+	angular_velocity=rand(-1,-3)
+}
+ShotData{
+	id=202
+	rect=(190,94,220,124)
+	delay_color=(192,128,32)
+	angular_velocity=rand(-1,-3)
+}
+ShotData{
+	id=203
+	rect=(190,158,220,188)
+	delay_color=(192,192,32)
+	angular_velocity=rand(-1,-3)
+}
+ShotData{
+	id=204
+	rect=(190,222,220,252)
+	delay_color=(32,255,32)
+	angular_velocity=rand(-1,-3)
+}
+ShotData{
+	id=205
+	rect=(190,286,220,316)
+	delay_color=(32,192,192)
+	angular_velocity=rand(-1,-3)
+}
+ShotData{
+	id=206
+	rect=(190,350,220,380)
+	delay_color=(32,32,255)
+	angular_velocity=rand(-1,-3)
+}
+ShotData{
+	id=207
+	rect=(190,414,220,444)
+	delay_color=(192,32,192)
+	angular_velocity=rand(-1,-3)
+}
+ShotData{
+	id=208
+	rect=(190,478,220,508)
+	delay_color=(192,192,192)
+	angular_velocity=rand(-1,-3)
+}
+
+// ÉNÉiÉCíe
+ShotData{
+	id=209
+	rect=(34,40,46,60)
+	delay_color=(255,32,32)
+}
+ShotData{
+	id=210
+	rect=(34,104,46,124)
+	delay_color=(192,128,32)
+}
+ShotData{
+	id=211
+	rect=(34,168,46,188)
+	delay_color=(192,192,32)
+}
+ShotData{
+	id=212
+	rect=(34,232,46,252)
+	delay_color=(32,255,32)
+}
+ShotData{
+	id=213
+	rect=(34,296,46,316)
+	delay_color=(32,192,192)
+}
+ShotData{
+	id=214
+	rect=(34,360,46,380)
+	delay_color=(32,32,255)
+}
+ShotData{
+	id=215
+	rect=(34,424,46,444)
+	delay_color=(192,32,192)
+}
+ShotData{
+	id=216
+	rect=(34,488,46,508)
+	delay_color=(192,192,192)
+}
+
+// ÉiÉCÉtíe
+ShotData{
+	id=217
+	rect=(237,0,257,30)
+	delay_color=(255,32,32)
+}
+ShotData{
+	id=218
+	rect=(237,64,257,94)
+	delay_color=(192,128,32)
+}
+ShotData{
+	id=219
+	rect=(237,128,257,158)
+	delay_color=(192,192,32)
+}
+ShotData{
+	id=220
+	rect=(237,192,257,222)
+	delay_color=(32,255,32)
+}
+ShotData{
+	id=221
+	rect=(237,256,257,286)
+	delay_color=(32,192,192)
+}
+ShotData{
+	id=222
+	rect=(237,320,257,350)
+	delay_color=(32,32,255)
+}
+ShotData{
+	id=223
+	rect=(237,384,257,414)
+	delay_color=(192,32,192)
+}
+ShotData{
+	id=224
+	rect=(237,448,257,478)
+	delay_color=(192,192,192)
+}
+
+// è¨ìÅíe
+ShotData{
+	id=225
+	rect=(237,30,257,60)
+	delay_color=(255,32,32)
+}
+ShotData{
+	id=226
+	rect=(237,94,257,124)
+	delay_color=(192,128,32)
+}
+ShotData{
+	id=227
+	rect=(237,158,257,188)
+	delay_color=(192,192,32)
+}
+ShotData{
+	id=228
+	rect=(237,222,257,252)
+	delay_color=(32,255,32)
+}
+ShotData{
+	id=229
+	rect=(237,286,257,316)
+	delay_color=(32,192,192)
+}
+ShotData{
+	id=230
+	rect=(237,350,257,380)
+	delay_color=(32,32,255)
+}
+ShotData{
+	id=231
+	rect=(237,414,257,444)
+	delay_color=(192,32,192)
+}
+ShotData{
+	id=232
+	rect=(237,478,257,508)
+	delay_color=(192,192,192)
+}
+
+// å‰éDíe
+ShotData{
+	id=233
+	rect=(80,20,96,40)
+	delay_color=(255,32,32)
+}
+ShotData{
+	id=234
+	rect=(80,84,96,104)
+	delay_color=(192,128,32)
+}
+ShotData{
+	id=235
+	rect=(80,148,96,168)
+	delay_color=(192,192,32)
+}
+ShotData{
+	id=236
+	rect=(80,212,96,232)
+	delay_color=(32,255,32)
+}
+ShotData{
+	id=237
+	rect=(80,276,96,296)
+	delay_color=(32,192,192)
+}
+ShotData{
+	id=238
+	rect=(80,340,96,360)
+	delay_color=(32,32,255)
+}
+ShotData{
+	id=239
+	rect=(80,404,96,424)
+	delay_color=(192,32,192)
+}
+ShotData{
+	id=240
+	rect=(80,468,96,488)
+	delay_color=(192,192,192)
+}
+
+// âAózíeÅiçgîíÅEîíçïÅj
+ShotData{
+	id=241
+	rect=(481,0,511,30)
+	delay_color=(255,32,32)
+	angular_velocity=rand(-1,-3)
+}
+ShotData{
+	id=242
+	rect=(451,0,481,30)
+	delay_color=(192,192,192)
+	angular_velocity=rand(-1,-3)
+}
+
+// è¨ëKíeÅiã‡ÅEã‚ÅEì∫Åj
+ShotData{
+	id=243
+	rect=(431,0,451,20)
+	delay_color=(255,255,32)
+}
+ShotData{
+	id=244
+	rect=(411,0,431,20)
+	delay_color=(192,192,192)
+}
+ShotData{
+	id=245
+	rect=(391,0,411,20)
+	delay_color=(192,128,32)
+}
+
+// ì_ñ≈íeÅiê‘ÅEê¬ÅEîíÅEâ¡éZêÍópÅj
+ShotData{
+	id=246
+	AnimationData{
+		animation_data=(2,481,30,511,60)
+		animation_data=(3,451,30,481,60)
+		animation_data=(4,421,30,451,60)
+		animation_data=(5,391,30,421,60)
+		animation_data=(6,361,30,391,60)
+		animation_data=(7,331,30,361,60)
+	}
+	delay_color=(255,32,32)
+	render=ADD
+}
+ShotData{
+	id=247
+	AnimationData{
+		animation_data=(2,481,60,511,90)
+		animation_data=(3,451,60,481,90)
+		animation_data=(4,421,60,451,90)
+		animation_data=(5,391,60,421,90)
+		animation_data=(6,361,60,391,90)
+		animation_data=(7,331,60,361,90)
+	}
+	delay_color=(32,32,255)
+	render=ADD
+}
+ShotData{
+	id=248
+	AnimationData{
+		animation_data=(2,481,90,511,120)
+		animation_data=(3,451,90,481,120)
+		animation_data=(4,421,90,451,120)
+		animation_data=(5,391,90,421,120)
+		animation_data=(6,361,90,391,120)
+		animation_data=(7,331,90,361,120)
+	}
+	delay_color=(192,192,192)
+	render=ADD
+}

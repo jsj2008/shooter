@@ -665,43 +665,45 @@ static MainViewController* instance = nil;
 
 -(void)showMainView:(bool)showMenu showMessage:(bool)showMessage
 {
-    mainBaseView = [[[UIView alloc] initWithFrame:viewFrame] autorelease];
-    [mainBaseView setBackgroundColor:[UIColor clearColor]];
-    [self.view addSubview:mainBaseView];
-    
-    // ステータス
-    statusView = [StatusView CreateInstance];
-    [mainBaseView addSubview:statusView];
-    [statusView loadUserInfo];
-    
-    // player detail view
-    {
-        if (playerDetailView) {
-            [playerDetailView release];
-            playerDetailView = nil;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        mainBaseView = [[[UIView alloc] initWithFrame:viewFrame] autorelease];
+        [mainBaseView setBackgroundColor:[UIColor clearColor]];
+        [self.view addSubview:mainBaseView];
+        
+        // ステータス
+        statusView = [StatusView CreateInstance];
+        [mainBaseView addSubview:statusView];
+        [statusView loadUserInfo];
+        
+        // player detail view
+        {
+            if (playerDetailView) {
+                [playerDetailView release];
+                playerDetailView = nil;
+            }
+            CGRect playderDetailViewFrame = CGRectMake(0, 0, viewFrame.size.width, viewFrame.size.height);
+            playerDetailView = [[PlayerDetailView alloc] initWithFrame:playderDetailViewFrame];
+            [self.view addSubview:playerDetailView];
+            [playerDetailView loadGrade];
         }
-        CGRect playderDetailViewFrame = CGRectMake(0, 0, viewFrame.size.width, viewFrame.size.height);
-        playerDetailView = [[PlayerDetailView alloc] initWithFrame:playderDetailViewFrame];
-        [self.view addSubview:playerDetailView];
-        [playerDetailView loadGrade];
-    }
-    
-    // MENU
-    if (showMenu) {
-        [self showMenu];
-    }
-    
-    if (showMessage) {
-        [self showMessage];
-    }
-    /*
-    // dialog test
-    DialogView* v = [[[DialogView alloc] initWithMessage:@"test?"] autorelease];
-    [v addButtonWithText:@"test" withAction:^{
-        NSLog(@"test button pushed");
-    }];
-    [v show];*/
-    
+        
+        // MENU
+        if (showMenu) {
+            [self showMenu];
+        }
+        
+        if (showMessage) {
+            [self showMessage];
+        }
+        /*
+         // dialog test
+         DialogView* v = [[[DialogView alloc] initWithMessage:@"test?"] autorelease];
+         [v addButtonWithText:@"test" withAction:^{
+         NSLog(@"test button pushed");
+         }];
+         [v show];*/
+        
+    });
 }
 
 -(void) showMessage
@@ -781,14 +783,16 @@ static MainViewController* instance = nil;
                         if (hg::UserData::sharedUserData()->isCleared()) {
                             [self showMainView:false showMessage:false];
                             [curtain removeFromSuperview];
-                            ClearView* cv = [[[ClearView alloc] initWithFrame:viewFrame] autorelease];
-                            [cv setOnEndAction:^{
-                                [cv setUserInteractionEnabled:false];
-                                [cv removeFromSuperview];
-                                [self showMenu];
-                                [self showMessage];
-                            }];
-                            [self.view addSubview:cv];
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                ClearView* cv = [[[ClearView alloc] initWithFrame:viewFrame] autorelease];
+                                [cv setOnEndAction:^{
+                                    [cv setUserInteractionEnabled:false];
+                                    [cv removeFromSuperview];
+                                    [self showMenu];
+                                    [self showMessage];
+                                }];
+                                [self.view addSubview:cv];
+                            });
                         }
                         else {
                             // レベルアップ情報を表示

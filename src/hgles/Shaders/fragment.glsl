@@ -19,6 +19,9 @@ varying lowp vec4 vColor; // 1
 varying vec2 vUV;
 
 void main(void) { // 2
+    gl_FragColor = texture2D(uTex, vUV*uTextureRepeatNum) * vec4(1.0, 1.0, 1.0, uAlpha); //  for performance
+
+    /* for performance
     if (uUseTexture > 0.0)
     {
         // alpha map
@@ -42,5 +45,5 @@ void main(void) { // 2
     else
     {
         gl_FragColor = vColor; // 3
-    }
+    }*/
 }

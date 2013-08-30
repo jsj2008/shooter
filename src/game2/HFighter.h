@@ -664,12 +664,21 @@ namespace hg {
             return false;
         }
         
-        inline void fire(Fighter* pTarget)
+        inline void fire(Fighter* pTarget, int cpu_lv)
         {
             float x = this->getPositionX();
             float y = this->getPositionY();
             float tx = pTarget->getPositionX();
             float ty = pTarget->getPositionY();
+            
+            // 狙い誤差
+            float diff_ratio = (CPU_LV_MAX - cpu_lv);
+            if (rand(0,1) == 0) {
+                diff_ratio *= -1;
+            }
+            int diff_amount = rand(0, 30);
+            float diff = (diff_ratio * diff_amount * 0.01);
+            
             for (WeaponList::iterator it = weaponList.begin(); it != weaponList.end(); ++it)
             {
                 if (rand(0, 10) < 2)
@@ -679,7 +688,7 @@ namespace hg {
                     // tgの方向を向く
                     float r = atan2f(tx - (x + wx),
                                      ty - (y + wy));
-                    float d = toDeg(r)-90;
+                    float d = toDeg(r) - 90 + diff;
                     (*it)->setAspect(d);
                 }
                 (*it)->fire(this, side, _isPlayer);

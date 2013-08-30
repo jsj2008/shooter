@@ -431,7 +431,7 @@ namespace hg {
                 for (CellManager<Bullet>::ActorList::iterator it2 = actorList.begin(); it2 != actorList.end(); it2++)
                 {
                     Bullet* a = *it2;
-                    assert(a->getCollisionId() < 5);
+                    assert(a->getCollisionId() < CollisionIdEnd);
                     assert(a->getCollisionId() >= 0);
                     if (!a->isActive())
                     {
@@ -510,6 +510,11 @@ namespace hg {
             float positionX;
             float positionY;
         };
+        
+        positionX = MIN(positionX, FIELD_SIZE);
+        positionY = MIN(positionY, FIELD_SIZE);
+        positionX = MAX(positionX, 0);
+        positionY = MAX(positionY, 0);
         
         if (SideTypeEnemy == sideType)
         {
@@ -1035,7 +1040,6 @@ namespace hg {
         isPause = false;
         isInitialized = false;
         shouldDeployFriends = false;
-        initRandom();
         battleResult = BattleResult();
         
         // 増援データ

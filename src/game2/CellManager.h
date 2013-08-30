@@ -50,7 +50,7 @@ namespace hg {
             while (1)
             {
                 int num = getCellNumber(tmpPos);
-                if (num > 0 && num > beforeNum)
+                if (num >= 0 && num > beforeNum)
                 {
                     list[num].push_back(actor);
                 }
@@ -131,7 +131,7 @@ namespace hg {
             while (1)
             {
                 int num = getCellNumber(tmpPos);
-                if (num > 0 && num > beforeNum)
+                if (num >= 0 && num > beforeNum)
                 {
                     list.push_back(num);
                 }

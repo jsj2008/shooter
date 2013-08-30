@@ -118,21 +118,35 @@ namespace hg {
             for (int i = (int)CollisionIdStart; i < (int)CollisionIdEnd; ++i)
             {
                 switch (i) {
-                    case CollisionId_BulletNormal:
-                        c = new Collision();
-                        c->push_back({-6, -6, 172, 172});
-                        list.push_back(c);
-                        break;
-                    case CollisionId_BulletMagic:
-                        c = new Collision();
-                        c->push_back({0, 0, 200, 200});
-                        list.push_back(c);
-                        break;
+                    ////////////////////
+                    // bullet
                     case CollisionId_BulletVulcan:
                         c = new Collision();
                         c->push_back({-2, -2, 64, 64});
                         list.push_back(c);
                         break;
+                    case CollisionId_BulletNormal:
+                        c = new Collision();
+                        c->push_back({-6, -6, 192, 192});
+                        list.push_back(c);
+                        break;
+                    case CollisionId_BulletMedium:
+                        c = new Collision();
+                        c->push_back({10, 10, 230, 230});
+                        list.push_back(c);
+                        break;
+                    case CollisionId_BulletBig:
+                        c = new Collision();
+                        c->push_back({-8, -8, 416, 416});
+                        list.push_back(c);
+                        break;
+                    case CollisionId_BulletLaser:
+                        c = new Collision();
+                        c->push_back({-4, -4, 148, 148});
+                        list.push_back(c);
+                        break;
+                        ////////////////////
+                    // fighter
                     // astray
                     case CollisionId_P_ROBO1:
                         c = new Collision();
@@ -140,7 +154,7 @@ namespace hg {
                         list.push_back(c);
                         break;
                     // viper
-                    case CollisionId_P_ROBO3:
+                    case CollisionId_P_VIPER:
                         c = new Collision();
                         c->push_back({104, 104, 48, 48});
                         list.push_back(c);
@@ -150,11 +164,106 @@ namespace hg {
                         c->push_back({220, 200, 1530, 350});
                         list.push_back(c);
                         break;
-                    case CollisionId_E_ROBO2:
+                    case CollisionId_P_PEGASUS:
                         c = new Collision();
-                        c->push_back({30, 30, 196, 196});
+                        c->push_back({290, 120, 770, 260});
+                        c->push_back({1030, 120, 320, 220});
                         list.push_back(c);
                         break;
+                    case CollisionId_P_GATES:
+                        c = new Collision();
+                        c->push_back({40, 40, 176, 176});
+                        list.push_back(c);
+                        break;
+                    case CollisionId_P_RAPTER:
+                        c = new Collision();
+                        c->push_back({50, 50, 200, 200});
+                        list.push_back(c);
+                        break;
+                    case CollisionId_E_GATES:
+                        c = new Collision();
+                        c->push_back({0, 0, 550, 550});
+                        list.push_back(c);
+                        break;
+                    case CollisionId_E_RADER:
+                        c = new Collision();
+                        c->push_back({0, 0, 420, 420});
+                        list.push_back(c);
+                        break;
+                    case CollisionId_E_BALL:
+                        c = new Collision();
+                        c->push_back({0, 0, 320, 320});
+                        list.push_back(c);
+                        break;
+                    case CollisionId_E_DESTROYER:
+                        c = new Collision();
+                        c->push_back({0, 0, 600, 600});
+                        list.push_back(c);
+                        break;
+                    case CollisionId_P_LAMBDAS:
+                        c = new Collision();
+                        c->push_back({100, 100, 128, 128});
+                        list.push_back(c);
+                        break;
+                    case CollisionId_P_FOX:
+                        c = new Collision();
+                        c->push_back({100, 100, 128, 128});
+                        list.push_back(c);
+                        break;
+                    case CollisionId_E_TRIANGLE:
+                    {
+                        c = new Collision();
+                        float multiply = 20;
+                        c->push_back({72*multiply, 7*multiply, 46*multiply, 178*multiply});
+                        c->push_back({26*multiply, 18*multiply, 44*multiply, 123*multiply});
+                        c->push_back({111*multiply, 18*multiply, 35*multiply, 120*multiply});
+                        c->push_back({5*multiply, 85*multiply, 166*multiply, 31*multiply});
+                        c->push_back({22*multiply, 52*multiply, 136*multiply, 27*multiply});
+                        list.push_back(c);
+                        break;
+                    }
+                    case CollisionId_E_QUAD:
+                    {
+                        float multiply = 20;
+                        c = new Collision();
+                        c->push_back({4*multiply, 3*multiply, 170*multiply, 34*multiply});
+                        c->push_back({27*multiply, 37*multiply, 130*multiply, 80*multiply});
+                        c->push_back({71*multiply, 120*multiply, 34*multiply, 20*multiply});
+                        list.push_back(c);
+                        break;
+                    }
+                    case CollisionId_E_COLONY:
+                    {
+                        float multiply = 20;
+                        c = new Collision();
+                        c->push_back({2*multiply, 42*multiply, 126*multiply, 60*multiply});
+                        c->push_back({32*multiply, 16*multiply, 65*multiply, 26*multiply});
+                        c->push_back({43*multiply, 104*multiply, 46*multiply, 67*multiply});
+                        list.push_back(c);
+                        break;
+                    }
+                    case CollisionId_E_SNAKE:
+                    {
+                        float multiply = 20;
+                        c = new Collision();
+                        c->push_back({2*multiply, 42*multiply, 181*multiply, 36*multiply});
+                        c->push_back({113*multiply, 4*multiply, 92*multiply, 30*multiply});
+                        c->push_back({34*multiply, 65*multiply, 186*multiply, 9*multiply});
+                        c->push_back({52*multiply, 68*multiply, 120*multiply, 27*multiply});
+                        c->push_back({97*multiply, 97*multiply, 16*multiply, 15*multiply});
+                        list.push_back(c);
+                        break;
+                    }
+                    case CollisionId_E_LASTBOSS:
+                    {
+                        float multiply = 5;
+                        c = new Collision();
+                        c->push_back({191*multiply, 0*multiply, 116*multiply, 503*multiply});
+                        c->push_back({59*multiply, 64*multiply, 407*multiply, 307*multiply});
+                        c->push_back({7*multiply, 135*multiply, 496*multiply, 238*multiply});
+                        list.push_back(c);
+                        break;
+                    }
                     case CollisionIdStart:
                     case CollisionIdNone:
                         c = new Collision();

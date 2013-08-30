@@ -59,7 +59,7 @@ namespace hg {
                 pFighter->explode();
                 isControllable = false;
             }
-            if (pTarget && (pTarget->getLife() <= 0 || rand(0, 10) <= 1))
+            if (pTarget && (pTarget->getLife() <= 0 || rand(0, 100) <= 5))
             {
                 pTarget->release();
                 pTarget = NULL;
@@ -133,6 +133,7 @@ namespace hg {
                     float r = atan2f(pTarget->getPositionX() - pFighter->getPositionX(),
                                      pTarget->getPositionY() - pFighter->getPositionY());
                     float d = r*180/M_PI-90;
+                    
                     pFighter->setAspectDegree(d);
                     
                     // 攻撃する
@@ -145,7 +146,7 @@ namespace hg {
                         }
                         if (abs(dx) + abs(dy) < distance)
                         {
-                            pFighter->fire(pTarget);
+                            pFighter->fire(pTarget, pFighter->getFighterInfo()->cpu_lv);
                         }
                     }
                     else

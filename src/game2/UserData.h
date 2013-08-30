@@ -112,7 +112,7 @@ namespace hg {
         void checkLevelup();
         double getDamagePerSecond(FighterInfo* info);
         FighterInfo* getPlayerInfo();
-        static void setDefaultInfo(FighterInfo* pInfo, int type);
+        void setDefaultInfo(FighterInfo* pInfo, int type);
         void deployAllFighter();
         void undeployAllFighter();
         std::string popLevelupMessage();

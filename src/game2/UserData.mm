@@ -88,7 +88,7 @@ namespace hg {
                 false,
             };
         }
-        long addExp = fighterInfo->tmpExp*1000;
+        long addExp = fighterInfo->tmpExp;
         fighterInfo->exp += addExp;
         fighterInfo->tmpExp = 0;
         bool isLevelup = false;
@@ -207,21 +207,22 @@ namespace hg {
                     battleMoneyReward = 25000;
                     break;
                 case 2:
-                    battleScoreReward = 5000;
+                    battleScoreReward = 10000;
                     battleMoneyReward = 50000;
                     break;
                 case 3:
-                    battleScoreReward = 15000;
+                    battleScoreReward = 50000;
                     battleMoneyReward = 100000;
                     break;
                 case 4:
-                    battleScoreReward = 30000;
-                    battleMoneyReward = 200000;
+                    battleScoreReward = 150000;
+                    battleMoneyReward = 300000;
                     break;
                 case 5:
-                    battleScoreReward = 100000;
-                    battleMoneyReward = 500000;
+                    battleScoreReward = 300000;
+                    battleMoneyReward = 1000000;
                     break;
+                    /*
                 case 6:
                     battleScoreReward = 300000;
                     battleMoneyReward = 800000;
@@ -233,7 +234,7 @@ namespace hg {
                 case 8:
                     battleScoreReward = 1000000;
                     battleMoneyReward = 2000000;
-                    break;
+                    break;*/
                 default:
                     break;
             }
@@ -272,8 +273,8 @@ namespace hg {
         }
         else if (score <= 500) {
             grade = "研修生";
-            maxAllyNum = 1;
-            maxPowerUpNum = 2;
+            maxAllyNum = 2;
+            maxPowerUpNum = 1;
         }
         else if (score <= 1000) {
             grade = "上等兵";
@@ -282,7 +283,7 @@ namespace hg {
         }
         else if (score <= 2500) {
             grade = "伍長";
-            maxAllyNum = 2;
+            maxAllyNum = 3;
             maxPowerUpNum = 2;
         }
         else if (score <= 5000) {
@@ -290,75 +291,60 @@ namespace hg {
             maxAllyNum = 3;
             maxPowerUpNum = 2;
         }
-        else if (score <= 8000) {
-            grade = "特務少尉";
-            maxAllyNum = 3;
-            maxPowerUpNum = 3;
-        }
-        else if (score <= 12000) {
-            grade = "特務中尉";
-            maxAllyNum = 4;
-            maxPowerUpNum = 3;
-        }
-        else if (score <= 30000) {
-            grade = "特務大尉";
-            maxAllyNum = 4;
-            maxPowerUpNum = 3;
-        }
-        else if (score <= 80000) {
+        else if (score <= 20000) {
             grade = "准尉";
+            maxAllyNum = 4;
+            maxPowerUpNum = 4;
+        }
+        else if (score <= 50000) {
+            grade = "少尉";
+            maxAllyNum = 4;
+            maxPowerUpNum = 4;
+        }
+        else if (score <= 100000) {
+            grade = "中尉";
             maxAllyNum = 5;
             maxPowerUpNum = 4;
         }
-        else if (score <= 150000) {
-            grade = "少尉";
+        else if (score <= 200000) {
+            grade = "大尉";
             maxAllyNum = 5;
-            maxPowerUpNum = 4;
+            maxPowerUpNum = 5;
         }
         else if (score <= 300000) {
-            grade = "中尉";
+            grade = "少佐";
             maxAllyNum = 6;
-            maxPowerUpNum = 4;
+            maxPowerUpNum = 5;
         }
         else if (score <= 500000) {
-            grade = "大尉";
+            grade = "大佐";
             maxAllyNum = 6;
             maxPowerUpNum = 5;
         }
-        else if (score <= 1000000) {
-            grade = "少佐";
-            maxAllyNum = 7;
-            maxPowerUpNum = 5;
-        }
-        else if (score <= 2000000) {
-            grade = "大佐";
-            maxAllyNum = 7;
-            maxPowerUpNum = 5;
-        }
-        else if (score <= 3500000) {
+        else if (score <= 800000) {
             grade = "准将";
+            maxAllyNum = 7;
+            maxPowerUpNum = 5;
+        }
+        else if (score <= 1200000) {
+            grade = "少将";
             maxAllyNum = 8;
             maxPowerUpNum = 5;
         }
-        else if (score <= 5000000) {
-            grade = "少将";
+        else if (score <= 1500000) {
+            grade = "中将";
             maxAllyNum = 9;
             maxPowerUpNum = 5;
         }
-        else if (score <= 8000000) {
-            grade = "中将";
-            maxAllyNum = 10;
-            maxPowerUpNum = 5;
-        }
-        else if (score <= 15000000) {
+        else if (score <= 2000000) {
             grade = "大将";
-            maxAllyNum = 15;
+            maxAllyNum = 10;
             maxPowerUpNum = 6;
         }
-        else if (score <= 30000000) {
+        else if (score <= 10000000) {
             grade = "元帥";
-            maxAllyNum = 30;
-            maxPowerUpNum = 6;
+            maxAllyNum = 15;
+            maxPowerUpNum = 10;
         }
     }
     
@@ -422,38 +408,92 @@ namespace hg {
             
             ////////////////////
             // fighter list
+            ////////////////////
+            
             hg::FighterInfo* pPlayerInfo = new hg::FighterInfo();
-            UserData::setDefaultInfo(pPlayerInfo, FighterTypeRobo1);
-            pPlayerInfo->isPlayer = true;
-            fighterList.push_back(pPlayerInfo);
-            
-            {
-                hg::FighterInfo* i = new hg::FighterInfo();
-                UserData::setDefaultInfo(i, FighterTypeShip1);
-                fighterList.push_back(i);
+            if (IS_DEBUG_SHOOTER) {
+                hg::UserData::sharedUserData()->setDefaultInfo(pPlayerInfo, FighterTypePegasus);
+            } else {
+                hg::UserData::sharedUserData()->setDefaultInfo(pPlayerInfo, FighterTypeViperC);
             }
-            
-            for (int j = 0; j < 10; j++)
-            {
-                hg::FighterInfo* i = new hg::FighterInfo();
-                UserData::setDefaultInfo(i, FighterTypeRobo2);
-                fighterList.push_back(i);
+            fighterList.push_back(pPlayerInfo);
+            pPlayerInfo->isPlayer = true;
+            if (IS_DEBUG_SHOOTER) {
+                {
+                    hg::FighterInfo* i = new hg::FighterInfo();
+                    hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypeViper);
+                    fighterList.push_back(i);
+                }
+                {
+                    hg::FighterInfo* i = new hg::FighterInfo();
+                    hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypePegasus);
+                    fighterList.push_back(i);
+                }
+                {
+                    hg::FighterInfo* i = new hg::FighterInfo();
+                    hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypeRapter);
+                    fighterList.push_back(i);
+                }
+                {
+                    hg::FighterInfo* i = new hg::FighterInfo();
+                    hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypeRapter2);
+                    fighterList.push_back(i);
+                }
+                {
+                    hg::FighterInfo* i = new hg::FighterInfo();
+                    hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypeAstray);
+                    fighterList.push_back(i);
+                }
+                {
+                    hg::FighterInfo* i = new hg::FighterInfo();
+                    hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypeAstray2);
+                    fighterList.push_back(i);
+                }
+                {
+                    hg::FighterInfo* i = new hg::FighterInfo();
+                    hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypeStarFighter);
+                    fighterList.push_back(i);
+                }
+                {
+                    hg::FighterInfo* i = new hg::FighterInfo();
+                    hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypeViperL);
+                    fighterList.push_back(i);
+                }
+                {
+                    hg::FighterInfo* i = new hg::FighterInfo();
+                    hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypeFox);
+                    fighterList.push_back(i);
+                }
+                {
+                    hg::FighterInfo* i = new hg::FighterInfo();
+                    hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypeGloire);
+                    fighterList.push_back(i);
+                }
+                {
+                    hg::FighterInfo* i = new hg::FighterInfo();
+                    hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypelambda);
+                    fighterList.push_back(i);
+                }
             }
             
             ////////////////////
             // shop list
-            for (int j = 0; j < 5; j++)
+            ////////////////////
+            for (int j = 0; j < 3; j++)
             {
                 hg::FighterInfo* i = new hg::FighterInfo();
-                UserData::setDefaultInfo(i, FighterTypeRobo1);
+                hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypeViper);
                 shopList.push_back(i);
             }
-            for (int j = 0; j < 5; j++)
+            for (int j = 0; j < 3; j++)
             {
                 hg::FighterInfo* i = new hg::FighterInfo();
-                UserData::setDefaultInfo(i, FighterTypeRobo2);
+                hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypeRapter);
                 shopList.push_back(i);
             }
+            hg::FighterInfo* i = new hg::FighterInfo();
+            hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypePegasus);
+            shopList.push_back(i);
             
             // stage
             this->setStageId(1);
@@ -598,10 +638,13 @@ namespace hg {
     }
     int UserData::getStageNum()
     {
-        return 8;
+        return 5;
     }
     void UserData::setStageId(int next_stage_id)
     {
+        if (next_stage_id == 0) {
+            next_stage_id = 1;
+        }
         stage_id = next_stage_id;
         currentStageInfo = getStageInfo(next_stage_id);
         complete_point = 0;
@@ -649,14 +692,6 @@ namespace hg {
                 info.big_size = 160;
                 break;
             case 2:
-                stage_name = "月";
-                info.win_point = 16;
-                info.lose_point = 5;
-                info.model_name = "pl_luna";
-                info.small_size = 20;
-                info.big_size = 120;
-                break;
-            case 3:
                 stage_name = "火星";
                 info.win_point = 12;
                 info.lose_point = 8;
@@ -664,13 +699,38 @@ namespace hg {
                 info.small_size = 30;
                 info.big_size = 150;
                 break;
-            case 4:
+            case 3:
                 stage_name = "木星";
                 info.win_point = 10;
                 info.lose_point = 10;
                 info.model_name = "pl_jupiter";
                 info.small_size = 100;
                 info.big_size = 250;
+                break;
+            case 4:
+                stage_name = "金星";
+                info.win_point = 3;
+                info.lose_point = 3;
+                info.model_name = "pl_venus";
+                info.small_size = 50;
+                info.big_size = 170;
+                break;
+            case 5:
+                stage_name = "太陽";
+                info.win_point = 1;
+                info.lose_point = 1;
+                info.model_name = "pl_sun";
+                info.small_size = 150;
+                info.big_size = 260;
+                break;
+                /*
+                 case 2:
+                stage_name = "月";
+                info.win_point = 16;
+                info.lose_point = 5;
+                info.model_name = "pl_luna";
+                info.small_size = 20;
+                info.big_size = 120;
                 break;
             case 5:
                 stage_name = "天王星";
@@ -687,24 +747,9 @@ namespace hg {
                 info.model_name = "pl_neptune";
                 info.small_size = 60;
                 info.big_size = 200;
-                break;
-            case 7:
-                stage_name = "金星";
-                info.win_point = 3;
-                info.lose_point = 3;
-                info.model_name = "pl_venus";
-                info.small_size = 50;
-                info.big_size = 170;
-                break;
-            case 8:
-                stage_name = "太陽";
-                info.win_point = 1;
-                info.lose_point = 1;
-                info.model_name = "pl_sun";
-                info.small_size = 150;
-                info.big_size = 260;
-                break;
+                break;*/
             default:
+                assert(0);
                 break;
         }
         
@@ -960,6 +1005,9 @@ namespace hg {
             cost *= speedRatio;
             cost *= isShipRatio;
             cost = ceiling(cost, 2);
+            if (cost < 0 || cost > 99999999) {
+                cost = 99999999;
+            }
             
             info->cachedCost = cost;
             info->isStatusChanged = false;
@@ -1089,10 +1137,14 @@ namespace hg {
     {
         std::srand((unsigned int)time(NULL));
         pInfo->fighterType = type;
+        float stageProgressRatio = stage_id/getStageNum();
         // 種類別の初期化
         switch (type)
         {
-            case FighterTypeRobo1:
+            ////////////////////
+            // Friend
+            ////////////////////
+            case FighterTypeAstray:
             {
                 pInfo->name = "Astray";
                 pInfo->textureName = "p_robo1.png";
@@ -1103,41 +1155,36 @@ namespace hg {
                 pInfo->showPixelWidth = 256;
                 pInfo->showPixelHeight = 256;
                 pInfo->collisionId = CollisionId_P_ROBO1;
-                pInfo->power = 35;
-                pInfo->powerPotential = status_rand(20, 50);
+                pInfo->power = 30;
                 
                 pInfo->life = pInfo->lifeMax = 800;
-                pInfo->defencePotential = status_rand(400, 700);
                 pInfo->shield = pInfo->shieldMax = 0;
-                pInfo->speed = 0.8;
+                pInfo->speed = 0.9;
                 
-                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeNormal, BulletTypeNormal, 0, 0, 0.6, 0.2));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeShotgun, BulletTypeFriendNormal, 0, 0, 1.95, 0.10));
                 break;
             }
-            case FighterTypeRobo2:
+            case FighterTypeAstray2:
             {
-                pInfo->name = "Rader";
-                pInfo->textureName = "e_robo2.png";
+                pInfo->name = "Astray MkⅡ";
+                pInfo->textureName = "p_robo1.png";
                 pInfo->textureSrcOffsetX = 0;
                 pInfo->textureSrcOffsetY = 0;
-                pInfo->textureSrcWidth = 64;
-                pInfo->textureSrcHeight = 64;
-                pInfo->showPixelHeight = 256;
+                pInfo->textureSrcWidth = 16;
+                pInfo->textureSrcHeight = 16;
                 pInfo->showPixelWidth = 256;
-                pInfo->collisionId = CollisionId_E_ROBO2;
-                pInfo->power = 35;
-                pInfo->powerPotential = status_rand(20, 50);
+                pInfo->showPixelHeight = 256;
+                pInfo->collisionId = CollisionId_P_ROBO1;
+                pInfo->power = 50;
                 
-                pInfo->life = pInfo->lifeMax = 2000;
-                pInfo->defencePotential = status_rand(1500, 2500);
-                pInfo->shield = pInfo->shieldMax = 0;
-                pInfo->speed = 0.5;
+                pInfo->life = pInfo->lifeMax = 1000;
+                pInfo->shield = pInfo->shieldMax = 1000;
+                pInfo->speed = 1.18;
                 
-                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeNormal, BulletTypeNormal, 0, 0, 0.6, 0.2));
-                
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeStraight, BulletTypeFriendLaser, 0, 0, 1.25, 0.15));
                 break;
             }
-            case FighterTypeRobo3:
+            case FighterTypeViper:
             {
                 pInfo->name = "Viper";
                 pInfo->textureName = "p_robo1.png";
@@ -1147,19 +1194,229 @@ namespace hg {
                 pInfo->textureSrcHeight = 16;
                 pInfo->showPixelWidth = 256;
                 pInfo->showPixelHeight = 256;
-                pInfo->collisionId = CollisionId_P_ROBO3;
-                pInfo->power = 35;
-                pInfo->powerPotential = status_rand(20, 50);
+                pInfo->collisionId = CollisionId_P_VIPER;
+                pInfo->power = 15;
                 
-                pInfo->life = pInfo->lifeMax = 500;
-                pInfo->defencePotential = status_rand(200, 300);
+                pInfo->life = pInfo->lifeMax = 400;
                 pInfo->shield = pInfo->shieldMax = 0;
-                pInfo->speed = 1.02;
+                pInfo->speed = 0.97;
                 
-                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeNormal, BulletTypeNormal, 0, 0, 0.6, 0.2));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeNormal, BulletTypeFriendNormal, 0, 0, 1.35, 0.14));
+                
                 break;
             }
-            case FighterTypeShip1:
+            case FighterTypeViperC:
+            {
+                pInfo->name = "Viper Custom";
+                pInfo->textureName = "p_robo1.png";
+                pInfo->textureSrcOffsetX = 0;
+                pInfo->textureSrcOffsetY = 16;
+                pInfo->textureSrcWidth = 16;
+                pInfo->textureSrcHeight = 16;
+                pInfo->showPixelWidth = 256;
+                pInfo->showPixelHeight = 256;
+                pInfo->collisionId = CollisionId_P_VIPER;
+                pInfo->power = 20;
+                
+                pInfo->life = pInfo->lifeMax = 1000;
+                pInfo->shield = pInfo->shieldMax = 0;
+                pInfo->speed = 1.15;
+                
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeTwin, BulletTypeFriendNormal, 0, 0, 1.3, 0.15));
+                
+                break;
+            }
+            case FighterTypeViperL:
+            {
+                pInfo->name = "Viper MkⅡ";
+                pInfo->textureName = "p_robo1.png";
+                pInfo->textureSrcOffsetX = 0;
+                pInfo->textureSrcOffsetY = 16;
+                pInfo->textureSrcWidth = 16;
+                pInfo->textureSrcHeight = 16;
+                pInfo->showPixelWidth = 256;
+                pInfo->showPixelHeight = 256;
+                pInfo->collisionId = CollisionId_P_VIPER;
+                pInfo->power = 50;
+                
+                pInfo->life = pInfo->lifeMax = 700;
+                pInfo->shield = pInfo->shieldMax = 300;
+                pInfo->speed = 1.25;
+                
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeLaser, BulletTypeFriendLaser, 0, 0, 1.3, 0.15));
+                break;
+            }
+            case FighterTypeRapter:
+            {
+                pInfo->name = "Rapter";
+                pInfo->textureName = "p_robo1.png";
+                pInfo->textureSrcOffsetX = 0;
+                pInfo->textureSrcOffsetY = 32;
+                pInfo->textureSrcWidth = 24;
+                pInfo->textureSrcHeight = 24;
+                pInfo->showPixelWidth = 300;
+                pInfo->showPixelHeight = 300;
+                pInfo->collisionId = CollisionId_P_RAPTER;
+                pInfo->power = 75;
+                
+                pInfo->life = pInfo->lifeMax = 3500;
+                pInfo->shield = pInfo->shieldMax = 500;
+                pInfo->speed = 0.98;
+                
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeTwin, BulletTypeFriendNormal, 0, 0, 1.15, 0.10));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeNormal, BulletTypeFriendMedium, 0, 0, 1.25, 0.20));
+                break;
+            }
+            case FighterTypeRapter2:
+            {
+                pInfo->name = "Rapter MkⅡ";
+                pInfo->textureName = "p_robo1.png";
+                pInfo->textureSrcOffsetX = 0;
+                pInfo->textureSrcOffsetY = 32;
+                pInfo->textureSrcWidth = 24;
+                pInfo->textureSrcHeight = 24;
+                pInfo->showPixelWidth = 300;
+                pInfo->showPixelHeight = 300;
+                pInfo->collisionId = CollisionId_P_RAPTER;
+                pInfo->power = 145;
+                
+                pInfo->life = pInfo->lifeMax = 5000;
+                pInfo->shield = pInfo->shieldMax = 1000;
+                pInfo->speed = 1.02;
+                
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeTwinLaser, BulletTypeFriendLaser, 0, 0, 1.3, 0.16));
+                break;
+            }
+            case FighterTypeStarFighter:
+            {
+                pInfo->name = "StarFighter";
+                pInfo->textureName = "p_robo1.png";
+                pInfo->textureSrcOffsetX = 0;
+                pInfo->textureSrcOffsetY = 56;
+                pInfo->textureSrcWidth = 16;
+                pInfo->textureSrcHeight = 16;
+                pInfo->showPixelWidth = 256;
+                pInfo->showPixelHeight = 256;
+                pInfo->collisionId = CollisionId_P_VIPER;
+                pInfo->power = 145;
+                
+                pInfo->life = pInfo->lifeMax = 350;
+                pInfo->shield = pInfo->shieldMax = 2000;
+                pInfo->speed = 1.35;
+                
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeLaser, BulletTypeFriendLaser, 0, 0, 2.7, 0.13));
+                break;
+            }
+            case FighterTypelambda:
+            {
+                pInfo->name = "Ramdass";
+                pInfo->textureName = "p_robo1.png";
+                pInfo->textureSrcOffsetX = 0;
+                pInfo->textureSrcOffsetY = 72;
+                pInfo->textureSrcWidth = 28;
+                pInfo->textureSrcHeight = 28;
+                pInfo->showPixelWidth = 328;
+                pInfo->showPixelHeight = 328;
+                pInfo->collisionId = CollisionId_P_VIPER;
+                pInfo->power = 140;
+                
+                pInfo->life = pInfo->lifeMax = 1800;
+                pInfo->shield = pInfo->shieldMax = 1000;
+                pInfo->speed = 1.15;
+                
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeTwinLaser, BulletTypeFriendLaser, 0, 0, 2.3, 0.10));
+                break;
+            }
+            case FighterTypeGloire:
+            {
+                pInfo->name = "Gloire";
+                pInfo->textureName = "p_robo1.png";
+                pInfo->textureSrcOffsetX = 0;
+                pInfo->textureSrcOffsetY = 90;
+                pInfo->textureSrcWidth = 28;
+                pInfo->textureSrcHeight = 28;
+                pInfo->showPixelWidth = 328;
+                pInfo->showPixelHeight = 328;
+                pInfo->collisionId = CollisionId_P_VIPER;
+                pInfo->power = 140;
+                
+                pInfo->life = pInfo->lifeMax = 1500;
+                pInfo->shield = pInfo->shieldMax = 800;
+                pInfo->speed = 1.25;
+                
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeShotgun, BulletTypeFriendMedium, 0, 0, 1.7, 0.25));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeTriple, BulletTypeFriendVulcan, 0, 0, 2.1, 0.10));
+                break;
+            }
+            case FighterTypeFox:
+            {
+                pInfo->name = "Falcon";
+                pInfo->textureName = "p_robo1.png";
+                pInfo->textureSrcOffsetX = 0;
+                pInfo->textureSrcOffsetY = 118;
+                pInfo->textureSrcWidth = 28;
+                pInfo->textureSrcHeight = 28;
+                pInfo->showPixelWidth = 328;
+                pInfo->showPixelHeight = 328;
+                pInfo->collisionId = CollisionId_P_VIPER;
+                pInfo->power = 150;
+                
+                pInfo->life = pInfo->lifeMax = 3000;
+                pInfo->shield = pInfo->shieldMax = 1500;
+                pInfo->speed = 1.35;
+                
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeFiveStraights, BulletTypeFriendBig, 0, 0, 1.8, 0.07));
+                break;
+            }
+            case FighterTypePegasus:
+            {
+                pInfo->name = "Pegasus Class";
+                pInfo->textureName = "p_ship1.png";
+                pInfo->textureSrcOffsetX = 0;
+                pInfo->textureSrcOffsetY = 0;
+                pInfo->textureSrcWidth = 141;
+                pInfo->textureSrcHeight = 62;
+                pInfo->showPixelWidth = 141*10;
+                pInfo->showPixelHeight = 62*10;
+                pInfo->collisionId = CollisionId_P_PEGASUS;
+                pInfo->power = 40;
+                
+                pInfo->life = pInfo->lifeMax = 20000;
+                pInfo->shield = pInfo->shieldMax = 5000;
+                pInfo->speed = 0.65;
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeMegaLaser, BulletTypeFriendBig, 0, 0, 2.2, 0.68));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeTwin, BulletTypeFriendVulcan, -35*10, 0, 0.7, 0.18));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeTwin, BulletTypeFriendVulcan, -23*10, 0, 0.7, 0.18));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeTwin, BulletTypeFriendVulcan, 34*10, 79, 0.7, 0.18));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeThreeWay, BulletTypeFriendNormal, 34*10, -140, 0.7, 0.28));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeCircle, BulletTypeFriendMedium, 0, 0, 0.3, 0.88));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeFiveWay, BulletTypeFriendNormal, -240, 0, 1.15, 0.30));
+                
+                pInfo->isShip = true;
+                break;
+            }
+            case FighterTypeGatesC:
+            {
+                pInfo->name = "Gates";
+                pInfo->textureName = "e_robo2.png";
+                pInfo->textureSrcOffsetX = 0;
+                pInfo->textureSrcOffsetY = 0;
+                pInfo->textureSrcWidth = 64;
+                pInfo->textureSrcHeight = 64;
+                pInfo->showPixelHeight = 256;
+                pInfo->showPixelWidth = 256;
+                pInfo->collisionId = CollisionId_P_GATES;
+                pInfo->power = 35;
+                
+                pInfo->life = pInfo->lifeMax = 2000;
+                pInfo->shield = pInfo->shieldMax = 0;
+                pInfo->speed = 0.5;
+                
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeNormal, BulletTypeFriendNormal, 0, 0, 0.6, 0.2));
+                
+                break;
+            }
+            case FighterTypeVesariusC:
             {
                 pInfo->name = "Vesalius Class";
                 pInfo->textureName = "e_senkan1_4.png";
@@ -1171,24 +1428,416 @@ namespace hg {
                 pInfo->showPixelHeight = 78*10;
                 pInfo->collisionId = CollisionId_E_SENKAN;
                 pInfo->power = 25;
-                pInfo->powerPotential = status_rand(20, 30);
                 
                 pInfo->life = pInfo->lifeMax = 30000;
-                pInfo->defencePotential = status_rand(5000, 10000);
                 pInfo->shield = pInfo->shieldMax = 10000;
-                pInfo->shieldPotential = status_rand(1000, 2000);
+                pInfo->speed = 0.48;
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeCircleRotate, BulletTypeFriendNormal, 45*10, 0, 0.4, 0.08));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeNormal, BulletTypeFriendBig, -45*10, 0, 0.9, 0.05));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeNormal, BulletTypeFriendVulcan, -90*10, 0, 0.4, 0.08));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeNormal, BulletTypeFriendVulcan, 90*10, 0, 0.4, 0.08));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeNormal, BulletTypeFriendVulcan, 0, 0, 0.4, 0.08));
+                
+                pInfo->isShip = true;
+                break;
+            }
+            ////////////////////
+            // Enemy
+            ////////////////////
+            case FighterTypeBall:
+            {
+                pInfo->name = "Ball";
+                pInfo->textureName = "e_robo1.png";
+                pInfo->textureSrcOffsetX = 0;
+                pInfo->textureSrcOffsetY = 24;
+                pInfo->textureSrcWidth = 20;
+                pInfo->textureSrcHeight = 20;
+                pInfo->showPixelHeight = 320;
+                pInfo->showPixelWidth = 320;
+                pInfo->collisionId = CollisionId_E_BALL;
+                
+                pInfo->power = 20;
+                
+                pInfo->life = pInfo->lifeMax = 100;
+                pInfo->shield = pInfo->shieldMax = 0;
+                pInfo->speed = 0.4;
+                
+                int maxLv = 6;
+                int minLv = rand(0, maxLv/2*stageProgressRatio);
+                int lv = rand(minLv, maxLv*stageProgressRatio);
+                switch (lv) {
+                    case 0:
+                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeNormal, BulletTypeNormal, 0, 0, 0.4, 0.4));
+                        break;
+                    case 1:
+                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeCircle, BulletTypeNormal, 0, 0, 0.3, 0.35));
+                        break;
+                    case 2:
+                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeThreeWay, BulletTypeVulcan, 0, 0, 0.4, 0.35));
+                        break;
+                    case 3:
+                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeFiveWay, BulletTypeNormal, 0, 0, 0.35, 0.40));
+                        break;
+                    case 4:
+                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeLaser, BulletTypeLaser, 0, 0, 1.35, 0.60));
+                        break;
+                    case 5:
+                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeShotgun, BulletTypeNormal, 0, 0, 0.75, 0.70));
+                        break;
+                    case 6:
+                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeRotate, BulletTypeNormal, 0, 0, 0.45, 0.15));
+                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeRotateR, BulletTypeNormal, 0, 0, 0.45, 0.15));
+                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeAK, BulletTypeVulcan, 0, 0, 0.75, 0.08));
+                    default:
+                        break;
+                }
+                
+                break;
+            }
+            case FighterTypeRader:
+            {
+                pInfo->name = "Rader";
+                pInfo->textureName = "e_robo1.png";
+                pInfo->textureSrcOffsetX = 0;
+                pInfo->textureSrcOffsetY = 0;
+                pInfo->textureSrcWidth = 24;
+                pInfo->textureSrcHeight = 24;
+                pInfo->showPixelHeight = 420;
+                pInfo->showPixelWidth = 420;
+                pInfo->collisionId = CollisionId_E_RADER;
+                pInfo->power = 35;
+                
+                pInfo->life = pInfo->lifeMax = 300;
+                pInfo->shield = pInfo->shieldMax = 0;
+                pInfo->speed = 0.5;
+                
+                int maxLv = 5;
+                int minLv = rand(0, maxLv/2*stageProgressRatio);
+                int lv = rand(minLv, maxLv*stageProgressRatio);
+                switch (lv) {
+                    case 0:
+                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeThreeWay, BulletTypeNormal, 0, 0, 0.3, 0.3));
+                        break;
+                    case 1:
+                    {
+                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeShotgun, BulletTypeNormal, 0, 0, 0.2, 0.45));
+                        int wType = WeaponTypeRotate;
+                        if (rand(0, 1) == 0) {
+                            wType = WeaponTypeRotateR;
+                        }
+                        pInfo->weaponList.push_back(WeaponInfo(wType, BulletTypeNormal, 0, 0, 0.3, 0.2));
+                        break;
+                }
+                    case 2:
+                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeRotateQuad, BulletTypeNormal, 0, 0, 0.4, 0.15));
+                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeAK, BulletTypeVulcan, 0, 0, 0.8, 0.05));
+                        break;
+                    case 3:
+                    {
+                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeCircleRotate, BulletTypeMedium, 0, 0, 0.25, 0.20));
+                        
+                        int wType = WeaponTypeRotate;
+                        if (rand(0, 1) == 0) {
+                            wType = WeaponTypeRotateR;
+                        }
+                        pInfo->weaponList.push_back(WeaponInfo(wType, BulletTypeNormal, 0, 0, 0.3, 0.2));
+                        break;
+                    }
+                    case 4:
+                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeLaser, BulletTypeLaser, 0, 0, 1.40, 0.50));
+                        break;
+                    case 5:
+                    {
+                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeFiveWay, BulletTypeNormal, 0, 0, 0.55, 0.20));
+                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeStraight, BulletTypeNormal, 0, 0, 0.85, 0.50));
+                        
+                        int wType = WeaponTypeRotate;
+                        if (rand(0, 1) == 0) {
+                            wType = WeaponTypeRotateR;
+                        }
+                        pInfo->weaponList.push_back(WeaponInfo(wType, BulletTypeNormal, 0, 0, 0.65, 0.09));
+                        break;
+                    }
+                    default:
+                        break;
+                }
+                
+                break;
+            }
+            case FighterTypeGates:
+            {
+                pInfo->name = "Gates";
+                pInfo->textureName = "e_robo2.png";
+                pInfo->textureSrcOffsetX = 0;
+                pInfo->textureSrcOffsetY = 0;
+                pInfo->textureSrcWidth = 64;
+                pInfo->textureSrcHeight = 64;
+                pInfo->showPixelHeight = 550;
+                pInfo->showPixelWidth = 550;
+                pInfo->collisionId = CollisionId_E_GATES;
+                pInfo->power = 35;
+                
+                pInfo->life = pInfo->lifeMax = 800;
+                pInfo->shield = pInfo->shieldMax = 0;
+                pInfo->speed = 0.6;
+                
+                int maxLv = 6;
+                int minLv = rand(0, 0*stageProgressRatio);
+                int lv = rand(minLv, maxLv*stageProgressRatio);
+                switch (lv) {
+                    case 0:
+                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeStraight, BulletTypeNormal, 0, 0, 0.4, 0.4));
+                        break;
+                    case 1:
+                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeLaser, BulletTypeLaser, 0, 0, 1.3, 0.85));
+                        break;
+                    case 2:
+                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeThreeWay, BulletTypeMedium, 0, 0, 0.5, 0.10));
+                        break;
+                    case 3:
+                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeLaser, BulletTypeLaser, 0, 0, 1.50, 0.80));
+                        break;
+                    case 4:
+                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeAK, BulletTypeMedium, 0, 0, 1.05, 0.08));
+                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeCircle, BulletTypeMedium, 0, 0, 0.35, 0.58));
+                        break;
+                    case 5:
+                    {
+                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeShotgun, BulletTypeMedium, 0, 0, 0.85, 0.30));
+                        
+                        int wType = WeaponTypeRotate;
+                        if (rand(0, 1) == 0) {
+                            wType = WeaponTypeRotateR;
+                        }
+                        pInfo->weaponList.push_back(WeaponInfo(wType, BulletTypeNormal, 0, 0, 0.55, 0.08));
+                        break;
+                    }
+                    case 6:
+                        {
+                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeShotgun, BulletTypeNormal, 0, 0, 0.95, 0.25));
+                            
+                        int wType = WeaponTypeRotate;
+                        if (rand(0, 1) == 0) {
+                            wType = WeaponTypeRotateR;
+                        }
+                            pInfo->weaponList.push_back(WeaponInfo(wType, BulletTypeMedium, 0, 0, 0.35, 0.12));
+                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeTwinLaser, BulletTypeLaser, 0, 0, 1.45, 0.55));
+                        }
+                    default:
+                        break;
+                }
+                
+                
+                break;
+            }
+            case FighterTypeDestroyer:
+            {
+                pInfo->name = "Destroyer";
+                pInfo->textureName = "e_robo1.png";
+                pInfo->textureSrcOffsetX = 0;
+                pInfo->textureSrcOffsetY = 44;
+                pInfo->textureSrcWidth = 48;
+                pInfo->textureSrcHeight = 48;
+                pInfo->showPixelHeight = 600;
+                pInfo->showPixelWidth = 600;
+                pInfo->collisionId = CollisionId_E_DESTROYER;
+                pInfo->power = 50;
+                
+                pInfo->life = pInfo->lifeMax = 1500;
+                pInfo->shield = pInfo->shieldMax = 300;
+                pInfo->speed = 0.60;
+                
+                int maxLv = 6;
+                int minLv = rand(0, 0*stageProgressRatio);
+                int lv = rand(minLv, maxLv*stageProgressRatio);
+                switch (lv) {
+                    case 0:
+                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeTriple, BulletTypeBig, 0, 0, 0.9, 0.2));
+                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeAK, BulletTypeMedium, 0, 0, 0.5, 0.04));
+                        break;
+                    case 1:
+                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeRotateShotgun, BulletTypeNormal, 0, 0, 1.5, 0.18));
+                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeLaser, BulletTypeLaser, 0, 0, 1.45, 0.84));
+                        break;
+                    case 2:
+                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeRotateShotgun, BulletTypeMedium, 0, 0, 1.5, 0.12));
+                        break;
+                    case 3:
+                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeFiveWay, BulletTypeMedium, 0, 0, 0.95, 0.08));
+                        break;
+                    case 4:
+                    {
+                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeFiveStraights, BulletTypeBig, 0, 0, 0.95, 0.30));
+                            
+                        int wType = WeaponTypeRotate;
+                        if (rand(0, 1) == 0) {
+                            wType = WeaponTypeRotateR;
+                        }
+                        pInfo->weaponList.push_back(WeaponInfo(wType, BulletTypeMedium, 0, 0, 0.35, 0.18));
+                        break;
+                    }
+                    case 5:
+                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeRotateQuad, BulletTypeMedium, 0, 0, 0.85, 0.09));
+                        break;
+                    case 6:
+                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeFiveStraights, BulletTypeBig, 0, 0, 0.95, 0.30));
+                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeMad, BulletTypeNormal, 0, 0, 0.35, 0.10));
+                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeMad, BulletTypeVulcan, 0, 0, 0.55, 0.20));
+                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeMad, BulletTypeMedium, 0, 0, 0.85, 0.50));
+                    default:
+                        break;
+                }
+                
+                break;
+            }
+            case FighterTypeVesarius:
+            {
+                pInfo->name = "Vesalius Class";
+                pInfo->textureName = "e_senkan1_4.png";
+                pInfo->textureSrcOffsetX = 0;
+                pInfo->textureSrcOffsetY = 0;
+                pInfo->textureSrcWidth = 204;
+                pInfo->textureSrcHeight = 78;
+                pInfo->showPixelWidth = 204*10;
+                pInfo->showPixelHeight = 78*10;
+                pInfo->collisionId = CollisionId_E_SENKAN;
+                pInfo->power = 25;
+                
+                pInfo->life = pInfo->lifeMax = 10000;
+                pInfo->shield = pInfo->shieldMax = 10000;
                 pInfo->speed = 0.33;
-                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeNormal, BulletTypeVulcan, 45*10, 0, 0.4, 0.08));
-                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeNormal, BulletTypeMagic, -45*10, 0, 0.9, 0.05));
-                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeNormal, BulletTypeVulcan, -90*10, 0, 0.4, 0.08));
-                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeNormal, BulletTypeVulcan, 90*10, 0, 0.4, 0.08));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeNormal, BulletTypeVulcan, 45*10, 0, 0.7, 0.08));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeLaser, BulletTypeLaser, -45*10, 0, 1.4, 0.55));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeMad, BulletTypeMedium, -90*10, 0, 0.5, 0.20));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeFiveStraights, BulletTypeBig, 90*10, 0, 0.35, 0.58));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeRotate, BulletTypeMedium, 0, 0, 0.3, 0.28));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeRotateR, BulletTypeMedium, 0, 0, 0.3, 0.28));
+                
+                pInfo->isShip = true;
+                break;
+            }
+            case FighterTypeTriangle:
+            {
+                pInfo->name = "Squad";
+                pInfo->textureName = "e_boss2.png";
+                pInfo->textureSrcOffsetX = 0;
+                pInfo->textureSrcOffsetY = 0;
+                pInfo->textureSrcWidth = 182;
+                pInfo->textureSrcHeight = 207;
+                pInfo->showPixelWidth = 182*20;
+                pInfo->showPixelHeight = 207*20;
+                pInfo->collisionId = CollisionId_E_TRIANGLE;
+                pInfo->power = 50;
+                
+                pInfo->life = pInfo->lifeMax = 12000;
+                pInfo->speed = 0.35;
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeShotgun, BulletTypeMedium, 0, 0, 0.6, 0.28));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeRotateShotgun, BulletTypeNormal, 0, 0, 0.5, 0.55));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeRotate, BulletTypeMedium, 0, 0, 0.3, 0.20));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeFiveWay, BulletTypeMedium, 0, 0, 0.4, 0.18));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeRotateR, BulletTypeMedium, 0, 0, 0.3, 0.20));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeTriple, BulletTypeBig, 0, 0, 0.3, 0.58));
+                
+                pInfo->isShip = true;
+                break;
+            }
+            case FighterTypeQuad:
+            {
+                pInfo->name = "BigBall";
+                pInfo->textureName = "e_boss3.png";
+                pInfo->textureSrcOffsetX = 0;
+                pInfo->textureSrcOffsetY = 0;
+                pInfo->textureSrcWidth = 177;
+                pInfo->textureSrcHeight = 143;
+                pInfo->showPixelWidth = 177*20;
+                pInfo->showPixelHeight = 143*20;
+                pInfo->collisionId = CollisionId_E_QUAD;
+                pInfo->power = 70;
+                
+                pInfo->life = pInfo->lifeMax = 14000;
+                pInfo->speed = 0.75;
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeMegaLaser, BulletTypeBig, 0, 0, 1.6, 0.28));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeCircle, BulletTypeMedium, 0, 0, 0.2, 0.50));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeCircle, BulletTypeVulcan, 0, 0, 0.35, 0.20));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeRotate, BulletTypeMedium, 0, 0, 0.3, 0.20));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeRotateR, BulletTypeMedium, 0, 0, 0.3, 0.20));
+                
+                pInfo->isShip = true;
+                break;
+            }
+            case FighterTypeColony:
+            {
+                pInfo->name = "Colony";
+                pInfo->textureName = "colony1_s.png";
+                pInfo->textureSrcOffsetX = 0;
+                pInfo->textureSrcOffsetY = 0;
+                pInfo->textureSrcWidth = 130;
+                pInfo->textureSrcHeight = 174;
+                pInfo->showPixelWidth = 130*20;
+                pInfo->showPixelHeight = 174*20;
+                pInfo->collisionId = CollisionId_E_COLONY;
+                pInfo->power = 80;
+                
+                pInfo->life = pInfo->lifeMax = 16000;
+                pInfo->speed = 0.1;
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeTwinLaser, BulletTypeLaser, 0, 0, 1.1, 0.50));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeTwinLaser, BulletTypeLaser, 0, -66*20, 1.1, 0.51));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeTwinLaser, BulletTypeLaser, 0, 60*20, 1.1, 0.52));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeTwinLaser, BulletTypeLaser, 44*20, 0, 1.1, 0.53));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeTwinLaser, BulletTypeLaser, -44*20, 0, 1.1, 0.54));
+                
+                pInfo->isShip = true;
+                break;
+            }
+            case FighterTypeSnake:
+            {
+                pInfo->name = "Snake";
+                pInfo->textureName = "e_boss.png";
+                pInfo->textureSrcOffsetX = 0;
+                pInfo->textureSrcOffsetY = 0;
+                pInfo->textureSrcWidth = 223;
+                pInfo->textureSrcHeight = 114;
+                pInfo->showPixelWidth = 223*20;
+                pInfo->showPixelHeight = 114*20;
+                pInfo->collisionId = CollisionId_E_SNAKE;
+                pInfo->power = 80;
+                
+                pInfo->life = pInfo->lifeMax = 150000;
+                pInfo->speed = 0.55;
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeNormal, BulletTypeVulcan, 0, 0, 0.4, 0.08));
+                
+                pInfo->isShip = true;
+                break;
+            }
+            case FighterTypeLastBoss:
+            {
+                pInfo->name = "Alien's God";
+                pInfo->textureName = "ship_011.png";
+                pInfo->textureSrcOffsetX = 0;
+                pInfo->textureSrcOffsetY = 0;
+                pInfo->textureSrcWidth = 512;
+                pInfo->textureSrcHeight = 512;
+                pInfo->showPixelWidth = 512*5;
+                pInfo->showPixelHeight = 512*5;
+                pInfo->collisionId = CollisionId_E_LASTBOSS;
+                pInfo->power = 150;
+                
+                pInfo->life = pInfo->lifeMax = 300000;
+                pInfo->speed = 0.85;
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeNormal, BulletTypeVulcan, 0, 0, 0.4, 0.08));
                 
                 pInfo->isShip = true;
                 break;
             }
             default:
-                assert(0);
+            {
+                NSLog(@"ERROR: invalid fighter type%d", type);
+            }
+        }
+        pInfo->powerPotential = ((float)status_rand(90, 110) * 0.01 * (float)pInfo->power);
+        pInfo->defencePotential = ((float)status_rand(30, 70) * 0.01 * (float)pInfo->lifeMax);
+        if (pInfo->shieldMax > 0) {
+            pInfo->shieldPotential = ((float)status_rand(10, 30) * 0.01 * (float)pInfo->shieldMax);
         }
     }
     

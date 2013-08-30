@@ -36,12 +36,14 @@ varying vec2 vUV;
 void main(void) {
 
     gl_Position = uMvpMatrix * aPosition;
-    //gl_Position = aPosition * uMvpMatrix;
     // UV
+    vUV = vec2(uTexMatrix*vec4(aUV, 0.0, 1.0)); // for performance
+
+    /* for performance
     if (uUseTexture > 0.0)
     {
         vUV = vec2(uTexMatrix*vec4(aUV, 0.0, 1.0));
-    }
+    }*/
     vColor = uColor;
 
 }

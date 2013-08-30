@@ -12,6 +12,7 @@
 #import "HGLView.h"
 #import "PadView.h"
 #import "Common.h"
+#import "HGameEngine.h"
 #import "TouchHandlerView.h"
 #import <QuartzCore/QuartzCore.h>
 #import "UIButton+MyCategory.h"
@@ -133,6 +134,8 @@ static NSObject* lock = nil;
     {
         // initialize game
         {
+            hg::initRandom();
+
             upCamera = false;
             downCamera = false;
             
@@ -151,14 +154,13 @@ static NSObject* lock = nil;
 #warning DELETE FIGHTER DATA AFTER GAME!!!!!!!!
                 hg::FighterInfo* f = new hg::FighterInfo();
                 int fighterType = [[d valueForKey:@"fighterType"] integerValue];
-                hg::UserData::setDefaultInfo(f, fighterType);
+                hg::UserData::sharedUserData()->setDefaultInfo(f, fighterType);
                 f->level = [[d valueForKey:@"level"] integerValue];
                 if (tmpGroup >= spawnData.size())
                 {
                     spawnData.push_back(hg::SpawnGroup());
                 }
                 spawnData[tmpGroup].push_back(f);
-                break;
             }
             
             // initialize game

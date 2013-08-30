@@ -17,11 +17,12 @@
 #include <time.h>
 
 #define IS_DEBUG_SHOOTER 1
-#define IS_DEBUG_COLLISION 1
+#define IS_DEBUG_COLLISION 0
 #define ENEMY_NUM 10
 #define BULLET_NUM 100
 #define ENEMY_BULLET_NUM 100
-#define FIELD_SIZE 150
+#define FIELD_SIZE 100
+#define CPU_LV_MAX 100
 #define ZPOS 0
 #define BACKGROUND_SCALE 2000
 #define STAGE_SCALE 100
@@ -42,28 +43,118 @@ namespace hg {
     } SideType;
     
     // Fighter
+    const int FighterTypeAstray = 1;
+    const int FighterTypeAstray2 = 2;
+    const int FighterTypeViper = 10;
+    const int FighterTypeViperL = 12;
+    const int FighterTypeViperC = 13;
+    const int FighterTypeGatesC = 20;
+    const int FighterTypeVesariusC = 30;
+    const int FighterTypeRapter = 40;
+    const int FighterTypeRapter2 = 41;
+    const int FighterTypeStarFighter = 50;
+    const int FighterTypelambda = 60;
+    const int FighterTypeGloire = 70;
+    const int FighterTypeFox = 80;
+    const int FighterTypePegasus = 90;
+    
+    const int FighterTypeBall = 1000;
+    
+    const int FighterTypeRader = 1100;
+    
+    const int FighterTypeGates = 1200;
+    
+    const int FighterTypeDestroyer = 1300;
+    
+    const int FighterTypeVesarius = 3000;
+    
+    const int FighterTypeTriangle = 3100;
+    
+    const int FighterTypeQuad = 3200;
+    
+    const int FighterTypeColony = 3300;
+    
+    const int FighterTypeSnake = 3400;
+    
+    const int FighterTypeLastBoss = 3500;
+    
+    /*
     typedef enum FighterType
     {
         FighterTypeRobo1,
         FighterTypeRobo2,
         FighterTypeShip1,
         FighterTypeRobo3,
-    } FighterType;
+    } FighterType;*/
     
     // Bullet
     typedef enum BulletType
     {
-        BulletTypeNormal,
-        BulletTypeMagic,
         BulletTypeVulcan,
+        BulletTypeVulcan2,
+        BulletTypeVulcan3,
+        BulletTypeVulcan4,
+        BulletTypeVulcan5,
+        BulletTypeVulcan6,
+        BulletTypeVulcan7,
+        BulletTypeVulcan8,
+        BulletTypeNormal,
+        BulletTypeNormal2,
+        BulletTypeNormal3,
+        BulletTypeNormal4,
+        BulletTypeNormal5,
+        BulletTypeNormal6,
+        BulletTypeNormal7,
+        BulletTypeNormal8,
+        BulletTypeMedium,
+        BulletTypeMedium2,
+        BulletTypeMedium3,
+        BulletTypeMedium4,
+        BulletTypeMedium5,
+        BulletTypeMedium6,
+        BulletTypeMedium7,
+        BulletTypeMedium8,
+        BulletTypeBig,
+        BulletTypeBig2,
+        BulletTypeBig3,
+        BulletTypeBig4,
+        BulletTypeBig5,
+        BulletTypeBig6,
+        BulletTypeBig7,
+        BulletTypeBig8,
+        BulletTypeLaser,
+        BulletTypeFriendVulcan,
+        BulletTypeFriendNormal,
+        BulletTypeFriendMedium,
+        BulletTypeFriendBig,
+        BulletTypeFriendLaser,
     } BulletType;
     
     // Weapon
     typedef enum WeaponType
     {
         WeaponTypeNormal,
+        WeaponTypeTwin,
+        WeaponTypeTriple,
+        WeaponTypeShotgun,
+        WeaponTypeCircle,
+        WeaponTypeCircleRotate,
+        WeaponTypeAK,
+        WeaponTypeLaser,
+        WeaponTypeTwinLaser,
+        WeaponTypeGatring, // 没
+        WeaponTypeGatringLaser, // 没
+        WeaponTypeRotate,
+        WeaponTypeRotateR,
+        WeaponTypeRotateQuad,
+        WeaponTypeMad,
+        WeaponTypeThreeWay,
+        WeaponTypeFiveWay,
+        WeaponTypeRotateShotgun,
+        WeaponTypeFiveStraights,
+        WeaponTypeStraight,
+        WeaponTypeMegaLaser,
     } WeaponType;
-    
     
     typedef struct WeaponInfo
     {
@@ -85,17 +176,43 @@ namespace hg {
             float ratio = 1;
             switch (_bulletType)
             {
-                case BulletTypeNormal:
-                    ratio = 1;
-                    break;
-                case BulletTypeMagic:
-                    ratio = 5;
-                    break;
                 case BulletTypeVulcan:
                     ratio = 0.5;
+                    bulletType += rand(0,7);
+                    break;
+                case BulletTypeNormal:
+                    ratio = 1;
+                    bulletType += rand(0,7);
+                    break;
+                case BulletTypeMedium:
+                    ratio = 1.5;
+                    bulletType += rand(0,7);
+                    break;
+                case BulletTypeBig:
+                    ratio = 3;
+                    bulletType += rand(0,7);
+                    break;
+                case BulletTypeLaser:
+                    ratio = 2;
+                    break;
+                case BulletTypeFriendVulcan:
+                    ratio = 0.5;
+                    break;
+                case BulletTypeFriendNormal:
+                    ratio = 1;
+                    break;
+                case BulletTypeFriendMedium:
+                    ratio = 1.5;
+                    break;
+                case BulletTypeFriendBig:
+                    ratio = 3;
+                    break;
+                case BulletTypeFriendLaser:
+                    ratio = 2;
                     break;
             }
             bulletPower = ratio;
+            
         }
         int bulletType;
         int weaponType;
@@ -137,13 +254,28 @@ namespace hg {
     {
         CollisionIdStart,
         CollisionIdNone,
-        CollisionId_BulletMagic,
         CollisionId_BulletNormal,
+        CollisionId_BulletMedium,
+        CollisionId_BulletBig,
         CollisionId_BulletVulcan,
+        CollisionId_BulletLaser,
         CollisionId_P_ROBO1,
         CollisionId_E_SENKAN,
-        CollisionId_E_ROBO2,
-        CollisionId_P_ROBO3,
+        CollisionId_P_GATES,
+        CollisionId_P_VIPER,
+        CollisionId_E_GATES,
+        CollisionId_E_RADER,
+        CollisionId_E_BALL,
+        CollisionId_E_DESTROYER,
+        CollisionId_P_RAPTER,
+        CollisionId_P_LAMBDAS,
+        CollisionId_P_FOX,
+        CollisionId_P_PEGASUS,
+        CollisionId_E_TRIANGLE,
+        CollisionId_E_QUAD,
+        CollisionId_E_COLONY,
+        CollisionId_E_SNAKE,
+        CollisionId_E_LASTBOSS,
         CollisionIdEnd,
     } CollisionId;
     

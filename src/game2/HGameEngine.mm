@@ -58,6 +58,7 @@ namespace hg
         }
     }
     
+    // return number from a to b (including b)
     int rand(int from, int to)
     {
         if (from == to) return from;

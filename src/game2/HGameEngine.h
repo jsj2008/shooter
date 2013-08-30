@@ -761,9 +761,16 @@ namespace hg
                 texture.blendColor = blendColor;
                 texture.isAlphaMap = isAlphaMap;
             }
-            if (hgles::ProgramType2D != hgles::getCurrentProgramType())
-            {
-                hgles::setCurrentContext(hgles::ProgramType2D);
+            if (isAlphaMap) {
+                if (hgles::ProgramType2D != hgles::getCurrentProgramType())
+                {
+                    hgles::setCurrentContext(hgles::ProgramType2D);
+                }
+            } else {
+                if (hgles::ProgramType2D != hgles::getCurrentProgramType())
+                {
+                    hgles::setCurrentContext(hgles::ProgramType2D);
+                }
             }
             switch (type)
             {
@@ -863,6 +870,7 @@ namespace hg
             this->modelName = modelName;
             // planet
             obj = hgles::HGLObjLoader::load([NSString stringWithCString:modelName.c_str() encoding:NSUTF8StringEncoding]);
+            obj->useLight = 1.0;
         }
         ~HG3DModel()
         {
@@ -908,6 +916,7 @@ namespace hg
         inline void render()
         {
             glEnable(GL_DEPTH_TEST);
+            glUniform1f(hgles::currentContext->uUseLight, 1.0);
             obj->draw();
             glDisable(GL_DEPTH_TEST);
         }
