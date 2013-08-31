@@ -13,10 +13,10 @@ Ka 0.600 0.600 0.600
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd SHIP-TXTR.png
-map_Bump SHIP-TXTR.png
-map_Ns SHIP-TXTR.png
-map_Ks SHIP-TXTR.png
-map_Ka SHIP-TXTR.png
+map_Kd SHIP-TXTR.jpg
+map_Bump SHIP-TXTR.jpg
+map_Ns SHIP-TXTR.jpg
+map_Ks SHIP-TXTR.jpg
+map_Ka SHIP-TXTR.jpg
 
 

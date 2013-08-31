@@ -193,6 +193,9 @@ namespace hg {
     bool shouldDeployFriends = false;
     bool isPause = false;
     
+    unsigned int updateCount = 0;
+    int numOfEffect = 0;
+    
     FighterInfo* playerInfo;
     FriendData friendData;
 
@@ -209,12 +212,16 @@ namespace hg {
     KeyInfo keyInfo = {};
     HGSize sizeOfField(0,0);
     HGPoint pointOfFieldCenter(0,0);
+    bool bgmChanged = false;
     
     float cameraZposition = -25;
     
     // アニメ
     void showHitAnimation(Actor* a)
     {
+        if (numOfEffect > EFFECT_NUM) {
+            return;
+        }
         HitAnimeProcess* pHitAnimeProcess = new HitAnimeProcess();
         HGProcessOwner* pHo = new HGProcessOwner();
         pHitAnimeProcess->init(pHo, a->getPosition(), pLayerEffect);
@@ -341,6 +348,7 @@ namespace hg {
         
         if (pFighter->getSide() == SideTypeEnemy)
         {
+            [[OALSimpleAudio sharedInstance] playEffect:SE_HIT];
             // 経験値加算
             Fighter* a = pBullet->getOwner();
             UserData* u = UserData::sharedUserData();
@@ -369,6 +377,8 @@ namespace hg {
             {
                 if (pFighter->getSide() == SideTypeEnemy)
                 {
+                    [[OALSimpleAudio sharedInstance] playEffect:SE_ENEMY_ELIMINATED];
+                    
                     battleResult.killedEnemy++;
                     battleResult.earnedMoney += u->getKillReward(pFighter->getFighterInfo());
                     battleResult.killedValue += u->getCost(pFighter->getFighterInfo());
@@ -387,6 +397,7 @@ namespace hg {
                 }
                 else
                 {
+                    [[OALSimpleAudio sharedInstance] playEffect:SE_UNITLOST];
                     battleResult.killedFriend++;
                     pFighter->getFighterInfo()->dieCnt++;
                     pFighter->getFighterInfo()->totalDie++;
@@ -500,6 +511,11 @@ namespace hg {
                     ControlEnemyProcess* cp = new ControlEnemyProcess();
                     cp->init(pEnemy->getProcessOwner(), pEnemy);
                     HGProcessManager::sharedProcessManager()->addProcess(cp);
+                    
+                    if (bgmChanged == false && pFighterInfo->fighterType >= BOSS_FIGHTER_TYPE_MIN) {
+                        [[OALSimpleAudio sharedInstance] playBg:BGM_BOSS loop:true];
+                        bgmChanged = true;
+                    }
                 }
                 
                 return true;
@@ -958,6 +974,8 @@ namespace hg {
                 {
                     if (spawningEnemyCount <= 0)
                     {
+                        [[OALSimpleAudio sharedInstance] playEffect:SE_ENEMY_APPROACH];
+
                         SpawnGroup sg = spawnData.front();
                         spawnData.pop_front();
                         int wait = 0;
@@ -1036,6 +1054,9 @@ namespace hg {
     void initialize(SpawnData sd, FighterInfo* pl)
     {
         NSLog(@"INITIALIZE START");
+        bgmChanged = false;
+        numOfEffect = 0;
+        updateCount = 0;
         isEnd = false;
         isPause = false;
         isInitialized = false;
@@ -1196,6 +1217,7 @@ namespace hg {
         }
         
         // sun
+        /*
         {
             AlphaMapSprite* pSprite = new AlphaMapSprite();
             pSprite->init("sun.png", (Color){0.25, 0.20, 0.6, 0.6});
@@ -1203,7 +1225,7 @@ namespace hg {
             pSprite->setScale(200, 200, 1);
             pSprite->setPosition(-30, 80);
             pLayerBackground->addChild(pSprite);
-        }
+        }*/
         
         // planet
         {
@@ -1332,6 +1354,7 @@ namespace hg {
         {
             return;
         }
+        updateCount++;
         keyInfo = keyState;
         keyInfo.isFire = (keyState.isFire>0)?true:false;
         HGStateManager::sharedStateManger()->update();

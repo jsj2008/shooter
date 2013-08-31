@@ -14,6 +14,7 @@
 #include "HWeapon.h"
 #include "HCollision.h"
 #include "ExplodeAnimeProcess.h"
+#include "ObjectAL.h"
 
 #include <list>
 
@@ -488,6 +489,7 @@ namespace hg {
         
         inline void explode()
         {
+            [[OALSimpleAudio sharedInstance] playEffect:SE_BOM];
             CallFunctionRepeadedlyProcess<Fighter>* cfrp = new CallFunctionRepeadedlyProcess<Fighter>();
             HGProcessOwner* hpo = new HGProcessOwner();
             cfrp->init(hpo, &Fighter::explodeProcess, this);
@@ -628,13 +630,15 @@ namespace hg {
                 }
                 if (rand(0, 10) > 3)
                 {
-                    ExplodeAnimeProcess* eap = new ExplodeAnimeProcess();
-                    HGProcessOwner* hpo = new HGProcessOwner();
-                    float x = rand(getPositionX() - getWidth()/2, getPositionX() + getWidth()/2);
-                    float y = rand(getPositionY() - getHeight()/2, getPositionY() + getHeight()/2);
-                    Vector position(x, y, getPositionZ());
-                    eap->init(hpo, position, pLayerEffect);
-                    HGProcessManager::sharedProcessManager()->addProcess(eap);
+                    if (numOfEffect <= EFFECT_NUM) {
+                        ExplodeAnimeProcess* eap = new ExplodeAnimeProcess();
+                        HGProcessOwner* hpo = new HGProcessOwner();
+                        float x = rand(getPositionX() - getWidth()/2, getPositionX() + getWidth()/2);
+                        float y = rand(getPositionY() - getHeight()/2, getPositionY() + getHeight()/2);
+                        Vector position(x, y, getPositionZ());
+                        eap->init(hpo, position, pLayerEffect);
+                        HGProcessManager::sharedProcessManager()->addProcess(eap);
+                    }
                 }
             }
             else
@@ -651,13 +655,15 @@ namespace hg {
                 }
                 if (rand(0, 10) > 7)
                 {
-                    ExplodeAnimeProcess* eap = new ExplodeAnimeProcess();
-                    HGProcessOwner* hpo = new HGProcessOwner();
-                    float x = rand(getPositionX() - getWidth()/2, getPositionX() + getWidth()/2);
-                    float y = rand(getPositionY() - getHeight()/2, getPositionY() + getHeight()/2);
-                    Vector position(x, y, getPositionZ());
-                    eap->init(hpo, position, pLayerEffect);
-                    HGProcessManager::sharedProcessManager()->addProcess(eap);
+                    if (numOfEffect <= EFFECT_NUM) {
+                        ExplodeAnimeProcess* eap = new ExplodeAnimeProcess();
+                        HGProcessOwner* hpo = new HGProcessOwner();
+                        float x = rand(getPositionX() - getWidth()/2, getPositionX() + getWidth()/2);
+                        float y = rand(getPositionY() - getHeight()/2, getPositionY() + getHeight()/2);
+                        Vector position(x, y, getPositionZ());
+                        eap->init(hpo, position, pLayerEffect);
+                        HGProcessManager::sharedProcessManager()->addProcess(eap);
+                    }
                 }
                 
             }
@@ -697,10 +703,17 @@ namespace hg {
         
         inline void fire()
         {
+            bool isFired = false;
             for (WeaponList::iterator it = weaponList.begin(); it != weaponList.end(); ++it)
             {
                 (*it)->setAspect(this->aspectDegree);
-                (*it)->fire(this, side, _isPlayer);
+                bool chk = (*it)->fire(this, side, _isPlayer);
+                if (chk) {
+                    isFired = true;
+                }
+            }
+            if (isFired) {
+                [[OALSimpleAudio sharedInstance] playEffect:SE_GUN];
             }
         }
         

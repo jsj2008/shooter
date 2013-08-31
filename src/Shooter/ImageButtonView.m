@@ -6,7 +6,9 @@
 //  Copyright (c) 2013年 hayogame. All rights reserved.
 //
 
+#import "Common.h"
 #import "ImageButtonView.h"
+#import "ObjectAL.h"
 
 @interface ImageButtonView()
 {
@@ -108,6 +110,7 @@
 
 - (void)onTap:(UIGestureRecognizer*)sender
 {
+    [[OALSimpleAudio sharedInstance] playEffect:SE_CLICK];
     // 拡大アニメーションさせるので、トップに持ってくる
     [highlightView setAlpha:0];
     [self.superview bringSubviewToFront:self];
@@ -118,13 +121,16 @@
     } completion:^(BOOL finished) {
         [UIView animateWithDuration:0.10 animations:^{
             [self setTransform:CGAffineTransformIdentity];
+        } completion:^(BOOL finished) {
+            onTap(self);
         }];
     }];
     
+    /*
     // callback
     dispatch_async(dispatch_get_main_queue(), ^{
         onTap(self);
-    });
+    });*/
 }
 
 

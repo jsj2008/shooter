@@ -10,6 +10,7 @@
 #import "MenuButton.h"
 #import "UIColor+MyCategory.h"
 #import "Common.h"
+#import "ObjectAL.h"
 
 @interface MenuButton()
 {
@@ -119,6 +120,7 @@
 
 - (void)onTap:(UIGestureRecognizer*)sender
 {
+    [[OALSimpleAudio sharedInstance] playEffect:SE_CLICK];
     // 拡大アニメーションさせるので、トップに持ってくる
     [highlightView setAlpha:0];
     [self.superview bringSubviewToFront:self];

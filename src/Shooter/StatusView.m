@@ -104,7 +104,9 @@ const float ProgressBarWidth = 146;
         // money icon
         {
             CGRect f = CGRectMake(10, 0, 20, 20);
-            UIImage* img = [[UIImage imageNamed:@"goldCoin5.png"] autorelease];
+            //UIImage* img = [[UIImage imageNamed:@"goldCoin5.png"] autorelease];
+            NSString *path = [[[NSBundle mainBundle] pathForResource:@"goldCoin5" ofType:@"png"] autorelease];
+            UIImage* img = [[UIImage alloc] initWithContentsOfFile:path];
             UIImageView* iv = [[[UIImageView alloc] initWithFrame:f] autorelease];
             [iv setImage:img];
             [self addSubview:iv];
@@ -192,7 +194,9 @@ const float ProgressBarWidth = 146;
         
         // progress frame
         {
-            UIImage* img = [UIImage imageNamed:@"enemy_health_bar_foreground_001.png"];
+            //UIImage* img = [UIImage imageNamed:@"enemy_health_bar_foreground_001.png"];
+            NSString *path = [[[NSBundle mainBundle] pathForResource:@"enemy_health_bar_foreground_001" ofType:@"png"] autorelease];
+            UIImage* img = [[UIImage alloc] initWithContentsOfFile:path];
             UIImageView* imgView = [[[UIImageView alloc] initWithImage:img] autorelease];
             [imgView setFrame:progressFrameFrame];
             //[self addSubview:imgView];

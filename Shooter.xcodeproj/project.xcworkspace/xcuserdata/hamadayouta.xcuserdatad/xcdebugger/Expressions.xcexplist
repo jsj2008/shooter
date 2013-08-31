@@ -12,13 +12,13 @@
          contextName = "IndexBuffer::IndexBuffer(unsigned char const*, int):IndexBuffer.mm">
          <PersistentStrings>
             <PersistentString
-               value = "sizeof(Index)">
-            </PersistentString>
-            <PersistentString
                value = "sizeof(Vertex)">
             </PersistentString>
             <PersistentString
                value = "indices[1]">
+            </PersistentString>
+            <PersistentString
+               value = "sizeof(Index)">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -119,6 +119,9 @@
          contextName = "hg::UserData::loadData():UserData.cpp">
       </ContextState>
       <ContextState
+         contextName = "hg::Weapon::createBullet(float, float, float, float, float):HWeapon.h">
+      </ContextState>
+      <ContextState
          contextName = "hg::FighterAccelProcess::onUpdate():HGame.mm">
       </ContextState>
       <ContextState
@@ -126,6 +129,17 @@
       </ContextState>
       <ContextState
          contextName = "HGGame::HGFighter::draw():HGFighter.mm">
+      </ContextState>
+      <ContextState
+         contextName = "-[GameView initSpawnData]:GameView.mm">
+         <PersistentStrings>
+            <PersistentString
+               value = "enemyGroupInfoList">
+            </PersistentString>
+            <PersistentString
+               value = "enemyGroupList">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "HGGame::HGSpawn::draw():HGSpawn.mm">
@@ -287,10 +301,10 @@
          contextName = "GLES::compileShaders():GLES.mm">
          <PersistentStrings>
             <PersistentString
-               value = "aPositionSlot">
+               value = "aNormalSlot">
             </PersistentString>
             <PersistentString
-               value = "aNormalSlot">
+               value = "aPositionSlot">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -317,13 +331,13 @@
          contextName = "hg::BattleState::onUpdate():HGame.mm">
          <PersistentStrings>
             <PersistentString
+               value = "SpawnGroup">
+            </PersistentString>
+            <PersistentString
                value = "spawnData">
             </PersistentString>
             <PersistentString
                value = "HGProcessManager::sharedProcessManager()">
-            </PersistentString>
-            <PersistentString
-               value = "SpawnGroup">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -666,13 +680,13 @@
          contextName = "-[FMDatabase executeUpdate:error:withArgumentsInArray:orDictionary:orVAList:]:FMDatabase.m">
          <PersistentStrings>
             <PersistentString
-               value = "queryCount">
+               value = "args">
             </PersistentString>
             <PersistentString
                value = "arrayArgs">
             </PersistentString>
             <PersistentString
-               value = "args">
+               value = "queryCount">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

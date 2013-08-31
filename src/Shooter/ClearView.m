@@ -38,7 +38,9 @@
         float height = width * (float)(512.0/512.0);
         float x = 0;
         float y = 0;
-        UIImage *img = [UIImage imageNamed:@"space2.png"];
+        //UIImage *img = [UIImage imageNamed:@"space2.png"];
+        NSString *path = [[NSBundle mainBundle] pathForResource:@"space2" ofType:@"png"];
+        UIImage* img = [[UIImage alloc] initWithContentsOfFile:path];
         UIImageView* backView = [[[UIImageView alloc] initWithFrame:CGRectMake(x,y,width,height)] autorelease];
         [backView setImage:img];
         [backView setCenter:CGPointMake(frame.size.width/2, frame.size.height/2)];
@@ -79,7 +81,9 @@
              */
             
             // パーティクル画像
-            UIImage *particleImage = [UIImage imageNamed:@"star_cross.png"];
+            //UIImage *particleImage = [UIImage imageNamed:@"star_cross.png"];
+            NSString *path = [[NSBundle mainBundle] pathForResource:@"star_cross" ofType:@"png"];
+            UIImage* particleImage = [[[UIImage alloc] initWithContentsOfFile:path] autorelease];
             
             // 花火自体の発生源
             CAEmitterCell *baseCell = [CAEmitterCell emitterCell];
@@ -147,7 +151,10 @@
             float height = width * (float)(155.0/633.0);
             float x = frame.size.width/2 - width/2;
             float y = frame.size.height/2 - height/2 - frame.size.height/4;
-            UIImage *img = [UIImage imageNamed:@"congraturation.png"];
+            //UIImage *img = [UIImage imageNamed:@"congraturation.png"];
+            NSString *path = [[NSBundle mainBundle] pathForResource:@"congraturation" ofType:@"png"];
+            UIImage* img = [[[UIImage alloc] initWithContentsOfFile:path] autorelease];
+            
             UIImageView* iv = [[[UIImageView alloc] initWithFrame:CGRectMake(x,y,width,height)] autorelease];
             [iv setImage:img];
             [iv setTransform:CGAffineTransformMakeScale(0, 0)];
@@ -171,8 +178,12 @@
             float height = width * (float)(122.0/371.0);
             float x = frame.size.width/2 - width/2;
             float y = frame.size.height/2 - height/2;
-            UIImage *img = [UIImage imageNamed:@"yougot.png"];
+            //UIImage *img = [UIImage imageNamed:@"yougot.png"];
             UIImageView* iv = [[[UIImageView alloc] initWithFrame:CGRectMake(x,y,width,height)] autorelease];
+            
+            NSString *path = [[NSBundle mainBundle] pathForResource:@"yougot" ofType:@"png"];
+            UIImage* img = [[[UIImage alloc] initWithContentsOfFile:path] autorelease];
+            
             [iv setImage:img];
             [iv setTransform:CGAffineTransformMakeScale(0, 0)];
             [iv setUserInteractionEnabled:false];
@@ -195,7 +206,10 @@
             float height = width * (float)(117.0/598.0);
             float x = frame.size.width/2 - width/2;
             float y = frame.size.height/2 - height/2 + frame.size.height/4;
-            UIImage *img = [UIImage imageNamed:@"greatvictory.png"];
+            //UIImage *img = [UIImage imageNamed:@"greatvictory.png"];
+            NSString *path = [[NSBundle mainBundle] pathForResource:@"greatvictory" ofType:@"png"];
+            UIImage* img = [[[UIImage alloc] initWithContentsOfFile:path] autorelease];
+            
             UIImageView* iv = [[[UIImageView alloc] initWithFrame:CGRectMake(x,y,width,height)] autorelease];
             [iv setImage:img];
             [iv setTransform:CGAffineTransformMakeScale(0, 0)];

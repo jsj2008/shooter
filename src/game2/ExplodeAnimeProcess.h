@@ -12,6 +12,7 @@
 #include <iostream>
 #include "HGameEngine.h"
 #include "HGameCommon.h"
+#include "ObjectAL.h"
 
 namespace hg
 {
@@ -55,15 +56,17 @@ namespace hg
             pSprBom->retain();
             
             parentNode->addChild(pSprBom);
+            numOfEffect++;
         }
     protected:
         void onUpdate()
         {
-            int index = getFrameCount()/2;
+            int index = getFrameCount()/3;
             if (index >= 9)
             {
                 pSprBom->removeFromParent();
                 setEnd();
+                numOfEffect--;
                 return;
             }
             if (index >= 6)

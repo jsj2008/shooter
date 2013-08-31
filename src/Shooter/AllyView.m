@@ -6,6 +6,7 @@
 //  Copyright (c) 2013年 hayogame. All rights reserved.
 //
 
+#import "ObjectAL.h"
 #import "Common.h"
 #import "AllyView.h"
 #import "AllyTableView.h"
@@ -240,7 +241,11 @@
                     f.origin.x -= 2;
                     CGRect coinf = f;
                     coinf.size.width = coinf.size.height = 16;
-                    UIImage* img = [UIImage imageNamed:@"goldCoin5.png"];
+                    //UIImage* img = [UIImage imageNamed:@"goldCoin5.png"];
+                    
+                    NSString *path = [[[NSBundle mainBundle] pathForResource:@"goldCoin5" ofType:@"png"] autorelease];
+                    UIImage* img = [[UIImage alloc] initWithContentsOfFile:path];
+                    
                     UIImageView* iv = [[[UIImageView alloc] initWithFrame:coinf] autorelease];
                     [iv setImage:img];
                     [baseView addSubview:iv];
@@ -273,7 +278,9 @@
                     f.origin.x -= 2;
                     CGRect coinf = f;
                     coinf.size.width = coinf.size.height = 16;
-                    UIImage* img = [UIImage imageNamed:@"goldCoin5.png"];
+                    //UIImage* img = [UIImage imageNamed:@"goldCoin5.png"];
+                    NSString *path = [[[NSBundle mainBundle] pathForResource:@"goldCoin5" ofType:@"png"] autorelease];
+                    UIImage* img = [[UIImage alloc] initWithContentsOfFile:path];
                     UIImageView* iv = [[[UIImageView alloc] initWithFrame:coinf] autorelease];
                     [iv setImage:img];
                     [baseView addSubview:iv];
@@ -306,7 +313,9 @@
                     f.origin.x -= 2;
                     CGRect coinf = f;
                     coinf.size.width = coinf.size.height = 16;
-                    UIImage* img = [UIImage imageNamed:@"goldCoin5.png"];
+                    //UIImage* img = [UIImage imageNamed:@"goldCoin5.png"];
+                    NSString *path = [[[NSBundle mainBundle] pathForResource:@"goldCoin5" ofType:@"png"] autorelease];
+                    UIImage* img = [[UIImage alloc] initWithContentsOfFile:path];
                     UIImageView* iv = [[[UIImageView alloc] initWithFrame:coinf] autorelease];
                     [iv setImage:img];
                     [baseView addSubview:iv];
@@ -400,6 +409,7 @@
     {
         return;
     }
+    [[OALSimpleAudio sharedInstance] playEffect:SE_CLICK];
     // 拡大アニメーションさせるので、トップに持ってくる
     [highlightView setAlpha:0];
     if (self.superview)

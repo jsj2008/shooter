@@ -24,6 +24,7 @@
 #import "HGLGraphics2D.h"
 
 #define TEST_GL_VIEW 0
+#define GL_FPS 60
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 
@@ -65,7 +66,7 @@ using namespace hgles;
         lastDrawTime = 0;
         frameSkip = 0;
         isRenderRequired = false;
-        sleep = 1.0/FPS;
+        sleep = 1.0/GL_FPS;
         
         // setup gl
         [self setupLayer];
@@ -170,7 +171,8 @@ using namespace hgles;
 
 - (void)initFrame
 {
-    glClearColor(0.1, 0.5, 1.0, 1.0);
+    //glClearColor(0.1, 0.5, 1.0, 1.0);
+    glClearColor(0.0, 0.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
 }

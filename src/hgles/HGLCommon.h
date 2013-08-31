@@ -2,8 +2,6 @@
 #define __HGLCOMMON
 #define IS_DEBUG 1
 
-#define FPS 60
-
 #define LOG(A, ...) NSLog(@"LOG: %s:%d:%@", __PRETTY_FUNCTION__,__LINE__,[NSString stringWithFormat:A, ## __VA_ARGS__]);
 
 namespace hgles {
@@ -11,6 +9,7 @@ namespace hgles {
     {
         ProgramTypeNone,
         ProgramType2D,
+        ProgramType2DAlpha,
         ProgramType3D,
     } ProgramType;
 }

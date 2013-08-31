@@ -21,6 +21,7 @@ varying vec2 vUV;
 
 void main(void) { // 2
     // alpha map
+    /* I created shader for alphamap only, so some lines here I commented out.
     if (uUseAlphaMap > 0.0)
     {
         vec4 alphaMapColor = texture2D(uTex, vUV*uTextureRepeatNum);
@@ -30,7 +31,7 @@ void main(void) { // 2
     }
     // no light
     else
-    {
+    {*/
         gl_FragColor = texture2D(uTex, vUV*uTextureRepeatNum) * vec4(uBlendColor.r, uBlendColor.g, uBlendColor.b, uAlpha);
-    }
+    //}
 }

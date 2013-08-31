@@ -9,6 +9,9 @@
 #import "HGLES.h"
 #import "HGLGraphics2D.h"
 #import "UIColor+MyCategory.h"
+#import "Common.h"
+#import "ObjectAL.h"
+
 
 typedef enum TYPE_TITLE_BTN
 {
@@ -94,7 +97,9 @@ t_title_btn title_btn_info[] = {
 {
     
     // logo
-    UIImage* img = [UIImage imageNamed:@"ShooterTitle.jpg"];
+    //UIImage* img = [UIImage imageNamed:@"ShooterTitle.jpg"];
+    NSString *path = [[[NSBundle mainBundle] pathForResource:@"ShooterTitle" ofType:@"jpg"] autorelease];
+    UIImage* img = [[UIImage alloc] initWithContentsOfFile:path];
     UIImageView* imgView = [[[UIImageView alloc] initWithImage:img] autorelease];
     float w = self.frame.size.width;
     float h = w/884*944;
@@ -139,6 +144,7 @@ t_title_btn title_btn_info[] = {
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    [[OALSimpleAudio sharedInstance] playEffect:SE_CLICK];
     [MainViewController Start];
 }
 

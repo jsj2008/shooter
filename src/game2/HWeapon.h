@@ -136,26 +136,33 @@ namespace hg {
         
         inline Bullet* createBullet(float x, float y, float degree, float speed, float power)
         {
-            Bullet* bp = new Bullet();
-            bp->init(bulletType, speed, 80, power, pOwner, x, y, degree, side);
-            switch (side) {
-                case SideTypeEnemy:
-                    enemyBulletList.addActor(bp);
-                    battleResult.enemyShot++;
-                    break;
-                case SideTypeFriend:
-                    friendBulletList.addActor(bp);
-                    if (isPlayer) {
-                        battleResult.myShot++;
-                    }
-                    battleResult.allShot++;
-                    battleResult.allShotPower += power;
-                    break;
-                default:
-                    assert(0);
-                    break;
+            if (side ==SideTypeEnemy)
+            {
+                if (enemyBulletList.size() > ENEMY_BULLET_NUM) {
+                    return NULL;
+                }
+                Bullet* bp = new Bullet();
+                bp->init(bulletType, speed, 80, power, pOwner, x, y, degree, side);
+                enemyBulletList.addActor(bp);
+                battleResult.enemyShot++;
+                return bp;
             }
-            return bp;
+            else
+            {
+                if (isPlayer) {
+                    battleResult.myShot++;
+                } else {
+                    if (friendBulletList.size() > BULLET_NUM) {
+                        return NULL;
+                    }
+                }
+                Bullet* bp = new Bullet();
+                bp->init(bulletType, speed, 80, power, pOwner, x, y, degree, side);
+                friendBulletList.addActor(bp);
+                battleResult.allShot++;
+                battleResult.allShotPower += power;
+                return bp;
+            }
         }
         
         inline Bullet* createBullet(float x, float y, float degree, float speed)
@@ -168,17 +175,18 @@ namespace hg {
             return createBullet(x, y, degree, this->speed);
         }
         
-        inline void fire(Fighter* pOwner, SideType side, bool isPlayer)
+        inline bool fire(Fighter* pOwner, SideType side, bool isPlayer)
         {
             if (getNowTime() - lastFireTime < fireInterval)
             {
-                return;
+                return false;
             }
             this->pOwner = pOwner;
             this->side = side;
             this->isPlayer = isPlayer;
             lastFireTime = getNowTime();
             (this->*shotFunc)();
+            return true;
         }
         
         inline void setInterval(float interval)
@@ -223,7 +231,7 @@ namespace hg {
         inline void shotLongLaserSub(HGPoint& src, float sumPower, float degree) {
             int bulletNum = 12;
             int power = ceil(sumPower/(float)bulletNum);
-            float diff = 80;
+            float diff = 50;
             float offset = -diff;
             for (int i = 0; i < bulletNum; i++) {
                 offset += diff;
@@ -234,7 +242,7 @@ namespace hg {
         
         inline void shotLaserSub(HGPoint& src, float sumPower, float degree, float speed, int bulletNum) {
             int power = ceil(sumPower/(float)bulletNum);
-            float diff = 80;
+            float diff = 50;
             float offset = -diff;
             for (int i = 0; i < bulletNum; i++) {
                 offset += diff;

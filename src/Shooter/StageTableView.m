@@ -128,8 +128,10 @@ static StageTableView* instance;
     
     // 戻るボタン
     {
-        ImageButtonView* backImgView = [[ImageButtonView alloc] initWithFrame:CGRectMake(0, 0, 66, 66)];
-        UIImage* img = [UIImage imageNamed:@"checkmark.png"];
+        ImageButtonView* backImgView = [[[ImageButtonView alloc] initWithFrame:CGRectMake(0, 0, 66, 66)] autorelease];
+        //UIImage* img = [UIImage imageNamed:@"checkmark.png"];
+        NSString *path = [[NSBundle mainBundle] pathForResource:@"checkmark" ofType:@"png"];
+        UIImage* img = [[[UIImage alloc] initWithContentsOfFile:path] autorelease];
         
         [backImgView setBackgroundColor:[UIColor whiteColor]];
         [backImgView setFrame:CGRectMake(myFrame.size.width - 76, myFrame.size.height - 84, 66, 66)];

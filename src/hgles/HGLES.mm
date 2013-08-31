@@ -73,6 +73,8 @@ namespace hgles {
         contextMap[ProgramType3D] = {};
         setCurrentContext(ProgramType2D);
         compileShaders(@"vertex2d", @"fragment2d");
+        setCurrentContext(ProgramType2DAlpha);
+        compileShaders(@"vertex2dalpha", @"fragment2dalpha");
         setCurrentContext(ProgramType3D);
         compileShaders(@"vertex", @"fragment");
         glViewport(0, 0, viewWidth, viewHeight);

@@ -11,6 +11,7 @@
 #import "MenuButton.h"
 #import "UIColor+MyCategory.h"
 #import <QuartzCore/QuartzCore.h>
+#import "ObjectAL.h"
 
 const float MessageBoxHeight = 140;
 const float MessageBoxWidth = 320;
@@ -51,6 +52,7 @@ const float MessageHeight = 180;
 
 - (void)onTap:(UIGestureRecognizer*)sender
 {
+    [[OALSimpleAudio sharedInstance] playEffect:SE_CLICK];
     // close
     if ([self.messageList count] > 0) {
         [_msgLabel setFrame:defaultMessageRect];

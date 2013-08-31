@@ -45,7 +45,15 @@ namespace hgles {
             GLubyte *spriteData;
             size_t    width, height;
             
-            image = [UIImage imageNamed:[NSString stringWithCString:name.c_str() encoding:NSUTF8StringEncoding]].CGImage;
+            //image = [UIImage imageNamed:[NSString stringWithCString:name.c_str() encoding:NSUTF8StringEncoding]].CGImage;
+            
+            NSString* fullFileName = [NSString stringWithCString:name.c_str() encoding:NSUTF8StringEncoding];
+            NSString* lastPathComponent = [[fullFileName lastPathComponent] stringByDeletingPathExtension];
+            NSString* pathExtension = [fullFileName pathExtension];
+            NSString *path = [[NSBundle mainBundle] pathForResource:lastPathComponent ofType:pathExtension];
+            UIImage* uiImg = [[[UIImage alloc] initWithContentsOfFile:path] autorelease];
+            image = uiImg.CGImage;
+            
             width = CGImageGetWidth(image);
             height = CGImageGetHeight(image);
             tex->width = width;

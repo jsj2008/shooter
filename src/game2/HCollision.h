@@ -172,7 +172,7 @@ namespace hg {
                         break;
                     case CollisionId_P_GATES:
                         c = new Collision();
-                        c->push_back({40, 40, 176, 176});
+                        c->push_back({175, 175, 200, 200});
                         list.push_back(c);
                         break;
                     case CollisionId_P_RAPTER:
@@ -183,6 +183,11 @@ namespace hg {
                     case CollisionId_E_GATES:
                         c = new Collision();
                         c->push_back({0, 0, 550, 550});
+                        list.push_back(c);
+                        break;
+                    case CollisionId_P_RADER:
+                        c = new Collision();
+                        c->push_back({130, 130, 160, 160});
                         list.push_back(c);
                         break;
                     case CollisionId_E_RADER:

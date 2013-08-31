@@ -9,6 +9,7 @@
 #ifndef Shooter_HDefine_h
 #define Shooter_HDefine_h
 
+#include "Common.h"
 #include "HGameEngine.h"
 #include "HActorList.h"
 #include "CellManager.h"
@@ -19,8 +20,9 @@
 #define IS_DEBUG_SHOOTER 1
 #define IS_DEBUG_COLLISION 0
 #define ENEMY_NUM 10
+#define EFFECT_NUM 30
 #define BULLET_NUM 100
-#define ENEMY_BULLET_NUM 100
+#define ENEMY_BULLET_NUM 250
 #define FIELD_SIZE 100
 #define CPU_LV_MAX 100
 #define ZPOS 0
@@ -29,6 +31,7 @@
 #define PIXEL_SCALE 0.01
 #define PXL2REAL(var) ((var)*(PIXEL_SCALE))
 #define SHILD_SIZE_GAP (50*(PIXEL_SCALE))
+#define BOSS_FIGHTER_TYPE_MIN 3000
 
 namespace hg {
     class HGNode;
@@ -48,7 +51,7 @@ namespace hg {
     const int FighterTypeViper = 10;
     const int FighterTypeViperL = 12;
     const int FighterTypeViperC = 13;
-    const int FighterTypeGatesC = 20;
+    const int FighterTypeGatesC = 20;  // 面倒なので没
     const int FighterTypeVesariusC = 30;
     const int FighterTypeRapter = 40;
     const int FighterTypeRapter2 = 41;
@@ -57,6 +60,7 @@ namespace hg {
     const int FighterTypeGloire = 70;
     const int FighterTypeFox = 80;
     const int FighterTypePegasus = 90;
+    const int FighterTypeRaderC = 100;
     
     const int FighterTypeBall = 1000;
     
@@ -77,6 +81,10 @@ namespace hg {
     const int FighterTypeSnake = 3400;
     
     const int FighterTypeLastBoss = 3500;
+    
+    const int FighterTypeSuperRader = 4000;
+    const int FighterTypeSuperGates = 4100;
+    const int FighterTypeSuperDestroyer = 4200;
     
     /*
     typedef enum FighterType
@@ -173,6 +181,7 @@ namespace hg {
         bulletPower(0),
         fireInterval(_fireInterval)
         {
+            speed = speed*1.50;
             float ratio = 1;
             switch (_bulletType)
             {
@@ -263,6 +272,7 @@ namespace hg {
         CollisionId_E_SENKAN,
         CollisionId_P_GATES,
         CollisionId_P_VIPER,
+        CollisionId_P_RADER,
         CollisionId_E_GATES,
         CollisionId_E_RADER,
         CollisionId_E_BALL,
@@ -379,9 +389,11 @@ namespace hg {
     } KeyInfo;
     
     // global
+    extern unsigned int updateCount;
     extern HGNode* pLayerBullet;
     extern HGNode* pLayerFriend;
     extern HGNode* pLayerEffect;
+    extern int numOfEffect;
     
     extern KeyInfo keyInfo;
     extern HGSize sizeOfField;

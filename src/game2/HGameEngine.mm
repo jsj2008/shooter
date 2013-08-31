@@ -38,11 +38,13 @@ namespace hg
     
     int f(int frame)
     {
-        return (int)((frame*GAMEFPS/60.0) + 0.5);
+        //return (int)((frame*GAMEFPS/60.0) + 0.5);
+        return frame;
     }
     float v(float vec)
     {
-        return vec*60/GAMEFPS;
+        //return vec*60/GAMEFPS;
+        return vec;
     }
     
     std::vector<int> randomList;

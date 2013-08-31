@@ -55,21 +55,24 @@ namespace hg
             pSprBom->retain();
             
             parentNode->addChild(pSprBom);
+            numOfEffect++;
         }
     protected:
         void onUpdate()
         {
-            if (getFrameCount() >= 8)
+            int frameCount = getFrameCount()/2;
+            if (frameCount >= 8)
             {
                 pSprBom->removeFromParent();
                 setEnd();
+                numOfEffect--;
                 return;
             }
-            if (getFrameCount() >= 5)
+            if (frameCount >= 5)
             {
                 pSprBom->setOpacity(pSprBom->getOpacity() * 0.5);
             }
-            int x = sizeOfTexSrc.width * getFrameCount();
+            int x = sizeOfTexSrc.width * frameCount;
             pSprBom->setTextureRect(x, 0, sizeOfTexSrc.width, sizeOfTexSrc.height);
         }
         std::string getName()

@@ -22,6 +22,8 @@
 #import "ImageButtonView.h"
 #import "AllyTableView.h"
 #import "DialogView.h"
+#import "ObjectAL.h"
+#import <vector>
 
 #define DEPLOY_BTN_SIZE 50
 #define CAMERA_ADJUST_BTN_SIZE 35
@@ -30,6 +32,39 @@
 #define GAUGE_FRAME_HEIGHT 160
 #define GAUGE_BAR_WIDTH 10
 #define GAUGE_BAR_HEIGHT 150
+
+typedef struct EnemyData {
+    EnemyData(int _fighterType):
+        fighterType(_fighterType)
+    {
+    }
+    int fighterType = 1000;
+} EnemyData;
+
+typedef std::vector<EnemyData> EnemyDataList;
+
+typedef struct EnemyGroup {
+    EnemyGroup(int in_stage_id, int in_min_prog):
+    stage_id(in_stage_id),
+    min_prog(in_min_prog){}
+    int stage_id = 1;
+    int min_prog = 1;
+    EnemyDataList enemyDataList;
+} EnemyGroup;
+
+typedef std::vector<EnemyGroup> EnemyGroupList;
+
+typedef struct EnemyGroupInfo
+{
+    EnemyGroupInfo(int inFromStageId, int inToStageId):
+    fromStageId(inFromStageId),
+    toStageId(inToStageId)
+    {}
+    int fromStageId = 0;
+    int toStageId = 0;
+} EnemyGroupInfo;
+
+typedef std::vector<EnemyGroupInfo> EnemyGroupInfoList;
 
 @interface GameView()
 {
@@ -67,6 +102,7 @@
     CGRect shieldGaugeRect;
     UIView* hpGaugeBar;
     UIView* shieldGaugeBar;
+    hg::FighterList enemyList;
     
 }
 @end
@@ -74,6 +110,8 @@
 @implementation GameView
 
 static NSObject* lock = nil;
+static EnemyGroupList enemyGroupList;
+static EnemyGroupInfoList enemyGroupInfoList;
 
 - (void)dealloc
 {
@@ -126,6 +164,57 @@ static NSObject* lock = nil;
     return self;
 }
 
+- (void)initSpawnData
+{
+    if (enemyGroupList.size() > 0) return;
+    
+    // 出現リスト読み込み
+    NSBundle* bundle = [NSBundle mainBundle];
+    NSString* path = [bundle pathForResource:@"enemyList" ofType:@"json"];
+    NSData* dataEnemyList = [NSData dataWithContentsOfFile:path];
+    NSError* error;
+    NSDictionary* dicEnemyList = [NSJSONSerialization JSONObjectWithData:dataEnemyList options:kNilOptions error:&error];
+    
+    EnemyGroup enemyGroup(-1, -1);
+    enemyGroupInfoList.clear();
+    int currentGroupId = -1;
+    int from = 0;
+    int current = -1;
+    int currentStageId = 1;
+    int size = [dicEnemyList count];
+    int counter = 0;
+    for (NSDictionary* d in dicEnemyList)
+    {
+        ++counter;
+        int tmpGroupId = [[d valueForKey:@"group"] integerValue];
+        int stage = [[d valueForKey:@"stage"] integerValue];
+        int min_prog = [[d valueForKey:@"min_prog"] integerValue];
+        int fighterType = [[d valueForKey:@"fighterType"] integerValue];
+        if (currentGroupId != tmpGroupId) {
+            if (enemyGroup.enemyDataList.size() > 0) {
+                enemyGroupList.push_back(enemyGroup);
+            }
+            if (stage != currentStageId) {
+                enemyGroupInfoList.push_back(EnemyGroupInfo(from, current));
+                currentStageId = stage;
+                from = ++current;
+            } else {
+                ++current;
+            }
+            enemyGroup = EnemyGroup(stage, min_prog);
+            enemyGroup.enemyDataList.push_back(EnemyData(fighterType));
+            currentGroupId = tmpGroupId;
+        } else {
+            enemyGroup.enemyDataList.push_back(EnemyData(fighterType));
+        }
+        if (size == counter) {
+            enemyGroup.enemyDataList.push_back(EnemyData(fighterType));
+            enemyGroupList.push_back(enemyGroup);
+            enemyGroupInfoList.push_back(EnemyGroupInfo(from, current));
+        }
+    }
+}
+
 // UI初期化
 - (void)initialize
 {
@@ -135,24 +224,54 @@ static NSObject* lock = nil;
         // initialize game
         {
             hg::initRandom();
+            [self initSpawnData];
 
             upCamera = false;
             downCamera = false;
+            enemyList.clear();
             
-            // 出現リスト読み込み
-            NSBundle* bundle = [NSBundle mainBundle];
-            NSString* path = [bundle pathForResource:@"enemyList" ofType:@"json"];
-            NSData* dataEnemyList = [NSData dataWithContentsOfFile:path];
-            NSError* error;
-            NSDictionary* dicEnemyList = [NSJSONSerialization JSONObjectWithData:dataEnemyList options:kNilOptions error:&error];
-            
-            // Create Spawn Data
+            // enemy listの抽選
             hg::SpawnData spawnData;
+            int min_appear_count = 1;
+            int max_appear_count = 2;
+            int stage_id = hg::UserData::sharedUserData()->getStageId();
+            int clear_ratio = (int)(hg::UserData::sharedUserData()->getCurrentClearRatio() * 100.0);
+            switch (stage_id) {
+                case 1:
+                    if (clear_ratio > 50) {
+                        max_appear_count = 3;
+                    }
+                    break;
+                case 2:
+                    max_appear_count = 3;
+                    if (clear_ratio > 50) {
+                        max_appear_count = 4;
+                    }
+                    break;
+                case 3:
+                    max_appear_count = 3;
+                    if (clear_ratio >= 50) {
+                        max_appear_count = 5;
+                    }
+                    break;
+                case 4:
+                    max_appear_count = 5;
+                    break;
+                case 5:
+                    max_appear_count = 6;
+                    if (clear_ratio >= 80) {
+                        max_appear_count = 8;
+                    }
+                    break;
+            }
+            int appear_num = hg::rand(min_appear_count, max_appear_count);
+            
+            /*
             for (NSDictionary* d in dicEnemyList)
             {
                 int tmpGroup = [[d valueForKey:@"group"] integerValue] - 1;
-#warning DELETE FIGHTER DATA AFTER GAME!!!!!!!!
                 hg::FighterInfo* f = new hg::FighterInfo();
+                enemyList.push_back(f);
                 int fighterType = [[d valueForKey:@"fighterType"] integerValue];
                 hg::UserData::sharedUserData()->setDefaultInfo(f, fighterType);
                 f->level = [[d valueForKey:@"level"] integerValue];
@@ -161,7 +280,7 @@ static NSObject* lock = nil;
                     spawnData.push_back(hg::SpawnGroup());
                 }
                 spawnData[tmpGroup].push_back(f);
-            }
+            }*/
             
             // initialize game
             hg::FighterInfo* pPlayerInfo = hg::UserData::sharedUserData()->getPlayerInfo();
@@ -179,7 +298,7 @@ static NSObject* lock = nil;
                 NSDate* nowDt;
                 NSTimeInterval start;
                 NSTimeInterval end;
-                float base_sleep = 1.0/FPS;
+                float base_sleep = 1.0/GAMEFPS;
                 float sleep;
                 while (1)
                 {
@@ -221,6 +340,12 @@ static NSObject* lock = nil;
                                     // データ保存
                                     UserData::sharedUserData()->saveData();
                                 }
+                                
+                                // Fighter Infoのインスタンスを削除
+                                for (hg::FighterList::iterator it = enemyList.begin(); it != enemyList.end(); ++it) {
+                                    delete *it;
+                                }
+                                enemyList.clear();
                                 
                                 // フェードアウト
                                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -329,8 +454,10 @@ static NSObject* lock = nil;
             frame.origin.x = x;
             frame.origin.y = y;
             
-            ImageButtonView* backImgView = [[ImageButtonView alloc] initWithFrame:CGRectMake(0, 0, 66, 66)];
-            UIImage* img = [UIImage imageNamed:@"checkmark.png"];
+            ImageButtonView* backImgView = [[[ImageButtonView alloc] initWithFrame:CGRectMake(0, 0, 66, 66)] autorelease];
+            //UIImage* img = [UIImage imageNamed:@"checkmark.png"];
+            NSString *path = [[NSBundle mainBundle] pathForResource:@"checkmark" ofType:@"png"];
+            UIImage* img = [[[UIImage alloc] initWithContentsOfFile:path] autorelease];
             
             [backImgView setBackgroundColor:[UIColor whiteColor]];
             [backImgView setFrame:frame];
@@ -393,7 +520,9 @@ static NSObject* lock = nil;
             frame.origin.y = y;
             
             ImageButtonView* backImgView = [[ImageButtonView alloc] initWithFrame:CGRectMake(0, 0, 66, 66)];
-            UIImage* img = [UIImage imageNamed:@"checkmark.png"];
+            //UIImage* img = [UIImage imageNamed:@"checkmark.png"];
+            NSString *path = [[NSBundle mainBundle] pathForResource:@"checkmark" ofType:@"png"];
+            UIImage* img = [[[UIImage alloc] initWithContentsOfFile:path] autorelease];
             
             [backImgView setBackgroundColor:[UIColor whiteColor]];
             [backImgView setFrame:frame];
@@ -514,7 +643,9 @@ static NSObject* lock = nil;
             frame.origin.y = ly;
             
             ImageButtonView* backImgView = [[ImageButtonView alloc] initWithFrame:CGRectMake(0, 0, 66, 66)];
-            UIImage* img = [UIImage imageNamed:@"checkmark.png"];
+            //UIImage* img = [UIImage imageNamed:@"checkmark.png"];
+            NSString *path = [[NSBundle mainBundle] pathForResource:@"checkmark" ofType:@"png"];
+            UIImage* img = [[[UIImage alloc] initWithContentsOfFile:path] autorelease];
             
             [backImgView setBackgroundColor:[UIColor whiteColor]];
             [backImgView setFrame:frame];
@@ -546,7 +677,9 @@ static NSObject* lock = nil;
             frame.origin.y = ly;
             
             ImageButtonView* backImgView = [[ImageButtonView alloc] initWithFrame:CGRectMake(0, 0, 66, 66)];
-            UIImage* img = [UIImage imageNamed:@"checkmark.png"];
+            //UIImage* img = [UIImage imageNamed:@"checkmark.png"];
+            NSString *path = [[NSBundle mainBundle] pathForResource:@"checkmark" ofType:@"png"];
+            UIImage* img = [[[UIImage alloc] initWithContentsOfFile:path] autorelease];
             
             [backImgView setBackgroundColor:[UIColor whiteColor]];
             [backImgView setFrame:frame];
@@ -568,6 +701,7 @@ static NSObject* lock = nil;
             }];
         }
         
+        [[OALSimpleAudio sharedInstance] playBg:BGM_BATTLE loop:true];
         
     }
     

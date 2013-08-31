@@ -567,6 +567,7 @@ namespace HGGame {
         }
         
         // create nebula
+        /*
         for (int i = 0; i < 1; ++i)
         {
             int SIZE = rand(500, 650);
@@ -582,7 +583,7 @@ namespace HGGame {
             t->position.set(x+center_of_field.x, y+center_of_field.y, -1*BACKGROUND_SCALE/2 + ZPOS);
             t->rotate.set(0, 0, rand(0, 360)*M_PI/180);
             nebula.push_back(t);
-        }
+        }*/
         
         // フィールド境界
         field = new hgles::t_hgl2di();
@@ -1006,11 +1007,12 @@ namespace HGGame {
             hgles::HGLGraphics2D::draw(*itr);
         }
         
+        /*
         // draw nebula
         for (std::vector<hgles::t_hgl2di*>::reverse_iterator itr = nebula.rbegin(); itr != nebula.rend(); ++itr)
         {
             hgles::HGLGraphics2D::draw(*itr);
-        }
+        }*/
         
         hgles::HGLES::popMatrix();
         

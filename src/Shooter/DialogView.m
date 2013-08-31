@@ -44,7 +44,7 @@ const float MessageHeight = 100;
         self.textList = [[NSMutableArray alloc] init];
         _numButton = 0;
         onCancel = NULL;
-        self.closeOnTapBackground = true;
+        self.closeOnTapBackground = false;
     }
     return self;
 }

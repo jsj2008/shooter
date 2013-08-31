@@ -14,6 +14,8 @@
 #import "HGLView.h"
 #import "StatusView.h"
 
+#import "ObjectAL.h"
+
 @interface AppDelegate()
 {
 // Inside @interface
@@ -46,6 +48,17 @@ HGLView* _glView;
     [navCon setNavigationBarHidden:YES];
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
+    
+    [OALSimpleAudio sharedInstance].honorSilentSwitch = YES;
+    [[OALSimpleAudio sharedInstance] preloadBg:BGM_BOSS];
+    [[OALSimpleAudio sharedInstance] preloadEffect:SE_GUN];
+    [[OALSimpleAudio sharedInstance] preloadEffect:SE_ENEMY_APPROACH];
+    [[OALSimpleAudio sharedInstance] preloadEffect:SE_ENEMY_ELIMINATED];
+    [[OALSimpleAudio sharedInstance] preloadEffect:SE_UNITLOST];
+    [[OALSimpleAudio sharedInstance] preloadEffect:SE_BOM];
+    [[OALSimpleAudio sharedInstance] preloadEffect:SE_HIT];
+    [[OALSimpleAudio sharedInstance] setBgVolume:0.5];
+    
     return YES;
 }
 

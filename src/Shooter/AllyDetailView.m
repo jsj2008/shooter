@@ -9,6 +9,7 @@
 #import "Common.h"
 #import "AllyDetailView.h"
 #import "UIColor+MyCategory.h"
+#import "ObjectAL.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface AllyDetailView()
@@ -183,6 +184,7 @@
 
 - (void)onTapBackground:(UIGestureRecognizer*)sender
 {
+    [[OALSimpleAudio sharedInstance] playEffect:SE_CLICK];
     // close
     [_curtain removeFromSuperview];
     [UIView animateWithDuration:0.2 animations:^{

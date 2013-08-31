@@ -26,6 +26,7 @@
 #import "MessageView.h"
 #import "ReportView.h"
 #import "PlayerDetailView.h"
+#import "ObjectAL.h"
 
 const float MenuAnimationDuration = 0.2;
 const float MenuButtonWidth = 180;
@@ -131,6 +132,7 @@ static MainViewController* instance = nil;
     //[self removeAllSubview];
     [self removeTitle];
     [self showMainView:true showMessage:true];
+    [[OALSimpleAudio sharedInstance] playBg:BGM_MENU loop:true];
 }
 
 + (void)RemoveBackgroundView
@@ -665,6 +667,7 @@ static MainViewController* instance = nil;
 
 -(void)showMainView:(bool)showMenu showMessage:(bool)showMessage
 {
+    
     dispatch_async(dispatch_get_main_queue(), ^{
         mainBaseView = [[[UIView alloc] initWithFrame:viewFrame] autorelease];
         [mainBaseView setBackgroundColor:[UIColor clearColor]];
@@ -771,6 +774,7 @@ static MainViewController* instance = nil;
             [self saveData];
             dispatch_async(dispatch_get_main_queue(), ^{
                 ReportView* rv = [[ReportView alloc] initWithFrame:mainFrame];
+                [[OALSimpleAudio sharedInstance] playBg:BGM_MENU loop:true];
                 [self.view addSubview:rv];
                 [rv autorelease];
                 [rv setOnEndAction:^{
@@ -781,6 +785,7 @@ static MainViewController* instance = nil;
                         [self showBackgroundView];
                         // クリア画面
                         if (hg::UserData::sharedUserData()->isCleared()) {
+                            [[OALSimpleAudio sharedInstance] playBg:BGM_CLEAR loop:true];
                             [self showMainView:false showMessage:false];
                             [curtain removeFromSuperview];
                             dispatch_async(dispatch_get_main_queue(), ^{

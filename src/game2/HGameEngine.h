@@ -14,7 +14,7 @@
 #import <map>
 #include <sys/timeb.h>
 
-#define GAMEFPS 30
+#define GAMEFPS 25
 #define HDebug(A, ...) NSLog(@"[Debug] Func:%s\tLine:%d\t%@", __PRETTY_FUNCTION__,__LINE__,[NSString stringWithFormat:A, ## __VA_ARGS__]);
 #define HInfo(A, ...) NSLog(@"[Info] Func:%s\tLine:%d\t%@", __PRETTY_FUNCTION__,__LINE__,[NSString stringWithFormat:A, ## __VA_ARGS__]);
 #define HError(A, ...) NSLog(@"[###ERROR###] Func:%s\tLine:%d\t%@", __PRETTY_FUNCTION__,__LINE__,[NSString stringWithFormat:A, ## __VA_ARGS__]);
@@ -762,9 +762,9 @@ namespace hg
                 texture.isAlphaMap = isAlphaMap;
             }
             if (isAlphaMap) {
-                if (hgles::ProgramType2D != hgles::getCurrentProgramType())
+                if (hgles::ProgramType2DAlpha != hgles::getCurrentProgramType())
                 {
-                    hgles::setCurrentContext(hgles::ProgramType2D);
+                    hgles::setCurrentContext(hgles::ProgramType2DAlpha);
                 }
             } else {
                 if (hgles::ProgramType2D != hgles::getCurrentProgramType())

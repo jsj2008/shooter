@@ -49,7 +49,7 @@ namespace hg {
             this->directionRadian = toRad(directionDegree);
             this->side = side;
             this->setPosition(x, y);
-            this->life = distance/speed;
+            this->life = this->lifeMax = distance;
             
             vx = cos(directionRadian) * speed;
             vy = sin(directionRadian) * speed * -1;
@@ -242,7 +242,7 @@ namespace hg {
                     
                     // light
                     AlphaMapSprite* pSpr = new AlphaMapSprite();
-                    pSpr->init("corona.png", {1.00, 0.50, 0.5, 1.0});
+                    pSpr->init("corona.png", {1.00, 0.40, 0.4, 1.0});
                     pSpr->setScale(getWidth()*2.5, getHeight()*2.5);
                     getNode()->addChild(pSpr);
                     break;
@@ -314,7 +314,7 @@ namespace hg {
                     
                     // light
                     AlphaMapSprite* pSpr = new AlphaMapSprite();
-                    pSpr->init("corona.png", {0.50, 0.50, 1.0, 1.0});
+                    pSpr->init("corona.png", {0.40, 0.40, 1.0, 1.0});
                     pSpr->setScale(getWidth()*2.5, getHeight()*2.5);
                     getNode()->addChild(pSpr);
                     
@@ -330,7 +330,8 @@ namespace hg {
         }
         inline int getPower()
         {
-            return power;
+            life = MAX(life, 0);
+            return power * life/lifeMax;
         }
         inline Fighter* getOwner()
         {
@@ -348,7 +349,16 @@ namespace hg {
             }
             HGNode* n = this->getNode();
             n->addPosition(vx, vy);
+            this->life--;
             
+            float x = getPositionX();
+            float y = getPositionY();
+            if (x < -10 || x > FIELD_SIZE + 10
+                || y < - 10 || y > FIELD_SIZE + 10) {
+                this->setActive(false);
+            }
+            
+            /*
             --life;
             if (life <= 5)
             {
@@ -357,7 +367,7 @@ namespace hg {
                 {
                     this->setActive(false);
                 }
-            }
+            }*/
             if (!this->isActive())
             {
                 return true;
@@ -381,6 +391,7 @@ namespace hg {
         HGProcessOwner* pMoveOwner;
         SideType side;
         int life;
+        int lifeMax;
         
         float vx;
         float vy;

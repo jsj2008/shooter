@@ -52,7 +52,9 @@
         float x = 0;
         float y = 0;
         //UIImage *img = [UIImage imageNamed:@"report_background.jpg"];
-        UIImage *img = [UIImage imageNamed:@"metal_back2.jpg"];
+        //UIImage *img = [UIImage imageNamed:@"metal_back2.jpg"];
+        NSString *path = [[NSBundle mainBundle] pathForResource:@"metal_back2" ofType:@"png"];
+        UIImage* img = [[[UIImage alloc] initWithContentsOfFile:path] autorelease];
         UIImageView* backView = [[[UIImageView alloc] initWithFrame:CGRectMake(x,y,width,height)] autorelease];
         [backView setImage:img];
         [backView setCenter:CGPointMake(frame.size.width/2, frame.size.height/2)];
@@ -294,9 +296,11 @@
         }
         // 戻るボタン
         {
-            ImageButtonView* backImgView = [[ImageButtonView alloc] initWithFrame:CGRectMake(0, 0, 66, 66)];
-            UIImage* img = [UIImage imageNamed:@"checkmark.png"];
-        
+            ImageButtonView* backImgView = [[[ImageButtonView alloc] initWithFrame:CGRectMake(0, 0, 66, 66)] autorelease];
+            //UIImage* img = [UIImage imageNamed:@"checkmark.png"];
+            NSString *path = [[NSBundle mainBundle] pathForResource:@"checkmark" ofType:@"png"];
+            UIImage* img = [[[UIImage alloc] initWithContentsOfFile:path] autorelease];
+            
             [backImgView setBackgroundColor:[UIColor whiteColor]];
             [backImgView setFrame:CGRectMake(mainFrame.size.width - 76, mainFrame.size.height - 84, 66, 66)];
             [backImgView.layer setCornerRadius:8];
