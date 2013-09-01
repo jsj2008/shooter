@@ -214,7 +214,7 @@ numberOfRowsInSection:(NSInteger)section
         UILabel* l = [[UILabel alloc] initWithFrame:CGRectMake(cell_width/2, 0, cell_width, cell_height)];
         [l setBackgroundColor:[UIColor clearColor]];
         [l setTextColor:MAIN_FONT_COLOR];
-        [l setText:[NSString stringWithFormat:@"Cleared Count: %d", info.clear_count]];
+        [l setText:[NSString stringWithFormat:NSLocalizedString(@"Cleared Count: %d", nil), info.clear_count]];
         [l autorelease];
         [back addSubview:l];
     }

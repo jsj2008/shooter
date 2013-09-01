@@ -330,8 +330,10 @@ namespace hg {
         }
         inline int getPower()
         {
+            /*
             life = MAX(life, 0);
-            return power * life/lifeMax;
+            return power * life/lifeMax;*/
+            return power;
         }
         inline Fighter* getOwner()
         {

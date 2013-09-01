@@ -5,3 +5,364 @@
   Created by 濱田 洋太 on 13/09/01.
   Copyright (c) 2013年 hayogame. All rights reserved.
 */
+"Cleared Count: %d" = "Cleared Count: %d";
+
+"You can change the Stage when the Occupy Ratio is 0% or 100%" = "You can change the Stage when the Occupy Ratio is 0% or 100%";
+
+/* No comment provided by engineer. */
+" Gold" = " Gold";
+
+/* No comment provided by engineer. */
+" Pt" = " Pt";
+
+/* No comment provided by engineer. */
+"%ld Gold" = "%ld Gold";
+
+/* No comment provided by engineer. */
+"%ld Pt" = "%ld Pt";
+
+/* No comment provided by engineer. */
+"%s has reached Level %d!!\n" = "%1$s has reached Level %2$d!!\n";
+
+/* No comment provided by engineer. */
+"\tAtk/Sec :%.0lf → %.0lf\n" = "\tAtk/Sec :%1$.0lf → %2$.0lf\n";
+
+/* No comment provided by engineer. */
+"\tHP :%d → %d\n" = "\tHP :%1$d → %2$d\n";
+
+/* No comment provided by engineer. */
+"\tLevel :%d → %d\n" = "\tLevel :%1$d → %2$d\n";
+
+/* No comment provided by engineer. */
+"\tShield :%d → %d\n" = "\tShield :%1$d → %2$d\n";
+
+/* No comment provided by engineer. */
+"\tTeq Lv: %d → %d\n" = "\tTeq Lv: %1$d → %2$d\n";
+
+/* No comment provided by engineer. */
+"All Fighters are repaired!" = "All Fighters are repaired!";
+
+/* No comment provided by engineer. */
+"Ammo Cost" = "Ammo Cost";
+
+/* No comment provided by engineer. */
+"Ammo Used" = "Ammo Used";
+
+/* No comment provided by engineer. */
+"Are you sure to initialize your playing data of this game?" = "Are you sure to initialize your playing data of this game?";
+
+/* No comment provided by engineer. */
+"Are you sure to reatreat?" = "Are you sure to reatreat?";
+
+/* No comment provided by engineer. */
+"Are you sure to sell this for %d Gold?" = "Are you sure to sell this for %d Gold?";
+
+/* No comment provided by engineer. */
+"Attack %.2lf/sec" = "Attack %.2lf/sec";
+
+/* No comment provided by engineer. */
+"Battle" = "Battle";
+
+/* No comment provided by engineer. */
+"Battle Result" = "Battle Result";
+
+/* No comment provided by engineer. */
+"Buy" = "Buy";
+
+/* No comment provided by engineer. */
+"Buy Units" = "Buy Units";
+
+/* No comment provided by engineer. */
+"Cancel" = "Cancel";
+
+/* No comment provided by engineer. */
+"Captain" = "Captain";
+
+/* No comment provided by engineer. */
+"Colonel" = "Colonel";
+
+/* No comment provided by engineer. */
+"Congraturation!!\nYou cleared %s Stage!!" = "Congraturation!!\nYou cleared %s Stage!!";
+
+/* No comment provided by engineer. */
+"Credits" = "Credits";
+
+/* No comment provided by engineer. */
+"Destroyed Enemy" = "Destroyed Enemy";
+
+/* No comment provided by engineer. */
+"Destroyed Friend" = "Destroyed Friend";
+
+/* No comment provided by engineer. */
+"Do you want to start over this stage again?" = "Do you want to start over this stage again?";
+
+/* No comment provided by engineer. */
+"Earth" = "Earth";
+
+/* No comment provided by engineer. */
+"Enemy's Ammo Used" = "Enemy's Ammo Used";
+
+/* No comment provided by engineer. */
+"Enemy's Hit Ratio" = "Enemy's Hit Ratio";
+
+/* No comment provided by engineer. */
+"Enemy's Total Hits" = "Enemy's Total Hits";
+
+/* No comment provided by engineer. */
+"Exp %ld/%ld" = "Exp %1$ld/%2$ld";
+
+/* No comment provided by engineer. */
+"First Lieutenant" = "First Lieutenant";
+
+/* No comment provided by engineer. */
+"GameData is initialized." = "GameData is initialized.";
+
+/* No comment provided by engineer. */
+"General" = "General";
+
+/* No comment provided by engineer. */
+"Go to %@ Stage?" = "Go to %@ Stage?";
+
+/* No comment provided by engineer. */
+"Hit Ratio" = "Hit Ratio";
+
+/* No comment provided by engineer. */
+"Hits" = "Hits";
+
+/* No comment provided by engineer. */
+"HP %d/%d" = "HP %1$d/%2$d";
+
+/* No comment provided by engineer. */
+"Initialize Data" = "Initialize Data";
+
+/* No comment provided by engineer. */
+"Is it really OK?" = "Is it really OK?";
+
+/* No comment provided by engineer. */
+"It Costs %d gold. Are you sure to buy this?" = "It Costs %d gold. Are you sure to buy this?";
+
+/* No comment provided by engineer. */
+"It Costs %d gold. Are you sure to repair all?" = "It Costs %d gold. Are you sure to repair all?";
+
+/* No comment provided by engineer. */
+"It Costs %d gold. You need more gold" = "It Costs %d gold. You need more gold";
+
+/* No comment provided by engineer. */
+"Jupiter" = "Jupiter";
+
+/* No comment provided by engineer. */
+"Level %d" = "Level %d";
+
+/* No comment provided by engineer. */
+"Lieutenant Colonel" = "Lieutenant Colonel";
+
+/* No comment provided by engineer. */
+"Lieutenant General" = "Lieutenant General";
+
+/* No comment provided by engineer. */
+"LOSE" = "LOSE";
+
+/* No comment provided by engineer. */
+"Major" = "Major";
+
+/* No comment provided by engineer. */
+"Major General" = "Major General";
+
+/* No comment provided by engineer. */
+"Mars" = "Mars";
+
+/* No comment provided by engineer. */
+"Master sergeant" = "Master sergeant";
+
+/* No comment provided by engineer. */
+"Max Units" = "Max Units";
+
+/* No comment provided by engineer. */
+"No Shield" = "No Shield";
+
+/* No comment provided by engineer. */
+"Occupy: %d%%" = "Occupy: %d%%";
+
+/* No comment provided by engineer. */
+"OK" = "OK";
+
+/* No comment provided by engineer. */
+"Please select your Unit." = "Please select your Unit.";
+
+/* No comment provided by engineer. */
+"Rank" = "Rank";
+
+/* No comment provided by engineer. */
+"Repair" = "Repair";
+
+/* No comment provided by engineer. */
+"Repair All Units" = "Repair All Units";
+
+/* No comment provided by engineer. */
+"Result" = "Result";
+
+/* No comment provided by engineer. */
+"Retreat" = "Retreat";
+
+/* No comment provided by engineer. */
+"RETREAT" = "RETREAT";
+
+/* No comment provided by engineer. */
+"Return to Base" = "Return to Base";
+
+/* No comment provided by engineer. */
+"Reward" = "Reward";
+
+/* No comment provided by engineer. */
+"Score" = "Score";
+
+/* No comment provided by engineer. */
+"Second Lieutenant" = "Second Lieutenant";
+
+/* No comment provided by engineer. */
+"Select My Unit" = "Select My Unit";
+
+/* No comment provided by engineer. */
+"Select Stage" = "Select Stage";
+
+/* No comment provided by engineer. */
+"Select Units" = "Select Units";
+
+/* No comment provided by engineer. */
+"Sell" = "Sell";
+
+/* No comment provided by engineer. */
+"Sell Units" = "Sell Units";
+
+/* No comment provided by engineer. */
+"Senior Master sergeant" = "Senior Master sergeant";
+
+/* No comment provided by engineer. */
+"Shield %d/%d" = "Shield %1$d/%2$d";
+
+/* No comment provided by engineer. */
+"Show Credits" = "Show Credits";
+
+/* No comment provided by engineer. */
+"Sorry, %@ can take only %d Units to battle area." = "Sorry, %1$@ can take only %2$d Units to battle area.";
+
+/* No comment provided by engineer. */
+"Sorry, an unexpected error happend!" = "Sorry, an unexpected error happend!";
+
+/* No comment provided by engineer. */
+"Soryy, You must clear %@ Stage at first." = "Soryy, You must clear %@ Stage at first.";
+
+/* No comment provided by engineer. */
+"Spaceman" = "Spaceman";
+
+/* No comment provided by engineer. */
+"Spaceman 1st Class" = "Spaceman 1st Class";
+
+/* No comment provided by engineer. */
+"Spaceman Basic" = "Spaceman Basic";
+
+/* No comment provided by engineer. */
+"Speed %.2lf Km/h" = "Speed %.2lf Km/h";
+
+/* No comment provided by engineer. */
+"Stage %d : %s" = "Stage %1$d : %2$s";
+
+/* No comment provided by engineer. */
+"Statistics" = "Statistics";
+
+/* No comment provided by engineer. */
+"Sun" = "Sun";
+
+/* No comment provided by engineer. */
+"Team Ammo Used" = "Team Ammo Used";
+
+/* No comment provided by engineer. */
+"Team Hit Ratio" = "Team Hit Ratio";
+
+/* No comment provided by engineer. */
+"Team Hits" = "Team Hits";
+
+/* No comment provided by engineer. */
+"Technical Sergeant" = "Technical Sergeant";
+
+/* No comment provided by engineer. */
+"Teqnique %d Lv" = "Teqnique %d Lv";
+
+/* No comment provided by engineer. */
+"The garage is full now." = "The garage is full now.";
+
+/* No comment provided by engineer. */
+"Total Balance" = "Total Balance";
+
+/* No comment provided by engineer. */
+"Total dead %d" = "Total dead %d";
+
+/* No comment provided by engineer. */
+"Total Destroyed Enemy" = "Total Destroyed Enemy";
+
+/* No comment provided by engineer. */
+"Total Destroyed Friend" = "Total Destroyed Friend";
+
+/* No comment provided by engineer. */
+"Total kill %d" = "Total kill %d";
+
+/* No comment provided by engineer. */
+"Total Lose Count" = "Total Lose Count";
+
+/* No comment provided by engineer. */
+"Total Retreat Count" = "Total Retreat Count";
+
+/* No comment provided by engineer. */
+"Total Score" = "Total Score";
+
+/* No comment provided by engineer. */
+"Total Value of Units" = "Total Value of Units";
+
+/* No comment provided by engineer. */
+"Total Win Count" = "Total Win Count";
+
+/* No comment provided by engineer. */
+"Value %d gold" = "Value %d gold";
+
+/* No comment provided by engineer. */
+"Venus" = "Venus";
+
+/* No comment provided by engineer. */
+"Warrant Officer" = "Warrant Officer";
+
+/* No comment provided by engineer. */
+"Welcome back to the Base! All fighters are repaired now!" = "Welcome back to the Base! All fighters are repaired now!";
+
+/* No comment provided by engineer. */
+"WIN" = "WIN";
+
+/* No comment provided by engineer. */
+"You don't need to do this." = "You don't need to do this.";
+
+/* No comment provided by engineer. */
+"You don't need to repair this." = "You don't need to repair this.";
+
+/* No comment provided by engineer. */
+"You got %d Bonus Gold" = "You got %d Bonus Gold";
+
+/* No comment provided by engineer. */
+"You got %d Bonus Pt" = "You got %d Bonus Pt";
+
+/* No comment provided by engineer. */
+"You Lose..." = "You Lose...";
+
+/* No comment provided by engineer. */
+"You need more gold." = "You need more gold.";
+
+/* No comment provided by engineer. */
+"You will get All fighters repaired and lose half of the Money. Are you sure to do this?" = "You will get All fighters repaired and lose half of the Money. Are you sure to do this?";
+
+/* No comment provided by engineer. */
+"You Win" = "You Win";
+
+/* No comment provided by engineer. */
+"You've already cleared this stage. Please Select new Stage." = "You've already cleared this stage. Please Select new Stage.";
+
+/* No comment provided by engineer. */
+"Your unit is bloken. Please repair or change your Units." = "Your unit is bloken. Please repair or change your Units.";
+

@@ -781,6 +781,8 @@ namespace hg {
                     HGSprite* pSprite = new HGSprite();
                     pSprite->init("lose.png");
                     pSprite->setScale(w*0.5, w*0.5);
+                    float h = hgles::HGLES::getViewHeight();
+                    pSprite->setPositionY(h * 0.2);
                     pLayerUIRoot->addChild(pSprite);
                     /*
                     HGText* pNodeText = new HGText();
@@ -969,6 +971,8 @@ namespace hg {
                     HGSprite* pSprite = new HGSprite();
                     pSprite->init("win.png");
                     pSprite->setScale(w*0.5, w*0.5);
+                    float h = hgles::HGLES::getViewHeight();
+                    pSprite->setPositionY(h * 0.2);
                     pLayerUIRoot->addChild(pSprite);
                     /*
                     HGText* pNodeText = new HGText();

@@ -1116,7 +1116,7 @@ namespace hg {
             ret = ceiling(ret, 2);
         }
         else {
-            ret = ceiling(cost * 0.5, 2);
+            ret = ceiling(cost * 0.15, 2);
         }
         return ret;
     }
@@ -1226,7 +1226,7 @@ namespace hg {
             }
             double weaponNumRatio = 1 + ((info->weaponList.size() - 1) / 10);
             double speedRatio = 0.5 + info->speed;
-            double isShipRatio = info->isShip?1.5:1;
+            double isShipRatio = info->isShip?5.0:1;
             
             int cost = dps*10 + dps*5 + dps + info->lifeMax + info->shieldMax*5;
             
@@ -1626,7 +1626,7 @@ namespace hg {
             }
             case FighterTypePegasus:
             {
-                pInfo->name = "Pegasus Class";
+                pInfo->name = "Pegasus";
                 pInfo->textureName = "p_ship1.png";
                 pInfo->textureSrcOffsetX = 0;
                 pInfo->textureSrcOffsetY = 0;
@@ -1635,7 +1635,7 @@ namespace hg {
                 pInfo->showPixelWidth = 141*10;
                 pInfo->showPixelHeight = 62*10;
                 pInfo->collisionId = CollisionId_P_PEGASUS;
-                pInfo->power = 40;
+                pInfo->power = 50;
                 pInfo->cpu_lv = 10;
                 
                 pInfo->life = pInfo->lifeMax = 3000;
@@ -1681,7 +1681,7 @@ namespace hg {
             }
             case FighterTypeVesariusC:
             {
-                pInfo->name = "Vesalius Class";
+                pInfo->name = "Vesalius";
                 pInfo->textureName = "e_senkan1_4.png";
                 pInfo->textureSrcOffsetX = 0;
                 pInfo->textureSrcOffsetY = 0;
@@ -1690,7 +1690,7 @@ namespace hg {
                 pInfo->showPixelWidth = 204*10;
                 pInfo->showPixelHeight = 78*10;
                 pInfo->collisionId = CollisionId_E_SENKAN;
-                pInfo->power = 44;
+                pInfo->power = 55;
                 pInfo->cpu_lv = 10;
                 pInfo->newBuyCost = 3000000;
                 
@@ -2049,7 +2049,7 @@ namespace hg {
             }
             case FighterTypeVesarius:
             {
-                pInfo->name = "Vesalius Class";
+                pInfo->name = "Vesalius";
                 pInfo->textureName = "e_senkan1_4.png";
                 pInfo->textureSrcOffsetX = 0;
                 pInfo->textureSrcOffsetY = 0;
@@ -2271,11 +2271,11 @@ namespace hg {
                     break;
             }
             
-            pInfo->lifeMax *= (fortify_level);
+            pInfo->lifeMax *= (fortify_level * 2);
             pInfo->life = pInfo->lifeMax;
             int weapon_num = pInfo->weaponList.size();
             for (int i = 0; i < weapon_num; i++) {
-                pInfo->weaponList[i].bulletPower *= fortify_level;
+                pInfo->weaponList[i].bulletPower *= (fortify_level*0.7);
             }
             
         } // fortify

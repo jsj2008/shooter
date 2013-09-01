@@ -606,7 +606,7 @@ static MainViewController* instance = nil;
                         }
                         else {
                             // 途中
-                            DialogView* dialog = [[[DialogView alloc] initWithMessage:@"You can change the Stage when the Occupy Ratio is 0% or 100%"] autorelease];
+                            DialogView* dialog = [[[DialogView alloc] initWithMessage:NSLocalizedString(@"You can change the Stage when the Occupy Ratio is 0% or 100%", nil)] autorelease];
                             [dialog addButtonWithText:@"OK" withAction:^{
                                 // do nothing
                             }];

@@ -145,7 +145,7 @@ t_title_btn title_btn_info[] = {
     }
     
     int MenuButtonWidth = 160;
-    int MenuButtonHeight = 24;
+    int MenuButtonHeight = 34;
     int buttonX2 = self.frame.size.width - MenuButtonWidth - 10;
     int buttonY2 = self.frame.size.height - MenuButtonHeight - 5;
     // delete data button

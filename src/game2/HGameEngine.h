@@ -14,7 +14,7 @@
 #import <map>
 #include <sys/timeb.h>
 
-#define GAMEFPS 25
+#define GAMEFPS 27
 #define HDebug(A, ...) NSLog(@"[Debug] Func:%s\tLine:%d\t%@", __PRETTY_FUNCTION__,__LINE__,[NSString stringWithFormat:A, ## __VA_ARGS__]);
 #define HInfo(A, ...) NSLog(@"[Info] Func:%s\tLine:%d\t%@", __PRETTY_FUNCTION__,__LINE__,[NSString stringWithFormat:A, ## __VA_ARGS__]);
 #define HError(A, ...) NSLog(@"[###ERROR###] Func:%s\tLine:%d\t%@", __PRETTY_FUNCTION__,__LINE__,[NSString stringWithFormat:A, ## __VA_ARGS__]);
@@ -162,14 +162,14 @@ namespace hg
         }
         inline void release()
         {
-            assert(refCount > 0);
+            //assert(refCount > 0);
             refCount--;
             if (refCount== 0)
             {
                 this->~HGObject();
             }
             s_pHeap->release(this);
-            assert(refCount >= 0);
+            //assert(refCount >= 0);
         }
         inline int getRefCount()
         {

@@ -25,5 +25,4 @@
 #define ICON_SELECT_ALL @"ic_select_all"
 #define ICON_DESELECT @"ic_deselect"
 #define ICON_SORT @"ic_sort"
-//#define HLocalisedStr(a) NSLocalizedString(a, @"")
 

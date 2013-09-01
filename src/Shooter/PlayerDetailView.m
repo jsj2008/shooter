@@ -62,7 +62,7 @@
         
         // button
         {
-            CGRect pullFrame = CGRectMake(mainFrame.size.width/2 - 64, mainFrame.size.height - 10, 128, PULL_BUTTON_HEIGHT + 10);
+            CGRect pullFrame = CGRectMake(mainFrame.size.width/2 - 74, mainFrame.size.height - 10, 128, PULL_BUTTON_HEIGHT + 10);
             UIView* pullButton = [[UIView alloc] initWithFrame:pullFrame];
             [self addSubview:pullButton];
             [pullButton setBackgroundColor:[UIColor colorWithHexString:@"#000000"]];

@@ -5,3 +5,365 @@
   Created by 濱田 洋太 on 13/09/01.
   Copyright (c) 2013年 hayogame. All rights reserved.
 */
+
+"Cleared Count: %d" = "%d回クリア";
+
+"You can change the Stage when the Occupy Ratio is 0% or 100%" = "支配率が0%か100%の時だけステージを変更できます";
+
+/* No comment provided by engineer. */
+" Gold" = " ゴールド";
+
+/* No comment provided by engineer. */
+" Pt" = " ポイント";
+
+/* No comment provided by engineer. */
+"%ld Gold" = "%ld ゴールド";
+
+/* No comment provided by engineer. */
+"%ld Pt" = "%ld ポイント";
+
+/* No comment provided by engineer. */
+"%s has reached Level %d!!\n" = "%sは%dレベルに上がった!!\n";
+
+/* No comment provided by engineer. */
+"\tAtk/Sec :%.0lf → %.0lf\n" = "\t秒間攻撃力 :%.0lf → %.0lf\n";
+
+/* No comment provided by engineer. */
+"\tHP :%d → %d\n" = "\tHP :%d → %d\n";
+
+/* No comment provided by engineer. */
+"\tLevel :%d → %d\n" = "\tレベル :%d → %d\n";
+
+/* No comment provided by engineer. */
+"\tShield :%d → %d\n" = "\tシールド :%d → %d\n";
+
+/* No comment provided by engineer. */
+"\tTeq Lv: %d → %d\n" = "\t技量レベル: %d → %d\n";
+
+/* No comment provided by engineer. */
+"All Fighters are repaired!" = "全ての機体が修理された!";
+
+/* No comment provided by engineer. */
+"Ammo Cost" = "弾薬使用コスト";
+
+/* No comment provided by engineer. */
+"Ammo Used" = "発射弾数";
+
+/* No comment provided by engineer. */
+"Are you sure to initialize your playing data of this game?" = "本当にゲームのデータを初期化してよろしいですか？";
+
+/* No comment provided by engineer. */
+"Are you sure to reatreat?" = "本当に退却しますか？";
+
+/* No comment provided by engineer. */
+"Are you sure to sell this for %d Gold?" = "この機体を%dゴールドで売りますか？";
+
+/* No comment provided by engineer. */
+"Attack %.2lf/sec" = "秒間攻撃力 %.2lf";
+
+/* No comment provided by engineer. */
+"Battle" = "出撃";
+
+/* No comment provided by engineer. */
+"Battle Result" = "出撃結果";
+
+/* No comment provided by engineer. */
+"Buy" = "購入";
+
+/* No comment provided by engineer. */
+"Buy Units" = "機体を購入";
+
+/* No comment provided by engineer. */
+"Cancel" = "Cancel";
+
+/* No comment provided by engineer. */
+"Captain" = "1尉";
+
+/* No comment provided by engineer. */
+"Colonel" = "1佐";
+
+/* No comment provided by engineer. */
+"Congraturation!!\nYou cleared %s Stage!!" = "おめでとうございます!!\n %sステージをクリアしました!!";
+
+/* No comment provided by engineer. */
+"Credits" = "クレジット";
+
+/* No comment provided by engineer. */
+"Destroyed Enemy" = "撃墜数";
+
+/* No comment provided by engineer. */
+"Destroyed Friend" = "被撃墜数";
+
+/* No comment provided by engineer. */
+"Do you want to start over this stage again?" = "このステージをもう一度最初からプレイしますか？";
+
+/* No comment provided by engineer. */
+"Earth" = "地球";
+
+/* No comment provided by engineer. */
+"Enemy's Ammo Used" = "敵機の使用弾数";
+
+/* No comment provided by engineer. */
+"Enemy's Hit Ratio" = "敵機の命中率";
+
+/* No comment provided by engineer. */
+"Enemy's Total Hits" = "敵機の命中回数";
+
+/* No comment provided by engineer. */
+"Exp %ld/%ld" = "経験値 %ld/%ld";
+
+/* No comment provided by engineer. */
+"First Lieutenant" = "2尉";
+
+/* No comment provided by engineer. */
+"GameData is initialized." = "データを初期化しました";
+
+/* No comment provided by engineer. */
+"General" = "統合宇宙幕僚長";
+
+/* No comment provided by engineer. */
+"Go to %@ Stage?" = "%@ステージに行きますか？";
+
+/* No comment provided by engineer. */
+"Hit Ratio" = "命中率";
+
+/* No comment provided by engineer. */
+"Hits" = "名仲介数";
+
+/* No comment provided by engineer. */
+"HP %d/%d" = "HP %d/%d";
+
+/* No comment provided by engineer. */
+"Initialize Data" = "データ初期化";
+
+/* No comment provided by engineer. */
+"Is it really OK?" = "本当によろしいですか？";
+
+/* No comment provided by engineer. */
+"It Costs %d gold. Are you sure to buy this?" = "%dゴールドで購入しますか？";
+
+/* No comment provided by engineer. */
+"It Costs %d gold. Are you sure to repair all?" = "%dで全ての機体を修理しますか？";
+
+/* No comment provided by engineer. */
+"It Costs %d gold. You need more gold" = "全ての機体を修理するには%dゴールド必要です";
+
+/* No comment provided by engineer. */
+"Jupiter" = "木星";
+
+/* No comment provided by engineer. */
+"Level %d" = "レベル %d";
+
+/* No comment provided by engineer. */
+"Lieutenant Colonel" = "2佐";
+
+/* No comment provided by engineer. */
+"Lieutenant General" = "将";
+
+/* No comment provided by engineer. */
+"LOSE" = "敗北";
+
+/* No comment provided by engineer. */
+"Major" = "3佐";
+
+/* No comment provided by engineer. */
+"Major General" = "将補";
+
+/* No comment provided by engineer. */
+"Mars" = "火星";
+
+/* No comment provided by engineer. */
+"Master sergeant" = "1曹";
+
+/* No comment provided by engineer. */
+"Max Units" = "最大部下数";
+
+/* No comment provided by engineer. */
+"No Shield" = "シールド無し";
+
+/* No comment provided by engineer. */
+"Occupy: %d%%" = "支配率: %d%%";
+
+/* No comment provided by engineer. */
+"OK" = "OK";
+
+/* No comment provided by engineer. */
+"Please select your Unit." = "あなたの使用する機体を選択してください";
+
+/* No comment provided by engineer. */
+"Rank" = "ランク";
+
+/* No comment provided by engineer. */
+"Repair" = "修理";
+
+/* No comment provided by engineer. */
+"Repair All Units" = "全ての機体を修理";
+
+/* No comment provided by engineer. */
+"Result" = "結果";
+
+/* No comment provided by engineer. */
+"Retreat" = "退却";
+
+/* No comment provided by engineer. */
+"RETREAT" = "退却";
+
+/* No comment provided by engineer. */
+"Return to Base" = "基地に退却";
+
+/* No comment provided by engineer. */
+"Reward" = "報酬";
+
+/* No comment provided by engineer. */
+"Score" = "スコア";
+
+/* No comment provided by engineer. */
+"Second Lieutenant" = "3尉";
+
+/* No comment provided by engineer. */
+"Select My Unit" = "機体を選択";
+
+/* No comment provided by engineer. */
+"Select Stage" = "ステージを選択";
+
+/* No comment provided by engineer. */
+"Select Units" = "部下を選択";
+
+/* No comment provided by engineer. */
+"Sell" = "売却";
+
+/* No comment provided by engineer. */
+"Sell Units" = "機体を売却";
+
+/* No comment provided by engineer. */
+"Senior Master sergeant" = "曹長";
+
+/* No comment provided by engineer. */
+"Shield %d/%d" = "シールド %d/%d";
+
+/* No comment provided by engineer. */
+"Show Credits" = "クレジット表示";
+
+/* No comment provided by engineer. */
+"Sorry, %@ can take only %d Units to battle area." = "ランクが%@の場合、選択可能な部下の数は%d体までです";
+
+/* No comment provided by engineer. */
+"Sorry, an unexpected error happend!" = "エラーが発生しました";
+
+/* No comment provided by engineer. */
+"Soryy, You must clear %@ Stage at first." = "%@ステージをクリアすると行けるようになります";
+
+/* No comment provided by engineer. */
+"Spaceman" = "1士";
+
+/* No comment provided by engineer. */
+"Spaceman 1st Class" = "士長";
+
+/* No comment provided by engineer. */
+"Spaceman Basic" = "2士";
+
+/* No comment provided by engineer. */
+"Speed %.2lf Km/h" = "速度 %.2lf Km/h";
+
+/* No comment provided by engineer. */
+"Stage %d : %s" = "ステージ %d : %s";
+
+/* No comment provided by engineer. */
+"Statistics" = "統計";
+
+/* No comment provided by engineer. */
+"Sun" = "太陽";
+
+/* No comment provided by engineer. */
+"Team Ammo Used" = "全員の使用弾数";
+
+/* No comment provided by engineer. */
+"Team Hit Ratio" = "全員の命中率";
+
+/* No comment provided by engineer. */
+"Team Hits" = "全員の命中回数";
+
+/* No comment provided by engineer. */
+"Technical Sergeant" = "2曹";
+
+/* No comment provided by engineer. */
+"Teqnique %d Lv" = "技量 %d Lv";
+
+/* No comment provided by engineer. */
+"The garage is full now." = "現在、格納庫が満杯です";
+
+/* No comment provided by engineer. */
+"Total Balance" = "収支";
+
+/* No comment provided by engineer. */
+"Total dead %d" = "被撃墜回数 %d";
+
+/* No comment provided by engineer. */
+"Total Destroyed Enemy" = "合計激痛数";
+
+/* No comment provided by engineer. */
+"Total Destroyed Friend" = "合計被撃墜数";
+
+/* No comment provided by engineer. */
+"Total kill %d" = "撃墜回数 %d";
+
+/* No comment provided by engineer. */
+"Total Lose Count" = "合計敗北回数";
+
+/* No comment provided by engineer. */
+"Total Retreat Count" = "合計退却回数";
+
+/* No comment provided by engineer. */
+"Total Score" = "スコア";
+
+/* No comment provided by engineer. */
+"Total Value of Units" = "全機体の合計価値";
+
+/* No comment provided by engineer. */
+"Total Win Count" = "合計勝利回数";
+
+/* No comment provided by engineer. */
+"Value %d gold" = "機体の価値 %d ゴールド";
+
+/* No comment provided by engineer. */
+"Venus" = "金星";
+
+/* No comment provided by engineer. */
+"Warrant Officer" = "准尉";
+
+/* No comment provided by engineer. */
+"Welcome back to the Base! All fighters are repaired now!" = "全ての機体が修理されました!";
+
+/* No comment provided by engineer. */
+"WIN" = "勝利";
+
+/* No comment provided by engineer. */
+"You don't need to do this." = "その必要はありません";
+
+/* No comment provided by engineer. */
+"You don't need to repair this." = "この機体を修理する必要はありません";
+
+/* No comment provided by engineer. */
+"You got %d Bonus Gold" = "%dゴールドのボーナスをゲットしました!";
+
+/* No comment provided by engineer. */
+"You got %d Bonus Pt" = "%dポイントのスコアをゲットしました!";
+
+/* No comment provided by engineer. */
+"You Lose..." = "敗北...";
+
+/* No comment provided by engineer. */
+"You need more gold." = "ゴールドが足りません";
+
+/* No comment provided by engineer. */
+"You will get All fighters repaired and lose half of the Money. Are you sure to do this?" = "半分の資金を失う代わりに全ての機体が修理されます。実行しますか？";
+
+/* No comment provided by engineer. */
+"You Win" = "勝利";
+
+/* No comment provided by engineer. */
+"You've already cleared this stage. Please Select new Stage." = "既にこのステージはクリア済です。他のステージを選択してください";
+
+/* No comment provided by engineer. */
+"Your unit is bloken. Please repair or change your Units." = "あなたの機体は壊れています。修理するか、他の機体を選択してください。";
+
