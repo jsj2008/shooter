@@ -84,7 +84,7 @@
             [lbl setGlowColor:[UIColor colorWithHexString:@"ffffff"]];
             UIFont* font = [UIFont fontWithName:@"HiraKakuProN-W6" size:40];
             [lbl setFont:font];
-            [lbl setText:@"Battle Result"];
+            [lbl setText:NSLocalizedString(@"Battle Result", nil)];
             [lbl setFrame:CGRectMake(x, y, width, height)];
             [lbl setTextAlignment:NSTextAlignmentCenter];
             [lbl setBackgroundColor:[UIColor clearColor]];
@@ -128,15 +128,15 @@
         hg::BattleResult battleResult = hg::UserData::sharedUserData()->getLatestBattleResult();
         {
             ReportMessage r = {
-                "Result",
+                NSSTR2STR(NSLocalizedString(@"Result", nil)),
                 ""
             };
             if (battleResult.isWin) {
-                r.message = "WIN";
+                r.message = NSSTR2STR(NSLocalizedString(@"WIN", nil));
             } else if (battleResult.isRetreat) {
-                r.message = "RETREAT";
+                r.message = NSSTR2STR(NSLocalizedString(@"RETREAT", nil));
             } else {
-                r.message = "DEFEAT";
+                r.message = NSSTR2STR(NSLocalizedString(@"LOSE", nil));
             }
             reportMessageList.push_back(r);
         }
@@ -145,27 +145,27 @@
             if (battleResult.battleScore > 0) {
                 ss << "+";
             }
-            ss << battleResult.battleScore << " Pt";
+            ss << battleResult.battleScore << NSSTR2STR(NSLocalizedString(@" Pt", nil));
             ReportMessage r = {
-                "Score",
+                NSSTR2STR(NSLocalizedString(@"Score", nil)),
                 ss.str()
             };
             reportMessageList.push_back(r);
         }
         {
             std::stringstream ss;
-            ss <<  battleResult.earnedMoney << " Gold";
+            ss <<  battleResult.earnedMoney << NSSTR2STR(NSLocalizedString(@" Gold", nil));
             ReportMessage r = {
-                "Reward",
+                NSSTR2STR(NSLocalizedString(@"Reward", nil)),
                 ss.str()
             };
             reportMessageList.push_back(r);
         }
         {
             std::stringstream ss;
-            ss << battleResult.allShotMoney << " Gold";
+            ss << battleResult.allShotMoney << NSSTR2STR(NSLocalizedString(@" Gold", nil));
             ReportMessage r = {
-                "Ammo Cost",
+                NSSTR2STR(NSLocalizedString(@"Ammo Cost", nil)),
                 ss.str()
             };
             reportMessageList.push_back(r);
@@ -173,13 +173,13 @@
         {
             std::stringstream ss;
             if (battleResult.finalIncome >= 0) {
-                ss << "+" << battleResult.finalIncome << " Gold";
+                ss << "+" << battleResult.finalIncome << NSSTR2STR(NSLocalizedString(@" Gold", nil));
             }
             else {
-                ss << battleResult.finalIncome << " Gold";
+                ss << battleResult.finalIncome << NSSTR2STR(NSLocalizedString(@" Gold", nil));
             }
             ReportMessage r = {
-                "Total Balance",
+                NSSTR2STR(NSLocalizedString(@"Total Balance", nil)),
                 ss.str()
             };
             reportMessageList.push_back(r);
@@ -188,7 +188,7 @@
             std::stringstream ss;
             ss << battleResult.killedEnemy;
             ReportMessage r = {
-                "Destroyed Enemy",
+                NSSTR2STR(NSLocalizedString(@"Destroyed Enemy", nil)),
                 ss.str()
             };
             reportMessageList.push_back(r);
@@ -197,7 +197,7 @@
             std::stringstream ss;
             ss << battleResult.killedFriend;
             ReportMessage r = {
-                "Destroyed Friend",
+                NSSTR2STR(NSLocalizedString(@"Destroyed Friend", nil)),
                 ss.str()
             };
             reportMessageList.push_back(r);
@@ -206,7 +206,7 @@
             std::stringstream ss;
             ss << battleResult.myShot;
             ReportMessage r = {
-                "Ammo Used",
+                NSSTR2STR(NSLocalizedString(@"Ammo Used", nil)),
                 ss.str()
             };
             reportMessageList.push_back(r);
@@ -215,7 +215,7 @@
             std::stringstream ss;
             ss << battleResult.myHit;
             ReportMessage r = {
-                "Hits",
+                NSSTR2STR(NSLocalizedString(@"Hits", nil)),
                 ss.str()
             };
             reportMessageList.push_back(r);
@@ -228,7 +228,7 @@
                 msg = std::string(ch);
             }
             ReportMessage r = {
-                "Hit Ratio",
+                NSSTR2STR(NSLocalizedString(@"Hit Ratio", nil)),
                 msg
             };
             reportMessageList.push_back(r);
@@ -237,7 +237,7 @@
             std::stringstream ss;
             ss << battleResult.allShot;
             ReportMessage r = {
-                "Team Ammo Used",
+                NSSTR2STR(NSLocalizedString(@"Team Ammo Used", nil)),
                 ss.str()
             };
             reportMessageList.push_back(r);
@@ -246,7 +246,7 @@
             std::stringstream ss;
             ss << battleResult.allHit;
             ReportMessage r = {
-                "Team Hits",
+                NSSTR2STR(NSLocalizedString(@"Team Hits", nil)),
                 ss.str()
             };
             reportMessageList.push_back(r);
@@ -259,7 +259,7 @@
                 msg = std::string(ch);
             }
             ReportMessage r = {
-                "Team Hit Ratio",
+                NSSTR2STR(NSLocalizedString(@"Team Hit Ratio", nil)),
                 msg
             };
             reportMessageList.push_back(r);
@@ -268,7 +268,7 @@
             std::stringstream ss;
             ss << battleResult.enemyShot;
             ReportMessage r = {
-                "Enemy's Ammo Used",
+                NSSTR2STR(NSLocalizedString(@"Enemy's Ammo Used", nil)),
                 ss.str()
             };
             reportMessageList.push_back(r);
@@ -277,7 +277,7 @@
             std::stringstream ss;
             ss << battleResult.enemyHit;
             ReportMessage r = {
-                "Enemy's Total Hits",
+                NSSTR2STR(NSLocalizedString(@"Enemy's Total Hits", nil)),
                 ss.str()
             };
             reportMessageList.push_back(r);
@@ -290,7 +290,7 @@
                 msg = std::string(ch);
             }
             ReportMessage r = {
-                "Enemy's Hit Ratio",
+                NSSTR2STR(NSLocalizedString(@"Enemy's Hit Ratio", nil)),
                 msg
             };
             reportMessageList.push_back(r);

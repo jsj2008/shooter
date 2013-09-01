@@ -228,9 +228,9 @@ numberOfRowsInSection:(NSInteger)section
             hg::StageInfo info_pre = hg::UserData::sharedUserData()->getStageInfo(stage_id - 1);
             if (info_pre.clear_count == 0) {
                 chk = false;
-                NSString* msg = [[NSString stringWithFormat:@"Soryy, You must clear %@ Stage at first.", [NSString stringWithCString:info_pre.stage_name_short.c_str() encoding:NSUTF8StringEncoding]] autorelease];
+                NSString* msg = [[NSString stringWithFormat:NSLocalizedString(@"Soryy, You must clear %@ Stage at first.", nil), [NSString stringWithCString:info_pre.stage_name_short.c_str() encoding:NSUTF8StringEncoding]] autorelease];
                 DialogView* dv = [[DialogView alloc] initWithMessage:msg];
-                [dv addButtonWithText:@"OK" withAction:^{
+                [dv addButtonWithText:NSLocalizedString(@"OK", nil) withAction:^{
                     // do nothing
                 }];
                 [dv show];
@@ -241,9 +241,9 @@ numberOfRowsInSection:(NSInteger)section
         }
         if (!(chk == false && !IS_DEBUG_SHOOTER)) {
             
-            NSString* msg = [[NSString stringWithFormat:@"Go to %@ Stage?", [NSString stringWithCString:info.stage_name_short.c_str() encoding:NSUTF8StringEncoding]] autorelease];
+            NSString* msg = [[NSString stringWithFormat:NSLocalizedString(@"Go to %@ Stage?", nil), [NSString stringWithCString:info.stage_name_short.c_str() encoding:NSUTF8StringEncoding]] autorelease];
             DialogView* dv = [[DialogView alloc] initWithMessage:msg];
-            [dv addButtonWithText:@"OK" withAction:^{
+            [dv addButtonWithText:NSLocalizedString(@"OK", nil) withAction:^{
                 [self setUserInteractionEnabled:FALSE];
                 onEndAction();
                 hg::UserData::sharedUserData()->setStageId(stage_id);
@@ -255,7 +255,7 @@ numberOfRowsInSection:(NSInteger)section
                     [sv loadUserInfo];
                 }
             }];
-            [dv addButtonWithText:@"Cancel" withAction:^{
+            [dv addButtonWithText:NSLocalizedString(@"Cancel", nil) withAction:^{
             }];
             [dv show];
         }

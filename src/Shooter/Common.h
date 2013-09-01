@@ -1,6 +1,8 @@
 #define IS_DEBUG 1
 
 #define STR2NSSTR(a) [NSString stringWithCString:a.c_str() encoding:NSUTF8StringEncoding]
+#define NSSTR2STR(a) std::string([a UTF8String])
+
 #define MAIN_FONT_COLOR [UIColor colorWithHexString:@"#7deded"]
 #define MAIN_BORDER_COLOR [UIColor colorWithHexString:@"#7deded"]
 #define SUB_FONT_COLOR [UIColor colorWithHexString:@"#55aa55"]
@@ -23,3 +25,5 @@
 #define ICON_SELECT_ALL @"ic_select_all"
 #define ICON_DESELECT @"ic_deselect"
 #define ICON_SORT @"ic_sort"
+//#define HLocalisedStr(a) NSLocalizedString(a, @"")
+

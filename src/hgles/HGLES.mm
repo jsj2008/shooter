@@ -44,6 +44,10 @@ namespace hgles {
     
     float HGLES::viewWidth;
     float HGLES::viewHeight;
+    float top = 0;
+    float left = 0;
+    float right = 0;
+    float bottom = 0;
     
     ProgramType currentProgramType = ProgramTypeNone;
     t_context* currentContext = NULL;
@@ -83,6 +87,20 @@ namespace hgles {
         float aspect = (float)(viewWidth / viewHeight);
         projectionMatrix = GLKMatrix4MakePerspective(GLKMathDegreesToRadians(80.0f), aspect, 0.1f, 2000.0f);
         mvMatrix = GLKMatrix4Identity;
+        
+		top = 0.1*(float)tanf(80.0f*(M_PI/360.0));
+		bottom = -top;
+		left = bottom*aspect;
+		right = top*aspect;
+    }
+    
+    float HGLES::getViewWidth()
+    {
+        return right - left;
+    }
+    float HGLES::getViewHeight()
+    {
+        return ABS(top - bottom);
     }
     
     void HGLES::updateCameraMatrix()

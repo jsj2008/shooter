@@ -105,19 +105,19 @@
     // level
     {
         labelIndex++;
-        UILabel* lb = [self labelWithIndex:labelIndex WithText:[NSString stringWithFormat:@"Level %d", info->level]];
+        UILabel* lb = [self labelWithIndex:labelIndex WithText:[NSString stringWithFormat:NSLocalizedString(@"Level %d", nil), info->level]];
         [self.baseView addSubview:lb];
     }
     // exp
     {
         labelIndex++;
-        UILabel* lb = [self labelWithIndex:labelIndex WithText:[NSString stringWithFormat:@"Exp %ld/%ld", info->exp, info->expNext]];
+        UILabel* lb = [self labelWithIndex:labelIndex WithText:[NSString stringWithFormat:NSLocalizedString(@"Exp %ld/%ld", nil), info->exp, info->expNext]];
         [self.baseView addSubview:lb];
     }
     // life
     {
         labelIndex++;
-        UILabel* lb = [self labelWithIndex:labelIndex WithText:[NSString stringWithFormat:@"HP %d/%d", info->life, info->lifeMax]];
+        UILabel* lb = [self labelWithIndex:labelIndex WithText:[NSString stringWithFormat:NSLocalizedString(@"HP %d/%d", nil), info->life, info->lifeMax]];
         [self.baseView addSubview:lb];
     }
     // shield
@@ -126,11 +126,11 @@
         NSString* text = nil;
         if (info->shieldMax>0)
         {
-            text = [NSString stringWithFormat:@"Shield %d/%d", info->shield, info->shieldMax];
+            text = [NSString stringWithFormat:NSLocalizedString(@"Shield %d/%d", nil), info->shield, info->shieldMax];
         }
         else
         {
-            text = [NSString stringWithFormat:@"No Shield"];
+            text = [NSString stringWithFormat:NSLocalizedString(@"No Shield", nil)];
         }
         UILabel* lb = [self labelWithIndex:labelIndex WithText:text];
         [self.baseView addSubview:lb];
@@ -139,28 +139,28 @@
     {
         labelIndex++;
         double dmg = hg::UserData::sharedUserData()->getDamagePerSecond(info);
-        UILabel* lb = [self labelWithIndex:labelIndex WithText:[NSString stringWithFormat:@"Attack %.2lf/sec", dmg]];
+        UILabel* lb = [self labelWithIndex:labelIndex WithText:[NSString stringWithFormat:NSLocalizedString(@"Attack %.2lf/sec", nil), dmg]];
         [self.baseView addSubview:lb];
     }
     // speed
     {
         labelIndex++;
         double val = info->speed * 2 * 60 * 60;
-        UILabel* lb = [self labelWithIndex:labelIndex WithText:[NSString stringWithFormat:@"Speed %.2lf Km/h", val]];
+        UILabel* lb = [self labelWithIndex:labelIndex WithText:[NSString stringWithFormat:NSLocalizedString(@"Speed %.2lf Km/h", nil), val]];
         [self.baseView addSubview:lb];
     }
     // teq
     {
         labelIndex++;
         int val = info->cpu_lv;
-        UILabel* lb = [self labelWithIndex:labelIndex WithText:[NSString stringWithFormat:@"Teqnique %d Lv", val]];
+        UILabel* lb = [self labelWithIndex:labelIndex WithText:[NSString stringWithFormat:NSLocalizedString(@"Teqnique %d Lv", nil), val]];
         [self.baseView addSubview:lb];
     }
     // value
     {
         labelIndex++;
         int val = hg::UserData::sharedUserData()->getCost(info);
-        UILabel* lb = [self labelWithIndex:labelIndex WithText:[NSString stringWithFormat:@"Value %d gold", val]];
+        UILabel* lb = [self labelWithIndex:labelIndex WithText:[NSString stringWithFormat:NSLocalizedString(@"Value %d gold", nil), val]];
         [self.baseView addSubview:lb];
     }
     /*
@@ -179,13 +179,13 @@
     // total kill
     {
         labelIndex++;
-        UILabel* lb = [self labelWithIndex:labelIndex WithText:[NSString stringWithFormat:@"Total kill %d", info->killCnt]];
+        UILabel* lb = [self labelWithIndex:labelIndex WithText:[NSString stringWithFormat:NSLocalizedString(@"Total kill %d", nil), info->killCnt]];
         [self.baseView addSubview:lb];
     }
     // total die
     {
         labelIndex++;
-        UILabel* lb = [self labelWithIndex:labelIndex WithText:[NSString stringWithFormat:@"Total dead %d", info->dieCnt]];
+        UILabel* lb = [self labelWithIndex:labelIndex WithText:[NSString stringWithFormat:NSLocalizedString(@"Total dead %d", nil), info->dieCnt]];
         [self.baseView addSubview:lb];
     }
 }

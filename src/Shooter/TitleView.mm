@@ -153,26 +153,26 @@ t_title_btn title_btn_info[] = {
         CGRect frm = CGRectMake(buttonX2, buttonY2, MenuButtonWidth, MenuButtonHeight);
         MenuButton* m = [[[MenuButton alloc] initWithFrame:frm] autorelease];
         [m setBackgroundColor:[UIColor whiteColor]];
-        [m setText:@"Initialize Data"];
+        [m setText:NSLocalizedString(@"Initialize Data", nil)];
         [m setColor:[UIColor blackColor]];
         [m setBackgroundColor:[UIColor whiteColor]];
         [self addSubview:m];
         [m setOnTapAction:^(MenuButton *target) {
-            DialogView* dialog = [[[DialogView alloc] initWithMessage:@"Are you sure to initialize your playing data of this game?"] autorelease];
-            [dialog addButtonWithText:@"OK" withAction:^{
-                DialogView* dialog = [[[DialogView alloc] initWithMessage:@"Is it really OK?"] autorelease];
-                [dialog addButtonWithText:@"OK" withAction:^{
+            DialogView* dialog = [[[DialogView alloc] initWithMessage:NSLocalizedString(@"Are you sure to initialize your playing data of this game?", nil)] autorelease];
+            [dialog addButtonWithText:NSLocalizedString(@"OK", nil) withAction:^{
+                DialogView* dialog = [[[DialogView alloc] initWithMessage:NSLocalizedString(@"Is it really OK?", nil)] autorelease];
+                [dialog addButtonWithText:NSLocalizedString(@"OK", nil) withAction:^{
                     hg::UserData::DeleteAllData();
-                    DialogView* dialog = [[[DialogView alloc] initWithMessage:@"GameData is initialized."] autorelease];
-                    [dialog addButtonWithText:@"OK" withAction:^{
+                    DialogView* dialog = [[[DialogView alloc] initWithMessage:NSLocalizedString(@"GameData is initialized.", nil)] autorelease];
+                    [dialog addButtonWithText:NSLocalizedString(@"OK", nil) withAction:^{
                     }];
                     [dialog show];
                 }];
-                [dialog addButtonWithText:@"Cancel" withAction:^{
+                [dialog addButtonWithText:NSLocalizedString(@"Cancel", nil) withAction:^{
                 }];
                 [dialog show];
             }];
-            [dialog addButtonWithText:@"Cancel" withAction:^{
+            [dialog addButtonWithText:NSLocalizedString(@"Cancel", nil) withAction:^{
                 // do nothing
             }];
             [dialog show];
@@ -184,7 +184,7 @@ t_title_btn title_btn_info[] = {
         CGRect frm = CGRectMake(buttonX2, buttonY2, MenuButtonWidth, MenuButtonHeight);
         MenuButton* m = [[[MenuButton alloc] initWithFrame:frm] autorelease];
         [m setBackgroundColor:[UIColor whiteColor]];
-        [m setText:@"Show Credits"];
+        [m setText:NSLocalizedString(@"Show Credits", nil)];
         [m setColor:[UIColor blackColor]];
         [m setBackgroundColor:[UIColor whiteColor]];
         [self addSubview:m];
@@ -226,7 +226,7 @@ t_title_btn title_btn_info[] = {
     // cover
     {
         UIView* v = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
-        [v setBackgroundColor:[UIColor whiteColor]];
+        [v setBackgroundColor:[UIColor blackColor]];
         [v setUserInteractionEnabled:NO];
         [self addSubview:v];
         [UIView animateWithDuration:0.3 animations:^{

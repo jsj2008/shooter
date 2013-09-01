@@ -127,7 +127,7 @@
             [lbl setGlowColor:[UIColor colorWithHexString:@"ffffff"]];
             UIFont* font = [UIFont fontWithName:@"HiraKakuProN-W6" size:40];
             [lbl setFont:font];
-            [lbl setText:@"Statistics"];
+            [lbl setText:NSLocalizedString(@"Statistics", nil)];
             [lbl setFrame:CGRectMake(x, y, width, height)];
             [lbl setTextAlignment:NSTextAlignmentCenter];
             [lbl setBackgroundColor:[UIColor clearColor]];
@@ -169,14 +169,14 @@
             std::stringstream ss;
             ss << userData->getTotalScore();
             PlayerReportMessage r = {
-                "Total Score",
+                NSSTR2STR(NSLocalizedString(@"Total Score", nil)),
                 ss.str()
             };
             reportMessageList.push_back(r);
         }
         {
             PlayerReportMessage r = {
-                "Rank",
+                NSSTR2STR(NSLocalizedString(@"Rank", nil)),
                 userData->getGrade()
             };
             reportMessageList.push_back(r);
@@ -185,7 +185,7 @@
             std::stringstream ss;
             ss << userData->getMaxAllyNum();
             PlayerReportMessage r = {
-                "Max Units",
+                NSSTR2STR(NSLocalizedString(@"Max Units", nil)),
                 ss.str()
             };
             reportMessageList.push_back(r);
@@ -194,7 +194,7 @@
             std::stringstream ss;
             ss << userData->getSumValue();
             PlayerReportMessage r = {
-                "Total Value of Units",
+                NSSTR2STR(NSLocalizedString(@"Total Value of Units", nil)),
                 ss.str()
             };
             reportMessageList.push_back(r);
@@ -203,7 +203,7 @@
             std::stringstream ss;
             ss << userData->getWinCount();
             PlayerReportMessage r = {
-                "Total Win Count",
+                NSSTR2STR(NSLocalizedString(@"Total Win Count", nil)),
                 ss.str()
             };
             reportMessageList.push_back(r);
@@ -212,7 +212,7 @@
             std::stringstream ss;
             ss << userData->getLoseCount();
             PlayerReportMessage r = {
-                "Total Defeat Count",
+                NSSTR2STR(NSLocalizedString(@"Total Lose Count", nil)),
                 ss.str()
             };
             reportMessageList.push_back(r);
@@ -221,7 +221,7 @@
             std::stringstream ss;
             ss << userData->getRetreatCount();
             PlayerReportMessage r = {
-                "Total Retreat Count",
+                NSSTR2STR(NSLocalizedString(@"Total Retreat Count", nil)),
                 ss.str()
             };
             reportMessageList.push_back(r);
@@ -230,7 +230,7 @@
             std::stringstream ss;
             ss << userData->getTotalKill();
             PlayerReportMessage r = {
-                "Total Destroyed Enemy",
+                NSSTR2STR(NSLocalizedString(@"Total Destroyed Enemy", nil)),
                 ss.str()
             };
             reportMessageList.push_back(r);
@@ -239,7 +239,7 @@
             std::stringstream ss;
             ss << userData->getTotalDead();
             PlayerReportMessage r = {
-                "Total Destroyed Friend",
+                NSSTR2STR(NSLocalizedString(@"Total Destroyed Friend", nil)),
                 ss.str()
             };
             reportMessageList.push_back(r);
@@ -271,7 +271,7 @@
             }];
         }
     
-        [self setBackgroundColor:[UIColor blackColor]];
+        [self setBackgroundColor:[UIColor clearColor]];
 
     }
     return self;

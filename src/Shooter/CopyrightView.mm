@@ -64,7 +64,7 @@
             [lbl setGlowColor:[UIColor colorWithHexString:@"ffffff"]];
             UIFont* font = [UIFont fontWithName:@"HiraKakuProN-W6" size:40];
             [lbl setFont:font];
-            [lbl setText:@"Credits"];
+            [lbl setText:NSLocalizedString(@"Credits", nil)];
             [lbl setFrame:CGRectMake(x, y, width, height)];
             [lbl setTextAlignment:NSTextAlignmentCenter];
             [lbl setBackgroundColor:[UIColor clearColor]];

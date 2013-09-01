@@ -96,7 +96,6 @@ static MainViewController* instance = nil;
         [bottomView setBackgroundColor:[UIColor clearColor]];
         [self.view addSubview:bottomView];
         
-        [self showBackgroundView];
         [self showTitle];
         
     }
@@ -132,6 +131,7 @@ static MainViewController* instance = nil;
     
     //[self removeAllSubview];
     [self removeTitle];
+    [self showBackgroundView];
     [self showMainView:true showMessage:true];
     [[OALSimpleAudio sharedInstance] playBg:BGM_MENU loop:true];
 }
@@ -204,7 +204,7 @@ static MainViewController* instance = nil;
     // データ保存
     bool ret = hg::UserData::sharedUserData()->saveData();
     if (!ret) {
-        DialogView* dialog = [[[DialogView alloc] initWithMessage:@"Sorry, an unexpected error happend!"] autorelease];
+        DialogView* dialog = [[[DialogView alloc] initWithMessage:NSLocalizedString(@"Sorry, an unexpected error happend!", nil)] autorelease];
         [dialog addButtonWithText:@"OK" withAction:^{
         }];
         [dialog show];
@@ -241,7 +241,7 @@ static MainViewController* instance = nil;
                 {
                     CGRect frm = CGRectMake(buttonX, buttonY, MenuButtonWidth, MenuButtonHeight);
                     MenuButton* m = [[[MenuButton alloc] initWithFrame:frm] autorelease];
-                    [m setText:@"Battle"];
+                    [m setText:NSLocalizedString(@"Battle", nil)];
                     [m setColor:[UIColor colorWithHexString:@"#ff4444"]];
                     [menuBaseView addSubview:m];
                     [m setOnTapAction:^(MenuButton *target) {
@@ -250,7 +250,7 @@ static MainViewController* instance = nil;
                             [self stageStart];
                         }
                         else {
-                            NSString* msg = [NSString stringWithFormat:@"You've already cleared this stage. Please Select new Stage."];
+                            NSString* msg = [NSString stringWithFormat:NSLocalizedString(@"You've already cleared this stage. Please Select new Stage.", nil)];
                             DialogView* dialog = [[[DialogView alloc] initWithMessage:msg] autorelease];
                             [dialog addButtonWithText:@"OK" withAction:^{
                                 // nothing
@@ -265,7 +265,7 @@ static MainViewController* instance = nil;
                 {
                     CGRect frm = CGRectMake(buttonX, buttonY, MenuButtonWidth, MenuButtonHeight);
                     MenuButton* m = [[[MenuButton alloc] initWithFrame:frm] autorelease];
-                    [m setText:@"Select My Unit"];
+                    [m setText:NSLocalizedString(@"Select My Unit", nil)];
                     [menuBaseView addSubview:m];
                     [m setOnTapAction:^(MenuButton *target) {
                         [self hideMenuViewAnimate];
@@ -305,20 +305,20 @@ static MainViewController* instance = nil;
                 {
                     CGRect frm = CGRectMake(buttonX, buttonY, MenuButtonWidth, MenuButtonHeight);
                     MenuButton* m = [[[MenuButton alloc] initWithFrame:frm] autorelease];
-                    [m setText:@"Repair All Units"];
+                    [m setText:NSLocalizedString(@"Repair All Units", nil)];
                     [menuBaseView addSubview:m];
                     [m setOnTapAction:^(MenuButton *target) {
                         // buy
                         int cost = hg::UserData::sharedUserData()->getRepairAllCost();
                         if (cost == 0) {
-                            NSString* msg = [NSString stringWithFormat:@"You don't need to do this."];
+                            NSString* msg = [NSString stringWithFormat:NSLocalizedString(@"You don't need to do this.", nil)];
                             DialogView* dialog = [[[DialogView alloc] initWithMessage:msg] autorelease];
                             [dialog addButtonWithText:@"OK" withAction:^{
                                 // nothing
                             }];
                             [dialog show];
                         } else if (hg::UserData::sharedUserData()->getMoney() >= cost) {
-                            NSString* msg = [NSString stringWithFormat:@"It Costs %d gold. Are you sure to repair all?", cost];
+                            NSString* msg = [NSString stringWithFormat:NSLocalizedString(@"It Costs %d gold. Are you sure to repair all?", nil), cost];
                             DialogView* dialog = [[[DialogView alloc] initWithMessage:msg] autorelease];
                             [dialog addButtonWithText:@"OK" withAction:^{
                                 hg::UserData::sharedUserData()->repairAll();
@@ -332,7 +332,7 @@ static MainViewController* instance = nil;
                             [dialog show];
                         }
                         else {
-                            NSString* msg = [NSString stringWithFormat:@"It Costs %d gold. You need more gold", cost];
+                            NSString* msg = [NSString stringWithFormat:NSLocalizedString(@"It Costs %d gold. You need more gold", nil), cost];
                             DialogView* dialog = [[[DialogView alloc] initWithMessage:msg] autorelease];
                             [dialog addButtonWithText:@"OK" withAction:^{
                                 // nothing
@@ -348,7 +348,7 @@ static MainViewController* instance = nil;
                 {
                     CGRect frm = CGRectMake(buttonX, buttonY, MenuButtonWidth, MenuButtonHeight);
                     MenuButton* m = [[[MenuButton alloc] initWithFrame:frm] autorelease];
-                    [m setText:@"Repair"];
+                    [m setText:NSLocalizedString(@"Repair", nil)];
                     [menuBaseView addSubview:m];
                     [m setOnTapAction:^(MenuButton *target) {
                         [self hideMenuViewAnimate];
@@ -388,7 +388,7 @@ static MainViewController* instance = nil;
                 {
                     CGRect frm = CGRectMake(buttonX, buttonY, MenuButtonWidth, MenuButtonHeight);
                     MenuButton* m = [[[MenuButton alloc] initWithFrame:frm] autorelease];
-                    [m setText:@"Select Units"];
+                    [m setText:NSLocalizedString(@"Select Units", nil)];
                     [menuBaseView addSubview:m];
                     [m setOnTapAction:^(MenuButton *target) {
                         [self hideMenuViewAnimate];
@@ -434,7 +434,7 @@ static MainViewController* instance = nil;
                 {
                     CGRect frm = CGRectMake(buttonX2, buttonY2, MenuButtonWidth, MenuButtonHeight);
                     MenuButton* m = [[[MenuButton alloc] initWithFrame:frm] autorelease];
-                    [m setText:@"Buy Units"];
+                    [m setText:NSLocalizedString(@"Buy Units", nil)];
                     [menuBaseView addSubview:m];
                     [m setOnTapAction:^(MenuButton *target) {
                         [self hideMenuViewAnimate];
@@ -474,7 +474,7 @@ static MainViewController* instance = nil;
                 {
                     CGRect frm = CGRectMake(buttonX2, buttonY2, MenuButtonWidth, MenuButtonHeight);
                     MenuButton* m = [[[MenuButton alloc] initWithFrame:frm] autorelease];
-                    [m setText:@"Sell Units"];
+                    [m setText:NSLocalizedString(@"Sell Units", nil)];
                     [menuBaseView addSubview:m];
                     [m setOnTapAction:^(MenuButton *target) {
                         [self hideMenuViewAnimate];
@@ -514,12 +514,12 @@ static MainViewController* instance = nil;
                 {
                     CGRect frm = CGRectMake(buttonX2, buttonY2, MenuButtonWidth, MenuButtonHeight);
                     MenuButton* m = [[[MenuButton alloc] initWithFrame:frm] autorelease];
-                    [m setText:@"Return to Base"];
+                    [m setText:NSLocalizedString(@"Return to Base", nil)];
                     [menuBaseView addSubview:m];
                     [m setOnTapAction:^(MenuButton *target) {
                         NSString* msg = @"";
                         if (hg::UserData::sharedUserData()->getCurrentClearRatio() < 1.0) {
-                            msg = @"You will get All fighters repaired and lose half of the Money. Are you sure to do this?";
+                            msg = NSLocalizedString(@"You will get All fighters repaired and lose half of the Money. Are you sure to do this?", nil);
                             DialogView* dialog = [[[DialogView alloc] initWithMessage:msg] autorelease];
                             [dialog addButtonWithText:@"OK" withAction:^{
                                 hg::UserData* u = hg::UserData::sharedUserData();
@@ -529,21 +529,21 @@ static MainViewController* instance = nil;
                                 if (playerDetailView) {
                                     [playerDetailView loadGrade];
                                 }
-                                DialogView* dialog2 = [[[DialogView alloc] initWithMessage:@"Welcome back to the Base! All fighters are repaired now!"] autorelease];
-                                [dialog2 addButtonWithText:@"OK" withAction:^{
+                                DialogView* dialog2 = [[[DialogView alloc] initWithMessage:NSLocalizedString(@"Welcome back to the Base! All fighters are repaired now!", nil)] autorelease];
+                                [dialog2 addButtonWithText:NSLocalizedString(@"OK", nil) withAction:^{
                                     // do nothing
                                 }];
                                 [dialog2 show];
                             }];
-                            [dialog addButtonWithText:@"Cancel" withAction:^{
+                            [dialog addButtonWithText:NSLocalizedString(@"Cancel", nil) withAction:^{
                                 // do nothing
                             }];
                             [dialog show];
                         }
                         // no penalty
                         else {
-                            DialogView* dialog2 = [[[DialogView alloc] initWithMessage:@"Do you want to start over this stage again?"] autorelease];
-                            [dialog2 addButtonWithText:@"OK" withAction:^{
+                            DialogView* dialog2 = [[[DialogView alloc] initWithMessage:NSLocalizedString(@"Do you want to start over this stage again?", nil)] autorelease];
+                            [dialog2 addButtonWithText:NSLocalizedString(@"OK", nil) withAction:^{
                                 hg::UserData* u = hg::UserData::sharedUserData();
                                 u->returnToBase();
                                 u->saveData();
@@ -552,7 +552,7 @@ static MainViewController* instance = nil;
                                     [playerDetailView loadGrade];
                                 }
                             }];
-                            [dialog2 addButtonWithText:@"Cancel" withAction:^{
+                            [dialog2 addButtonWithText:NSLocalizedString(@"Cancel", nil) withAction:^{
                                 // do nothing
                             }];
                             [dialog2 show];
@@ -565,7 +565,7 @@ static MainViewController* instance = nil;
                 {
                     CGRect frm = CGRectMake(buttonX2, buttonY2, MenuButtonWidth, MenuButtonHeight);
                     MenuButton* m = [[[MenuButton alloc] initWithFrame:frm] autorelease];
-                    [m setText:@"Select Stage"];
+                    [m setText:NSLocalizedString(@"Select Stage", nil)];
                     [menuBaseView addSubview:m];
                     [m setOnTapAction:^(MenuButton *target) {
                         
@@ -738,7 +738,7 @@ static MainViewController* instance = nil;
     hg::FighterInfo* playerFighterInfo = userData->getPlayerFighterInfo();
     if (playerFighterInfo == NULL)
     {
-        DialogView* dialog = [[[DialogView alloc] initWithMessage:@"Please select your Unit."] autorelease];
+        DialogView* dialog = [[[DialogView alloc] initWithMessage:NSLocalizedString(@"Please select your Unit.", nil)] autorelease];
         [dialog addButtonWithText:@"OK" withAction:^{
             // do nothing
         }];
@@ -747,7 +747,7 @@ static MainViewController* instance = nil;
     }
     if (playerFighterInfo->life <= 0)
     {
-        DialogView* dialog = [[[DialogView alloc] initWithMessage:@"Your unit is bloken. Please repair or change your Units."] autorelease];
+        DialogView* dialog = [[[DialogView alloc] initWithMessage:NSLocalizedString(@"Your unit is bloken. Please repair or change your Units.", nil)] autorelease];
         [dialog addButtonWithText:@"OK" withAction:^{
             // do nothing
         }];

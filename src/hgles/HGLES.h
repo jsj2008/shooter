@@ -137,6 +137,9 @@ namespace hgles {
         static float viewWidth;
         static float viewHeight;
         
+        static float getViewWidth();
+        static float getViewHeight();
+        
     private:
         static void compileShaders(NSString* vertexShader, NSString* fragmentShader);
         static GLuint compileShader(NSString* shaderName, GLenum shaderType);

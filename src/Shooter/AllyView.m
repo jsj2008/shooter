@@ -201,13 +201,13 @@
     }
     // level
     {
-        UILabel* lb = [self labelWithIndex:1 WithText:[NSString stringWithFormat:@"Level %d", info->level]];
+        UILabel* lb = [self labelWithIndex:1 WithText:[NSString stringWithFormat:NSLocalizedString(@"Level %d", nil), info->level]];
         [baseView addSubview:lb];
         [labels addObject:lb];
     }
     // life
     {
-        UILabel* lb = [self labelWithIndex:2 WithText:[NSString stringWithFormat:@"HP %d/%d", info->life, info->lifeMax]];
+        UILabel* lb = [self labelWithIndex:2 WithText:[NSString stringWithFormat:NSLocalizedString(@"HP %d/%d", nil), info->life, info->lifeMax]];
         [baseView addSubview:lb];
         [labels addObject:lb];
     }
@@ -216,11 +216,11 @@
         NSString* text = nil;
         if (info->shieldMax>0)
         {
-            text = [NSString stringWithFormat:@"Shield %d/%d", info->shield, info->shieldMax];
+            text = [NSString stringWithFormat:NSLocalizedString(@"Shield %d/%d", nil), info->shield, info->shieldMax];
         }
         else
         {
-            text = [NSString stringWithFormat:@"No Shield"];
+            text = [NSString stringWithFormat:NSLocalizedString(@"No Shield", nil)];
         }
         UILabel* lb = [self labelWithIndex:3 WithText:text];
         [baseView addSubview:lb];
@@ -453,7 +453,7 @@
                 int maxAllyNum = hg::UserData::sharedUserData()->getMaxAllyNum();
                 if (hg::UserData::sharedUserData()->getReadyList().size() >= maxAllyNum) {
                     NSString* rankName = STR2NSSTR(hg::UserData::sharedUserData()->getGrade());
-                    DialogView* dialog = [[[DialogView alloc] initWithMessage:[NSString stringWithFormat:@"Sorry, %@ can take only %d Units to battle area.", rankName, maxAllyNum]] autorelease];
+                    DialogView* dialog = [[[DialogView alloc] initWithMessage:[NSString stringWithFormat:NSLocalizedString(@"Sorry, %@ can take only %d Units to battle area.", nil), rankName, maxAllyNum]] autorelease];
                     [dialog addButtonWithText:@"OK" withAction:^{
                         // nothing
                     }];
@@ -473,7 +473,7 @@
             // check money
             if (_fighterInfo->life >= _fighterInfo->lifeMax)
             {
-                DialogView* dialog = [[[DialogView alloc] initWithMessage:@"You don't need to repair this."] autorelease];
+                DialogView* dialog = [[[DialogView alloc] initWithMessage:NSLocalizedString(@"You don't need to repair this.", nil)] autorelease];
                 [dialog addButtonWithText:@"OK" withAction:^{
                     // nothing
                 }];
@@ -491,7 +491,7 @@
             }
             else
             {
-                DialogView* dialog = [[[DialogView alloc] initWithMessage:@"You need more gold."] autorelease];
+                DialogView* dialog = [[[DialogView alloc] initWithMessage:NSLocalizedString(@"You need more gold.", nil)] autorelease];
                 [dialog addButtonWithText:@"OK" withAction:^{
                     // nothing
                 }];
@@ -508,32 +508,32 @@
             int cost = u->getBuyCost(_fighterInfo);
             // check money
             if (u->getFighterList().size() >= 50) {
-                DialogView* dialog = [[[DialogView alloc] initWithMessage:@"The garage is full now."] autorelease];
-                [dialog addButtonWithText:@"OK" withAction:^{
+                DialogView* dialog = [[[DialogView alloc] initWithMessage:NSLocalizedString(@"The garage is full now.", nil)] autorelease];
+                [dialog addButtonWithText:NSLocalizedString(@"OK", nil) withAction:^{
                     // nothing
                 }];
                 [dialog show];
             } else if (u->getMoney() >= cost)
             {
                 // buy
-                NSString* msg = [NSString stringWithFormat:@"It Costs %d gold. Are you sure to buy this?", cost];
+                NSString* msg = [NSString stringWithFormat:NSLocalizedString(@"It Costs %d gold. Are you sure to buy this?", nil), cost];
                 DialogView* dialog = [[[DialogView alloc] initWithMessage:msg] autorelease];
-                [dialog addButtonWithText:@"Buy" withAction:^{
+                [dialog addButtonWithText:NSLocalizedString(@"Buy", nil) withAction:^{
                     u->buy(_fighterInfo);
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [[StatusView GetInstance] loadUserInfo];
                     });
                     [AllyTableView ReloadData];
                 }];
-                [dialog addButtonWithText:@"Cancel" withAction:^{
+                [dialog addButtonWithText:NSLocalizedString(@"Cancel", nil) withAction:^{
                     // nothing
                 }];
                 [dialog show];
             }
             else
             {
-                DialogView* dialog = [[[DialogView alloc] initWithMessage:@"You need more gold."] autorelease];
-                [dialog addButtonWithText:@"OK" withAction:^{
+                DialogView* dialog = [[[DialogView alloc] initWithMessage:NSLocalizedString(@"You need more gold.", nil)] autorelease];
+                [dialog addButtonWithText:NSLocalizedString(@"OK", nil) withAction:^{
                     // nothing
                 }];
                 [dialog show];
@@ -546,16 +546,16 @@
         {
             hg::UserData* u = hg::UserData::sharedUserData();
             int cost = u->getSellValue(_fighterInfo);
-            NSString* msg = [NSString stringWithFormat:@"Are you sure to sell this for %d Gold?", cost];
+            NSString* msg = [NSString stringWithFormat:NSLocalizedString(@"Are you sure to sell this for %d Gold?", nil), cost];
             DialogView* dialog = [[[DialogView alloc] initWithMessage:msg] autorelease];
-            [dialog addButtonWithText:@"Sell" withAction:^{
+            [dialog addButtonWithText:NSLocalizedString(@"Sell", nil) withAction:^{
                 u->sell(_fighterInfo);
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [[StatusView GetInstance] loadUserInfo];
                 });
                 [AllyTableView ReloadData];
             }];
-            [dialog addButtonWithText:@"Cancel" withAction:^{
+            [dialog addButtonWithText:NSLocalizedString(@"Cancel", nil) withAction:^{
                 // nothing
             }];
             [dialog show];

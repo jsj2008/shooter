@@ -229,11 +229,11 @@ namespace hg {
             {
                 (*it)->life = (*it)->lifeMax;
             }
-            rewardInfoList.push_back({
-                "All Fighters are repaired!"
-            });
-            float battleScoreReward = 0;
-            float battleMoneyReward = 0;
+            RewardInfo t;
+            t.message = NSSTR2STR(NSLocalizedString(@"All Fighters are repaired!", nil));
+            rewardInfoList.push_back(t);
+            int battleScoreReward = 0;
+            int battleMoneyReward = 0;
             switch (stage_id) {
                 case 1: // earth
                 {
@@ -423,110 +423,110 @@ namespace hg {
             }*/
             
             if (battleScoreReward > 0) {
+                char tmp[200];
                 addBattleScore(battleScoreReward);
-                std::stringstream ss;
-                ss << "You got " << battleScoreReward << "Bonus Pt!";
+                sprintf(tmp, NSSTR2STR(NSLocalizedString(@"You got %d Bonus Pt", nil)).c_str(), battleScoreReward);
                 rewardInfoList.push_back({
-                    ss.str()
+                    std::string(tmp)
                 });
             }
             if (battleMoneyReward > 0) {
                 addBattleScore(battleScoreReward);
-                std::stringstream ss;
-                ss << "You got " << battleScoreReward << "Bonus Gold!";
+                char tmp[200];
+                sprintf(tmp, NSSTR2STR(NSLocalizedString(@"You got %d Bonus Gold", nil)).c_str(), battleMoneyReward);
                 rewardInfoList.push_back({
-                    ss.str()
+                    std::string(tmp)
                 });
             }
-            std::stringstream ss;
-            ss << "Congraturation!!\nYou cleared ";
-            ss << stageInfo.stage_name_short << " Stage!!";
+            char tmp[200];
+            sprintf(tmp, NSSTR2STR(NSLocalizedString(@"Congraturation!!\nYou cleared %s Stage!!", nil)).c_str(), stageInfo.stage_name_short.c_str());
             rewardInfoList.push_back({
-                ss.str()
+                std::string(tmp)
             });
         }
         this->lastBattleResult = br;
     }
     
+    // http://en.wikipedia.org/wiki/Military_ranks_and_insignia_of_the_Japan_Self-Defense_Forces
     void UserData::calcGrade()
     {
         if (score <= 250) {
-            grade = "パイロット候補";
+            grade = NSSTR2STR(NSLocalizedString(@"Spaceman Basic", nil));
             maxAllyNum = 1;
             maxPowerUpNum = 1;
         }
         else if (score <= 500) {
-            grade = "新兵";
+            grade = NSSTR2STR(NSLocalizedString(@"Spaceman", nil));
             maxAllyNum = 2;
             maxPowerUpNum = 1;
         }
         else if (score <= 1000) {
-            grade = "上等兵";
+            grade = NSSTR2STR(NSLocalizedString(@"Spaceman 1st Class", nil));
             maxAllyNum = 3;
             maxPowerUpNum = 2;
         }
         else if (score <= 2500) {
-            grade = "伍長";
+            grade = NSSTR2STR(NSLocalizedString(@"Technical Sergeant", nil));
             maxAllyNum = 4;
             maxPowerUpNum = 2;
         }
         else if (score <= 5000) {
-            grade = "曹長";
+            grade = NSSTR2STR(NSLocalizedString(@"Master sergeant", nil));
             maxAllyNum = 6;
             maxPowerUpNum = 2;
         }
         else if (score <= 20000) {
-            grade = "准尉";
+            grade = NSSTR2STR(NSLocalizedString(@"Senior Master sergeant", nil));
             maxAllyNum = 7;
             maxPowerUpNum = 4;
         }
         else if (score <= 50000) {
-            grade = "少尉";
+            grade = NSSTR2STR(NSLocalizedString(@"Warrant Officer", nil));
             maxAllyNum = 8;
             maxPowerUpNum = 4;
         }
         else if (score <= 100000) {
-            grade = "中尉";
+            grade = NSSTR2STR(NSLocalizedString(@"Second Lieutenant", nil));
             maxAllyNum = 9;
             maxPowerUpNum = 4;
         }
         else if (score <= 200000) {
-            grade = "大尉";
+            grade = NSSTR2STR(NSLocalizedString(@"First Lieutenant", nil));
             maxAllyNum = 10;
             maxPowerUpNum = 5;
         }
         else if (score <= 300000) {
-            grade = "少佐";
+            grade = NSSTR2STR(NSLocalizedString(@"Captain", nil));
             maxAllyNum = 11;
             maxPowerUpNum = 5;
         }
         else if (score <= 500000) {
-            grade = "大佐";
+            grade = NSSTR2STR(NSLocalizedString(@"Major", nil));
             maxAllyNum = 12;
             maxPowerUpNum = 5;
         }
         else if (score <= 800000) {
-            grade = "准将";
+            grade = NSSTR2STR(NSLocalizedString(@"Lieutenant Colonel", nil));
             maxAllyNum = 13;
             maxPowerUpNum = 5;
         }
         else if (score <= 1200000) {
-            grade = "少将";
+            grade = NSSTR2STR(NSLocalizedString(@"Colonel", nil));
             maxAllyNum = 14;
             maxPowerUpNum = 5;
         }
         else if (score <= 1500000) {
-            grade = "中将";
+            grade = NSSTR2STR(NSLocalizedString(@"Major General", nil));
             maxAllyNum = 15;
             maxPowerUpNum = 5;
         }
         else if (score <= 2000000) {
-            grade = "大将";
+            grade = NSSTR2STR(NSLocalizedString(@"Lieutenant General", nil));
             maxAllyNum = 16;
             maxPowerUpNum = 6;
         }
         else if (score <= 10000000) {
-            grade = "元帥";
+            grade = NSSTR2STR(NSLocalizedString(@"General", nil));
             maxAllyNum = 30;
             maxPowerUpNum = 10;
         }
@@ -900,35 +900,35 @@ namespace hg {
         std::string stage_name = "";
         switch (stage_id) {
             case 1:
-                stage_name = "地球";
+                stage_name = NSSTR2STR(NSLocalizedString(@"Earth", nil));
                 info.win_point = 20;
                 info.model_name = "pl_earth";
                 info.small_size = 40;
                 info.big_size = 160;
                 break;
             case 2:
-                stage_name = "火星";
+                stage_name = NSSTR2STR(NSLocalizedString(@"Mars", nil));
                 info.win_point = 10;
                 info.model_name = "pl_mars";
                 info.small_size = 30;
                 info.big_size = 150;
                 break;
             case 3:
-                stage_name = "木星";
+                stage_name = NSSTR2STR(NSLocalizedString(@"Jupiter", nil));
                 info.win_point = 5;
                 info.model_name = "pl_jupiter";
                 info.small_size = 100;
                 info.big_size = 250;
                 break;
             case 4:
-                stage_name = "金星";
+                stage_name = NSSTR2STR(NSLocalizedString(@"Venus", nil));
                 info.win_point = 3;
                 info.model_name = "pl_venus";
                 info.small_size = 50;
                 info.big_size = 170;
                 break;
             case 5:
-                stage_name = "太陽";
+                stage_name = NSSTR2STR(NSLocalizedString(@"Sun", nil));
                 info.win_point = 1;
                 info.model_name = "pl_sun";
                 info.small_size = 150;
@@ -966,7 +966,7 @@ namespace hg {
         
         char stage_name_str[1000];
         info.stage_name_short = stage_name;
-        sprintf(stage_name_str, "Stage %d : %s", stage_id, stage_name.c_str());
+        sprintf(stage_name_str, NSSTR2STR(NSLocalizedString(@"Stage %d : %s", nil)).c_str(), stage_id, stage_name.c_str());
         info.stage_name = std::string(stage_name_str);
         return info;
     }
@@ -1013,14 +1013,14 @@ namespace hg {
         LevelupInfo info = this->popLevelupInfo();
         char levelupMessageChar[1000];
         std::stringstream ss;
-        ss << "%s has reached Level %d!!\n"
-           << "\tLevel :%d → %d\n"
-           << "\tHP :%d → %d\n"
-           << "\tAtk/Sec :%.0lf → %.0lf\n"
-           << "\tTeq Lv: %d → %d\n"
+        ss << NSSTR2STR(NSLocalizedString(@"%s has reached Level %d!!\n", nil))
+           << NSSTR2STR(NSLocalizedString(@"\tLevel :%d → %d\n", nil))
+           << NSSTR2STR(NSLocalizedString(@"\tHP :%d → %d\n", nil))
+           << NSSTR2STR(NSLocalizedString(@"\tAtk/Sec :%.0lf → %.0lf\n", nil))
+           << NSSTR2STR(NSLocalizedString(@"\tTeq Lv: %d → %d\n", nil))
         ;
         if (info.fighterInfo->shieldMax > 0) {
-           ss << "\tShield :%d → %d\n";
+            ss << NSSTR2STR(NSLocalizedString(@"\tShield :%d → %d\n", nil));
         }
         sprintf(levelupMessageChar,
                 ss.str().c_str(),
@@ -1537,7 +1537,7 @@ namespace hg {
             }
             case FighterTypeStarFighter:
             {
-                pInfo->name = "StarFighter";
+                pInfo->name = "Star Fighter";
                 pInfo->textureName = "p_robo1.png";
                 pInfo->textureSrcOffsetX = 0;
                 pInfo->textureSrcOffsetY = 56;

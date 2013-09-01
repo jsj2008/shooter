@@ -25,6 +25,7 @@
 #include "HGLObject3D.h"
 #include "HGLObjLoader.h"
 #include "UserData.h"
+#include "AppDelegate.h"
 
 namespace hg {
     
@@ -44,8 +45,6 @@ namespace hg {
     {
         typedef std::list<HGNode*> NodeList;
         const float RADER_CELL_NUM = 10;
-        const float RADER_SCALE = 5;
-        const float RADER_CELL_SCALE = RADER_SCALE/10.0;
     public:
         Rader()
         {
@@ -65,23 +64,28 @@ namespace hg {
         }
         void init(HGNode* pParentNode)
         {
+            float w = hgles::HGLES::getViewWidth();
+            float h = hgles::HGLES::getViewHeight();
+            RADER_SCALE = w * 0.15;
+            RADER_CELL_SCALE = RADER_SCALE/10.0;
+            
             pRootNode = new HGNode();
             pRootNode->retain();
             pParentNode->addChild(pRootNode);
             pRootNode->setPosition(13.5, 7.5);
+            pRootNode->setPosition(w/2 - RADER_SCALE/2 - RADER_SCALE*0.1, h/2 - RADER_SCALE/2 - RADER_SCALE*0.1);
             
             HGSprite* pSprite = new HGSprite();
             pSprite->init("radergrid.png");
-            pSprite->setPosition(RADER_SCALE/2.0 - RADER_CELL_SCALE/2.0, RADER_SCALE/2.0 - RADER_CELL_SCALE/2.0);
             pSprite->setScale(RADER_SCALE, RADER_SCALE);
             pRootNode->addChild(pSprite);
             
             // フィールド境界
+            /*
             {
                 AlphaColorNode* p = new AlphaColorNode();
                 p->init((Color){0, 0.5, 0, 0.3}, RADER_SCALE, RADER_SCALE);
                 p->setBlendFunc(GL_SRC_ALPHA, GL_ONE);
-                p->setPosition(RADER_SCALE/2.0 - RADER_CELL_SCALE/2.0, RADER_SCALE/2.0 - RADER_CELL_SCALE/2.0);
                 pRootNode->addChild(p);
                 
                 {
@@ -94,13 +98,12 @@ namespace hg {
                     HGProcessManager::sharedProcessManager()->addProcess(cscp);
                 }
             
-            }
+            }*/
             {
                 HGSprite* pSprite = new HGSprite();
                 pSprite->init("rect.png");
                 pSprite->setblendcolor({0.9,1,0.9,1});
                 pSprite->setScale(RADER_SCALE*2, RADER_SCALE*2);
-                pSprite->setPosition(RADER_SCALE/2.0 - RADER_CELL_SCALE/2.0, RADER_SCALE/2.0 - RADER_CELL_SCALE/2.0);
                 pRootNode->addChild(pSprite);
                 
             }
@@ -118,6 +121,7 @@ namespace hg {
         }
         void updateRader(CellManager<Fighter>& enemyCellManager, CellManager<Fighter>& friendCellManager)
         {
+            
             if (nodeList.size() > 0)
             {
                 for (NodeList::iterator it = nodeList.begin(); it != nodeList.end(); ++it)
@@ -136,7 +140,7 @@ namespace hg {
                     {
                         ColorNode* p = new ColorNode();
                         p->init((Color){0.6, 0, 0, 1}, RADER_CELL_SCALE, RADER_CELL_SCALE);
-                        p->setPosition((float)i * RADER_CELL_SCALE, (float)j * RADER_CELL_SCALE);
+                        p->setPosition((float)i * RADER_CELL_SCALE - RADER_SCALE/2, (float)j * RADER_CELL_SCALE - RADER_SCALE/2);
                         p->retain();
                         nodeList.push_back(p);
                         pRootNode->addChild(p);
@@ -148,7 +152,6 @@ namespace hg {
             {
                 Color c = {0.0,1.0,0,1};
                 Color pc = {1.0,1.0,0,1};
-                float scale = RADER_SCALE/FIELD_SIZE;
                 for (ActorList<Fighter>::iterator it = friendFighterList.begin(); it != friendFighterList.end(); ++it)
                 {
                     Fighter* pF = *it;
@@ -161,12 +164,10 @@ namespace hg {
                     {
                         p->init("pearl.png", c);
                     }
-                    float w = pF->getWidth()*scale;
-                    w = MAX(w, 0.4);
-                    float h = pF->getHeight()*scale;
-                    h = MAX(h, 0.4);
+                    float w = (pF->getWidth()/FIELD_SIZE)*RADER_SCALE;
+                    float h = (pF->getHeight()/FIELD_SIZE)*RADER_SCALE;
                     p->setScale(w, h);
-                    p->setPosition(pF->getPositionX()*scale, pF->getPositionY()*scale);
+                    p->setPosition(pF->getPositionX()/FIELD_SIZE*RADER_SCALE - RADER_SCALE/2, pF->getPositionY()/FIELD_SIZE*RADER_SCALE - RADER_SCALE/2);
                     p->retain();
                     nodeList.push_back(p);
                     pRootNode->addChild(p);
@@ -176,6 +177,8 @@ namespace hg {
     private:
         NodeList nodeList;
         HGNode* pRootNode = NULL;
+        float RADER_SCALE = 0.2;
+        float RADER_CELL_SCALE = RADER_SCALE/10.0;
     };
 
     ////////////////////
@@ -774,13 +777,20 @@ namespace hg {
                 
                 // lose
                 {
+                    float w = hgles::HGLES::getViewWidth();
+                    HGSprite* pSprite = new HGSprite();
+                    pSprite->init("lose.png");
+                    pSprite->setScale(w*0.5, w*0.5);
+                    pLayerUIRoot->addChild(pSprite);
+                    /*
                     HGText* pNodeText = new HGText();
-                    pNodeText->initWithString("You Lose...");
+                    pNodeText->initWithString(NSSTR2STR(NSLocalizedString(@"You Lose...", nil)));
                     pNodeText->setScaleByTextSize(8);
                     pNodeText->setPosition(0, 0);
                     pNodeText->setAnchor(0.5, 0.5);
                     pNodeText->setblendcolor({(float)0x6a/255.f, (float)0x93/255.f, (float)0xd4/255.f});
                     pLayerUIRoot->addChild(pNodeText);
+                     */
                 }
                 //collectAllFriends();
                 
@@ -862,16 +872,20 @@ namespace hg {
                 }
                 
                 // retreat
+                /*
                 {
                     HGText* pNodeText = new HGText();
-                    pNodeText->initWithString("Retreat");
+                    pNodeText->initWithString(NSSTR2STR(NSLocalizedString(@"Retreat", nil)));
                     pNodeText->setScaleByTextSize(8);
+                    float w = hgles::HGLES::getViewWidth();
+                    float h = hgles::HGLES::getViewHeight();
+                    pNodeText->setScale(w*0.001, w*0.001);
                     pNodeText->setPosition(0, 0);
                     pNodeText->setAnchor(0.5, 0.5);
                     pNodeText->setblendcolor({(float)0xcd/255.f, (float)0x35/255.f, (float)0xd3/255.f});
                     //pNodeText->setblendcolor({0.5,0,0});
                     pLayerUIRoot->addChild(pNodeText);
-                }
+                }*/
                 
                 
                 // 仲間を退却させる
@@ -951,13 +965,22 @@ namespace hg {
                 
                 // win
                 {
+                    float w = hgles::HGLES::getViewWidth();
+                    HGSprite* pSprite = new HGSprite();
+                    pSprite->init("win.png");
+                    pSprite->setScale(w*0.5, w*0.5);
+                    pLayerUIRoot->addChild(pSprite);
+                    /*
                     HGText* pNodeText = new HGText();
-                    pNodeText->initWithString("You Win");
+                    pNodeText->initWithString(NSSTR2STR(NSLocalizedString(@"You Win", nil)));
+                    float w = hgles::HGLES::getViewWidth();
+                    float h = hgles::HGLES::getViewHeight();
                     pNodeText->setScaleByTextSize(8);
                     pNodeText->setPosition(0, 0);
                     pNodeText->setAnchor(0.5, 0.5);
                     pNodeText->setblendcolor({1, 0, 0});
                     pLayerUIRoot->addChild(pNodeText);
+                     */
                 }
                 
             }
@@ -1156,6 +1179,8 @@ namespace hg {
         pLayerUIRoot = new LayerNode();
         pLayerUIRoot->retain();
         pLayerUIRoot->setCameraPosition(0, 0, -15);
+        pLayerUIRoot->setCameraPosition(0, 0, -5);
+        pLayerUIRoot->setCameraPosition(0, 0, -0.1);
         HGDirector::sharedDirector()->getRootNode()->addChild(pLayerUIRoot);
         
         ////////////////////
@@ -1420,6 +1445,8 @@ namespace hg {
         {
             return;
         }
+        if ([AppDelegate IsBackGround]) return;
+        
         // 光源なし
         glUniform1f(hgles::currentContext->uUseLight, 0.0);
         // 2d

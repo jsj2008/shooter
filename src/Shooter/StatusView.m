@@ -254,8 +254,8 @@ const float ProgressBarWidth = 146;
 - (void)loadUserInfo
 {
     hg::UserData* u = hg::UserData::sharedUserData();
-    [moneyLabel setText:[NSString stringWithFormat:@"%ld Gold", u->getMoney()]];
-    [scoreLabel setText:[NSString stringWithFormat:@"%ld Pt", u->getTotalScore()]];
+    [moneyLabel setText:[NSString stringWithFormat:NSLocalizedString(@"%ld Gold", nil), u->getMoney()]];
+    [scoreLabel setText:[NSString stringWithFormat:NSLocalizedString(@"%ld Pt", nil), u->getTotalScore()]];
     
     double clearRatio = u->getCurrentClearRatio();
     {
@@ -296,7 +296,7 @@ const float ProgressBarWidth = 146;
         progressBarLayer.frame = f;
     }
     {
-        [progressLabel setText:[NSString stringWithFormat:@"Occupy: %d%%", (int)(clearRatio*100)]];
+        [progressLabel setText:[NSString stringWithFormat:NSLocalizedString(@"Occupy: %d%%", nil), (int)(clearRatio*100)]];
     }
     {
         hg::StageInfo stage_info = hg::UserData::sharedUserData()->getStageInfo();

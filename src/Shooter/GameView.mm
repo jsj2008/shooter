@@ -653,8 +653,8 @@ static EnemyGroupInfoList enemyGroupInfoList;
                 }];
                 
                 // 退却するか確認して退却
-                DialogView* dialog = [[[DialogView alloc] initWithMessage:@"Are you sure to reatreat?"] autorelease];
-                [dialog addButtonWithText:@"OK" withAction:^{
+                DialogView* dialog = [[[DialogView alloc] initWithMessage:NSLocalizedString(@"Are you sure to reatreat?", nil)] autorelease];
+                [dialog addButtonWithText:NSLocalizedString(@"OK", nil) withAction:^{
                     [UIView animateWithDuration:0.2 animations:^{
                         [baseCurtain setAlpha:0];
                         [baseCurtain setUserInteractionEnabled:false];
@@ -664,7 +664,7 @@ static EnemyGroupInfoList enemyGroupInfoList;
                         hg::retreat();
                     }];
                 }];
-                [dialog addButtonWithText:@"Cancel" withAction:^{
+                [dialog addButtonWithText:NSLocalizedString(@"Cancel", nil) withAction:^{
                     // animate
                     [UIView animateWithDuration:0.2 animations:^{
                         [baseCurtain setAlpha:0];

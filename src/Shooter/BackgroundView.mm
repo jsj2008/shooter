@@ -1,6 +1,7 @@
 #import "BackgroundView.h"
 #import "MainViewController.h"
 #import <QuartzCore/QuartzCore.h>
+#import "AppDelegate.h"
 
 #import <vector>
 #import "UserData.h"
@@ -227,6 +228,9 @@ float fighterMoveDiffZ = -0.05;
     {
         if (isEnd)
         {
+            return;
+        }
+        if ([AppDelegate IsBackGround]) {
             return;
         }
         // 光源なし
