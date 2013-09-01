@@ -6,8 +6,7 @@
 #define SUB_FONT_COLOR [UIColor colorWithHexString:@"#55aa55"]
 #define SUB_BACK_COLOR [UIColor colorWithHexString:@"#aaffaa"]
 
-#define BGM_BOSS @"bgm_maoudamashii_neorock25.mp3"
-#define BGM_TITLE @"game_maoudamashii_1_battle21.mp3"
+#define BGM_BOSS @"game_maoudamashii_2_lastboss03.mp3"
 #define BGM_BATTLE @"game_maoudamashii_1_battle21.mp3"
 #define BGM_MENU @"game_maoudamashii_4_field07.mp3"
 #define BGM_CLEAR @"game_maoudamashii_9_jingle05.mp3"
@@ -19,3 +18,8 @@
 #define SE_ENEMY_APPROACH @"EnemiesApproaching.caf"
 #define SE_ENEMY_ELIMINATED @"EnemyEliminated.caf"
 #define SE_UNITLOST @"UnitLost.caf"
+
+#define ICON_CHECK @"ic_check"
+#define ICON_SELECT_ALL @"ic_select_all"
+#define ICON_DESELECT @"ic_deselect"
+#define ICON_SORT @"ic_sort"

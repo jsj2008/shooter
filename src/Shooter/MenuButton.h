@@ -12,5 +12,6 @@
 
 - (void)setOnTapAction:(void(^)(MenuButton* target)) _onTap;
 - (void)setText:(NSString*)text;
+- (void)setColor:(UIColor*)color;
 
 @end

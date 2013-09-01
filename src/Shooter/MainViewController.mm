@@ -80,6 +80,7 @@ static MainViewController* instance = nil;
     if (self)
     {
         // データロード
+        hg::initRandom();
         hg::UserData::sharedUserData()->loadData();
         
         menuBaseView = NULL;
@@ -241,6 +242,7 @@ static MainViewController* instance = nil;
                     CGRect frm = CGRectMake(buttonX, buttonY, MenuButtonWidth, MenuButtonHeight);
                     MenuButton* m = [[[MenuButton alloc] initWithFrame:frm] autorelease];
                     [m setText:@"Battle"];
+                    [m setColor:[UIColor colorWithHexString:@"#ff4444"]];
                     [menuBaseView addSubview:m];
                     [m setOnTapAction:^(MenuButton *target) {
                         
@@ -263,7 +265,7 @@ static MainViewController* instance = nil;
                 {
                     CGRect frm = CGRectMake(buttonX, buttonY, MenuButtonWidth, MenuButtonHeight);
                     MenuButton* m = [[[MenuButton alloc] initWithFrame:frm] autorelease];
-                    [m setText:@"Select your ship"];
+                    [m setText:@"Select My Unit"];
                     [menuBaseView addSubview:m];
                     [m setOnTapAction:^(MenuButton *target) {
                         [self hideMenuViewAnimate];
@@ -303,13 +305,13 @@ static MainViewController* instance = nil;
                 {
                     CGRect frm = CGRectMake(buttonX, buttonY, MenuButtonWidth, MenuButtonHeight);
                     MenuButton* m = [[[MenuButton alloc] initWithFrame:frm] autorelease];
-                    [m setText:@"Repair All"];
+                    [m setText:@"Repair All Units"];
                     [menuBaseView addSubview:m];
                     [m setOnTapAction:^(MenuButton *target) {
                         // buy
                         int cost = hg::UserData::sharedUserData()->getRepairAllCost();
                         if (cost == 0) {
-                            NSString* msg = [NSString stringWithFormat:@"No fighter needs repair."];
+                            NSString* msg = [NSString stringWithFormat:@"You don't need to do this."];
                             DialogView* dialog = [[[DialogView alloc] initWithMessage:msg] autorelease];
                             [dialog addButtonWithText:@"OK" withAction:^{
                                 // nothing
@@ -386,7 +388,7 @@ static MainViewController* instance = nil;
                 {
                     CGRect frm = CGRectMake(buttonX, buttonY, MenuButtonWidth, MenuButtonHeight);
                     MenuButton* m = [[[MenuButton alloc] initWithFrame:frm] autorelease];
-                    [m setText:@"Select allies"];
+                    [m setText:@"Select Units"];
                     [menuBaseView addSubview:m];
                     [m setOnTapAction:^(MenuButton *target) {
                         [self hideMenuViewAnimate];
@@ -432,7 +434,7 @@ static MainViewController* instance = nil;
                 {
                     CGRect frm = CGRectMake(buttonX2, buttonY2, MenuButtonWidth, MenuButtonHeight);
                     MenuButton* m = [[[MenuButton alloc] initWithFrame:frm] autorelease];
-                    [m setText:@"Buy ships"];
+                    [m setText:@"Buy Units"];
                     [menuBaseView addSubview:m];
                     [m setOnTapAction:^(MenuButton *target) {
                         [self hideMenuViewAnimate];
@@ -472,7 +474,7 @@ static MainViewController* instance = nil;
                 {
                     CGRect frm = CGRectMake(buttonX2, buttonY2, MenuButtonWidth, MenuButtonHeight);
                     MenuButton* m = [[[MenuButton alloc] initWithFrame:frm] autorelease];
-                    [m setText:@"Sell ships"];
+                    [m setText:@"Sell Units"];
                     [menuBaseView addSubview:m];
                     [m setOnTapAction:^(MenuButton *target) {
                         [self hideMenuViewAnimate];
@@ -517,7 +519,7 @@ static MainViewController* instance = nil;
                     [m setOnTapAction:^(MenuButton *target) {
                         NSString* msg = @"";
                         if (hg::UserData::sharedUserData()->getCurrentClearRatio() < 1.0) {
-                            msg = @"In exchange for the Advance and the half of Money, All fighters will be repaired completely. Are you sure to do this?";
+                            msg = @"You will get All fighters repaired and lose half of the Money. Are you sure to do this?";
                             DialogView* dialog = [[[DialogView alloc] initWithMessage:msg] autorelease];
                             [dialog addButtonWithText:@"OK" withAction:^{
                                 hg::UserData* u = hg::UserData::sharedUserData();
@@ -604,7 +606,7 @@ static MainViewController* instance = nil;
                         }
                         else {
                             // 途中
-                            DialogView* dialog = [[[DialogView alloc] initWithMessage:@"You can't change area when you not in the Base."] autorelease];
+                            DialogView* dialog = [[[DialogView alloc] initWithMessage:@"You can change the Stage when the Occupy Ratio is 0% or 100%"] autorelease];
                             [dialog addButtonWithText:@"OK" withAction:^{
                                 // do nothing
                             }];
@@ -616,6 +618,7 @@ static MainViewController* instance = nil;
                 }
                 
                 // option stage
+                /*
                 buttonY2 += (MenuButtonHeight + MenuButtonGap);
                 {
                     CGRect frm = CGRectMake(buttonX2, buttonY2, MenuButtonWidth, MenuButtonHeight);
@@ -657,7 +660,7 @@ static MainViewController* instance = nil;
                         }];
                         [dialog show];
                     }];
-                }
+                }*/
             } // end of menu 2
             
         }
@@ -735,7 +738,7 @@ static MainViewController* instance = nil;
     hg::FighterInfo* playerFighterInfo = userData->getPlayerFighterInfo();
     if (playerFighterInfo == NULL)
     {
-        DialogView* dialog = [[[DialogView alloc] initWithMessage:@"Please select your ship."] autorelease];
+        DialogView* dialog = [[[DialogView alloc] initWithMessage:@"Please select your Unit."] autorelease];
         [dialog addButtonWithText:@"OK" withAction:^{
             // do nothing
         }];
@@ -744,7 +747,7 @@ static MainViewController* instance = nil;
     }
     if (playerFighterInfo->life <= 0)
     {
-        DialogView* dialog = [[[DialogView alloc] initWithMessage:@"Your ship is bloken. Please repaire or change your ship."] autorelease];
+        DialogView* dialog = [[[DialogView alloc] initWithMessage:@"Your unit is bloken. Please repair or change your Units."] autorelease];
         [dialog addButtonWithText:@"OK" withAction:^{
             // do nothing
         }];

@@ -324,14 +324,7 @@
                 [lb setFrame:f];
                 [baseView addSubview:lb];
                 coinLabel = lb;
-                if (hg::UserData::sharedUserData()->getMoney() < cost)
-                {
-                    [coinLabel setTextColor:[UIColor redColor]];
-                }
-                else
-                {
-                    [coinLabel setTextColor:[UIColor whiteColor]];
-                }
+                [coinLabel setTextColor:[UIColor whiteColor]];
             }
             break;
         }
@@ -457,6 +450,16 @@
             }
             else
             {
+                int maxAllyNum = hg::UserData::sharedUserData()->getMaxAllyNum();
+                if (hg::UserData::sharedUserData()->getReadyList().size() >= maxAllyNum) {
+                    NSString* rankName = STR2NSSTR(hg::UserData::sharedUserData()->getGrade());
+                    DialogView* dialog = [[[DialogView alloc] initWithMessage:[NSString stringWithFormat:@"Sorry, %@ can take only %d Units to battle area.", rankName, maxAllyNum]] autorelease];
+                    [dialog addButtonWithText:@"OK" withAction:^{
+                        // nothing
+                    }];
+                    [dialog show];
+                    return;
+                }
                 hg::UserData::sharedUserData()->setReady(_fighterInfo);
             }
             break;
@@ -504,7 +507,13 @@
             hg::UserData* u = hg::UserData::sharedUserData();
             int cost = u->getBuyCost(_fighterInfo);
             // check money
-            if (u->getMoney() >= cost)
+            if (u->getFighterList().size() >= 50) {
+                DialogView* dialog = [[[DialogView alloc] initWithMessage:@"The garage is full now."] autorelease];
+                [dialog addButtonWithText:@"OK" withAction:^{
+                    // nothing
+                }];
+                [dialog show];
+            } else if (u->getMoney() >= cost)
             {
                 // buy
                 NSString* msg = [NSString stringWithFormat:@"It Costs %d gold. Are you sure to buy this?", cost];

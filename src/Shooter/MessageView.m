@@ -13,7 +13,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "ObjectAL.h"
 
-const float MessageBoxHeight = 140;
+const float MessageBoxHeight = 160;
 const float MessageBoxWidth = 320;
 const float MessageHeight = 180;
 

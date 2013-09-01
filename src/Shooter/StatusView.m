@@ -296,7 +296,7 @@ const float ProgressBarWidth = 146;
         progressBarLayer.frame = f;
     }
     {
-        [progressLabel setText:[NSString stringWithFormat:@"%d%%", (int)(clearRatio*100)]];
+        [progressLabel setText:[NSString stringWithFormat:@"Occupy: %d%%", (int)(clearRatio*100)]];
     }
     {
         hg::StageInfo stage_info = hg::UserData::sharedUserData()->getStageInfo();

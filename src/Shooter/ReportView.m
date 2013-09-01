@@ -53,13 +53,14 @@
         float y = 0;
         //UIImage *img = [UIImage imageNamed:@"report_background.jpg"];
         //UIImage *img = [UIImage imageNamed:@"metal_back2.jpg"];
+        /*
         NSString *path = [[NSBundle mainBundle] pathForResource:@"metal_back2" ofType:@"png"];
         UIImage* img = [[[UIImage alloc] initWithContentsOfFile:path] autorelease];
         UIImageView* backView = [[[UIImageView alloc] initWithFrame:CGRectMake(x,y,width,height)] autorelease];
         [backView setImage:img];
         [backView setCenter:CGPointMake(frame.size.width/2, frame.size.height/2)];
         [backView setUserInteractionEnabled:true];
-        [self addSubview:backView];
+        [self addSubview:backView];*/
         
         /*
         // tap
@@ -298,14 +299,14 @@
         {
             ImageButtonView* backImgView = [[[ImageButtonView alloc] initWithFrame:CGRectMake(0, 0, 66, 66)] autorelease];
             //UIImage* img = [UIImage imageNamed:@"checkmark.png"];
-            NSString *path = [[NSBundle mainBundle] pathForResource:@"checkmark" ofType:@"png"];
+            NSString *path = [[NSBundle mainBundle] pathForResource:ICON_CHECK ofType:@"png"];
             UIImage* img = [[[UIImage alloc] initWithContentsOfFile:path] autorelease];
             
             [backImgView setBackgroundColor:[UIColor whiteColor]];
             [backImgView setFrame:CGRectMake(mainFrame.size.width - 76, mainFrame.size.height - 84, 66, 66)];
             [backImgView.layer setCornerRadius:8];
-            [backImgView.layer setBorderColor:[UIColor colorWithHexString:@"#222222"].CGColor];
-            [backImgView.layer setBorderWidth:3];
+            [backImgView.layer setBorderColor:[UIColor colorWithHexString:@"#ffffff"].CGColor];
+            [backImgView.layer setBorderWidth:0.5];
             
             [backImgView setImage:img];
             [backImgView setContentMode:UIViewContentModeScaleAspectFit];
@@ -322,7 +323,7 @@
             }];
         }
     
-        [self setBackgroundColor:[UIColor clearColor]];
+        [self setBackgroundColor:[UIColor blackColor]];
 
     }
     return self;
@@ -436,6 +437,7 @@ heightForHeaderInSection:(NSInteger)section
         [tlabel setText:STR2NSSTR(msg.title)];
         [tlabel setFrame:frame];
         [c addSubview:tlabel];
+        tlabel.adjustsFontSizeToFitWidth = true;
         
     }
     // message
@@ -453,6 +455,7 @@ heightForHeaderInSection:(NSInteger)section
         [mlabel setText:STR2NSSTR(msg.message)];
         [mlabel setFrame:frame];
         [c addSubview:mlabel];
+        mlabel.adjustsFontSizeToFitWidth = true;
     }
     
     return c;

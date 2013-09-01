@@ -67,6 +67,12 @@
     [label setText:text];
 }
 
+- (void)setColor:(UIColor*)color
+{
+    [label setTextColor:color];
+    [self.layer setBorderColor:color.CGColor];
+}
+
 - (void)setOnTapAction:(void(^)(MenuButton* target)) _onTap
 {
     onTap = [_onTap copy];

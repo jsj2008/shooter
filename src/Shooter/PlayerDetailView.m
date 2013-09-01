@@ -183,6 +183,24 @@
         }
         {
             std::stringstream ss;
+            ss << userData->getMaxAllyNum();
+            PlayerReportMessage r = {
+                "Max Units",
+                ss.str()
+            };
+            reportMessageList.push_back(r);
+        }
+        {
+            std::stringstream ss;
+            ss << userData->getSumValue();
+            PlayerReportMessage r = {
+                "Total Value of Units",
+                ss.str()
+            };
+            reportMessageList.push_back(r);
+        }
+        {
+            std::stringstream ss;
             ss << userData->getWinCount();
             PlayerReportMessage r = {
                 "Total Win Count",
@@ -230,14 +248,14 @@
         {
             ImageButtonView* backImgView = [[[ImageButtonView alloc] initWithFrame:CGRectMake(0, 0, 66, 66)] autorelease];
             //UIImage* img = [UIImage imageNamed:@"checkmark.png"];
-            NSString *path = [[NSBundle mainBundle] pathForResource:@"checkmark" ofType:@"png"];
+            NSString *path = [[NSBundle mainBundle] pathForResource:ICON_CHECK ofType:@"png"];
             UIImage* img = [[[UIImage alloc] initWithContentsOfFile:path] autorelease];
             
             [backImgView setBackgroundColor:[UIColor whiteColor]];
             [backImgView setFrame:CGRectMake(mainFrame.size.width - 76, mainFrame.size.height - 84, 66, 66)];
             [backImgView.layer setCornerRadius:8];
-            [backImgView.layer setBorderColor:[UIColor colorWithHexString:@"#222222"].CGColor];
-            [backImgView.layer setBorderWidth:3];
+            [backImgView.layer setBorderColor:[UIColor colorWithHexString:@"#ffffff"].CGColor];
+            [backImgView.layer setBorderWidth:0.5];
             
             [backImgView setImage:img];
             [backImgView setContentMode:UIViewContentModeScaleAspectFit];
@@ -253,7 +271,7 @@
             }];
         }
     
-        [self setBackgroundColor:[UIColor clearColor]];
+        [self setBackgroundColor:[UIColor blackColor]];
 
     }
     return self;
@@ -380,6 +398,7 @@ heightForHeaderInSection:(NSInteger)section
         [tlabel setText:STR2NSSTR(msg.title)];
         [tlabel setFrame:frame];
         [c addSubview:tlabel];
+        tlabel.adjustsFontSizeToFitWidth = true;
         
     }
     // message
@@ -396,6 +415,7 @@ heightForHeaderInSection:(NSInteger)section
         frame.origin.y += 3;
         [mlabel setText:STR2NSSTR(msg.message)];
         [mlabel setFrame:frame];
+        mlabel.adjustsFontSizeToFitWidth = true;
         [c addSubview:mlabel];
     }
     

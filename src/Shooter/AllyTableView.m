@@ -133,14 +133,14 @@ static AllyTableView* instance;
         ImageButtonView* backImgView = [[[ImageButtonView alloc] initWithFrame:CGRectMake(0, 0, 66, 66)] autorelease];
         //UIImage* img = [UIImage imageNamed:@"checkmark.png"];
         
-        NSString *path = [[NSBundle mainBundle] pathForResource:@"checkmark" ofType:@"png"];
+        NSString *path = [[NSBundle mainBundle] pathForResource:ICON_CHECK ofType:@"png"];
         UIImage* img = [[[UIImage alloc] initWithContentsOfFile:path] autorelease];
         
         [backImgView setBackgroundColor:[UIColor whiteColor]];
         [backImgView setFrame:CGRectMake(frame.size.width - 76, frame.size.height - 84, 66, 66)];
         [backImgView.layer setCornerRadius:8];
-        [backImgView.layer setBorderColor:[UIColor colorWithHexString:@"#222222"].CGColor];
-        [backImgView.layer setBorderWidth:3];
+        [backImgView.layer setBorderColor:[UIColor colorWithHexString:@"#ffffff"].CGColor];
+        [backImgView.layer setBorderWidth:0.5];
         
         [backImgView setImage:img];
         [backImgView setContentMode:UIViewContentModeScaleAspectFit];
@@ -155,17 +155,18 @@ static AllyTableView* instance;
     }
     
     // sortボタン
+    if (viewMode != AllyViewModeShop)
     {
         ImageButtonView* backImgView = [[ImageButtonView alloc] initWithFrame:CGRectMake(0, 0, 66, 66)];
         //UIImage* img = [UIImage imageNamed:@"checkmark.png"];
-        NSString *path = [[NSBundle mainBundle] pathForResource:@"checkmark" ofType:@"png"];
+        NSString *path = [[NSBundle mainBundle] pathForResource:ICON_SORT ofType:@"png"];
         UIImage* img = [[[UIImage alloc] initWithContentsOfFile:path] autorelease];
         
         [backImgView setBackgroundColor:[UIColor whiteColor]];
         [backImgView setFrame:CGRectMake(frame.size.width - 76, frame.size.height - 84 - 10 - 66, 66, 66)];
         [backImgView.layer setCornerRadius:8];
-        [backImgView.layer setBorderColor:[UIColor colorWithHexString:@"#222222"].CGColor];
-        [backImgView.layer setBorderWidth:3];
+        [backImgView.layer setBorderColor:[UIColor colorWithHexString:@"#ffffff"].CGColor];
+        [backImgView.layer setBorderWidth:0.5];
         
         [backImgView setImage:img];
         [backImgView setContentMode:UIViewContentModeScaleAspectFit];
@@ -185,14 +186,14 @@ static AllyTableView* instance;
         {
             ImageButtonView* backImgView = [[ImageButtonView alloc] initWithFrame:CGRectMake(0, 0, 66, 66)];
             //UIImage* img = [UIImage imageNamed:@"checkmark.png"];
-            NSString *path = [[NSBundle mainBundle] pathForResource:@"checkmark" ofType:@"png"];
+            NSString *path = [[NSBundle mainBundle] pathForResource:ICON_SELECT_ALL ofType:@"png"];
             UIImage* img = [[[UIImage alloc] initWithContentsOfFile:path] autorelease];
             
             [backImgView setBackgroundColor:[UIColor whiteColor]];
             [backImgView setFrame:CGRectMake(frame.size.width - 76, frame.size.height - 84 - 10 - 66 - 10 - 66, 66, 66)];
             [backImgView.layer setCornerRadius:8];
-            [backImgView.layer setBorderColor:[UIColor colorWithHexString:@"#222222"].CGColor];
-            [backImgView.layer setBorderWidth:3];
+            [backImgView.layer setBorderColor:[UIColor colorWithHexString:@"#ffffff"].CGColor];
+            [backImgView.layer setBorderWidth:0.5];
             
             [backImgView setImage:img];
             [backImgView setContentMode:UIViewContentModeScaleAspectFit];
@@ -210,14 +211,14 @@ static AllyTableView* instance;
         {
             ImageButtonView* backImgView = [[ImageButtonView alloc] initWithFrame:CGRectMake(0, 0, 66, 66)];
             //UIImage* img = [UIImage imageNamed:@"checkmark.png"];
-            NSString *path = [[NSBundle mainBundle] pathForResource:@"checkmark" ofType:@"png"];
+            NSString *path = [[NSBundle mainBundle] pathForResource:ICON_DESELECT ofType:@"png"];
             UIImage* img = [[[UIImage alloc] initWithContentsOfFile:path] autorelease];
             
             [backImgView setBackgroundColor:[UIColor whiteColor]];
             [backImgView setFrame:CGRectMake(frame.size.width - 76, frame.size.height - 84 - 10 - 66 - 10 - 66 - 10 - 66, 66, 66)];
             [backImgView.layer setCornerRadius:8];
-            [backImgView.layer setBorderColor:[UIColor colorWithHexString:@"#222222"].CGColor];
-            [backImgView.layer setBorderWidth:3];
+            [backImgView.layer setBorderColor:[UIColor colorWithHexString:@"#ffffff"].CGColor];
+            [backImgView.layer setBorderWidth:0.5];
             
             [backImgView setImage:img];
             [backImgView setContentMode:UIViewContentModeScaleAspectFit];

@@ -11,7 +11,11 @@
 #import "UIColor+MyCategory.h"
 #import "Common.h"
 #import "ObjectAL.h"
-
+#import "MenuButton.h"
+#import "DialogView.h"
+#import "UserData.h"
+#import "BlinkLabel.h"
+#import "CopyrightView.h"
 
 typedef enum TYPE_TITLE_BTN
 {
@@ -137,6 +141,96 @@ t_title_btn title_btn_info[] = {
             [curtain setAlpha:0];
         } completion:^(BOOL finished) {
             [curtain removeFromSuperview];
+        }];
+    }
+    
+    int MenuButtonWidth = 160;
+    int MenuButtonHeight = 24;
+    int buttonX2 = self.frame.size.width - MenuButtonWidth - 10;
+    int buttonY2 = self.frame.size.height - MenuButtonHeight - 5;
+    // delete data button
+    {
+        CGRect frm = CGRectMake(buttonX2, buttonY2, MenuButtonWidth, MenuButtonHeight);
+        MenuButton* m = [[[MenuButton alloc] initWithFrame:frm] autorelease];
+        [m setBackgroundColor:[UIColor whiteColor]];
+        [m setText:@"Initialize Data"];
+        [m setColor:[UIColor blackColor]];
+        [m setBackgroundColor:[UIColor whiteColor]];
+        [self addSubview:m];
+        [m setOnTapAction:^(MenuButton *target) {
+            DialogView* dialog = [[[DialogView alloc] initWithMessage:@"Are you sure to initialize your playing data of this game?"] autorelease];
+            [dialog addButtonWithText:@"OK" withAction:^{
+                DialogView* dialog = [[[DialogView alloc] initWithMessage:@"Is it really OK?"] autorelease];
+                [dialog addButtonWithText:@"OK" withAction:^{
+                    hg::UserData::DeleteAllData();
+                    DialogView* dialog = [[[DialogView alloc] initWithMessage:@"GameData is initialized."] autorelease];
+                    [dialog addButtonWithText:@"OK" withAction:^{
+                    }];
+                    [dialog show];
+                }];
+                [dialog addButtonWithText:@"Cancel" withAction:^{
+                }];
+                [dialog show];
+            }];
+            [dialog addButtonWithText:@"Cancel" withAction:^{
+                // do nothing
+            }];
+            [dialog show];
+        }];
+    }
+    // copyright button
+    buttonX2 = 10;
+    {
+        CGRect frm = CGRectMake(buttonX2, buttonY2, MenuButtonWidth, MenuButtonHeight);
+        MenuButton* m = [[[MenuButton alloc] initWithFrame:frm] autorelease];
+        [m setBackgroundColor:[UIColor whiteColor]];
+        [m setText:@"Show Credits"];
+        [m setColor:[UIColor blackColor]];
+        [m setBackgroundColor:[UIColor whiteColor]];
+        [self addSubview:m];
+        [m setOnTapAction:^(MenuButton *target) {
+            CopyrightView* copyRight = [[[CopyrightView alloc] initWithFrame:self.frame] autorelease];
+            [self addSubview:copyRight];
+        }];
+    }
+    // push start
+    float labelWidth = 200;
+    float labelHeight = 30;
+    CGRect labelRect = CGRectMake(self.frame.size.width/2 - labelWidth/2, self.frame.size.height/2 - labelHeight/2 + 80, labelWidth, labelHeight);
+    BlinkLabel* startLabel = [[BlinkLabel alloc] initWithFrame:labelRect];
+    [startLabel setTextColor:[UIColor redColor]];
+    NSString* fontName = @"HiraKakuProN-W6";
+    UIFont* font = [UIFont fontWithName:fontName size:15];
+    [startLabel setFont:font];
+    [startLabel setBackgroundColor:[UIColor clearColor]];
+    [startLabel setUserInteractionEnabled:NO];
+    [startLabel setText:@"TOUCH TO START"];
+    [self addSubview:startLabel];
+    
+    // title logo
+    {
+        NSString *path = [[[NSBundle mainBundle] pathForResource:@"title2" ofType:@"png"] autorelease];
+        UIImage* img = [[UIImage alloc] initWithContentsOfFile:path];
+        UIImageView* imgView = [[[UIImageView alloc] initWithImage:img] autorelease];
+        float w = MIN(self.frame.size.width - 20, 400);
+        float h = w*58/286;
+        [imgView setFrame:CGRectMake(0, 0, w, h)];
+        [imgView setCenter:CGPointMake(self.frame.size.width/2, self.frame.size.height/2)];
+        [self addSubview:imgView];
+        [imgView setTransform:CGAffineTransformMakeScale(1, 0)];
+        [UIView animateWithDuration:0.5 animations:^{
+            [imgView setTransform:CGAffineTransformMakeScale(1, 1)];
+        }];
+    }
+    
+    // cover
+    {
+        UIView* v = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
+        [v setBackgroundColor:[UIColor whiteColor]];
+        [v setUserInteractionEnabled:NO];
+        [self addSubview:v];
+        [UIView animateWithDuration:0.3 animations:^{
+            [v setAlpha:0];
         }];
     }
     

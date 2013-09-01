@@ -102,7 +102,7 @@ static StageTableView* instance;
     
     [self setFrame:myFrame];
     
-    UIView* tbCont = [[UIView alloc] initWithFrame: CGRectMake(0, 0, myFrame.size.width, myFrame.size.height)];
+    UIView* tbCont = [[UIView alloc] initWithFrame: CGRectMake(0, StatusViewHeight, myFrame.size.width, myFrame.size.height - (StatusViewHeight + 30))];
     [tbCont setBackgroundColor:[UIColor clearColor]];
     //[tbCont setBackgroundColor:[UIColor redColor]];
     [self addSubview:tbCont];
@@ -120,7 +120,7 @@ static StageTableView* instance;
     tbv.indicatorStyle = UIScrollViewIndicatorStyleBlack;
     tbv.delegate = self;
     tbv.dataSource = self;
-    [tbv setCenter:CGPointMake(tbCont.frame.size.width/2, tbCont.frame.size.height/2)];
+    [tbv setCenter:CGPointMake(tbCont.frame.size.width/2, tbCont.frame.size.height/2 + tbCont.frame.origin.y)];
     [tbv setIndicatorStyle:UIScrollViewIndicatorStyleWhite];
     [tbv setPagingEnabled:NO];
     tableView = tbv;
@@ -130,14 +130,14 @@ static StageTableView* instance;
     {
         ImageButtonView* backImgView = [[[ImageButtonView alloc] initWithFrame:CGRectMake(0, 0, 66, 66)] autorelease];
         //UIImage* img = [UIImage imageNamed:@"checkmark.png"];
-        NSString *path = [[NSBundle mainBundle] pathForResource:@"checkmark" ofType:@"png"];
+        NSString *path = [[NSBundle mainBundle] pathForResource:ICON_CHECK ofType:@"png"];
         UIImage* img = [[[UIImage alloc] initWithContentsOfFile:path] autorelease];
         
         [backImgView setBackgroundColor:[UIColor whiteColor]];
         [backImgView setFrame:CGRectMake(myFrame.size.width - 76, myFrame.size.height - 84, 66, 66)];
         [backImgView.layer setCornerRadius:8];
-        [backImgView.layer setBorderColor:[UIColor colorWithHexString:@"#222222"].CGColor];
-        [backImgView.layer setBorderWidth:3];
+        [backImgView.layer setBorderColor:[UIColor colorWithHexString:@"#ffffff"].CGColor];
+        [backImgView.layer setBorderWidth:0.5];
         
         [backImgView setImage:img];
         [backImgView setContentMode:UIViewContentModeScaleAspectFit];
@@ -210,27 +210,55 @@ numberOfRowsInSection:(NSInteger)section
     [back addSubview:stageLabel];
     [back setTag:[indexPath row] + 1];
     
+    { // clear count
+        UILabel* l = [[UILabel alloc] initWithFrame:CGRectMake(cell_width/2, 0, cell_width, cell_height)];
+        [l setBackgroundColor:[UIColor clearColor]];
+        [l setTextColor:MAIN_FONT_COLOR];
+        [l setText:[NSString stringWithFormat:@"Cleared Count: %d", info.clear_count]];
+        [l autorelease];
+        [back addSubview:l];
+    }
+    
     // 選択時の処理
     [back setOnTapAction:^(ImageButtonView *target) {
-        NSString* msg = [[NSString stringWithFormat:@"Go to %@ Stage?", [NSString stringWithCString:info.stage_name_short.c_str() encoding:NSUTF8StringEncoding]] autorelease];
-        DialogView* dv = [[DialogView alloc] initWithMessage:msg];
         int stage_id = target.tag;
-        [dv addButtonWithText:@"OK" withAction:^{
-            [self setUserInteractionEnabled:FALSE];
-            onEndAction();
-            hg::UserData::sharedUserData()->setStageId(stage_id);
-            hg::UserData::sharedUserData()->saveData();
-            //[MainViewController RemoveBackgroundView];
-            //[MainViewController ShowBackgroundView];
-            StatusView* sv = [StatusView GetInstance];
-            if (sv) {
-                [sv loadUserInfo];
+        hg::StageInfo info = hg::UserData::sharedUserData()->getStageInfo(stage_id);
+        bool chk = true;
+        if (stage_id > 1) {
+            hg::StageInfo info_pre = hg::UserData::sharedUserData()->getStageInfo(stage_id - 1);
+            if (info_pre.clear_count == 0) {
+                chk = false;
+                NSString* msg = [[NSString stringWithFormat:@"Soryy, You must clear %@ Stage at first.", [NSString stringWithCString:info_pre.stage_name_short.c_str() encoding:NSUTF8StringEncoding]] autorelease];
+                DialogView* dv = [[DialogView alloc] initWithMessage:msg];
+                [dv addButtonWithText:@"OK" withAction:^{
+                    // do nothing
+                }];
+                [dv show];
             }
-        }];
-        [dv addButtonWithText:@"Cancel" withAction:^{
-        }];
-        [dv show];
-        
+        }
+        if (stage_id == hg::UserData::sharedUserData()->getStageInfo().stage_id) {
+            chk = false;
+        }
+        if (!(chk == false && !IS_DEBUG_SHOOTER)) {
+            
+            NSString* msg = [[NSString stringWithFormat:@"Go to %@ Stage?", [NSString stringWithCString:info.stage_name_short.c_str() encoding:NSUTF8StringEncoding]] autorelease];
+            DialogView* dv = [[DialogView alloc] initWithMessage:msg];
+            [dv addButtonWithText:@"OK" withAction:^{
+                [self setUserInteractionEnabled:FALSE];
+                onEndAction();
+                hg::UserData::sharedUserData()->setStageId(stage_id);
+                hg::UserData::sharedUserData()->saveData();
+                //[MainViewController RemoveBackgroundView];
+                //[MainViewController ShowBackgroundView];
+                StatusView* sv = [StatusView GetInstance];
+                if (sv) {
+                    [sv loadUserInfo];
+                }
+            }];
+            [dv addButtonWithText:@"Cancel" withAction:^{
+            }];
+            [dv show];
+        }
     }];
     
     return c;

@@ -32,6 +32,10 @@
 #define PXL2REAL(var) ((var)*(PIXEL_SCALE))
 #define SHILD_SIZE_GAP (50*(PIXEL_SCALE))
 #define BOSS_FIGHTER_TYPE_MIN 3000
+#define ENEMY_FIGHTER_TYPE_MIN 1000
+
+#define MIN_ENEMY_WEAPON_LV 0
+#define MAX_ENEMY_WEAPON_LV 6
 
 namespace hg {
     class HGNode;
@@ -326,18 +330,19 @@ namespace hg {
         shieldPotential(0),
         seed(1331124),
         isStatusChanged(true),
-        cachedCost(0)
+        cachedCost(0),
+        newBuyCost(0)
         {
             seed = std::rand()%INT32_MAX;
         }
         int fighterType;
-        int level;
-        int power;
-        int life;
-        int lifeMax;
-        int shield;
-        int shieldMax;
-        int shieldHeal;
+        unsigned int level;
+        unsigned int power;
+        unsigned int life;
+        unsigned int lifeMax;
+        unsigned int shield;
+        unsigned int shieldMax;
+        unsigned int shieldHeal;
         long tmpExp;
         long exp;
         long expNext;
@@ -370,6 +375,7 @@ namespace hg {
         bool isStatusChanged;
         int cachedCost;
         int cachedDamageExpPerLife;
+        int newBuyCost;
     } FighterInfo;
     
     typedef std::vector<FighterInfo*> FighterList;

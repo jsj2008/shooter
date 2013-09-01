@@ -15,7 +15,7 @@
 #import <vector>
 #import <string>
 
-
+#define DefCamera -25
 
 namespace hg {
     
@@ -33,6 +33,8 @@ namespace hg {
         std::string model_name;
         float small_size;
         float big_size;
+        int clear_count;
+        int maxEnemyWeaponLv = 0;
     } StageInfo;
     
     typedef struct LevelupInfo
@@ -66,6 +68,7 @@ namespace hg {
     {
     public:
         static UserData* sharedUserData();
+        UserData();
         void loadData();
         bool saveData();
         static bool DeleteAllData();
@@ -82,7 +85,9 @@ namespace hg {
             if (money < 0) money = 0;
             money = MIN(99999999, money);
         }
+        int getMaxAllyNum();
         void returnToBase();
+        long getSumValue();
         int getStageNum();
         int getRepairCost(hg::FighterInfo* fInfo);
         int getBuyCost(hg::FighterInfo* fInfo);
@@ -113,6 +118,8 @@ namespace hg {
         double getDamagePerSecond(FighterInfo* info);
         FighterInfo* getPlayerInfo();
         void setDefaultInfo(FighterInfo* pInfo, int type);
+        void setDefaultInfo(FighterInfo* pInfo, int type, int fix_enemy_lv);
+        bool isLastStageNow();
         void deployAllFighter();
         void undeployAllFighter();
         std::string popLevelupMessage();
@@ -154,11 +161,12 @@ namespace hg {
         FighterList readyList;
         FighterList fighterList;
         long money = 0;
-        float cameraPositionY = -18;
+        float cameraPositionY = DefCamera;
         std::string grade = "";
         int enemyLevel = 0;
         int maxAllyNum = 0;
         int maxPowerUpNum = 0;
+        std::vector<int> clear_count_list;
         static UserData* instance;
         friend LevelupInfo levelup(hg::FighterInfo* fighterInfo);
         RewardInfoList rewardInfoList;

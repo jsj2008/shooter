@@ -95,6 +95,7 @@ typedef std::vector<EnemyGroupInfo> EnemyGroupInfoList;
     
     bool upCamera;
     bool downCamera;
+    bool isPlaying;
     
     CGRect hpGaugeFrameRect;
     CGRect shieldGaugeFrameRect;
@@ -143,6 +144,7 @@ static EnemyGroupInfoList enemyGroupInfoList;
     }
     if (self)
     {
+        isPlaying = false;
         CGRect frame = [[UIScreen mainScreen] applicationFrame];
         CGRect viewFrame = CGRectMake(0, 0, frame.size.height, frame.size.width);
         [self setFrame:viewFrame];
@@ -236,46 +238,148 @@ static EnemyGroupInfoList enemyGroupInfoList;
             int max_appear_count = 2;
             int stage_id = hg::UserData::sharedUserData()->getStageId();
             int clear_ratio = (int)(hg::UserData::sharedUserData()->getCurrentClearRatio() * 100.0);
+            bool is_last_stage = hg::UserData::sharedUserData()->isLastStageNow();
             switch (stage_id) {
                 case 1:
                     if (clear_ratio > 50) {
-                        max_appear_count = 3;
+                        max_appear_count = 2;
                     }
                     break;
                 case 2:
                     max_appear_count = 3;
-                    if (clear_ratio > 50) {
-                        max_appear_count = 4;
-                    }
                     break;
                 case 3:
-                    max_appear_count = 3;
-                    if (clear_ratio >= 50) {
-                        max_appear_count = 5;
-                    }
+                    max_appear_count = 4;
                     break;
                 case 4:
-                    max_appear_count = 5;
+                    max_appear_count = 4;
                     break;
                 case 5:
-                    max_appear_count = 6;
-                    if (clear_ratio >= 80) {
-                        max_appear_count = 8;
-                    }
+                    max_appear_count = 5;
                     break;
             }
             int appear_num = hg::rand(min_appear_count, max_appear_count);
+            float plus = 0;
+            if (is_last_stage) {
+                switch (stage_id) {
+                    case 1:
+                        appear_num = 2;
+                        break;
+                    case 2:
+                        appear_num = 3;
+                        plus = 1.2;
+                        break;
+                    case 3:
+                        appear_num = 3;
+                        plus = 1.4;
+                        break;
+                    case 4:
+                        appear_num = 4;
+                        plus = 1.6;
+                        break;
+                    case 5:
+                        appear_num = 4;
+                        plus = 2;
+                        break;
+                }
+            }
+            int from_group_index = enemyGroupInfoList[0].fromStageId;
+            int to_group_index = enemyGroupInfoList[stage_id - 1].toStageId;
+            int group_id = -1;
+            int group_create_decrementer = appear_num;
+            while (group_create_decrementer > 0) {
+                int group_index = hg::rand(from_group_index, to_group_index);
+                EnemyGroup enemyGroup = enemyGroupList[group_index];
+                if (enemyGroup.stage_id == stage_id && enemyGroup.min_prog > clear_ratio) {
+                    continue;
+                } else {
+                    group_id++;
+                    spawnData.push_back(hg::SpawnGroup());
+                    group_create_decrementer--;
+                    int fix_enemy_lv = -1;
+                    if (hg::rand(0, 100) <= 50) {
+                        fix_enemy_lv = hg::rand(0, hg::UserData::sharedUserData()->getStageInfo().maxEnemyWeaponLv);
+                    }
+                    for (EnemyDataList::iterator it = enemyGroup.enemyDataList.begin(); it != enemyGroup.enemyDataList.end(); ++it) {
+                        EnemyData enemyData = *it;
+                        hg::FighterInfo* f = new hg::FighterInfo();
+                        enemyList.push_back(f);
+                        hg::UserData::sharedUserData()->setDefaultInfo(f, enemyData.fighterType);
+                        spawnData[group_id].push_back(f);
+                        if (appear_num > (appear_num - group_create_decrementer)) {
+                            if (hg::rand(0, 100) <= 4 * (group_create_decrementer)) {
+                                
+                            }
+                        }
+                    }
+                }
+            }
+            // add boss
+            switch (stage_id) {
+                case 1:
+                    if (is_last_stage) {
+                        hg::FighterInfo* f = new hg::FighterInfo();
+                        enemyList.push_back(f);
+                        hg::UserData::sharedUserData()->setDefaultInfo(f, 3000);
+                        spawnData[group_id].push_back(f);
+                    }
+                    break;
+                case 2:
+                    if (is_last_stage) {
+                        hg::FighterInfo* f = new hg::FighterInfo();
+                        enemyList.push_back(f);
+                        hg::UserData::sharedUserData()->setDefaultInfo(f, 3100);
+                        spawnData[group_id].push_back(f);
+                    }
+                    break;
+                case 3:
+                    if (is_last_stage) {
+                        hg::FighterInfo* f = new hg::FighterInfo();
+                        enemyList.push_back(f);
+                        hg::UserData::sharedUserData()->setDefaultInfo(f, 3200);
+                        spawnData[group_id].push_back(f);
+                    }
+                    break;
+                case 4:
+                    if (is_last_stage) {
+                        hg::FighterInfo* f = new hg::FighterInfo();
+                        enemyList.push_back(f);
+                        hg::UserData::sharedUserData()->setDefaultInfo(f, 3300);
+                        spawnData[group_id].push_back(f);
+                    }
+                    break;
+                case 5:
+                    if (is_last_stage) {
+                        {
+                            // fake boss
+                            hg::FighterInfo* f = new hg::FighterInfo();
+                            enemyList.push_back(f);
+                            hg::UserData::sharedUserData()->setDefaultInfo(f, 3400);
+                            spawnData[group_id].push_back(f);
+                        }
+                        {
+                            // true boss
+                            spawnData.push_back(hg::SpawnGroup());
+                            group_id++;
+                            hg::FighterInfo* f = new hg::FighterInfo();
+                            enemyList.push_back(f);
+                            hg::UserData::sharedUserData()->setDefaultInfo(f, 3500);
+                            spawnData[group_id].push_back(f);
+                        }
+                    }
+                    break;
+            }
             
             /*
-            for (NSDictionary* d in dicEnemyList)
-            {
-                int tmpGroup = [[d valueForKey:@"group"] integerValue] - 1;
-                hg::FighterInfo* f = new hg::FighterInfo();
-                enemyList.push_back(f);
-                int fighterType = [[d valueForKey:@"fighterType"] integerValue];
-                hg::UserData::sharedUserData()->setDefaultInfo(f, fighterType);
-                f->level = [[d valueForKey:@"level"] integerValue];
-                if (tmpGroup >= spawnData.size())
+             for (NSDictionary* d in dicEnemyList)
+             {
+             int tmpGroup = [[d valueForKey:@"group"] integerValue] - 1;
+             hg::FighterInfo* f = new hg::FighterInfo();
+             enemyList.push_back(f);
+             int fighterType = [[d valueForKey:@"fighterType"] integerValue];
+             hg::UserData::sharedUserData()->setDefaultInfo(f, fighterType);
+             f->level = [[d valueForKey:@"level"] integerValue];
+             if (tmpGroup >= spawnData.size())
                 {
                     spawnData.push_back(hg::SpawnGroup());
                 }
@@ -300,6 +404,7 @@ static EnemyGroupInfoList enemyGroupInfoList;
                 NSTimeInterval end;
                 float base_sleep = 1.0/GAMEFPS;
                 float sleep;
+                isPlaying = true;
                 while (1)
                 {
                     nowDt = [NSDate date];
@@ -329,6 +434,7 @@ static EnemyGroupInfoList enemyGroupInfoList;
                             
                             if (hg::isGameEnd())
                             {
+                                isPlaying = false;
                                 NSLog(@"is game end");
                                 // 終了処理
                                 hg::UserData::sharedUserData()->initAfterBattle();
@@ -456,14 +562,14 @@ static EnemyGroupInfoList enemyGroupInfoList;
             
             ImageButtonView* backImgView = [[[ImageButtonView alloc] initWithFrame:CGRectMake(0, 0, 66, 66)] autorelease];
             //UIImage* img = [UIImage imageNamed:@"checkmark.png"];
-            NSString *path = [[NSBundle mainBundle] pathForResource:@"checkmark" ofType:@"png"];
+            NSString *path = [[NSBundle mainBundle] pathForResource:@"Icon.1_04" ofType:@"png"];
             UIImage* img = [[[UIImage alloc] initWithContentsOfFile:path] autorelease];
             
             [backImgView setBackgroundColor:[UIColor whiteColor]];
             [backImgView setFrame:frame];
             [backImgView.layer setCornerRadius:8];
-            [backImgView.layer setBorderColor:[UIColor colorWithHexString:@"#222222"].CGColor];
-            [backImgView.layer setBorderWidth:3];
+            [backImgView.layer setBorderColor:[UIColor colorWithHexString:@"#ffffff"].CGColor];
+            [backImgView.layer setBorderWidth:0.5];
             
             [backImgView setImage:img];
             [backImgView setContentMode:UIViewContentModeScaleAspectFit];
@@ -472,6 +578,7 @@ static EnemyGroupInfoList enemyGroupInfoList;
             [baseView addSubview:backImgView];
             
             [backImgView setOnTapAction:^(ImageButtonView *target) {
+                if (!isPlaying || !hg::isControllable()) return;
                 hg::setPause(true);
                 [baseCurtain setUserInteractionEnabled:true];
                 [UIView animateWithDuration:0.2 animations:^{
@@ -521,14 +628,14 @@ static EnemyGroupInfoList enemyGroupInfoList;
             
             ImageButtonView* backImgView = [[ImageButtonView alloc] initWithFrame:CGRectMake(0, 0, 66, 66)];
             //UIImage* img = [UIImage imageNamed:@"checkmark.png"];
-            NSString *path = [[NSBundle mainBundle] pathForResource:@"checkmark" ofType:@"png"];
+            NSString *path = [[NSBundle mainBundle] pathForResource:@"Icon.4_33" ofType:@"png"];
             UIImage* img = [[[UIImage alloc] initWithContentsOfFile:path] autorelease];
             
             [backImgView setBackgroundColor:[UIColor whiteColor]];
             [backImgView setFrame:frame];
             [backImgView.layer setCornerRadius:8];
-            [backImgView.layer setBorderColor:[UIColor colorWithHexString:@"#222222"].CGColor];
-            [backImgView.layer setBorderWidth:3];
+            [backImgView.layer setBorderColor:[UIColor colorWithHexString:@"#ffffff"].CGColor];
+            [backImgView.layer setBorderWidth:0.5];
             
             [backImgView setImage:img];
             [backImgView setContentMode:UIViewContentModeScaleAspectFit];
@@ -537,6 +644,7 @@ static EnemyGroupInfoList enemyGroupInfoList;
             [baseView addSubview:backImgView];
             
             [backImgView setOnTapAction:^(ImageButtonView *target) {
+                if (!isPlaying || !hg::isControllable()) return;
                 hg::setPause(true);
                 [baseCurtain setUserInteractionEnabled:true];
                 [UIView animateWithDuration:0.2 animations:^{
@@ -644,14 +752,14 @@ static EnemyGroupInfoList enemyGroupInfoList;
             
             ImageButtonView* backImgView = [[ImageButtonView alloc] initWithFrame:CGRectMake(0, 0, 66, 66)];
             //UIImage* img = [UIImage imageNamed:@"checkmark.png"];
-            NSString *path = [[NSBundle mainBundle] pathForResource:@"checkmark" ofType:@"png"];
+            NSString *path = [[NSBundle mainBundle] pathForResource:@"ic_up" ofType:@"png"];
             UIImage* img = [[[UIImage alloc] initWithContentsOfFile:path] autorelease];
             
             [backImgView setBackgroundColor:[UIColor whiteColor]];
             [backImgView setFrame:frame];
             [backImgView.layer setCornerRadius:8];
-            [backImgView.layer setBorderColor:[UIColor colorWithHexString:@"#222222"].CGColor];
-            [backImgView.layer setBorderWidth:3];
+            [backImgView.layer setBorderColor:[UIColor colorWithHexString:@"#ffffff"].CGColor];
+            [backImgView.layer setBorderWidth:0.5];
             
             [backImgView setImage:img];
             [backImgView setContentMode:UIViewContentModeScaleAspectFit];
@@ -678,14 +786,14 @@ static EnemyGroupInfoList enemyGroupInfoList;
             
             ImageButtonView* backImgView = [[ImageButtonView alloc] initWithFrame:CGRectMake(0, 0, 66, 66)];
             //UIImage* img = [UIImage imageNamed:@"checkmark.png"];
-            NSString *path = [[NSBundle mainBundle] pathForResource:@"checkmark" ofType:@"png"];
+            NSString *path = [[NSBundle mainBundle] pathForResource:@"ic_down" ofType:@"png"];
             UIImage* img = [[[UIImage alloc] initWithContentsOfFile:path] autorelease];
             
             [backImgView setBackgroundColor:[UIColor whiteColor]];
             [backImgView setFrame:frame];
             [backImgView.layer setCornerRadius:8];
-            [backImgView.layer setBorderColor:[UIColor colorWithHexString:@"#222222"].CGColor];
-            [backImgView.layer setBorderWidth:3];
+            [backImgView.layer setBorderColor:[UIColor colorWithHexString:@"#ffffff"].CGColor];
+            [backImgView.layer setBorderWidth:0.5];
             
             [backImgView setImage:img];
             [backImgView setContentMode:UIViewContentModeScaleAspectFit];
@@ -698,6 +806,60 @@ static EnemyGroupInfoList enemyGroupInfoList;
             }];
             [backImgView setOnToutchEnd:^(ImageButtonView *target) {
                 upCamera = false;
+            }];
+        }
+        
+        // deploy all
+        {
+            ly = ly - lbtnGap - CAMERA_ADJUST_BTN_SIZE;
+            CGRect frame;
+            frame.size.width = CAMERA_ADJUST_BTN_SIZE;
+            frame.size.height = CAMERA_ADJUST_BTN_SIZE;
+            frame.origin.x = lx;
+            frame.origin.y = ly;
+            
+            ImageButtonView* backImgView = [[ImageButtonView alloc] initWithFrame:CGRectMake(0, 0, 66, 66)];
+            //UIImage* img = [UIImage imageNamed:@"checkmark.png"];
+            NSString *path = [[NSBundle mainBundle] pathForResource:@"Icon.1_51" ofType:@"png"];
+            UIImage* img = [[[UIImage alloc] initWithContentsOfFile:path] autorelease];
+            
+            [backImgView setBackgroundColor:[UIColor whiteColor]];
+            [backImgView setFrame:frame];
+            [backImgView.layer setCornerRadius:8];
+            [backImgView.layer setBorderColor:[UIColor colorWithHexString:@"#ffffff"].CGColor];
+            [backImgView.layer setBorderWidth:0.5];
+            
+            [backImgView setImage:img];
+            [backImgView setContentMode:UIViewContentModeScaleAspectFit];
+            [backImgView setUserInteractionEnabled:YES];
+            backImgView.tag = 0;
+            
+            [baseView addSubview:backImgView];
+            
+            [backImgView setOnTapAction:^(ImageButtonView *target) {
+                if (!isPlaying || !hg::isControllable()) return;
+                hg::FighterList list = hg::UserData::sharedUserData()->getReadyList();
+                for (hg::FighterList::iterator it = list.begin(); it != list.end(); ++it) {
+                    hg::FighterInfo* info = *it;
+                    if (backImgView.tag == 0 ) {
+                        if (!info->isOnBattleGround && !info->isPlayer && info->life > 0) {
+                            info->isOnBattleGround = true;
+                        }
+                        NSString *path = [[NSBundle mainBundle] pathForResource:@"Icon.1_51_2" ofType:@"png"];
+                        UIImage* img = [[[UIImage alloc] initWithContentsOfFile:path] autorelease];
+                        [backImgView setImage:img];
+                        backImgView.tag = 1;
+                    } else {
+                        if (!info->isOnBattleGround && !info->isPlayer && info->life > 0) {
+                            info->isOnBattleGround = false;
+                        }
+                        NSString *path = [[NSBundle mainBundle] pathForResource:@"Icon.1_51" ofType:@"png"];
+                        UIImage* img = [[[UIImage alloc] initWithContentsOfFile:path] autorelease];
+                        [backImgView setImage:img];
+                        backImgView.tag = 0;
+                    }
+                }
+                hg::deployFriends();
             }];
         }
         

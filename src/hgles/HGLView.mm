@@ -7,6 +7,7 @@
 //
 
 #import "HGLView.h"
+#import "AppDelegate.h"
 #import <QuartzCore/QuartzCore.h>
 #include <OpenGLES/ES2/gl.h>
 #include <OpenGLES/ES2/glext.h>
@@ -194,7 +195,9 @@ using namespace hgles;
 
 - (void)showBuffer
 {
-    [_context presentRenderbuffer:GL_RENDERBUFFER];
+    if ([AppDelegate IsBackGround] == false) {
+        [_context presentRenderbuffer:GL_RENDERBUFFER];
+    }
 }
 
 - (void)draw

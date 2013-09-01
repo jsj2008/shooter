@@ -149,6 +149,13 @@
         UILabel* lb = [self labelWithIndex:labelIndex WithText:[NSString stringWithFormat:@"Speed %.2lf Km/h", val]];
         [self.baseView addSubview:lb];
     }
+    // teq
+    {
+        labelIndex++;
+        int val = info->cpu_lv;
+        UILabel* lb = [self labelWithIndex:labelIndex WithText:[NSString stringWithFormat:@"Teqnique %d Lv", val]];
+        [self.baseView addSubview:lb];
+    }
     // value
     {
         labelIndex++;
@@ -156,6 +163,7 @@
         UILabel* lb = [self labelWithIndex:labelIndex WithText:[NSString stringWithFormat:@"Value %d gold", val]];
         [self.baseView addSubview:lb];
     }
+    /*
     // kill
     {
         labelIndex++;
@@ -167,7 +175,7 @@
         labelIndex++;
         UILabel* lb = [self labelWithIndex:labelIndex WithText:[NSString stringWithFormat:@"Dead %d", info->dieCnt]];
         [self.baseView addSubview:lb];
-    }
+    }*/
     // total kill
     {
         labelIndex++;

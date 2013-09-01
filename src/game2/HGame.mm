@@ -70,6 +70,12 @@ namespace hg {
             pParentNode->addChild(pRootNode);
             pRootNode->setPosition(13.5, 7.5);
             
+            HGSprite* pSprite = new HGSprite();
+            pSprite->init("radergrid.png");
+            pSprite->setPosition(RADER_SCALE/2.0 - RADER_CELL_SCALE/2.0, RADER_SCALE/2.0 - RADER_CELL_SCALE/2.0);
+            pSprite->setScale(RADER_SCALE, RADER_SCALE);
+            pRootNode->addChild(pSprite);
+            
             // フィールド境界
             {
                 AlphaColorNode* p = new AlphaColorNode();
@@ -192,6 +198,7 @@ namespace hg {
     bool isEnd = false;
     bool shouldDeployFriends = false;
     bool isPause = false;
+    bool _isControllable = false;
     
     unsigned int updateCount = 0;
     int numOfEffect = 0;
@@ -343,9 +350,6 @@ namespace hg {
         }
         int dmg = pBullet->getPower();
         int beforeLife = pFighter->getLife();
-        pFighter->addLife(dmg*-1);
-        pFighter->noticeAttackedBy(pBullet->getOwner());
-        
         if (pFighter->getSide() == SideTypeEnemy)
         {
             [[OALSimpleAudio sharedInstance] playEffect:SE_HIT];
@@ -362,13 +366,26 @@ namespace hg {
             }
             if (a->isPlayer()) {
                 battleResult.myHit++;
+            } else {
+                // cpu lvに応じてダメージ増加
+                int cpu_lv = pFighter->getFighterInfo()->cpu_lv;
+                dmg += (dmg * cpu_lv * 0.01 * 2);
             }
             battleResult.allHit++;
         } else {
+            // 回避チェック
+            if (!pFighter->isPlayer()) {
+                int cpu_lv = pFighter->getFighterInfo()->cpu_lv;
+                if (rand(0, 120) <= cpu_lv) {
+                    return;
+                }
+            }
             if (!pFighter->hasShield()) {
                 battleResult.enemyHit++;
             }
         }
+        pFighter->addLife(dmg*-1);
+        pFighter->noticeAttackedBy(pBullet->getOwner());
         
         if (beforeLife > 0) {
             // 死亡カウント
@@ -377,7 +394,7 @@ namespace hg {
             {
                 if (pFighter->getSide() == SideTypeEnemy)
                 {
-                    [[OALSimpleAudio sharedInstance] playEffect:SE_ENEMY_ELIMINATED];
+                    //[[OALSimpleAudio sharedInstance] playEffect:SE_ENEMY_ELIMINATED];
                     
                     battleResult.killedEnemy++;
                     battleResult.earnedMoney += u->getKillReward(pFighter->getFighterInfo());
@@ -749,7 +766,7 @@ namespace hg {
                     HGProcessOwner* po = new HGProcessOwner();
                     CallFunctionRepeadedlyProcess<Fn>* cfrp = new CallFunctionRepeadedlyProcess<Fn>();
                     cfrp->init(po, &Fn::exec, fn);
-                    cfrp->setWaitFrame(f(150));
+                    cfrp->setWaitFrame(f(60));
                     
                     // プロセス開始
                     HGProcessManager::sharedProcessManager()->addProcess(cfrp);
@@ -765,7 +782,23 @@ namespace hg {
                     pNodeText->setblendcolor({(float)0x6a/255.f, (float)0x93/255.f, (float)0xd4/255.f});
                     pLayerUIRoot->addChild(pNodeText);
                 }
-                collectAllFriends();
+                //collectAllFriends();
+                
+                // 仲間を退却させる
+                {
+                    UserData* userData = UserData::sharedUserData();
+                    FighterList fList = userData->getFighterList();
+                    for (FighterList::iterator it = fList.begin(); it != fList.end(); ++it)
+                    {
+                        FighterInfo* pFighterInfo = (*it);
+                        if (pFighterInfo->life <= 0 || pFighterInfo->isPlayer)
+                        {
+                            continue;
+                        }
+                        pFighterInfo->isOnBattleGround = false;
+                    }
+                    deployAllFriends();
+                }
                 
             }
             HGProcessManager::sharedProcessManager()->update();
@@ -822,7 +855,7 @@ namespace hg {
                     HGProcessOwner* po = new HGProcessOwner();
                     CallFunctionRepeadedlyProcess<Fn>* cfrp = new CallFunctionRepeadedlyProcess<Fn>();
                     cfrp->init(po, &Fn::exec, fn);
-                    cfrp->setWaitFrame(f(70));
+                    cfrp->setWaitFrame(f(60));
                     
                     // プロセス開始
                     HGProcessManager::sharedProcessManager()->addProcess(cfrp);
@@ -910,7 +943,7 @@ namespace hg {
                     HGProcessOwner* po = new HGProcessOwner();
                     CallFunctionRepeadedlyProcess<Fn>* cfrp = new CallFunctionRepeadedlyProcess<Fn>();
                     cfrp->init(po, &Fn::exec, fn);
-                    cfrp->setWaitFrame(f(150));
+                    cfrp->setWaitFrame(f(60));
                     
                     // プロセス開始
                     HGProcessManager::sharedProcessManager()->addProcess(cfrp);
@@ -998,6 +1031,7 @@ namespace hg {
                 battleResult.isWin = true;
                 HGStateManager::sharedStateManger()->pop();
                 HGStateManager::sharedStateManger()->push(new WinState());
+                _isControllable = false;
             }
             
             // 勝敗判定
@@ -1007,6 +1041,7 @@ namespace hg {
                 battleResult.isWin = false;
                 HGStateManager::sharedStateManger()->pop();
                 HGStateManager::sharedStateManger()->push(new LoseState());
+                _isControllable = false;
             }
             
             
@@ -1059,6 +1094,7 @@ namespace hg {
         updateCount = 0;
         isEnd = false;
         isPause = false;
+        _isControllable = true;
         isInitialized = false;
         shouldDeployFriends = false;
         battleResult = BattleResult();
@@ -1233,7 +1269,7 @@ namespace hg {
             hg::StageInfo info = hg::UserData::sharedUserData()->getStageInfo();
             HG3DModel* mdl = new HG3DModel();
             mdl->init(info.model_name);
-            float scale = info.small_size + 1 * info.big_size;
+            float scale = info.small_size + clearRatio * info.big_size;
             if (clearRatio >= 0.90) {
                 scale = 800;
                 mdl->setPosition(FIELD_SIZE/2, FIELD_SIZE/2, -400);
@@ -1271,7 +1307,6 @@ namespace hg {
             }
         }
         {
-#warning test
             /*
             // planet
             hg::StageInfo stageInfo = hg::UserData::sharedUserData()->getStageInfo();
@@ -1340,6 +1375,7 @@ namespace hg {
     {
         HGStateManager::sharedStateManger()->pop();
         HGStateManager::sharedStateManger()->push(new RetreatState());
+        _isControllable = false;
     }
     
     ////////////////////
@@ -1440,5 +1476,10 @@ namespace hg {
     {
         isPause = shouldPause;
     }
-
+    
+    bool isControllable()
+    {
+        return _isControllable;
+    }
+    
 }

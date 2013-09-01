@@ -26,5 +26,6 @@ namespace hg
     void setCameraZPostion(float val);
     float getHPRatio();
     float getShieldRatio();
+    bool isControllable();
 }
 #endif

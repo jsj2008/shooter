@@ -30,6 +30,11 @@ namespace hg {
     const std::string IntKeyWinCount = "win_count";
     const std::string IntKeyLoseCount = "lose_count";
     const std::string IntKeyRetreatCount = "retreat_count";
+    const std::string IntKeyClear1 = "clear1";
+    const std::string IntKeyClear2 = "clear2";
+    const std::string IntKeyClear3 = "clear3";
+    const std::string IntKeyClear4 = "clear4";
+    const std::string IntKeyClear5 = "clear5";
     
     const float MaxCamera = -15;
     const float MinCamera = -40;
@@ -57,20 +62,30 @@ namespace hg {
         // ステータス変更
         std::srand(fighterInfo->seed);
         // 攻撃力
-        if (std::rand()%100 < 33) {
-            fighterInfo->power += ceil(std::rand()%(fighterInfo->powerPotential * 3));
+        if (status_rand(1, 100) <= 50) {
+            fighterInfo->power += ceil(status_rand(50, 150) * 0.01 * fighterInfo->powerPotential * status_rand(1, 3));
         }
         // life
-        int addLife = ceil(std::rand()%(fighterInfo->defencePotential));
+        int addLife = ceil(status_rand(50, 150) * 0.01 * (fighterInfo->defencePotential));
         fighterInfo->lifeMax += addLife;
-        fighterInfo->life += addLife;
+        if (fighterInfo->life > 0) {
+            fighterInfo->life += addLife;
+        }
         
         // shield
-        if (std::rand()%100 < 25) {
+        if (status_rand(1, 100) <= 50) {
             if (fighterInfo->shield > 0 && fighterInfo->shieldPotential > 0) {
-                fighterInfo->shieldMax += ceil(std::rand()%fighterInfo->shieldPotential * 4);
+                fighterInfo->shieldMax += ceil(status_rand(50, 150) * 0.01 * fighterInfo->shieldPotential * status_rand(1, 3));
             }
         }
+        
+        // cpu level
+        if (status_rand(1, 100) <= 50) {
+            if (fighterInfo->cpu_lv < 100) {
+                fighterInfo->cpu_lv += status_rand(1, 3);
+            }
+        }
+        
         // flag
         fighterInfo->isStatusChanged = true;
         fighterInfo->seed = std::rand();
@@ -115,6 +130,12 @@ namespace hg {
         };
     }
     
+    UserData::UserData() {
+        for (int i = 0; i < getStageNum(); i++) {
+            clear_count_list.push_back(0);
+        }
+    }
+    
     void UserData::upCamera()
     {
         this->cameraPositionY -= 0.3;
@@ -130,6 +151,11 @@ namespace hg {
     float UserData::getCameraPosition()
     {
         return this->cameraPositionY;
+    }
+    
+    int UserData::getMaxAllyNum()
+    {
+        return maxAllyNum;
     }
     
     UserData* UserData::instance = NULL;
@@ -150,6 +176,12 @@ namespace hg {
         score = MAX(0, score);
         score = MIN(99999999, score);
         calcGrade();
+    }
+    bool UserData::isLastStageNow() {
+        if (complete_point + getStageInfo().win_point >= 100) {
+            return true;
+        }
+        return false;
     }
     void UserData::setBattleResult(BattleResult br)
     {
@@ -178,12 +210,12 @@ namespace hg {
         }
         else if (br.isRetreat)
         {
-            this->addPoint(getStageInfo().retrieve_point * -1);
+            br.earnedMoney = 0;
             retreatCount++;
         }
         else
         {
-            this->addPoint(getStageInfo().lose_point * -1);
+            br.earnedMoney = 0;
             loseCount++;
         }
         br.finalIncome = income;
@@ -192,6 +224,7 @@ namespace hg {
         
         StageInfo stageInfo = this->getStageInfo();
         if (is_cleared) {
+            clear_count_list[stage_id - 1]++;
             for (FighterList::iterator it = fighterList.begin(); it != fighterList.end(); ++it)
             {
                 (*it)->life = (*it)->lifeMax;
@@ -203,20 +236,100 @@ namespace hg {
             float battleMoneyReward = 0;
             switch (stage_id) {
                 case 1: // earth
+                {
                     battleScoreReward = 1000;
                     battleMoneyReward = 25000;
+                    int a = rand(1,3);
+                    if (a == 1) {
+                        hg::FighterInfo* i = new hg::FighterInfo();
+                        hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypeAstray);
+                        shopList.push_back(i);
+                    } else if (a == 2) {
+                        hg::FighterInfo* i = new hg::FighterInfo();
+                        hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypeRapter);
+                        shopList.push_back(i);
+                    } else {
+                        hg::FighterInfo* i = new hg::FighterInfo();
+                        hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypeViper);
+                        shopList.push_back(i);
+                    }
                     break;
+                }
                 case 2:
+                {
                     battleScoreReward = 10000;
                     battleMoneyReward = 50000;
+                    if (stageInfo.clear_count == 0) {
+                        hg::FighterInfo* i = new hg::FighterInfo();
+                        hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypeViperL);
+                        shopList.push_back(i);
+                    } else {
+                        int a = rand(1,3);
+                        if (a == 1) {
+                            hg::FighterInfo* i = new hg::FighterInfo();
+                            hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypeAstray);
+                            shopList.push_back(i);
+                        } else if (a == 2) {
+                            hg::FighterInfo* i = new hg::FighterInfo();
+                            hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypeViperC);
+                            shopList.push_back(i);
+                        } else {
+                            hg::FighterInfo* i = new hg::FighterInfo();
+                            hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypeViper);
+                            shopList.push_back(i);
+                        }
+                    }
                     break;
+                }
                 case 3:
                     battleScoreReward = 50000;
                     battleMoneyReward = 100000;
+                    if (stageInfo.clear_count == 0) {
+                        hg::FighterInfo* i = new hg::FighterInfo();
+                        hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypelambda);
+                        shopList.push_back(i);
+                    }
+                    else {
+                        int a = rand(1,3);
+                        if (a == 1) {
+                            hg::FighterInfo* i = new hg::FighterInfo();
+                            hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypeAstray2);
+                            shopList.push_back(i);
+                        } else if (a == 2) {
+                            hg::FighterInfo* i = new hg::FighterInfo();
+                            hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypeRapter2);
+                            shopList.push_back(i);
+                        } else {
+                            hg::FighterInfo* i = new hg::FighterInfo();
+                            hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypeViperL);
+                            shopList.push_back(i);
+                        }
+                    }
                     break;
                 case 4:
                     battleScoreReward = 150000;
                     battleMoneyReward = 300000;
+                    if (stageInfo.clear_count == 0) {
+                        hg::FighterInfo* i = new hg::FighterInfo();
+                        hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypeGloire);
+                        shopList.push_back(i);
+                    }
+                    else {
+                        int a = rand(1,3);
+                        if (a == 1) {
+                            hg::FighterInfo* i = new hg::FighterInfo();
+                            hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypeAstray2);
+                            shopList.push_back(i);
+                        } else if (a == 2) {
+                            hg::FighterInfo* i = new hg::FighterInfo();
+                            hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypeRapter2);
+                            shopList.push_back(i);
+                        } else {
+                            hg::FighterInfo* i = new hg::FighterInfo();
+                            hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypeStarFighter);
+                            shopList.push_back(i);
+                        }
+                    }
                     break;
                 case 5:
                     battleScoreReward = 300000;
@@ -235,9 +348,80 @@ namespace hg {
                     battleScoreReward = 1000000;
                     battleMoneyReward = 2000000;
                     break;*/
+                    if (stageInfo.clear_count == 0) {
+                        hg::FighterInfo* i = new hg::FighterInfo();
+                        hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypeFox);
+                        shopList.push_back(i);
+                    }
+                    else if (stageInfo.clear_count == 1) {
+                        hg::FighterInfo* i = new hg::FighterInfo();
+                        hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypeRaderC);
+                        shopList.push_back(i);
+                    }
+                    else if (stageInfo.clear_count == 2) {
+                        hg::FighterInfo* i = new hg::FighterInfo();
+                        hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypeGatesC);
+                        shopList.push_back(i);
+                    }
+                    else if (stageInfo.clear_count == 3) {
+                        hg::FighterInfo* i = new hg::FighterInfo();
+                        hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypeVesariusC);
+                        shopList.push_back(i);
+                    }
+                    else {
+                        int a = rand(1,10);
+                        if (a == 1) {
+                            hg::FighterInfo* i = new hg::FighterInfo();
+                            hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypeAstray2);
+                            shopList.push_back(i);
+                        } else if (a == 2) {
+                            hg::FighterInfo* i = new hg::FighterInfo();
+                            hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypeRapter2);
+                            shopList.push_back(i);
+                        } else if (a == 3) {
+                            hg::FighterInfo* i = new hg::FighterInfo();
+                            hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypePegasus);
+                            shopList.push_back(i);
+                        } else if (a == 4) {
+                            hg::FighterInfo* i = new hg::FighterInfo();
+                            hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypelambda);
+                            shopList.push_back(i);
+                        } else if (a == 5) {
+                            hg::FighterInfo* i = new hg::FighterInfo();
+                            hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypeGloire);
+                            shopList.push_back(i);
+                        } else if (a == 6) {
+                            hg::FighterInfo* i = new hg::FighterInfo();
+                            hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypeFox);
+                            shopList.push_back(i);
+                        } else if (a == 7) {
+                            hg::FighterInfo* i = new hg::FighterInfo();
+                            hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypeVesariusC);
+                            shopList.push_back(i);
+                        } else if (a == 8) {
+                            hg::FighterInfo* i = new hg::FighterInfo();
+                            hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypeGatesC);
+                            shopList.push_back(i);
+                        } else if (a == 9) {
+                            hg::FighterInfo* i = new hg::FighterInfo();
+                            hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypeRaderC);
+                            shopList.push_back(i);
+                        } else {
+                            hg::FighterInfo* i = new hg::FighterInfo();
+                            hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypeStarFighter);
+                            shopList.push_back(i);
+                        }
+                    }
                 default:
                     break;
             }
+            /*
+            {
+                hg::FighterInfo* i = new hg::FighterInfo();
+                hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypeAstray);
+                shopList.push_back(i);
+            }*/
+            
             if (battleScoreReward > 0) {
                 addBattleScore(battleScoreReward);
                 std::stringstream ss;
@@ -267,83 +451,83 @@ namespace hg {
     void UserData::calcGrade()
     {
         if (score <= 250) {
-            grade = "学生";
+            grade = "パイロット候補";
             maxAllyNum = 1;
             maxPowerUpNum = 1;
         }
         else if (score <= 500) {
-            grade = "研修生";
+            grade = "新兵";
             maxAllyNum = 2;
             maxPowerUpNum = 1;
         }
         else if (score <= 1000) {
             grade = "上等兵";
-            maxAllyNum = 2;
+            maxAllyNum = 3;
             maxPowerUpNum = 2;
         }
         else if (score <= 2500) {
             grade = "伍長";
-            maxAllyNum = 3;
+            maxAllyNum = 4;
             maxPowerUpNum = 2;
         }
         else if (score <= 5000) {
             grade = "曹長";
-            maxAllyNum = 3;
+            maxAllyNum = 6;
             maxPowerUpNum = 2;
         }
         else if (score <= 20000) {
             grade = "准尉";
-            maxAllyNum = 4;
+            maxAllyNum = 7;
             maxPowerUpNum = 4;
         }
         else if (score <= 50000) {
             grade = "少尉";
-            maxAllyNum = 4;
+            maxAllyNum = 8;
             maxPowerUpNum = 4;
         }
         else if (score <= 100000) {
             grade = "中尉";
-            maxAllyNum = 5;
+            maxAllyNum = 9;
             maxPowerUpNum = 4;
         }
         else if (score <= 200000) {
             grade = "大尉";
-            maxAllyNum = 5;
+            maxAllyNum = 10;
             maxPowerUpNum = 5;
         }
         else if (score <= 300000) {
             grade = "少佐";
-            maxAllyNum = 6;
+            maxAllyNum = 11;
             maxPowerUpNum = 5;
         }
         else if (score <= 500000) {
             grade = "大佐";
-            maxAllyNum = 6;
+            maxAllyNum = 12;
             maxPowerUpNum = 5;
         }
         else if (score <= 800000) {
             grade = "准将";
-            maxAllyNum = 7;
+            maxAllyNum = 13;
             maxPowerUpNum = 5;
         }
         else if (score <= 1200000) {
             grade = "少将";
-            maxAllyNum = 8;
+            maxAllyNum = 14;
             maxPowerUpNum = 5;
         }
         else if (score <= 1500000) {
             grade = "中将";
-            maxAllyNum = 9;
+            maxAllyNum = 15;
             maxPowerUpNum = 5;
         }
         else if (score <= 2000000) {
             grade = "大将";
-            maxAllyNum = 10;
+            maxAllyNum = 16;
             maxPowerUpNum = 6;
         }
         else if (score <= 10000000) {
             grade = "元帥";
-            maxAllyNum = 15;
+            maxAllyNum = 30;
             maxPowerUpNum = 10;
         }
     }
@@ -374,7 +558,7 @@ namespace hg {
         // camera pos
         cameraPositionY = userdata::readIntegerData(IntKeyCameraPos) * 0.1;
         if (cameraPositionY < MinCamera || cameraPositionY > MaxCamera) {
-            cameraPositionY = -18;
+            cameraPositionY = DefCamera;
         }
         // score
         score = userdata::readIntegerData(IntKeyScore);
@@ -388,6 +572,14 @@ namespace hg {
         loseCount = userdata::readIntegerData(IntKeyLoseCount);
         // retreat
         retreatCount = userdata::readIntegerData(IntKeyRetreatCount);
+        
+        // stage clear count
+        clear_count_list[0] = userdata::readIntegerData(IntKeyClear1);
+        clear_count_list[1] = userdata::readIntegerData(IntKeyClear2);
+        clear_count_list[2] = userdata::readIntegerData(IntKeyClear3);
+        clear_count_list[3] = userdata::readIntegerData(IntKeyClear4);
+        clear_count_list[4] = userdata::readIntegerData(IntKeyClear5);
+        
         // calc grade
         calcGrade();
         
@@ -414,7 +606,13 @@ namespace hg {
             if (IS_DEBUG_SHOOTER) {
                 hg::UserData::sharedUserData()->setDefaultInfo(pPlayerInfo, FighterTypePegasus);
             } else {
-                hg::UserData::sharedUserData()->setDefaultInfo(pPlayerInfo, FighterTypeViperC);
+                hg::UserData::sharedUserData()->setDefaultInfo(pPlayerInfo, FighterTypeViper);
+                {
+                    hg::FighterInfo* i = new hg::FighterInfo();
+                    hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypeViper);
+                    fighterList.push_back(i);
+                    this->setReady(i);
+                }
             }
             fighterList.push_back(pPlayerInfo);
             pPlayerInfo->isPlayer = true;
@@ -489,13 +687,11 @@ namespace hg {
             ////////////////////
             // shop list
             ////////////////////
-            for (int j = 0; j < 3; j++)
             {
                 hg::FighterInfo* i = new hg::FighterInfo();
                 hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypeViper);
                 shopList.push_back(i);
             }
-            for (int j = 0; j < 3; j++)
             {
                 hg::FighterInfo* i = new hg::FighterInfo();
                 hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypeRapter);
@@ -508,7 +704,7 @@ namespace hg {
             // stage
             this->setStageId(1);
             
-            money = 30000;
+            money = 10000;
         }
     }
     
@@ -593,6 +789,13 @@ namespace hg {
             
             // retreat
             if (!userdata::updateOrInsertIntegerData(IntKeyRetreatCount, (long)this->retreatCount))throw "write retreat count failed";
+            
+            // stage clear count
+            if (!userdata::updateOrInsertIntegerData(IntKeyClear1, (long)clear_count_list[0]))throw "write clear count failed";
+            if (!userdata::updateOrInsertIntegerData(IntKeyClear2, (long)clear_count_list[1]))throw "write clear count failed";
+            if (!userdata::updateOrInsertIntegerData(IntKeyClear3, (long)clear_count_list[2]))throw "write clear count failed";
+            if (!userdata::updateOrInsertIntegerData(IntKeyClear4, (long)clear_count_list[3]))throw "write clear count failed";
+            if (!userdata::updateOrInsertIntegerData(IntKeyClear5, (long)clear_count_list[4]))throw "write clear count failed";
             
             if (!userdata::commit()) throw "commit failed";
             userdata::close();
@@ -690,29 +893,29 @@ namespace hg {
         info.win_point = 20;
         info.lose_point = 0;
         info.retrieve_point = 0;
+        info.clear_count = clear_count_list[stage_id - 1];
+        info.maxEnemyWeaponLv = MAX_ENEMY_WEAPON_LV * stage_id/getStageNum();
         
         // name
         std::string stage_name = "";
         switch (stage_id) {
             case 1:
                 stage_name = "地球";
-                info.win_point = 100;
+                info.win_point = 20;
                 info.model_name = "pl_earth";
                 info.small_size = 40;
                 info.big_size = 160;
                 break;
             case 2:
                 stage_name = "火星";
-                info.win_point = 12;
-                info.lose_point = 8;
+                info.win_point = 10;
                 info.model_name = "pl_mars";
                 info.small_size = 30;
                 info.big_size = 150;
                 break;
             case 3:
                 stage_name = "木星";
-                info.win_point = 10;
-                info.lose_point = 10;
+                info.win_point = 5;
                 info.model_name = "pl_jupiter";
                 info.small_size = 100;
                 info.big_size = 250;
@@ -720,7 +923,6 @@ namespace hg {
             case 4:
                 stage_name = "金星";
                 info.win_point = 3;
-                info.lose_point = 3;
                 info.model_name = "pl_venus";
                 info.small_size = 50;
                 info.big_size = 170;
@@ -728,7 +930,6 @@ namespace hg {
             case 5:
                 stage_name = "太陽";
                 info.win_point = 1;
-                info.lose_point = 1;
                 info.model_name = "pl_sun";
                 info.small_size = 150;
                 info.big_size = 260;
@@ -765,7 +966,7 @@ namespace hg {
         
         char stage_name_str[1000];
         info.stage_name_short = stage_name;
-        sprintf(stage_name_str, "STAGE %d : %s", stage_id, stage_name.c_str());
+        sprintf(stage_name_str, "Stage %d : %s", stage_id, stage_name.c_str());
         info.stage_name = std::string(stage_name_str);
         return info;
     }
@@ -782,7 +983,7 @@ namespace hg {
     int UserData::getExp(FighterInfo* info)
     {
         int cost = getCost(info);
-        double ret = (double)cost * 0.105;
+        double ret = (double)cost * 0.15;
         return ceil(ret);
     }
     int UserData::getDamageExp(FighterInfo* info, int damage)
@@ -816,6 +1017,7 @@ namespace hg {
            << "\tLevel :%d → %d\n"
            << "\tHP :%d → %d\n"
            << "\tAtk/Sec :%.0lf → %.0lf\n"
+           << "\tTeq Lv: %d → %d\n"
         ;
         if (info.fighterInfo->shieldMax > 0) {
            ss << "\tShield :%d → %d\n";
@@ -826,6 +1028,7 @@ namespace hg {
                 info.beforeInfo.level, info.fighterInfo->level,
                 info.beforeInfo.lifeMax, info.fighterInfo->lifeMax,
                 this->getDamagePerSecond(&(info.beforeInfo)), this->getDamagePerSecond(info.fighterInfo),
+                info.beforeInfo.cpu_lv, info.fighterInfo->cpu_lv,
                 info.beforeInfo.shieldMax, info.fighterInfo->shieldMax
                 );
         std::string ret = std::string(levelupMessageChar);
@@ -868,7 +1071,10 @@ namespace hg {
     }
     int UserData::getBuyCost(hg::FighterInfo* fInfo)
     {
-        int cost = this->getCost(fInfo)*3;
+        if (fInfo->newBuyCost > 0 && fInfo->level == 1) {
+            return fInfo->newBuyCost;
+        }
+        int cost = this->getCost(fInfo)*1.5;
         return ceiling(cost, 2);
     }
     int UserData::getSellValue(hg::FighterInfo* fInfo)
@@ -902,22 +1108,22 @@ namespace hg {
     {
         int cost = hg::UserData::sharedUserData()->getCost(fInfo);
         int ret = 0;
-        if (fInfo->life >= 0) {
+        if (fInfo->life > 0) {
             float lifeToRepair = fInfo->lifeMax - fInfo->life;
             float lifeToRepairRatio = lifeToRepair/fInfo->lifeMax;
-            int value = hg::UserData::sharedUserData()->getCost(fInfo) * 0.5;
+            int value = hg::UserData::sharedUserData()->getCost(fInfo) * 0.1;
             ret = ceil(lifeToRepairRatio * value);
             ret = ceiling(ret, 2);
         }
         else {
-            ret = ceiling(cost * 0.8, 2);
+            ret = ceiling(cost * 0.5, 2);
         }
         return ret;
     }
     int UserData::getKillReward(hg::FighterInfo* fInfo)
     {
         int cost = hg::UserData::sharedUserData()->getCost(fInfo);
-        return cost*0.1;
+        return cost*0.05;
     }
     // return false if failed.
     bool UserData::sell(hg::FighterInfo* fInfo)
@@ -934,6 +1140,9 @@ namespace hg {
         }
         fighterList.erase(buy_it);
         shopList.push_back(fInfo);
+        if (shopList.size() >= 30) {
+            shopList.erase(shopList.begin());
+        }
         return true;
     }
     void UserData::addShop(int type)
@@ -950,6 +1159,16 @@ namespace hg {
             this->addMoney(-1*cost);
             (*it)->life = (*it)->lifeMax;
         }
+    }
+    
+    long UserData::getSumValue()
+    {
+        long ret = 0;
+        for (FighterList::iterator it = fighterList.begin(); it != fighterList.end(); ++it)
+        {
+            ret += this->getCost(*it);
+        }
+        return ret;
     }
     
     void UserData::returnToBase()
@@ -1007,7 +1226,7 @@ namespace hg {
             }
             double weaponNumRatio = 1 + ((info->weaponList.size() - 1) / 10);
             double speedRatio = 0.5 + info->speed;
-            double isShipRatio = info->isShip?1.2:1;
+            double isShipRatio = info->isShip?1.5:1;
             
             int cost = dps*10 + dps*5 + dps + info->lifeMax + info->shieldMax*5;
             
@@ -1145,6 +1364,11 @@ namespace hg {
     
     void UserData::setDefaultInfo(FighterInfo* pInfo, int type)
     {
+        setDefaultInfo(pInfo, type, -1);
+    }
+    
+    void UserData::setDefaultInfo(FighterInfo* pInfo, int type, int fix_enemy_lv)
+    {
         std::srand((unsigned int)time(NULL));
         pInfo->fighterType = type;
         float stageProgressRatio = stage_id/getStageNum();
@@ -1166,10 +1390,12 @@ namespace hg {
                 pInfo->showPixelHeight = 256;
                 pInfo->collisionId = CollisionId_P_ROBO1;
                 pInfo->power = 30;
+                pInfo->cpu_lv = 10;
                 
-                pInfo->life = pInfo->lifeMax = 800;
+                pInfo->life = pInfo->lifeMax = 300;
                 pInfo->shield = pInfo->shieldMax = 0;
                 pInfo->speed = 0.60;
+                pInfo->newBuyCost = 20000;
                 
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeShotgun, BulletTypeFriendNormal, 0, 0, 1.55, 0.30));
                 break;
@@ -1185,11 +1411,13 @@ namespace hg {
                 pInfo->showPixelWidth = 256;
                 pInfo->showPixelHeight = 256;
                 pInfo->collisionId = CollisionId_P_ROBO1;
-                pInfo->power = 50;
+                pInfo->power = 30;
+                pInfo->cpu_lv = 10;
                 
-                pInfo->life = pInfo->lifeMax = 1000;
-                pInfo->shield = pInfo->shieldMax = 1000;
+                pInfo->life = pInfo->lifeMax = 350;
+                pInfo->shield = pInfo->shieldMax = 100;
                 pInfo->speed = 0.78;
+                pInfo->newBuyCost = 50000;
                 
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeStraight, BulletTypeFriendLaser, 0, 0, 1.75, 0.15));
                 break;
@@ -1205,11 +1433,13 @@ namespace hg {
                 pInfo->showPixelWidth = 256;
                 pInfo->showPixelHeight = 256;
                 pInfo->collisionId = CollisionId_P_VIPER;
-                pInfo->power = 15;
+                pInfo->power = 20;
+                pInfo->cpu_lv = 10;
                 
-                pInfo->life = pInfo->lifeMax = 400;
+                pInfo->life = pInfo->lifeMax = 200;
                 pInfo->shield = pInfo->shieldMax = 0;
                 pInfo->speed = 0.70;
+                pInfo->newBuyCost = 10000;
                 
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeNormal, BulletTypeFriendNormal, 0, 0, 1.35, 0.14));
                 
@@ -1226,11 +1456,13 @@ namespace hg {
                 pInfo->showPixelWidth = 256;
                 pInfo->showPixelHeight = 256;
                 pInfo->collisionId = CollisionId_P_VIPER;
-                pInfo->power = 20;
+                pInfo->power = 25;
+                pInfo->cpu_lv = 10;
                 
-                pInfo->life = pInfo->lifeMax = 1000;
+                pInfo->life = pInfo->lifeMax = 250;
                 pInfo->shield = pInfo->shieldMax = 0;
                 pInfo->speed = 0.85;
+                pInfo->newBuyCost = 25000;
                 
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeTwin, BulletTypeFriendNormal, 0, 0, 1.1, 0.15));
                 
@@ -1247,11 +1479,13 @@ namespace hg {
                 pInfo->showPixelWidth = 256;
                 pInfo->showPixelHeight = 256;
                 pInfo->collisionId = CollisionId_P_VIPER;
-                pInfo->power = 50;
+                pInfo->power = 30;
+                pInfo->cpu_lv = 10;
                 
-                pInfo->life = pInfo->lifeMax = 700;
-                pInfo->shield = pInfo->shieldMax = 300;
+                pInfo->life = pInfo->lifeMax = 300;
+                pInfo->shield = pInfo->shieldMax = 100;
                 pInfo->speed = 0.90;
+                pInfo->newBuyCost = 40000;
                 
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeLaser, BulletTypeFriendLaser, 0, 0, 1.6, 0.15));
                 break;
@@ -1267,14 +1501,16 @@ namespace hg {
                 pInfo->showPixelWidth = 300;
                 pInfo->showPixelHeight = 300;
                 pInfo->collisionId = CollisionId_P_RAPTER;
-                pInfo->power = 75;
+                pInfo->power = 32;
+                pInfo->cpu_lv = 10;
                 
-                pInfo->life = pInfo->lifeMax = 3500;
-                pInfo->shield = pInfo->shieldMax = 500;
+                pInfo->life = pInfo->lifeMax = 700;
+                pInfo->shield = pInfo->shieldMax = 200;
                 pInfo->speed = 0.68;
+                pInfo->newBuyCost = 20000;
                 
-                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeTwin, BulletTypeFriendNormal, 0, 0, 0.95, 0.10));
-                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeNormal, BulletTypeFriendMedium, 0, 0, 1.05, 0.20));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeTwin, BulletTypeFriendNormal, 0, 0, 0.95, 0.20));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeNormal, BulletTypeFriendMedium, 0, 0, 1.05, 0.40));
                 break;
             }
             case FighterTypeRapter2:
@@ -1288,11 +1524,13 @@ namespace hg {
                 pInfo->showPixelWidth = 300;
                 pInfo->showPixelHeight = 300;
                 pInfo->collisionId = CollisionId_P_RAPTER;
-                pInfo->power = 145;
+                pInfo->power = 37;
+                pInfo->cpu_lv = 10;
                 
-                pInfo->life = pInfo->lifeMax = 5000;
-                pInfo->shield = pInfo->shieldMax = 1000;
+                pInfo->life = pInfo->lifeMax = 800;
+                pInfo->shield = pInfo->shieldMax = 300;
                 pInfo->speed = 0.72;
+                pInfo->newBuyCost = 80000;
                 
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeTwinLaser, BulletTypeFriendLaser, 0, 0, 1.5, 0.16));
                 break;
@@ -1308,11 +1546,13 @@ namespace hg {
                 pInfo->showPixelWidth = 256;
                 pInfo->showPixelHeight = 256;
                 pInfo->collisionId = CollisionId_P_VIPER;
-                pInfo->power = 145;
+                pInfo->power = 38;
+                pInfo->cpu_lv = 10;
                 
-                pInfo->life = pInfo->lifeMax = 350;
-                pInfo->shield = pInfo->shieldMax = 2000;
+                pInfo->life = pInfo->lifeMax = 400;
+                pInfo->shield = pInfo->shieldMax = 200;
                 pInfo->speed = 1.05;
+                pInfo->newBuyCost = 120000;
                 
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeLaser, BulletTypeFriendLaser, 0, 0, 2.1, 0.13));
                 break;
@@ -1328,11 +1568,13 @@ namespace hg {
                 pInfo->showPixelWidth = 328;
                 pInfo->showPixelHeight = 328;
                 pInfo->collisionId = CollisionId_P_VIPER;
-                pInfo->power = 140;
+                pInfo->power = 40;
+                pInfo->cpu_lv = 10;
                 
-                pInfo->life = pInfo->lifeMax = 1800;
-                pInfo->shield = pInfo->shieldMax = 1000;
+                pInfo->life = pInfo->lifeMax = 520;
+                pInfo->shield = pInfo->shieldMax = 80;
                 pInfo->speed = 0.85;
+                pInfo->newBuyCost = 200000;
                 
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeTwinLaser, BulletTypeFriendLaser, 0, 0, 2.2, 0.10));
                 break;
@@ -1348,11 +1590,13 @@ namespace hg {
                 pInfo->showPixelWidth = 328;
                 pInfo->showPixelHeight = 328;
                 pInfo->collisionId = CollisionId_P_VIPER;
-                pInfo->power = 140;
+                pInfo->power = 40;
+                pInfo->cpu_lv = 10;
                 
-                pInfo->life = pInfo->lifeMax = 1500;
-                pInfo->shield = pInfo->shieldMax = 800;
+                pInfo->life = pInfo->lifeMax = 380;
+                pInfo->shield = pInfo->shieldMax = 120;
                 pInfo->speed = 0.85;
+                pInfo->newBuyCost = 200000;
                 
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeShotgun, BulletTypeFriendMedium, 0, 0, 1.3, 0.23));
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeTriple, BulletTypeFriendNormal, 0, 0, 1.4, 0.15));
@@ -1369,11 +1613,13 @@ namespace hg {
                 pInfo->showPixelWidth = 328;
                 pInfo->showPixelHeight = 328;
                 pInfo->collisionId = CollisionId_P_VIPER;
-                pInfo->power = 150;
+                pInfo->power = 40;
+                pInfo->cpu_lv = 10;
                 
-                pInfo->life = pInfo->lifeMax = 3000;
-                pInfo->shield = pInfo->shieldMax = 1500;
+                pInfo->life = pInfo->lifeMax = 600;
+                pInfo->shield = pInfo->shieldMax = 300;
                 pInfo->speed = 0.92;
+                pInfo->newBuyCost = 250000;
                 
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeMegaLaser, BulletTypeFriendBig, 0, 0, 1.9, 0.30));
                 break;
@@ -1390,15 +1636,18 @@ namespace hg {
                 pInfo->showPixelHeight = 62*10;
                 pInfo->collisionId = CollisionId_P_PEGASUS;
                 pInfo->power = 40;
+                pInfo->cpu_lv = 10;
                 
-                pInfo->life = pInfo->lifeMax = 20000;
-                pInfo->shield = pInfo->shieldMax = 5000;
+                pInfo->life = pInfo->lifeMax = 3000;
+                pInfo->shield = pInfo->shieldMax = 1500;
                 pInfo->speed = 0.65;
-                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeTwin, BulletTypeFriendBig, 0, 0, 1.4, 0.68));
+                pInfo->newBuyCost = 200000;
+                
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeMegaLaser, BulletTypeFriendBig, 0, 0, 1.4, 0.68));
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeFiveWay, BulletTypeFriendNormal, -35*10, 0, 0.6, 0.28));
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeThreeWay, BulletTypeFriendNormal, 34*10, -140, 0.6, 0.38));
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeCircle, BulletTypeFriendMedium, 0, 0, 0.5, 1.28));
-                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeFiveWay, BulletTypeFriendNormal, -240, 0, 0.9, 0.40));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeTwinLaser, BulletTypeFriendLaser, -240, 0, 0.9, 0.40));
                 
                 pInfo->isShip = true;
                 break;
@@ -1414,11 +1663,14 @@ namespace hg {
                 pInfo->showPixelHeight = 420;
                 pInfo->showPixelWidth = 420;
                 pInfo->collisionId = CollisionId_P_RADER;
-                pInfo->power = 50;
+                pInfo->power = 42;
+                pInfo->cpu_lv = 10;
+                pInfo->newBuyCost = 300000;
                 
-                pInfo->life = pInfo->lifeMax = 1000;
-                pInfo->shield = pInfo->shieldMax = 1000;
+                pInfo->life = pInfo->lifeMax = 800;
+                pInfo->shield = pInfo->shieldMax = 200;
                 pInfo->speed = 0.75;
+                pInfo->newBuyCost = 500000;
                 
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeThreeWay, BulletTypeFriendNormal, 0, 0, 0.80, 0.2));
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeFiveWay, BulletTypeFriendMedium, 0, 0, 0.85, 0.4));
@@ -1438,10 +1690,12 @@ namespace hg {
                 pInfo->showPixelWidth = 204*10;
                 pInfo->showPixelHeight = 78*10;
                 pInfo->collisionId = CollisionId_E_SENKAN;
-                pInfo->power = 40;
+                pInfo->power = 44;
+                pInfo->cpu_lv = 10;
+                pInfo->newBuyCost = 3000000;
                 
-                pInfo->life = pInfo->lifeMax = 28000;
-                pInfo->shield = pInfo->shieldMax = 15000;
+                pInfo->life = pInfo->lifeMax = 4000;
+                pInfo->shield = pInfo->shieldMax = 2000;
                 pInfo->speed = 0.38;
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeMegaLaser, BulletTypeFriendBig, 45*10, 0, 1.7, 0.50));
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeTwinLaser, BulletTypeFriendLaser, 90*10, 0, 1.7, 0.25));
@@ -1475,29 +1729,32 @@ namespace hg {
                 int maxLv = 6;
                 int minLv = rand(0, maxLv/2*stageProgressRatio);
                 int lv = rand(minLv, maxLv*stageProgressRatio);
+                if (fix_enemy_lv >= 0) {
+                    lv = fix_enemy_lv;
+                }
                 switch (lv) {
                     case 0:
-                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeNormal, BulletTypeNormal, 0, 0, 0.4, 0.4));
+                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeNormal, BulletTypeNormal, 0, 0, 0.7, 0.4));
                         break;
                     case 1:
                         pInfo->weaponList.push_back(WeaponInfo(WeaponTypeCircle, BulletTypeNormal, 0, 0, 0.3, 0.35));
                         break;
                     case 2:
-                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeThreeWay, BulletTypeNormal, 0, 0, 0.4, 0.35));
+                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeThreeWay, BulletTypeNormal, 0, 0, 0.7, 0.35));
                         break;
                     case 3:
-                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeFiveWay, BulletTypeNormal, 0, 0, 0.35, 0.40));
+                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeFiveWay, BulletTypeNormal, 0, 0, 0.65, 0.40));
                         break;
                     case 4:
                         pInfo->weaponList.push_back(WeaponInfo(WeaponTypeLaser, BulletTypeLaser, 0, 0, 1.75, 0.60));
                         break;
                     case 5:
-                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeShotgun, BulletTypeNormal, 0, 0, 0.75, 0.70));
+                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeShotgun, BulletTypeNormal, 0, 0, 1.05, 0.70));
                         break;
                     case 6:
                         pInfo->weaponList.push_back(WeaponInfo(WeaponTypeRotate, BulletTypeNormal, 0, 0, 0.45, 0.15));
                         pInfo->weaponList.push_back(WeaponInfo(WeaponTypeRotateR, BulletTypeNormal, 0, 0, 0.45, 0.15));
-                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeAK, BulletTypeNormal, 0, 0, 0.75, 0.08));
+                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeAK, BulletTypeNormal, 0, 0, 1.05, 0.08));
                     default:
                         break;
                 }
@@ -1521,26 +1778,27 @@ namespace hg {
                 pInfo->shield = pInfo->shieldMax = 0;
                 pInfo->speed = 0.5;
                 
-                int maxLv = 5;
-                int minLv = rand(0, maxLv/2*stageProgressRatio);
-                int lv = rand(minLv, maxLv*stageProgressRatio);
+                int lv = rand(0, getStageInfo().maxEnemyWeaponLv);
+                if (fix_enemy_lv >= 0) {
+                    lv = fix_enemy_lv;
+                }
                 switch (lv) {
                     case 0:
-                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeThreeWay, BulletTypeNormal, 0, 0, 0.3, 0.3));
+                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeThreeWay, BulletTypeNormal, 0, 0, 0.6, 0.3));
                         break;
                     case 1:
                     {
-                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeShotgun, BulletTypeNormal, 0, 0, 0.2, 0.45));
+                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeShotgun, BulletTypeNormal, 0, 0, 0.5, 0.45));
                         int wType = WeaponTypeRotate;
                         if (rand(0, 1) == 0) {
                             wType = WeaponTypeRotateR;
                         }
-                        pInfo->weaponList.push_back(WeaponInfo(wType, BulletTypeNormal, 0, 0, 0.3, 0.2));
+                        pInfo->weaponList.push_back(WeaponInfo(wType, BulletTypeNormal, 0, 0, 0.6, 0.2));
                         break;
                 }
                     case 2:
                         pInfo->weaponList.push_back(WeaponInfo(WeaponTypeRotateQuad, BulletTypeNormal, 0, 0, 0.4, 0.15));
-                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeAK, BulletTypeNormal, 0, 0, 0.8, 0.05));
+                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeAK, BulletTypeNormal, 0, 0, 1.1, 0.05));
                         break;
                     case 3:
                     {
@@ -1550,22 +1808,25 @@ namespace hg {
                         if (rand(0, 1) == 0) {
                             wType = WeaponTypeRotateR;
                         }
-                        pInfo->weaponList.push_back(WeaponInfo(wType, BulletTypeNormal, 0, 0, 0.3, 0.2));
+                        pInfo->weaponList.push_back(WeaponInfo(wType, BulletTypeNormal, 0, 0, 0.6, 0.2));
                         break;
                     }
                     case 4:
                         pInfo->weaponList.push_back(WeaponInfo(WeaponTypeLaser, BulletTypeLaser, 0, 0, 1.60, 0.50));
                         break;
                     case 5:
+                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeFiveWay, BulletTypeMedium, 0, 0, 1.60, 0.50));
+                        break;
+                    case 6:
                     {
-                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeFiveWay, BulletTypeNormal, 0, 0, 0.55, 0.20));
-                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeStraight, BulletTypeNormal, 0, 0, 0.85, 0.50));
+                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeFiveWay, BulletTypeNormal, 0, 0, 0.85, 0.20));
+                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeStraight, BulletTypeNormal, 0, 0, 1.75, 0.50));
                         
                         int wType = WeaponTypeRotate;
                         if (rand(0, 1) == 0) {
                             wType = WeaponTypeRotateR;
                         }
-                        pInfo->weaponList.push_back(WeaponInfo(wType, BulletTypeNormal, 0, 0, 0.65, 0.09));
+                        pInfo->weaponList.push_back(WeaponInfo(wType, BulletTypeNormal, 0, 0, 0.95, 0.09));
                         break;
                     }
                     default:
@@ -1587,17 +1848,17 @@ namespace hg {
                 pInfo->collisionId = CollisionId_E_RADER;
                 pInfo->power = 75;
                 
-                pInfo->life = pInfo->lifeMax = 10000;
-                pInfo->shield = pInfo->shieldMax = 5000;
+                pInfo->life = pInfo->lifeMax = 3000;
+                pInfo->shield = pInfo->shieldMax = 1000;
                 pInfo->speed = 0.5;
                 
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeThreeWay, BulletTypeNormal, 0, 0, 0.3, 0.3));
-                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeShotgun, BulletTypeNormal, 0, 0, 0.2, 0.45));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeShotgun, BulletTypeNormal, 0, 0, 0.6, 0.45));
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeRotateQuad, BulletTypeNormal, 0, 0, 0.4, 0.15));
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeRotateR, BulletTypeNormal, 0, 0, 0.8, 0.05));
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeCircleRotate, BulletTypeMedium, 0, 0, 0.25, 0.20));
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeLaser, BulletTypeLaser, 0, 0, 1.60, 0.50));
-                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeFiveWay, BulletTypeNormal, 0, 0, 0.55, 0.20));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeFiveWay, BulletTypeNormal, 0, 0, 0.85, 0.20));
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeCircle, BulletTypeNormal, 0, 0, 0.85, 0.50));
                 break;
             }
@@ -1614,22 +1875,23 @@ namespace hg {
                 pInfo->collisionId = CollisionId_E_GATES;
                 pInfo->power = 35;
                 
-                pInfo->life = pInfo->lifeMax = 800;
+                pInfo->life = pInfo->lifeMax = 500;
                 pInfo->shield = pInfo->shieldMax = 0;
                 pInfo->speed = 0.6;
                 
-                int maxLv = 6;
-                int minLv = rand(0, 0*stageProgressRatio);
-                int lv = rand(minLv, maxLv*stageProgressRatio);
+                int lv = rand(0, getStageInfo().maxEnemyWeaponLv);
+                if (fix_enemy_lv >= 0) {
+                    lv = fix_enemy_lv;
+                }
                 switch (lv) {
                     case 0:
-                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeStraight, BulletTypeNormal, 0, 0, 0.4, 0.4));
+                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeStraight, BulletTypeNormal, 0, 0, 1.6, 0.4));
                         break;
                     case 1:
                         pInfo->weaponList.push_back(WeaponInfo(WeaponTypeLaser, BulletTypeLaser, 0, 0, 1.4, 0.85));
                         break;
                     case 2:
-                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeThreeWay, BulletTypeMedium, 0, 0, 0.5, 0.10));
+                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeThreeWay, BulletTypeMedium, 0, 0, 0.8, 0.10));
                         break;
                     case 3:
                         pInfo->weaponList.push_back(WeaponInfo(WeaponTypeLaser, BulletTypeLaser, 0, 0, 1.40, 0.80));
@@ -1640,24 +1902,24 @@ namespace hg {
                         break;
                     case 5:
                     {
-                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeShotgun, BulletTypeMedium, 0, 0, 0.85, 0.30));
+                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeShotgun, BulletTypeMedium, 0, 0, 1.15, 0.30));
                         
                         int wType = WeaponTypeRotate;
                         if (rand(0, 1) == 0) {
                             wType = WeaponTypeRotateR;
                         }
-                        pInfo->weaponList.push_back(WeaponInfo(wType, BulletTypeNormal, 0, 0, 0.55, 0.18));
+                        pInfo->weaponList.push_back(WeaponInfo(wType, BulletTypeNormal, 0, 0, 0.85, 0.18));
                         break;
                     }
                     case 6:
                         {
-                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeShotgun, BulletTypeNormal, 0, 0, 0.95, 0.25));
+                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeShotgun, BulletTypeNormal, 0, 0, 1.25, 0.25));
                             
                         int wType = WeaponTypeRotate;
                         if (rand(0, 1) == 0) {
                             wType = WeaponTypeRotateR;
                         }
-                            pInfo->weaponList.push_back(WeaponInfo(wType, BulletTypeMedium, 0, 0, 0.35, 0.22));
+                            pInfo->weaponList.push_back(WeaponInfo(wType, BulletTypeMedium, 0, 0, 0.65, 0.22));
                         pInfo->weaponList.push_back(WeaponInfo(WeaponTypeTwinLaser, BulletTypeLaser, 0, 0, 1.85, 0.55));
                         }
                     default:
@@ -1680,18 +1942,18 @@ namespace hg {
                 pInfo->collisionId = CollisionId_E_GATES;
                 pInfo->power = 95;
                 
-                pInfo->life = pInfo->lifeMax = 12000;
-                pInfo->shield = pInfo->shieldMax = 5000;
+                pInfo->life = pInfo->lifeMax = 5000;
+                pInfo->shield = pInfo->shieldMax = 2000;
                 pInfo->speed = 0.6;
                 
-                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeStraight, BulletTypeNormal, 0, 0, 0.4, 0.4));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeStraight, BulletTypeNormal, 0, 0, 1.7, 0.4));
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeLaser, BulletTypeLaser, 0, 0, 1.4, 0.85));
-                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeThreeWay, BulletTypeMedium, 0, 0, 0.5, 0.10));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeThreeWay, BulletTypeMedium, 0, 0, 0.8, 0.10));
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeLaser, BulletTypeLaser, 0, 0, 1.40, 0.80));
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeAK, BulletTypeMedium, 0, 0, 1.05, 0.08));
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeCircle, BulletTypeMedium, 0, 0, 0.35, 0.58));
-                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeShotgun, BulletTypeMedium, 0, 0, 0.85, 0.30));
-                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeShotgun, BulletTypeNormal, 0, 0, 0.95, 0.25));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeShotgun, BulletTypeMedium, 0, 0, 1.15, 0.30));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeShotgun, BulletTypeNormal, 0, 0, 1.25, 0.25));
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeTwinLaser, BulletTypeLaser, 0, 0, 1.85, 0.55));
                 
                 break;
@@ -1709,17 +1971,14 @@ namespace hg {
                 pInfo->collisionId = CollisionId_E_DESTROYER;
                 pInfo->power = 50;
                 
-                pInfo->life = pInfo->lifeMax = 1500;
-                pInfo->shield = pInfo->shieldMax = 300;
+                pInfo->life = pInfo->lifeMax = 800;
                 pInfo->speed = 0.60;
                 
-                int maxLv = 6;
-                int minLv = rand(0, 0*stageProgressRatio);
-                int lv = rand(minLv, maxLv*stageProgressRatio);
+                int lv = rand(0, getStageInfo().maxEnemyWeaponLv);
                 switch (lv) {
                     case 0:
-                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeTriple, BulletTypeBig, 0, 0, 0.9, 0.2));
-                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeAK, BulletTypeMedium, 0, 0, 0.5, 0.14));
+                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeTriple, BulletTypeBig, 0, 0, 1.2, 0.2));
+                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeAK, BulletTypeMedium, 0, 0, 0.8, 0.14));
                         break;
                     case 1:
                         pInfo->weaponList.push_back(WeaponInfo(WeaponTypeRotateShotgun, BulletTypeNormal, 0, 0, 1.5, 0.38));
@@ -1739,7 +1998,7 @@ namespace hg {
                         if (rand(0, 1) == 0) {
                             wType = WeaponTypeRotateR;
                         }
-                        pInfo->weaponList.push_back(WeaponInfo(wType, BulletTypeMedium, 0, 0, 0.35, 0.18));
+                        pInfo->weaponList.push_back(WeaponInfo(wType, BulletTypeMedium, 0, 0, 0.65, 0.18));
                         break;
                     }
                     case 5:
@@ -1747,7 +2006,7 @@ namespace hg {
                         break;
                     case 6:
                         pInfo->weaponList.push_back(WeaponInfo(WeaponTypeFiveStraights, BulletTypeBig, 0, 0, 0.95, 0.30));
-                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeMad, BulletTypeNormal, 0, 0, 0.35, 0.10));
+                        pInfo->weaponList.push_back(WeaponInfo(WeaponTypeMad, BulletTypeNormal, 0, 0, 0.55, 0.10));
                         pInfo->weaponList.push_back(WeaponInfo(WeaponTypeMad, BulletTypeNormal, 0, 0, 0.55, 0.20));
                         pInfo->weaponList.push_back(WeaponInfo(WeaponTypeMad, BulletTypeMedium, 0, 0, 0.85, 0.50));
                     default:
@@ -1769,21 +2028,21 @@ namespace hg {
                 pInfo->collisionId = CollisionId_E_DESTROYER;
                 pInfo->power = 100;
                 
-                pInfo->life = pInfo->lifeMax = 15000;
-                pInfo->shield = pInfo->shieldMax = 8000;
+                pInfo->life = pInfo->lifeMax = 8000;
+                pInfo->shield = pInfo->shieldMax = 2000;
                 pInfo->speed = 0.60;
                 
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeTriple, BulletTypeBig, 0, 0, 0.9, 0.2));
-                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeAK, BulletTypeMedium, 0, 0, 0.5, 0.14));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeAK, BulletTypeMedium, 0, 0, 1.2, 0.14));
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeRotateShotgun, BulletTypeNormal, 0, 0, 1.5, 0.38));
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeLaser, BulletTypeLaser, 0, 0, 1.45, 0.84));
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeRotateShotgun, BulletTypeMedium, 0, 0, 1.5, 0.12));
-                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeFiveWay, BulletTypeMedium, 0, 0, 0.95, 0.18));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeFiveWay, BulletTypeMedium, 0, 0, 1.25, 0.18));
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeFiveStraights, BulletTypeBig, 0, 0, 0.95, 0.30));
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeRotateQuad, BulletTypeMedium, 0, 0, 0.85, 0.19));
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeFiveStraights, BulletTypeBig, 0, 0, 0.95, 0.30));
-                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeMad, BulletTypeNormal, 0, 0, 0.35, 0.10));
-                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeMad, BulletTypeNormal, 0, 0, 0.55, 0.20));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeMad, BulletTypeNormal, 0, 0, 0.65, 0.10));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeMad, BulletTypeNormal, 0, 0, 0.85, 0.20));
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeMad, BulletTypeMedium, 0, 0, 0.85, 0.50));
                 
                 break;
@@ -1801,14 +2060,17 @@ namespace hg {
                 pInfo->collisionId = CollisionId_E_SENKAN;
                 pInfo->power = 25;
                 
-                pInfo->life = pInfo->lifeMax = 10000;
-                pInfo->shield = pInfo->shieldMax = 10000;
+                pInfo->life = pInfo->lifeMax = 5000;
+                pInfo->shield = pInfo->shieldMax = 0;
                 pInfo->speed = 0.33;
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeNormal, BulletTypeNormal, 45*10, 0, 0.7, 0.08));
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeLaser, BulletTypeLaser, -45*10, 0, 1.5, 0.55));
-                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeFiveStraights, BulletTypeBig, 90*10, 0, 0.35, 0.58));
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeRotate, BulletTypeMedium, 0, 0, 0.3, 0.28));
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeRotateR, BulletTypeMedium, 0, 0, 0.3, 0.28));
+                if (getStageInfo().stage_id > 2) {
+                    pInfo->weaponList.push_back(WeaponInfo(WeaponTypeFiveStraights, BulletTypeBig, 90*10, 0, 0.35, 0.58));
+                    pInfo->weaponList.push_back(WeaponInfo(WeaponTypeMad, BulletTypeNormal, 0, 0, 1.2, 0.20));
+                }
                 
                 pInfo->isShip = true;
                 break;
@@ -1826,13 +2088,14 @@ namespace hg {
                 pInfo->collisionId = CollisionId_E_TRIANGLE;
                 pInfo->power = 50;
                 
-                pInfo->life = pInfo->lifeMax = 12000;
+                pInfo->life = pInfo->lifeMax = 6000;
                 pInfo->speed = 0.25;
-                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeRotateShotgun, BulletTypeNormal, 0, 0, 0.5, 0.55));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeRotateShotgun, BulletTypeNormal, 0, 0, 1.5, 0.55));
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeRotate, BulletTypeMedium, 0, 0, 0.3, 0.20));
-                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeFiveWay, BulletTypeMedium, 0, 0, 0.4, 0.18));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeFiveWay, BulletTypeMedium, 0, 0, 1.2, 0.18));
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeRotateR, BulletTypeMedium, 0, 0, 0.3, 0.20));
-                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeTriple, BulletTypeBig, 0, 0, 0.3, 0.58));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeTriple, BulletTypeBig, 0, 0, 1.3, 0.58));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeMad, BulletTypeNormal, 0, 0, 1.2, 0.20));
                 
                 pInfo->isShip = true;
                 break;
@@ -1850,12 +2113,14 @@ namespace hg {
                 pInfo->collisionId = CollisionId_E_QUAD;
                 pInfo->power = 80;
                 
-                pInfo->life = pInfo->lifeMax = 14000;
+                pInfo->life = pInfo->lifeMax = 7000;
                 pInfo->speed = 0.35;
                 
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeMad, BulletTypeMedium, 0, 0, 0.5, 0.30));
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeMad, BulletTypeNormal, 0, 0, 0.7, 0.40));
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeMad, BulletTypeNormal, 0, 0, 0.9, 0.50));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeMad, BulletTypeNormal, 0, 0, 1.2, 0.20));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeMad, BulletTypeNormal, 0, 0, 1.5, 0.30));
                 
                 pInfo->isShip = true;
                 break;
@@ -1873,7 +2138,7 @@ namespace hg {
                 pInfo->collisionId = CollisionId_E_COLONY;
                 pInfo->power = 100;
                 
-                pInfo->life = pInfo->lifeMax = 16000;
+                pInfo->life = pInfo->lifeMax = 8000;
                 pInfo->speed = 0.1;
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeTwinLaser, BulletTypeLaser, 0, 0, 1.5, 0.50));
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeTwinLaser, BulletTypeLaser, 0, -66*20, 1.5, 0.51));
@@ -1897,11 +2162,12 @@ namespace hg {
                 pInfo->collisionId = CollisionId_E_SNAKE;
                 pInfo->power = 120;
                 
-                pInfo->life = pInfo->lifeMax = 20000;
+                pInfo->life = pInfo->lifeMax = 9000;
                 pInfo->speed = 0.15;
                 
-                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeFiveWay, BulletTypeBig, 0, 0, 0.8, 0.28));
-                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeCircle, BulletTypeMedium, 0, 0, 0.2, 0.50));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeFiveWay, BulletTypeBig, 0, 0, 1.2, 0.28));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeFiveWay, BulletTypeBig, 0, 0, 1.2, 0.28));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeCircle, BulletTypeMedium, 0, 0, 0.2, 0.20));
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeRotate, BulletTypeMedium, 0, 0, 0.3, 0.20));
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeRotateR, BulletTypeMedium, 0, 0, 0.3, 0.20));
                 
@@ -1921,13 +2187,14 @@ namespace hg {
                 pInfo->collisionId = CollisionId_E_LASTBOSS;
                 pInfo->power = 150;
                 
-                pInfo->life = pInfo->lifeMax = 300000;
+                pInfo->life = pInfo->lifeMax = 12000;
                 pInfo->speed = 0.25;
                 
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeMegaLaser, BulletTypeBig, 0, 0, 1.5, 0.28));
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeMad, BulletTypeMedium, 0, 0, 0.6, 0.30));
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeMad, BulletTypeMedium, 0, 0, 0.6, 0.40));
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeMad, BulletTypeNormal, 0, 0, 0.7, 0.20));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeMad, BulletTypeNormal, 0, 0, 0.9, 0.50));
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeRotateShotgun, BulletTypeNormal, 0, 0, 0.8, 0.50));
                 
                 
@@ -1939,11 +2206,80 @@ namespace hg {
                 NSLog(@"ERROR: invalid fighter type%d", type);
             }
         }
-        pInfo->powerPotential = ((float)status_rand(90, 110) * 0.01 * (float)pInfo->power);
-        pInfo->defencePotential = ((float)status_rand(30, 70) * 0.01 * (float)pInfo->lifeMax);
+        pInfo->powerPotential = ((float)status_rand(15, 25) * 0.01 * (float)pInfo->power);
+        pInfo->defencePotential = ((float)status_rand(15, 25) * 0.01 * (float)pInfo->lifeMax);
         if (pInfo->shieldMax > 0) {
-            pInfo->shieldPotential = ((float)status_rand(10, 30) * 0.01 * (float)pInfo->shieldMax);
+            pInfo->shieldPotential = ((float)status_rand(10, 15) * 0.01 * (float)pInfo->shieldMax);
         }
+        
+        // stageに応じて強化
+        if (type >= ENEMY_FIGHTER_TYPE_MIN) {
+            
+            float fortify_level = 1;
+            int clear_ratio = getCurrentClearRatio()*100;
+            switch (stage_id) {
+                case 1:
+                    if (clear_ratio >= 50) {
+                        fortify_level = 1.2;
+                    }
+                    pInfo->cpu_lv = status_rand(0, 20);
+                    break;
+                case 2:
+                    fortify_level = 2;
+                    if (clear_ratio >= 50) {
+                        fortify_level = 2.5;
+                    }
+                    if (clear_ratio >= 80) {
+                        fortify_level = 3;
+                    }
+                    pInfo->cpu_lv = status_rand(20, 40);
+                    break;
+                case 3:
+                    fortify_level = 5.0;
+                    if (clear_ratio >= 50) {
+                        fortify_level *= 1.1;
+                    }
+                    if (clear_ratio >= 80) {
+                        fortify_level *= 1.1;
+                    }
+                    pInfo->cpu_lv = status_rand(40, 60);
+                    break;
+                case 4:
+                    fortify_level = 10.0;
+                    if (clear_ratio >= 50) {
+                        fortify_level *= 1.1;
+                    }
+                    if (clear_ratio >= 80) {
+                        fortify_level *= 1.1;
+                    }
+                    pInfo->cpu_lv = status_rand(60, 80);
+                    break;
+                case 5:
+                    fortify_level = 20.0;
+                    if (clear_ratio >= 50) {
+                        fortify_level *= 1.1;
+                    }
+                    if (clear_ratio >= 80) {
+                        fortify_level *= 1.1;
+                    }
+                    if (clear_ratio >= 90) {
+                        fortify_level *= 1.1;
+                    }
+                    pInfo->cpu_lv = status_rand(80, 100);
+                    StageInfo stageInfo = getStageInfo();
+                    fortify_level += stageInfo.clear_count * 10;
+                    break;
+            }
+            
+            pInfo->lifeMax *= (fortify_level);
+            pInfo->life = pInfo->lifeMax;
+            int weapon_num = pInfo->weaponList.size();
+            for (int i = 0; i < weapon_num; i++) {
+                pInfo->weaponList[i].bulletPower *= fortify_level;
+            }
+            
+        } // fortify
+        
     }
     
     

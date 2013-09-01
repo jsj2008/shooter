@@ -14,4 +14,6 @@
 
 @property (strong, nonatomic) UIViewController *viewController;
 
++ (bool)IsBackGround;
+
 @end
