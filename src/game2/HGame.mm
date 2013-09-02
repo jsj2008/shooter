@@ -164,8 +164,8 @@ namespace hg {
                     {
                         p->init("pearl.png", c);
                     }
-                    float w = (pF->getWidth()/FIELD_SIZE)*RADER_SCALE;
-                    float h = (pF->getHeight()/FIELD_SIZE)*RADER_SCALE;
+                    float w = MAX(RADER_SCALE*0.12, (pF->getWidth()/FIELD_SIZE)*RADER_SCALE);
+                    float h = MAX(RADER_SCALE*0.12, (pF->getHeight()/FIELD_SIZE)*RADER_SCALE);
                     p->setScale(w, h);
                     p->setPosition(pF->getPositionX()/FIELD_SIZE*RADER_SCALE - RADER_SCALE/2, pF->getPositionY()/FIELD_SIZE*RADER_SCALE - RADER_SCALE/2);
                     p->retain();

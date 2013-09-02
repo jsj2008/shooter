@@ -71,6 +71,9 @@ static MainViewController* instance = nil;
 
 - (void)dealloc
 {
+    if (menuBaseView) {
+        [menuBaseView release];
+    }
     [super dealloc];
 }
 
@@ -186,15 +189,20 @@ static MainViewController* instance = nil;
 -(void)hideMenuViewAnimate
 {
     dispatch_async(dispatch_get_main_queue(), ^{
+        if (menuBaseView == nil) return;
         CGRect f = mainFrame;
         f.origin.x = mainFrame.size.width;
+        
+        UIView* removeView = menuBaseView;
+        menuBaseView = nil;
         [UIView animateWithDuration:MenuAnimationDuration animations:^{
-            [menuBaseView setFrame:f];
-            [menuBaseView setAlpha:0];
+            [removeView setFrame:f];
+            [removeView setAlpha:0];
         }
                          completion:^(BOOL finished) {
-                             [menuBaseView removeFromSuperview];
+                             [removeView removeFromSuperview];
                              //[self earthQuake];
+                             [removeView release];
                          }];
     });
 }
@@ -217,7 +225,7 @@ static MainViewController* instance = nil;
     dispatch_async(dispatch_get_main_queue(), ^{
         // Menu
         {
-            menuBaseView = [[[UIView alloc] initWithFrame:mainFrame] autorelease];
+            menuBaseView = [[UIView alloc] initWithFrame:mainFrame];
             [mainBaseView setBackgroundColor:[UIColor clearColor]];
             [mainBaseView addSubview:menuBaseView];
             
@@ -760,10 +768,11 @@ static MainViewController* instance = nil;
     [curtain setBackgroundColor:[UIColor blackColor]];
     [curtain setAlpha:0];
     [self.view addSubview:curtain];
+    [self hideMenuViewAnimate];
     
     [playerDetailView removeFromSuperview];
     
-    [UIView animateWithDuration:0.5 animations:^{
+    [UIView animateWithDuration:0.3 animations:^{
         [mainBaseView setTransform:CGAffineTransformMakeScale(0.8, 0.8)];
         [curtain setAlpha:1];
     } completion:^(BOOL finished) {
