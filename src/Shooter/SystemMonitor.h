@@ -11,5 +11,6 @@
 @interface SystemMonitor : NSObject
 
 + (void)dump;
-
++ (unsigned int)getFreeMemory;
+    
 @end

@@ -1,7 +1,14 @@
-#define IS_DEBUG 1
+#define IS_DEBUG 0
 #define IS_BACKGROUND 1
 #define IS_ALLYVIEW 1
 #define IS_STATUS 1
+#define IS_GAME_MAIN 1
+#define IS_GAME_GL 1
+#define IS_BUTTON_ANIME 1
+#define IS_BUTTON_IMAGE 1
+#define IS_PLAYER_DETAIL 1
+#define IS_GAME_EXEC 1
+#define IS_REPORT 1
 
 #define STR2NSSTR(a) [NSString stringWithCString:a.c_str() encoding:NSUTF8StringEncoding]
 #define NSSTR2STR(a) std::string([a UTF8String])

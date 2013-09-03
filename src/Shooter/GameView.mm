@@ -75,7 +75,9 @@ typedef std::vector<EnemyGroupInfo> EnemyGroupInfoList;
     UIButton* deployBtn;
     
     // OpenGL
+#if IS_GAME_GL
     HGLView* _glview;
+#endif
     
     //HGGame::t_keystate keystate;
     hg::KeyInfo keyState;
@@ -120,9 +122,11 @@ static EnemyGroupInfoList enemyGroupInfoList;
 
 - (void)dealloc
 {
+#if IS_GAME_GL
     if (_glview) {
         //[_glview release];
     }
+#endif
     if (onEndAction)
     {
         //[onEndAction release];
@@ -153,52 +157,164 @@ static EnemyGroupInfoList enemyGroupInfoList;
     
 }
 
-- (id) initWithOnEndAction:(void(^)(void))action
+- (id) init
 {
     self = [super init];
+    if (self)
+    {
+    }
+    return self;
+    
+    
+}
+
+- (void)updateGame
+{
+    NSDate* nowDt;
+    NSTimeInterval start;
+    NSTimeInterval end;
+    float base_sleep = 1.0/GAMEFPS;
+    float sleep;
+    isPlaying = true;
+    @autoreleasepool {
+        while (1)
+        {
+            nowDt = [NSDate date];
+            start = [nowDt timeIntervalSince1970];
+            {
+                // calling game's main process
+                @synchronized(lock)
+                {
+                    hg::update(keyState);
+                    keyState.shouldDeployFriend = false;
+                    keyState.shouldCollectFriend = false;
+                    if (upCamera) {
+                        hg::UserData::sharedUserData()->upCamera();
+                        hg::setCameraZPostion(hg::UserData::sharedUserData()->getCameraPosition());
+                    }
+                    if (downCamera) {
+                        hg::UserData::sharedUserData()->downCamera();
+                        hg::setCameraZPostion(hg::UserData::sharedUserData()->getCameraPosition());
+                    }
+                    [_glview draw];
+                    
+                    // message
+                    {
+                        __weak GameView* self_ = self;
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [self_ showMessage];
+                            [self_ updateGauge];
+                        });
+                    }
+                    
+                    if (hg::isGameEnd())
+                    {
+                        isPlaying = false;
+                        NSLog(@"is game end");
+                        if (IS_DEBUG) {
+                            NSLog(@"game end");
+                            [SystemMonitor dump];
+                        }
+                        
+                        // 終了処理
+                        hg::UserData::sharedUserData()->initAfterBattle();
+                        // 戦果集計
+                        {
+                            using namespace hg;
+                            BattleResult br = getResult();
+                            UserData::sharedUserData()->setBattleResult(br);
+                            // データ保存
+                            UserData::sharedUserData()->saveData();
+                        }
+                        
+                        // Fighter Infoのインスタンスを削除
+                        for (hg::FighterList::iterator it = enemyList.begin(); it != enemyList.end(); ++it) {
+                            delete *it;
+                        }
+                        enemyList.clear();
+                        
+                        // フェードアウト
+                        __weak UIView* bc = baseCurtain;
+                        __weak GameView* self_ = self;
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            CGRect f = [UIScreen mainScreen].applicationFrame;
+                            CGRect cf = f;
+                            cf.size.width = f.size.height;
+                            cf.size.height = f.size.width;
+                            [bc setUserInteractionEnabled:true];
+                            [bc setBackgroundColor:[UIColor blackColor]];
+                            [bc setAlpha:0];
+                            __weak GameView* self__ = self_;
+                            __weak UIView* bc__ = bc;
+                            [UIView animateWithDuration:1.0 animations:^{
+                                [bc__ setAlpha:1];
+                            } completion:^(BOOL finished) {
+                                [self__ endThis];
+                            }];
+                        });
+                        break;
+                    }
+                }
+            }
+            nowDt = [NSDate date];
+            end = [nowDt timeIntervalSince1970];
+            sleep = base_sleep - (end - start);
+            if (sleep > 0)
+            {
+                [NSThread sleepForTimeInterval:sleep];
+            }
+            
+        }
+    }
+    
+}
+
+-(void)endThis
+{
+    hg::cleanup();
+    onEndAction();
+    [_glview stopRender];
+    [_glview removeFromSuperview];
+    _glview = nil;
+}
+
+- (void) setOnEndAction:(void(^)(void))action
+{
+    
     onEndAction = [action copy];
+    
     if (lock == nil)
     {
         lock = [[NSObject alloc] init];
     }
-    if (self)
-    {
-        
-        /*
-         double delayInSeconds = 2.0;
-         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-         onEndAction();
-         });
-         return;
-         */
-        
-        
-        messageList = [[NSMutableArray alloc] init];
-        isPlaying = false;
-        CGRect frame = [[UIScreen mainScreen] applicationFrame];
-        CGRect viewFrame = CGRectMake(0, 0, frame.size.height, frame.size.width);
-        [self setFrame:viewFrame];
-        
-        // 3d描画用ビューを初期化
-        _glview = [[HGLView alloc] initWithFrame:viewFrame WithRenderBlock:^{
-            @synchronized(lock)
-            {
-                hg::render();
-            }
-        }];
-        [self addSubview:_glview];
-        [self initialize];
-        
-        // 描画開始
-        [_glview start];
-        
-    }
+    
+    messageList = [[NSMutableArray alloc] init];
+    isPlaying = false;
+    CGRect frame = [[UIScreen mainScreen] applicationFrame];
+    CGRect viewFrame = CGRectMake(0, 0, frame.size.height, frame.size.width);
+    [self setFrame:viewFrame];
+    
+    // 3d描画用ビューを初期化
+#if IS_GAME_GL
+    _glview = [[HGLView alloc] initWithFrame:viewFrame WithRenderBlock:^{
+        @synchronized(lock)
+        {
+            hg::render();
+        }
+    }];
+    [self addSubview:_glview];
+#endif
+    [self initialize];
+    
+    // 描画開始
+#if IS_GAME_GL
+    [_glview start];
+#endif
+    
     if (IS_DEBUG) {
         NSLog(@"game init");
         [SystemMonitor dump];
     }
-    return self;
 }
 
 - (void)initSpawnData
@@ -255,57 +371,191 @@ static EnemyGroupInfoList enemyGroupInfoList;
 #define SHOW_MESSAGE_NUM 3
 - (void)showMessage
 {
-    // message
-    hg::GameMessageList gameMessageList = hg::getGameMessageList();
-    if (gameMessageList.size() <= 0) {
-        return;
+    @autoreleasepool {
+        // message
+        hg::GameMessageList gameMessageList = hg::getGameMessageList();
+        if (gameMessageList.size() <= 0) {
+            return;
+        }
+        
+        int addCnt = gameMessageList.size();
+        int nowCnt = [messageList count];
+        int sumCnt = addCnt + nowCnt;
+        int delCnt = sumCnt - SHOW_MESSAGE_NUM;
+        if (delCnt > 0 && delCnt <= nowCnt) {
+            for (int i = 0; i < delCnt; i++) {
+                UILabel* tmp = [messageList objectAtIndex:0];
+                [tmp removeFromSuperview];
+                tmp = nil;
+                [messageList removeObjectAtIndex:0];
+                //[tmp release];
+            }
+        }
+        float x = 0;
+        float w = messageView.frame.size.width;
+        float h = 14;
+        for (hg::GameMessageList::iterator it = gameMessageList.begin(); it != gameMessageList.end(); ++it) {
+            UILabel* l = [[UILabel alloc] initWithFrame:CGRectMake(x, 0, w, h)];
+            //NSString* fontName = @"HiraKakuProN-W6";
+            //UIFont* font = [UIFont fontWithName:fontName size:12];
+            UIFont* font  = [[l font] fontWithSize:12];
+            //l.adjustsFontSizeToFitWidth = true;
+            [l setFont:font];
+            [l setBackgroundColor:[UIColor clearColor]];
+            [l setTextColor:[UIColor colorWithHexString:STR2NSSTR((*it).colorHex)]];
+            [l setText:STR2NSSTR((*it).message)];
+            [messageList addObject:l];
+            [messageView addSubview:l];
+            int nowCnt = [messageList count];
+            if (nowCnt > SHOW_MESSAGE_NUM) {
+                break;
+            }
+        }
+        float y = 5;
+        for (UILabel* l in messageList) {
+            CGRect r = l.frame;
+            r.origin.y = y;
+            l.frame = r;
+            y += h;
+        }
+        hg::clearGameMessageList();
+    }
+}
+
+- (void)retreatDo
+{
+    __weak UIView* bc_ = baseCurtain;
+    [UIView animateWithDuration:0.2 animations:^{
+        [bc_ setAlpha:0];
+        [bc_ setUserInteractionEnabled:false];
+    } completion:^(BOOL finished) {
+        hg::setPause(false);
+        // 退却
+        hg::retreat();
+    }];
+}
+
+- (void)retreatCancel
+{
+    // animate
+    __weak UIView* bc_ = baseCurtain;
+    [UIView animateWithDuration:0.2 animations:^{
+        [bc_ setAlpha:0];
+        [bc_ setUserInteractionEnabled:false];
+    } completion:^(BOOL finished) {
+        hg::setPause(false);
+    }];
+    
+}
+
+- (void)retreat
+{
+    
+    if (!isPlaying || !hg::isControllable()) return;
+    hg::setPause(true);
+    [baseCurtain setUserInteractionEnabled:true];
+    {
+        __weak UIView* bc_ = baseCurtain;
+        [UIView animateWithDuration:0.2 animations:^{
+            [bc_ setBackgroundColor:[UIColor blackColor]];
+            [bc_ setAlpha:0.8];
+        }];
     }
     
-    int addCnt = gameMessageList.size();
-    int nowCnt = [messageList count];
-    int sumCnt = addCnt + nowCnt;
-    int delCnt = sumCnt - SHOW_MESSAGE_NUM;
-    if (delCnt > 0 && delCnt <= nowCnt) {
-        for (int i = 0; i < delCnt; i++) {
-            UILabel* tmp = [messageList objectAtIndex:0];
-            [tmp removeFromSuperview];
-            [messageList removeObjectAtIndex:0];
-            //[tmp release];
-        }
+    // 退却するか確認して退却
+    DialogView* dialog = [[DialogView alloc] initWithMessage:NSLocalizedString(@"Are you sure to reatreat?", nil)];
+    {
+        __weak GameView* self_ = self;
+        [dialog addButtonWithText:NSLocalizedString(@"OK", nil) withAction:^{
+            [self_ retreatDo];
+        }];
     }
-    float x = 0;
-    float w = messageView.frame.size.width;
-    float h = 14;
-    for (hg::GameMessageList::iterator it = gameMessageList.begin(); it != gameMessageList.end(); ++it) {
-        UILabel* l = [[UILabel alloc] initWithFrame:CGRectMake(x, 0, w, h)];
-        //NSString* fontName = @"HiraKakuProN-W6";
-        //UIFont* font = [UIFont fontWithName:fontName size:12];
-        UIFont* font  = [[l font] fontWithSize:12];
-        //l.adjustsFontSizeToFitWidth = true;
-        [l setFont:font];
-        [l setBackgroundColor:[UIColor clearColor]];
-        [l setTextColor:[UIColor colorWithHexString:STR2NSSTR((*it).colorHex)]];
-        [l setText:STR2NSSTR((*it).message)];
-        [messageList addObject:l];
-        [messageView addSubview:l];
-        int nowCnt = [messageList count];
-        if (nowCnt > SHOW_MESSAGE_NUM) {
-            break;
-        }
+    {
+        __weak UIView* bc_ = baseCurtain;
+        [dialog addButtonWithText:NSLocalizedString(@"Cancel", nil) withAction:^{
+            // animate
+            [UIView animateWithDuration:0.2 animations:^{
+                [bc_ setAlpha:0];
+                [bc_ setUserInteractionEnabled:false];
+            } completion:^(BOOL finished) {
+                hg::setPause(false);
+            }];
+        }];
     }
-    float y = 5;
-    for (UILabel* l in messageList) {
-        CGRect r = l.frame;
-        r.origin.y = y;
-        l.frame = r;
-        y += h;
+    {
+        __weak GameView* self_ = self;
+        [dialog setCancelAction:^{
+            [self_ retreatCancel];
+        }];
+        dialog.closeOnTapBackground = false;
+        [dialog show];
     }
-    hg::clearGameMessageList();
+    
+}
+
+-(void)deploy
+{
+    if (!isPlaying || !hg::isControllable()) return;
+    hg::setPause(true);
+    [baseCurtain setUserInteractionEnabled:true];
+    {
+        __weak UIView* bc_ = baseCurtain;
+        [UIView animateWithDuration:0.2 animations:^{
+            [bc_ setBackgroundColor:[UIColor blackColor]];
+            [bc_ setAlpha:0.8];
+        }];
+    }
+    
+    AllyTableView* vc = [[AllyTableView alloc] initWithViewMode:AllyViewModeDeployAlly WithFrame:baseFrame];
+    [self addSubview:vc];
+    // animate
+    [vc setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
+    [vc setUserInteractionEnabled:FALSE];
+    __weak AllyTableView* vc_ = vc;
+    [UIView animateWithDuration:0.2 animations:^{
+        [vc_ setAlpha:1];
+        [vc_ setTransform:CGAffineTransformMakeScale(1,1)];
+    }completion:^(BOOL finished) {
+        [vc_ setUserInteractionEnabled:TRUE];
+    }];
+    
+    {
+        __weak AllyTableView* avc = vc;
+        __weak UIView* bc_ = baseCurtain;
+        [avc setOnEndAction:^{
+            // animate
+            {
+                [avc setUserInteractionEnabled:FALSE];
+                [UIView animateWithDuration:0.2 animations:^{
+                    [bc_ setAlpha:0];
+                    [bc_ setUserInteractionEnabled:false];
+                    [avc setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
+                } completion:^(BOOL finished) {
+                    [avc removeFromSuperview];
+                    hg::setPause(false);
+                    hg::deployFriends();
+                }];
+            }
+        }];
+    }
+    
 }
 
 // UI初期化
 - (void)initialize
 {
+    unsigned int memory = [SystemMonitor getFreeMemory];
+    if (memory <= 10*1024*1024)
+    {
+        // 10M以下になったら落とす
+        int a = 0;
+        int c = 10/a;
+        NSLog(@"t : %d", c);
+        std::string* s = NULL;
+        s->clear();
+    }
+    
+    __weak GameView* self_ = self;
     @synchronized(lock)
     {
         // initialize game
@@ -483,99 +733,9 @@ static EnemyGroupInfoList enemyGroupInfoList;
             // creating game thread
             _game_queue = dispatch_queue_create("com.hayo.shooter.game", NULL);
             //_game_queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
+            __weak GameView* self_ = self;
             dispatch_async(_game_queue, ^{
-                NSDate* nowDt;
-                NSTimeInterval start;
-                NSTimeInterval end;
-                float base_sleep = 1.0/GAMEFPS;
-                float sleep;
-                isPlaying = true;
-                while (1)
-                {
-                    nowDt = [NSDate date];
-                    start = [nowDt timeIntervalSince1970];
-                    {
-                        // calling game's main process
-                        @synchronized(lock)
-                        {
-                            hg::update(keyState);
-                            keyState.shouldDeployFriend = false;
-                            keyState.shouldCollectFriend = false;
-                            if (upCamera) {
-                                hg::UserData::sharedUserData()->upCamera();
-                                hg::setCameraZPostion(hg::UserData::sharedUserData()->getCameraPosition());
-                            }
-                            if (downCamera) {
-                                hg::UserData::sharedUserData()->downCamera();
-                                hg::setCameraZPostion(hg::UserData::sharedUserData()->getCameraPosition());
-                            }
-                            [_glview draw];
-                            
-                            // message
-                            dispatch_async(dispatch_get_main_queue(), ^{
-                                [self showMessage];
-                            });
-                            
-                            // update life bar
-                            dispatch_async(dispatch_get_main_queue()
-                                           , ^{
-                                               [self updateGauge];
-                                           });
-                            
-                            if (hg::isGameEnd())
-                            {
-                                isPlaying = false;
-                                NSLog(@"is game end");
-                                if (IS_DEBUG) {
-                                    NSLog(@"game end");
-                                    [SystemMonitor dump];
-                                }
-                                
-                                // 終了処理
-                                hg::UserData::sharedUserData()->initAfterBattle();
-                                // 戦果集計
-                                {
-                                    using namespace hg;
-                                    BattleResult br = getResult();
-                                    UserData::sharedUserData()->setBattleResult(br);
-                                    // データ保存
-                                    UserData::sharedUserData()->saveData();
-                                }
-                                
-                                // Fighter Infoのインスタンスを削除
-                                for (hg::FighterList::iterator it = enemyList.begin(); it != enemyList.end(); ++it) {
-                                    delete *it;
-                                }
-                                enemyList.clear();
-                                
-                                // フェードアウト
-                                dispatch_async(dispatch_get_main_queue(), ^{
-                                    CGRect f = [UIScreen mainScreen].applicationFrame;
-                                    CGRect cf = f;
-                                    cf.size.width = f.size.height;
-                                    cf.size.height = f.size.width;
-                                    [baseCurtain setUserInteractionEnabled:true];
-                                    [baseCurtain setBackgroundColor:[UIColor blackColor]];
-                                    [baseCurtain setAlpha:0];
-                                    [UIView animateWithDuration:1.0 animations:^{
-                                        [baseCurtain setAlpha:1];
-                                    } completion:^(BOOL finished) {
-                                        onEndAction();
-                                    }];
-                                });
-                                break;
-                            }
-                        }
-                    }
-                    nowDt = [NSDate date];
-                    end = [nowDt timeIntervalSince1970];
-                    sleep = base_sleep - (end - start);
-                    if (sleep > 0)
-                    {
-                        [NSThread sleepForTimeInterval:sleep];
-                    }
-                    
-                }
+                [self_ updateGame];
             });
         }// end of initialize game
         
@@ -588,7 +748,7 @@ static EnemyGroupInfoList enemyGroupInfoList;
             baseView = [[UIView alloc] initWithFrame:frame];
             [baseView setBackgroundColor:[UIColor clearColor]];
             baseFrame = frame;
-            [self addSubview:baseView];
+            [self_ addSubview:baseView];
         }
         
         // タッチイベント(左)
@@ -617,9 +777,9 @@ static EnemyGroupInfoList enemyGroupInfoList;
             UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
             button.frame = frame;
             [button setTitle:@"Fire" forState:UIControlStateNormal];
-            [button addTarget:self action:@selector(startFire) forControlEvents:UIControlEventTouchDown];
-            [button addTarget:self action:@selector(stopFire) forControlEvents:UIControlEventTouchUpInside];
-            [button addTarget:self action:@selector(stopFire) forControlEvents:UIControlEventTouchUpOutside];
+            [button addTarget:self_ action:@selector(startFire) forControlEvents:UIControlEventTouchDown];
+            [button addTarget:self_ action:@selector(stopFire) forControlEvents:UIControlEventTouchUpInside];
+            [button addTarget:self_ action:@selector(stopFire) forControlEvents:UIControlEventTouchUpOutside];
             [button setContentVerticalAlignment:UIControlContentVerticalAlignmentBottom];
             
             // ボタンデザイン
@@ -674,44 +834,9 @@ static EnemyGroupInfoList enemyGroupInfoList;
             
             [baseView addSubview:backImgView];
             
+            __weak GameView* self_ = self;
             [backImgView setOnTapAction:^(ImageButtonView *target) {
-                if (!isPlaying || !hg::isControllable()) return;
-                hg::setPause(true);
-                [baseCurtain setUserInteractionEnabled:true];
-                [UIView animateWithDuration:0.2 animations:^{
-                    [baseCurtain setBackgroundColor:[UIColor blackColor]];
-                    [baseCurtain setAlpha:0.8];
-                }];
-                
-                AllyTableView* vc = [[AllyTableView alloc] initWithViewMode:AllyViewModeDeployAlly WithFrame:baseFrame];
-                [self addSubview:vc];
-                // animate
-                {
-                    [vc setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
-                    [vc setUserInteractionEnabled:FALSE];
-                    [UIView animateWithDuration:0.2 animations:^{
-                        [vc setAlpha:1];
-                        [vc setTransform:CGAffineTransformMakeScale(1,1)];
-                    }completion:^(BOOL finished) {
-                        [vc setUserInteractionEnabled:TRUE];
-                    }];
-                }
-                [vc setOnEndAction:^{
-                    // animate
-                    {
-                        __weak AllyTableView* avc = vc;
-                        [avc setUserInteractionEnabled:FALSE];
-                        [UIView animateWithDuration:0.2 animations:^{
-                            [baseCurtain setAlpha:0];
-                            [baseCurtain setUserInteractionEnabled:false];
-                            [avc setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
-                        } completion:^(BOOL finished) {
-                            [avc removeFromSuperview];
-                            hg::setPause(false);
-                            hg::deployFriends();
-                        }];
-                    }
-                }];
+                [self_ deploy];
             }];
         }
         
@@ -741,47 +866,9 @@ static EnemyGroupInfoList enemyGroupInfoList;
             
             [baseView addSubview:backImgView];
             
+            __weak GameView* self_ = self;
             [backImgView setOnTapAction:^(ImageButtonView *target) {
-                if (!isPlaying || !hg::isControllable()) return;
-                hg::setPause(true);
-                [baseCurtain setUserInteractionEnabled:true];
-                [UIView animateWithDuration:0.2 animations:^{
-                    [baseCurtain setBackgroundColor:[UIColor blackColor]];
-                    [baseCurtain setAlpha:0.8];
-                }];
-                
-                // 退却するか確認して退却
-                DialogView* dialog = [[DialogView alloc] initWithMessage:NSLocalizedString(@"Are you sure to reatreat?", nil)];
-                [dialog addButtonWithText:NSLocalizedString(@"OK", nil) withAction:^{
-                    [UIView animateWithDuration:0.2 animations:^{
-                        [baseCurtain setAlpha:0];
-                        [baseCurtain setUserInteractionEnabled:false];
-                    } completion:^(BOOL finished) {
-                        hg::setPause(false);
-                        // 退却
-                        hg::retreat();
-                    }];
-                }];
-                [dialog addButtonWithText:NSLocalizedString(@"Cancel", nil) withAction:^{
-                    // animate
-                    [UIView animateWithDuration:0.2 animations:^{
-                        [baseCurtain setAlpha:0];
-                        [baseCurtain setUserInteractionEnabled:false];
-                    } completion:^(BOOL finished) {
-                        hg::setPause(false);
-                    }];
-                }];
-                [dialog setCancelAction:^{
-                    // animate
-                    [UIView animateWithDuration:0.2 animations:^{
-                        [baseCurtain setAlpha:0];
-                        [baseCurtain setUserInteractionEnabled:false];
-                    } completion:^(BOOL finished) {
-                        hg::setPause(false);
-                    }];
-                }];
-                dialog.closeOnTapBackground = false;
-                [dialog show];
+                [self_ retreat];
                 
             }];
         }
@@ -826,9 +913,11 @@ static EnemyGroupInfoList enemyGroupInfoList;
         
         // curtain
         {
+            if (baseCurtain == nil) {
             baseCurtain = [[UIView alloc] initWithFrame:baseFrame];
-            [self addSubview:baseCurtain];
+            [self_ addSubview:baseCurtain];
             [baseCurtain setUserInteractionEnabled:false];
+            }
         }
         
         //////////////////////////////////////////////////

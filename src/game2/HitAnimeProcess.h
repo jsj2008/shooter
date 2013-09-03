@@ -41,7 +41,7 @@ namespace hg
             sizeOfTexSrc.height = 64;
             offsetOfTexSrc.x = 0;
             offsetOfTexSrc.y = 0;
-            float r = rand(PXL2REAL(500), PXL2REAL(600));
+            float r = rand(PXL2REAL(600), PXL2REAL(850));
             size.width = r;
             size.height = r;
             

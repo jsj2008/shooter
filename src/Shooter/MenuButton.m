@@ -91,32 +91,44 @@
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    __weak UIView* hv = highlightView;
+    __weak MenuButton* self_ = self;
+#if IS_BUTTON_ANIME
     [UIView animateWithDuration:0.17 animations:^{
         CGAffineTransform t = CGAffineTransformMakeScale(0.8, 0.8);
-        [self setTransform:t];
-        [highlightView setAlpha:0.3];
+        [self_ setTransform:t];
+        [hv setAlpha:0.3];
     } completion:^(BOOL finished) {
     }];
+#endif
 }
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [highlightView setAlpha:0];
+    //__weak UIView* hv = highlightView;
+    __weak MenuButton* self_ = self;
+#if IS_BUTTON_ANIME
     [UIView animateWithDuration:0.20 animations:^{
         CGAffineTransform t = CGAffineTransformMakeScale(1.0, 1.0);
-        [self setTransform:t];
+        [self_ setTransform:t];
     } completion:^(BOOL finished) {
     }];
+#endif
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [highlightView setAlpha:0];
+    //__weak UIView* hv = highlightView;
+    __weak MenuButton* self_ = self;
+#if IS_BUTTON_ANIME
     [UIView animateWithDuration:0.20 animations:^{
         CGAffineTransform t = CGAffineTransformMakeScale(1.0, 1.0);
-        [self setTransform:t];
+        [self_ setTransform:t];
     } completion:^(BOOL finished) {
     }];
+#endif
 }
 
 
@@ -127,14 +139,18 @@
     [highlightView setAlpha:0];
     [self.superview bringSubviewToFront:self];
     
+    //__weak UIView* hv = highlightView;
+    __weak MenuButton* self_ = self;
+#if IS_BUTTON_ANIME
     [UIView animateWithDuration:0.10 animations:^{
         CGAffineTransform t = CGAffineTransformMakeScale(1.1, 1.1);
-        [self setTransform:t];
+        [self_ setTransform:t];
     } completion:^(BOOL finished) {
         [UIView animateWithDuration:0.10 animations:^{
-            [self setTransform:CGAffineTransformIdentity];
+            [self_ setTransform:CGAffineTransformIdentity];
         }];
     }];
+#endif
     
     // callback
     onTap(self);

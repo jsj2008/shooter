@@ -10,6 +10,6 @@
 
 @interface GameView : UIView
 
-- (id) initWithOnEndAction:(void(^)(void))action;
+- (void) setOnEndAction:(void(^)(void))action;
 
 @end

@@ -17,7 +17,9 @@
 {
     
     // OpenGL
+#if IS_GAME_GL
     HGLView* _glview;
+#endif
     // game's main thread
     dispatch_queue_t _game_queue;
     
@@ -71,65 +73,73 @@ std::vector<Fighter> fighter_list;
     return ret;
 }
 
+-(void)update1
+{
+    NSDate* nowDt;
+    NSTimeInterval start;
+    NSTimeInterval end;
+    float base_sleep = 1.0/60;
+    float sleep;
+    while (1)
+    {
+        if (isEnd || !_glview)
+        {
+            break;
+        }
+        nowDt = [NSDate date];
+        start = [nowDt timeIntervalSince1970];
+        {
+            // calling game's main process
+            [self update];
+#if IS_GAME_GL
+            if (_glview) {
+                [_glview draw];
+            }
+#endif
+        }
+        nowDt = [NSDate date];
+        end = [nowDt timeIntervalSince1970];
+        sleep = base_sleep - (end - start);
+        if (sleep > 0)
+        {
+            [NSThread sleepForTimeInterval:sleep];
+        }
+        
+    }
+}
+
 -(void)initialize
 {
     
     ////////////////////
     // 3d描画用ビューを初期化
+    __weak BackgroundView* self_ = self;
+#if IS_GAME_GL
     _glview = [[HGLView alloc] initWithFrame:self.frame WithRenderBlock:^{
-        @synchronized(self)
+        ////////////////////
+        // openGLのコンテキストで初期化
+        if (!is3DInitialized)
         {
-            ////////////////////
-            // openGLのコンテキストで初期化
-            if (!is3DInitialized)
-            {
-                [self setUp];
-                is3DInitialized = true;
-            }
-            // レンダリング
-            [self renderThis];
+            [self_ setUp];
+            is3DInitialized = true;
         }
+        // レンダリング
+        [self_ renderThis];
     }];
     [self addSubview:_glview];
+#endif
     
     // ゲームスレッド
     _game_queue = dispatch_queue_create(DISPATCH_QUEUE_PRIORITY_DEFAULT, NULL);
     dispatch_async(_game_queue, ^{
-        NSDate* nowDt;
-        NSTimeInterval start;
-        NSTimeInterval end;
-        float base_sleep = 1.0/60;
-        float sleep;
-        while (1)
-        {
-            if (isEnd)
-            {
-                break;
-            }
-            nowDt = [NSDate date];
-            start = [nowDt timeIntervalSince1970];
-            {
-                // calling game's main process
-                @synchronized(self)
-                {
-                    [self update];
-                }
-                [_glview draw];
-            }
-            nowDt = [NSDate date];
-            end = [nowDt timeIntervalSince1970];
-            sleep = base_sleep - (end - start);
-            if (sleep > 0)
-            {
-                [NSThread sleepForTimeInterval:sleep];
-            }
-            
-        }
+        [self_ update1];
     });
     
     ////////////////////
     // 描画開始
+#if IS_GAME_GL
     [_glview start];
+#endif
 }
 
 - (void)setUp
@@ -289,7 +299,18 @@ float fighterMoveDiffZ = -0.05;
             delete *itr;
         }
         nebula.clear();
-        delete fighterObject;
+        if (fighterObject) {
+            delete fighterObject;
+        }
+        if (background) {
+            delete background;
+        }
+        
+        if (_glview) {
+            [_glview stopRender];
+            [_glview removeFromSuperview];
+            _glview = nil;
+        }
         //delete planetObj;
     }
 }

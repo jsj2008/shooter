@@ -39,8 +39,9 @@
         // Initialization code
         [self setBackgroundColor:[UIColor clearColor]];
         [self setAlpha:0];
+        __weak CopyrightView* self_ = self;
         [UIView animateWithDuration:0.5 animations:^{
-            [self setAlpha:1];
+            [self_ setAlpha:1];
         }];
         mainFrame = frame;
         
@@ -140,19 +141,20 @@
             
             [self addSubview:backImgView];
             
+            __weak CopyrightView* self_ = self;
             [backImgView setOnTapAction:^(ImageButtonView *target) {
                 [UIView animateWithDuration:0.5
                                  animations:^{
-                                     [self setAlpha:0];
+                                     [self_ setAlpha:0];
                                  } completion:^(BOOL finished) {
-                                     [self setUserInteractionEnabled:FALSE];
+                                     [self_ setUserInteractionEnabled:FALSE];
                                      [UIView animateWithDuration:0.3 animations:^{
-                                         [self setAlpha:0];
+                                         [self_ setAlpha:0];
                                      }];
                                      if (onEndAction) {
                                          onEndAction();
                                      }
-                                     [self removeFromSuperview];
+                                     [self_ removeFromSuperview];
                                  }];
             }];
         }
@@ -179,8 +181,9 @@
 - (void)onTap:(UIGestureRecognizer*)sender
 {
     [self setUserInteractionEnabled:false];
+    __weak CopyrightView* self_ = self;
     [UIView animateWithDuration:0.5 animations:^{
-        [self setAlpha:0];
+        [self_ setAlpha:0];
     } completion:^(BOOL finished) {
         if (onEndAction) {
             onEndAction();

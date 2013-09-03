@@ -38,323 +38,338 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        // Initialization code
-        [self setBackgroundColor:[UIColor clearColor]];
-        [self setAlpha:0];
-        [UIView animateWithDuration:0.5 animations:^{
-            [self setAlpha:1];
-        }];
-        mainFrame = frame;
-        
-        // back image
-        float width = frame.size.width;
-        //float height = width * (float)(512.0/512.0);
-        float height = frame.size.height;
-        float x = 0;
-        float y = 0;
-        //UIImage *img = [UIImage imageNamed:@"report_background.jpg"];
-        //UIImage *img = [UIImage imageNamed:@"metal_back2.jpg"];
-        /*
-         NSString *path = [[NSBundle mainBundle] pathForResource:@"metal_back2" ofType:@"png"];
-         UIImage* img = [[UIImage alloc] initWithContentsOfFile:path];
-         UIImageView* backView = [[UIImageView alloc] initWithFrame:CGRectMake(x,y,width,height)];
-         [backView setImage:img];
-         [backView setCenter:CGPointMake(frame.size.width/2, frame.size.height/2)];
-         [backView setUserInteractionEnabled:true];
-         [self addSubview:backView];*/
-        
-        /*
-         // tap
-         {
-         double delayInSeconds = 3.5;
-         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-         UITapGestureRecognizer *tr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap:)];
-         [backView addGestureRecognizer:tr];
-         });
-         }*/
-        
-        // title
-        {
-            float height = 60;
-            float width = mainFrame.size.width;
+        @autoreleasepool {
+            // Initialization code
+            [self setBackgroundColor:[UIColor clearColor]];
+            [self setAlpha:0];
+            {
+                __weak ReportView* self_ = self;
+                [UIView animateWithDuration:0.5 animations:^{
+                    [self_ setAlpha:1];
+                }];
+            }
+            mainFrame = frame;
+            
+            // back image
+            float width = frame.size.width;
+            //float height = width * (float)(512.0/512.0);
+            float height = frame.size.height;
             float x = 0;
             float y = 0;
-            RRSGlowLabel* lbl = [[RRSGlowLabel alloc] init];
-            [lbl setGlowAmount:10];
-            [lbl setGlowColor:[UIColor colorWithHexString:@"ffffff"]];
-            UIFont* font = [UIFont fontWithName:@"HiraKakuProN-W6" size:40];
-            [lbl setFont:font];
-            [lbl setText:NSLocalizedString(@"Battle Result", nil)];
-            [lbl setFrame:CGRectMake(x, y, width, height)];
-            [lbl setTextAlignment:NSTextAlignmentCenter];
-            [lbl setBackgroundColor:[UIColor clearColor]];
-            [lbl setTextColor:[UIColor colorWithHexString:@"#F7F7F7"]];
-            [self addSubview:lbl];
+            //UIImage *img = [UIImage imageNamed:@"report_background.jpg"];
+            //UIImage *img = [UIImage imageNamed:@"metal_back2.jpg"];
             /*
-             float height = 60;
-             float width = height*(288/94);
-             float x = mainFrame.size.width/2 - width/2;
-             float y = 5;
-             UIImage *img = [UIImage imageNamed:@"result.png"];
-             UIImageView* imgView = [[UIImageView alloc] initWithFrame:CGRectMake(x,y,width,height)];
-             [imgView setImage:img];
-             [imgView setFrame:CGRectMake(x, y, width, height)];
-             [self addSubview:imgView];
-             */
-        }
-        
-        float adheight = 0;
-        
-        // admob
-        if (IS_REPORT_VIEW_ADMOB)
-        {
+             NSString *path = [[NSBundle mainBundle] pathForResource:@"metal_back2" ofType:@"png"];
+             UIImage* img = [[UIImage alloc] initWithContentsOfFile:path];
+             UIImageView* backView = [[UIImageView alloc] initWithFrame:CGRectMake(x,y,width,height)];
+             [backView setImage:img];
+             [backView setCenter:CGPointMake(frame.size.width/2, frame.size.height/2)];
+             [backView setUserInteractionEnabled:true];
+             [self addSubview:backView];*/
+            
+            /*
+             // tap
+             {
+             double delayInSeconds = 3.5;
+             dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+             dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+             UITapGestureRecognizer *tr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap:)];
+             [backView addGestureRecognizer:tr];
+             });
+             }*/
+            
+            // title
+            {
+                float height = 60;
+                float width = mainFrame.size.width;
+                float x = 0;
+                float y = 0;
+                RRSGlowLabel* lbl = [[RRSGlowLabel alloc] init];
+                [lbl setGlowAmount:10];
+                [lbl setGlowColor:[UIColor colorWithHexString:@"ffffff"]];
+                UIFont* font = [UIFont fontWithName:@"HiraKakuProN-W6" size:40];
+                [lbl setFont:font];
+                [lbl setText:NSLocalizedString(@"Battle Result", nil)];
+                [lbl setFrame:CGRectMake(x, y, width, height)];
+                [lbl setTextAlignment:NSTextAlignmentCenter];
+                [lbl setBackgroundColor:[UIColor clearColor]];
+                [lbl setTextColor:[UIColor colorWithHexString:@"#F7F7F7"]];
+                [self addSubview:lbl];
+                /*
+                 float height = 60;
+                 float width = height*(288/94);
+                 float x = mainFrame.size.width/2 - width/2;
+                 float y = 5;
+                 UIImage *img = [UIImage imageNamed:@"result.png"];
+                 UIImageView* imgView = [[UIImageView alloc] initWithFrame:CGRectMake(x,y,width,height)];
+                 [imgView setImage:img];
+                 [imgView setFrame:CGRectMake(x, y, width, height)];
+                 [self addSubview:imgView];
+                 */
+            }
+            
+            float adheight = 0;
+            
             // admob
-            GADBannerView* ad = [MainViewController CreateGADBannerView];
-            [self addSubview:ad];
-            CGRect r = ad.frame;
-            r.origin.x = mainFrame.size.width/2 - r.size.width/2;
-            r.origin.y = mainFrame.size.height - r.size.height;
-            [ad setFrame:r];
-            adheight = r.size.height;
-        }
-        
-        // table
-        float row_height = 25;
-        rowSize.height = row_height;
-        rowSize.width = mainFrame.size.width - 30;
-        CGRect scrollFrame = CGRectMake(15, 55, rowSize.width, mainFrame.size.height - 75 - (adheight + 5));
-        UITableView* tbv = [[UITableView alloc] initWithFrame:scrollFrame];
-        [tbv setBackgroundColor:[UIColor clearColor]];
-        [tbv setRowHeight:row_height];
-        [tbv setSeparatorStyle:UITableViewCellSeparatorStyleNone];
-        [tbv setEditing:false];
-        [tbv setTableHeaderView:nil];
-        [tbv setTableFooterView:nil];
-        tbv.indicatorStyle = UIScrollViewIndicatorStyleBlack;
-        tbv.delegate = self;
-        tbv.dataSource = self;
-        [tbv setIndicatorStyle:UIScrollViewIndicatorStyleWhite];
-        [tbv setPagingEnabled:NO];
-        tableView = tbv;
-        [self addSubview:tbv];
-        
-        // init messages
-        reportMessageList.clear();
-        hg::BattleResult battleResult = hg::UserData::sharedUserData()->getLatestBattleResult();
-        {
-            ReportMessage r = {
-                NSSTR2STR(NSLocalizedString(@"Result", nil)),
-                ""
-            };
-            if (battleResult.isWin) {
-                r.message = NSSTR2STR(NSLocalizedString(@"WIN", nil));
-            } else if (battleResult.isRetreat) {
-                r.message = NSSTR2STR(NSLocalizedString(@"RETREAT", nil));
-            } else {
-                r.message = NSSTR2STR(NSLocalizedString(@"LOSE", nil));
+            if (IS_REPORT_VIEW_ADMOB)
+            {
+                // admob
+                GADBannerView* ad = [MainViewController CreateGADBannerView];
+                [self addSubview:ad];
+                CGRect r = ad.frame;
+                r.origin.x = mainFrame.size.width/2 - r.size.width/2;
+                r.origin.y = mainFrame.size.height - r.size.height;
+                [ad setFrame:r];
+                adheight = r.size.height;
             }
-            reportMessageList.push_back(r);
-        }
-        {
-            std::stringstream ss;
-            if (battleResult.battleScore > 0) {
-                ss << "+";
-            }
-            ss << battleResult.battleScore << NSSTR2STR(NSLocalizedString(@" Pt", nil));
-            ReportMessage r = {
-                NSSTR2STR(NSLocalizedString(@"Score", nil)),
-                ss.str()
-            };
-            reportMessageList.push_back(r);
-        }
-        {
-            std::stringstream ss;
-            ss <<  battleResult.earnedMoney << NSSTR2STR(NSLocalizedString(@" Gold", nil));
-            ReportMessage r = {
-                NSSTR2STR(NSLocalizedString(@"Reward", nil)),
-                ss.str()
-            };
-            reportMessageList.push_back(r);
-        }
-        {
-            std::stringstream ss;
-            ss << battleResult.allShotMoney << NSSTR2STR(NSLocalizedString(@" Gold", nil));
-            ReportMessage r = {
-                NSSTR2STR(NSLocalizedString(@"Ammo Cost", nil)),
-                ss.str()
-            };
-            reportMessageList.push_back(r);
-        }
-        {
-            std::stringstream ss;
-            if (battleResult.finalIncome >= 0) {
-                ss << "+" << battleResult.finalIncome << NSSTR2STR(NSLocalizedString(@" Gold", nil));
-            }
-            else {
-                ss << battleResult.finalIncome << NSSTR2STR(NSLocalizedString(@" Gold", nil));
-            }
-            ReportMessage r = {
-                NSSTR2STR(NSLocalizedString(@"Total Balance", nil)),
-                ss.str()
-            };
-            reportMessageList.push_back(r);
-        }
-        {
-            std::stringstream ss;
-            ss << battleResult.killedEnemy;
-            ReportMessage r = {
-                NSSTR2STR(NSLocalizedString(@"Destroyed Enemy", nil)),
-                ss.str()
-            };
-            reportMessageList.push_back(r);
-        }
-        {
-            std::stringstream ss;
-            ss << battleResult.killedFriend;
-            ReportMessage r = {
-                NSSTR2STR(NSLocalizedString(@"Destroyed Friend", nil)),
-                ss.str()
-            };
-            reportMessageList.push_back(r);
-        }
-        {
-            std::stringstream ss;
-            ss << battleResult.myShot;
-            ReportMessage r = {
-                NSSTR2STR(NSLocalizedString(@"Ammo Used", nil)),
-                ss.str()
-            };
-            reportMessageList.push_back(r);
-        }
-        {
-            std::stringstream ss;
-            ss << battleResult.myHit;
-            ReportMessage r = {
-                NSSTR2STR(NSLocalizedString(@"Hits", nil)),
-                ss.str()
-            };
-            reportMessageList.push_back(r);
-        }
-        {
-            std::string msg = "-";
-            if (battleResult.myShot > 0) {
-                char ch[100];
-                sprintf(ch, "%0.2f%%", ((float)battleResult.myHit/(float)battleResult.myShot*100.0));
-                msg = std::string(ch);
-            }
-            ReportMessage r = {
-                NSSTR2STR(NSLocalizedString(@"Hit Ratio", nil)),
-                msg
-            };
-            reportMessageList.push_back(r);
-        }
-        {
-            std::stringstream ss;
-            ss << battleResult.allShot;
-            ReportMessage r = {
-                NSSTR2STR(NSLocalizedString(@"Team Ammo Used", nil)),
-                ss.str()
-            };
-            reportMessageList.push_back(r);
-        }
-        {
-            std::stringstream ss;
-            ss << battleResult.allHit;
-            ReportMessage r = {
-                NSSTR2STR(NSLocalizedString(@"Team Hits", nil)),
-                ss.str()
-            };
-            reportMessageList.push_back(r);
-        }
-        {
-            std::string msg = "-";
-            if (battleResult.allShot > 0) {
-                char ch[100];
-                sprintf(ch, "%0.2f%%", ((float)battleResult.allHit/(float)battleResult.allShot*100.0));
-                msg = std::string(ch);
-            }
-            ReportMessage r = {
-                NSSTR2STR(NSLocalizedString(@"Team Hit Ratio", nil)),
-                msg
-            };
-            reportMessageList.push_back(r);
-        }
-        {
-            std::stringstream ss;
-            ss << battleResult.enemyShot;
-            ReportMessage r = {
-                NSSTR2STR(NSLocalizedString(@"Enemy's Ammo Used", nil)),
-                ss.str()
-            };
-            reportMessageList.push_back(r);
-        }
-        {
-            std::stringstream ss;
-            ss << battleResult.enemyHit;
-            ReportMessage r = {
-                NSSTR2STR(NSLocalizedString(@"Enemy's Total Hits", nil)),
-                ss.str()
-            };
-            reportMessageList.push_back(r);
-        }
-        {
-            std::string msg = "-";
-            if (battleResult.enemyShot > 0) {
-                char ch[100];
-                sprintf(ch, "%0.2f%%", ((float)battleResult.enemyHit/(float)battleResult.enemyShot*100.0));
-                msg = std::string(ch);
-            }
-            ReportMessage r = {
-                NSSTR2STR(NSLocalizedString(@"Enemy's Hit Ratio", nil)),
-                msg
-            };
-            reportMessageList.push_back(r);
-        }
-        // 戻るボタン
-        {
-            ImageButtonView* backImgView = [[ImageButtonView alloc] initWithFrame:CGRectMake(0, 0, 66, 66)];
-            //UIImage* img = [UIImage imageNamed:@"checkmark.png"];
-            NSString *path = [[NSBundle mainBundle] pathForResource:ICON_CHECK ofType:@"png"];
-            UIImage* img = [[UIImage alloc] initWithContentsOfFile:path];
             
-            [backImgView setBackgroundColor:[UIColor whiteColor]];
-            [backImgView setFrame:CGRectMake(mainFrame.size.width - 76, mainFrame.size.height - 84, 66, 66)];
-            [backImgView.layer setCornerRadius:8];
-            [backImgView.layer setBorderColor:[UIColor colorWithHexString:@"#ffffff"].CGColor];
-            [backImgView.layer setBorderWidth:0.5];
+            // table
+            float row_height = 25;
+            rowSize.height = row_height;
+            rowSize.width = mainFrame.size.width - 30;
+            CGRect scrollFrame = CGRectMake(15, 55, rowSize.width, mainFrame.size.height - 75 - (adheight + 5));
+            UITableView* tbv = [[UITableView alloc] initWithFrame:scrollFrame];
+            [tbv setBackgroundColor:[UIColor clearColor]];
+            [tbv setRowHeight:row_height];
+            [tbv setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+            [tbv setEditing:false];
+            [tbv setTableHeaderView:nil];
+            [tbv setTableFooterView:nil];
+            tbv.indicatorStyle = UIScrollViewIndicatorStyleBlack;
+            tbv.delegate = self;
+            tbv.dataSource = self;
+            [tbv setIndicatorStyle:UIScrollViewIndicatorStyleWhite];
+            [tbv setPagingEnabled:NO];
+            tableView = tbv;
+            [self addSubview:tbv];
             
-            [backImgView setImage:img];
-            [backImgView setContentMode:UIViewContentModeScaleAspectFit];
-            [backImgView setUserInteractionEnabled:YES];
-            
-            [self addSubview:backImgView];
-            
-            [backImgView setOnTapAction:^(ImageButtonView *target) {
-                [self setUserInteractionEnabled:FALSE];
-                [UIView animateWithDuration:0.3 animations:^{
-                    [self setAlpha:0];
+            // init messages
+            reportMessageList.clear();
+            hg::BattleResult battleResult = hg::UserData::sharedUserData()->getLatestBattleResult();
+            {
+                ReportMessage r = {
+                    NSSTR2STR(NSLocalizedString(@"Result", nil)),
+                    ""
+                };
+                if (battleResult.isWin) {
+                    r.message = NSSTR2STR(NSLocalizedString(@"WIN", nil));
+                } else if (battleResult.isRetreat) {
+                    r.message = NSSTR2STR(NSLocalizedString(@"RETREAT", nil));
+                } else {
+                    r.message = NSSTR2STR(NSLocalizedString(@"LOSE", nil));
+                }
+                reportMessageList.push_back(r);
+            }
+            {
+                std::stringstream ss;
+                if (battleResult.battleScore > 0) {
+                    ss << "+";
+                }
+                ss << battleResult.battleScore << NSSTR2STR(NSLocalizedString(@" Pt", nil));
+                ReportMessage r = {
+                    NSSTR2STR(NSLocalizedString(@"Score", nil)),
+                    ss.str()
+                };
+                reportMessageList.push_back(r);
+            }
+            {
+                std::stringstream ss;
+                ss <<  battleResult.earnedMoney << NSSTR2STR(NSLocalizedString(@" Gold", nil));
+                ReportMessage r = {
+                    NSSTR2STR(NSLocalizedString(@"Reward", nil)),
+                    ss.str()
+                };
+                reportMessageList.push_back(r);
+            }
+            {
+                std::stringstream ss;
+                ss << battleResult.allShotMoney << NSSTR2STR(NSLocalizedString(@" Gold", nil));
+                ReportMessage r = {
+                    NSSTR2STR(NSLocalizedString(@"Ammo Cost", nil)),
+                    ss.str()
+                };
+                reportMessageList.push_back(r);
+            }
+            {
+                std::stringstream ss;
+                if (battleResult.finalIncome >= 0) {
+                    ss << "+" << battleResult.finalIncome << NSSTR2STR(NSLocalizedString(@" Gold", nil));
+                }
+                else {
+                    ss << battleResult.finalIncome << NSSTR2STR(NSLocalizedString(@" Gold", nil));
+                }
+                ReportMessage r = {
+                    NSSTR2STR(NSLocalizedString(@"Total Balance", nil)),
+                    ss.str()
+                };
+                reportMessageList.push_back(r);
+            }
+            {
+                std::stringstream ss;
+                ss << battleResult.killedEnemy;
+                ReportMessage r = {
+                    NSSTR2STR(NSLocalizedString(@"Destroyed Enemy", nil)),
+                    ss.str()
+                };
+                reportMessageList.push_back(r);
+            }
+            {
+                std::stringstream ss;
+                ss << battleResult.killedFriend;
+                ReportMessage r = {
+                    NSSTR2STR(NSLocalizedString(@"Destroyed Friend", nil)),
+                    ss.str()
+                };
+                reportMessageList.push_back(r);
+            }
+            {
+                std::stringstream ss;
+                ss << battleResult.myShot;
+                ReportMessage r = {
+                    NSSTR2STR(NSLocalizedString(@"Ammo Used", nil)),
+                    ss.str()
+                };
+                reportMessageList.push_back(r);
+            }
+            {
+                std::stringstream ss;
+                ss << battleResult.myHit;
+                ReportMessage r = {
+                    NSSTR2STR(NSLocalizedString(@"Hits", nil)),
+                    ss.str()
+                };
+                reportMessageList.push_back(r);
+            }
+            {
+                std::string msg = "-";
+                if (battleResult.myShot > 0) {
+                    char ch[100];
+                    sprintf(ch, "%0.2f%%", ((float)battleResult.myHit/(float)battleResult.myShot*100.0));
+                    msg = std::string(ch);
+                }
+                ReportMessage r = {
+                    NSSTR2STR(NSLocalizedString(@"Hit Ratio", nil)),
+                    msg
+                };
+                reportMessageList.push_back(r);
+            }
+            {
+                std::stringstream ss;
+                ss << battleResult.allShot;
+                ReportMessage r = {
+                    NSSTR2STR(NSLocalizedString(@"Team Ammo Used", nil)),
+                    ss.str()
+                };
+                reportMessageList.push_back(r);
+            }
+            {
+                std::stringstream ss;
+                ss << battleResult.allHit;
+                ReportMessage r = {
+                    NSSTR2STR(NSLocalizedString(@"Team Hits", nil)),
+                    ss.str()
+                };
+                reportMessageList.push_back(r);
+            }
+            {
+                std::string msg = "-";
+                if (battleResult.allShot > 0) {
+                    char ch[100];
+                    sprintf(ch, "%0.2f%%", ((float)battleResult.allHit/(float)battleResult.allShot*100.0));
+                    msg = std::string(ch);
+                }
+                ReportMessage r = {
+                    NSSTR2STR(NSLocalizedString(@"Team Hit Ratio", nil)),
+                    msg
+                };
+                reportMessageList.push_back(r);
+            }
+            {
+                std::stringstream ss;
+                ss << battleResult.enemyShot;
+                ReportMessage r = {
+                    NSSTR2STR(NSLocalizedString(@"Enemy's Ammo Used", nil)),
+                    ss.str()
+                };
+                reportMessageList.push_back(r);
+            }
+            {
+                std::stringstream ss;
+                ss << battleResult.enemyHit;
+                ReportMessage r = {
+                    NSSTR2STR(NSLocalizedString(@"Enemy's Total Hits", nil)),
+                    ss.str()
+                };
+                reportMessageList.push_back(r);
+            }
+            {
+                std::string msg = "-";
+                if (battleResult.enemyShot > 0) {
+                    char ch[100];
+                    sprintf(ch, "%0.2f%%", ((float)battleResult.enemyHit/(float)battleResult.enemyShot*100.0));
+                    msg = std::string(ch);
+                }
+                ReportMessage r = {
+                    NSSTR2STR(NSLocalizedString(@"Enemy's Hit Ratio", nil)),
+                    msg
+                };
+                reportMessageList.push_back(r);
+            }
+            // 戻るボタン
+            {
+                ImageButtonView* backImgView = [[ImageButtonView alloc] initWithFrame:CGRectMake(0, 0, 66, 66)];
+                //UIImage* img = [UIImage imageNamed:@"checkmark.png"];
+                NSString *path = [[NSBundle mainBundle] pathForResource:ICON_CHECK ofType:@"png"];
+                UIImage* img = [[UIImage alloc] initWithContentsOfFile:path];
+                
+                [backImgView setBackgroundColor:[UIColor whiteColor]];
+                [backImgView setFrame:CGRectMake(mainFrame.size.width - 76, mainFrame.size.height - 84, 66, 66)];
+                [backImgView.layer setCornerRadius:8];
+                [backImgView.layer setBorderColor:[UIColor colorWithHexString:@"#ffffff"].CGColor];
+                [backImgView.layer setBorderWidth:0.5];
+                
+                [backImgView setImage:img];
+                [backImgView setContentMode:UIViewContentModeScaleAspectFit];
+                [backImgView setUserInteractionEnabled:YES];
+                
+                [self addSubview:backImgView];
+                
+                __weak ReportView* self_ = self;
+                [backImgView setOnTapAction:^(ImageButtonView *target) {
+                    [self_ endThis];
                 }];
-                onEndAction();
-            }];
-        }
-        // cover
-        {
-            UIView* v = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
-            [v setBackgroundColor:[UIColor blackColor]];
-            [v setUserInteractionEnabled:YES];
-            [self addSubview:v];
-            [UIView animateWithDuration:0.7 animations:^{
-                [v setAlpha:0];
-            } completion:^(BOOL finished) {
-                [v removeFromSuperview];
-            }];
+            }
+            // cover
+            {
+                UIView* v = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
+                [v setBackgroundColor:[UIColor blackColor]];
+                [v setUserInteractionEnabled:YES];
+                [self addSubview:v];
+                __weak UIView* v_ = v;
+                [UIView animateWithDuration:0.7 animations:^{
+                    [v_ setAlpha:0];
+                } completion:^(BOOL finished) {
+                    [v_ removeFromSuperview];
+                }];
+            }
         }
         
         [self setBackgroundColor:[UIColor blackColor]];
         
     }
     return self;
+}
+
+-(void)endThis
+{
+    [self setUserInteractionEnabled:FALSE];
+    __weak ReportView* self_ = self;
+    [UIView animateWithDuration:0.3 animations:^{
+        [self_ setAlpha:0];
+    }];
+    if (onEndAction) {
+        onEndAction();
+    }
 }
 
 - (UILabel*)createLabel
@@ -377,14 +392,7 @@
 
 - (void)onTap:(UIGestureRecognizer*)sender
 {
-    [self setUserInteractionEnabled:false];
-    [UIView animateWithDuration:0.5 animations:^{
-        [self setAlpha:0];
-    } completion:^(BOOL finished) {
-        if (onEndAction) {
-            onEndAction();
-        }
-    }];
+    [self endThis];
 }
 
 - (void)dealloc

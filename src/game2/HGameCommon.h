@@ -21,8 +21,8 @@
 #define IS_DEBUG_COLLISION 0
 #define ENEMY_NUM 10
 #define EFFECT_NUM 30
-#define BULLET_NUM 100
-#define ENEMY_BULLET_NUM 250
+#define BULLET_NUM 80
+#define ENEMY_BULLET_NUM 120
 /*
 #define EFFECT_NUM 0
 #define BULLET_NUM 0
@@ -274,8 +274,11 @@ namespace hg {
         CollisionIdStart,
         CollisionIdNone,
         CollisionId_BulletNormal,
+        CollisionId_BulletNormal2,
         CollisionId_BulletMedium,
+        CollisionId_BulletMedium2,
         CollisionId_BulletBig,
+        CollisionId_BulletBig2,
         CollisionId_BulletVulcan,
         CollisionId_BulletLaser,
         CollisionId_P_ROBO1,

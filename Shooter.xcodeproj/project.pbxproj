@@ -2145,8 +2145,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Yota Hamada (K63JZ995U2)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Yota Hamada (K63JZ995U2)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/src/GameFeatSDK_iOS\"",
@@ -2164,8 +2164,8 @@
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Shooter;
-				PROVISIONING_PROFILE = "31C4FBF0-323F-45F0-A89A-D2B461C5AD92";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "31C4FBF0-323F-45F0-A89A-D2B461C5AD92";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};

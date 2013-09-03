@@ -475,7 +475,7 @@ namespace hg {
                             ChangeScaleProcess* ssp2 = new ChangeScaleProcess();
                             ssp2->init(po, pSpr, 0, 0, f(25));
                             ssp2->setEaseFunc(&ease_in);
-                            //ssp->setNext(ssp2);
+                            ssp->setNext(ssp2);
                             
                             // 削除
                             NodeRemoveProcess* nrp = new NodeRemoveProcess();
@@ -483,7 +483,7 @@ namespace hg {
                             ssp2->setNext(nrp);
                             
                             // プロセス開始
-                            HGProcessManager::sharedProcessManager()->addProcess(ssp2);
+                            HGProcessManager::sharedProcessManager()->addProcess(ssp);
                         }
                     }
                 }

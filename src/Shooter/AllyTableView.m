@@ -13,6 +13,7 @@
 #import "UserData.h"
 #import "UIColor+MyCategory.h"
 #import "ImageButtonView.h"
+#import "SystemMonitor.h"
 
 @interface AllyTableView ()
 {
@@ -50,14 +51,6 @@ static AllyTableView* instance;
     return self;
 }
 
-+ (void)EndView
-{
-    if (instance)
-    {
-        [instance endView];
-    }
-}
-
 - (void)endView
 {
     // animate
@@ -70,6 +63,7 @@ static AllyTableView* instance;
      [self removeFromSuperview];
      }];
      }*/
+    [self setUserInteractionEnabled:FALSE];
     onEndAction();
 }
 
@@ -93,16 +87,19 @@ static AllyTableView* instance;
 
 - (void)dealloc
 {
-    if (onEndAction) //[onEndAction release];
-        if(allyTableView)
-        {
-            //[allyTableView release];
-            allyTableView = nil;
-        }
+    if(allyTableView)
+    {
+        //[allyTableView release];
+        allyTableView = nil;
+    }
 }
 
 - (void)viewDidLoad
 {
+#if IS_DEBUG
+    NSLog(@"ally table view did load");
+    [SystemMonitor dump];
+#endif
     
     [self setBackgroundColor:[UIColor clearColor]];
     
@@ -141,8 +138,10 @@ static AllyTableView* instance;
         ImageButtonView* backImgView = [[ImageButtonView alloc] initWithFrame:CGRectMake(0, 0, 66, 66)];
         //UIImage* img = [UIImage imageNamed:@"checkmark.png"];
         
+#if IS_BUTTON_IMAGE
         NSString *path = [[NSBundle mainBundle] pathForResource:ICON_CHECK ofType:@"png"];
         UIImage* img = [[UIImage alloc] initWithContentsOfFile:path];
+#endif
         
         [backImgView setBackgroundColor:[UIColor whiteColor]];
         [backImgView setFrame:CGRectMake(frame.size.width - 76, frame.size.height - 84, 66, 66)];
@@ -150,15 +149,17 @@ static AllyTableView* instance;
         [backImgView.layer setBorderColor:[UIColor colorWithHexString:@"#ffffff"].CGColor];
         [backImgView.layer setBorderWidth:0.5];
         
+#if IS_BUTTON_IMAGE
         [backImgView setImage:img];
+#endif
         [backImgView setContentMode:UIViewContentModeScaleAspectFit];
         [backImgView setUserInteractionEnabled:YES];
         
         [self addSubview:backImgView];
         
+        __weak AllyTableView* self_ = self;
         [backImgView setOnTapAction:^(ImageButtonView *target) {
-            [self setUserInteractionEnabled:FALSE];
-            onEndAction();
+            [self_ endView];
         }];
     }
     
@@ -168,7 +169,9 @@ static AllyTableView* instance;
         ImageButtonView* backImgView = [[ImageButtonView alloc] initWithFrame:CGRectMake(0, 0, 66, 66)];
         //UIImage* img = [UIImage imageNamed:@"checkmark.png"];
         NSString *path = [[NSBundle mainBundle] pathForResource:ICON_SORT ofType:@"png"];
+#if IS_BUTTON_IMAGE
         UIImage* img = [[UIImage alloc] initWithContentsOfFile:path];
+#endif
         
         [backImgView setBackgroundColor:[UIColor whiteColor]];
         [backImgView setFrame:CGRectMake(frame.size.width - 76, frame.size.height - 84 - 10 - 66, 66, 66)];
@@ -176,15 +179,18 @@ static AllyTableView* instance;
         [backImgView.layer setBorderColor:[UIColor colorWithHexString:@"#ffffff"].CGColor];
         [backImgView.layer setBorderWidth:0.5];
         
+#if IS_BUTTON_IMAGE
         [backImgView setImage:img];
+#endif
         [backImgView setContentMode:UIViewContentModeScaleAspectFit];
         [backImgView setUserInteractionEnabled:YES];
         
         [self addSubview:backImgView];
         
+        __weak AllyTableView* self_ = self;
         [backImgView setOnTapAction:^(ImageButtonView *target) {
             hg::UserData::sharedUserData()->sortFighterList();
-            [self reloadData];
+            [self_ reloadData];
         }];
     }
     
@@ -209,9 +215,10 @@ static AllyTableView* instance;
             
             [self addSubview:backImgView];
             
+            __weak AllyTableView* self_ = self;
             [backImgView setOnTapAction:^(ImageButtonView *target) {
                 hg::UserData::sharedUserData()->deployAllFighter();
-                [self reloadData];
+                [self_ reloadData];
             }];
         }
         
@@ -234,14 +241,19 @@ static AllyTableView* instance;
             
             [self addSubview:backImgView];
             
+            __weak AllyTableView* self_ = self;
             [backImgView setOnTapAction:^(ImageButtonView *target) {
                 hg::UserData::sharedUserData()->undeployAllFighter();
-                [self reloadData];
+                [self_ reloadData];
             }];
         }
     }
     
     [self setBackgroundColor:[UIColor clearColor]];
+#if IS_DEBUG
+    NSLog(@"ally table view did load end");
+    [SystemMonitor dump];
+#endif
 }
 
 
@@ -253,7 +265,7 @@ static AllyTableView* instance;
 -(NSInteger)tableView:(UITableView *)tableView
 numberOfRowsInSection:(NSInteger)section
 {
-#if IS_ALLYVIEW || 1
+#if IS_ALLYVIEW
     hg::FighterList list;
     
     if (viewMode == AllyViewModeShop)
@@ -294,43 +306,45 @@ numberOfRowsInSection:(NSInteger)section
 -(UITableViewCell *)tableView:
 (UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell* c = [[UITableViewCell alloc] initWithFrame:CGRectMake(0, 0, CELL_HEIGHT, CELL_WIDTH)];
-    [c setBackgroundColor:[UIColor clearColor]];
-    [c setSelectionStyle:UITableViewCellSelectionStyleNone];
-    
-    // 枠
-    int y = frame.size.height - CELL_HEIGHT - CELL_GAP;
-    hg::FighterList fList;
-    
-    if (viewMode == AllyViewModeShop)
-    {
-        fList = hg::UserData::sharedUserData()->getShopList();
-    }
-    else if (viewMode == AllyViewModeDeployAlly)
-    {
-        fList = hg::UserData::sharedUserData()->getReadyList();
-    }
-    else
-    {
-        fList = hg::UserData::sharedUserData()->getFighterList();
-    }
-    
-    for (int i = 0; i < maxRowNum; i++)
-    {
-        int index = i + [indexPath row] * maxRowNum;
-        if (fList.size() <= index)
+    @autoreleasepool {
+        UITableViewCell* c = [[UITableViewCell alloc] initWithFrame:CGRectMake(0, 0, CELL_HEIGHT, CELL_WIDTH)];
+        [c setBackgroundColor:[UIColor clearColor]];
+        [c setSelectionStyle:UITableViewCellSelectionStyleNone];
+        
+        // 枠
+        int y = frame.size.height - CELL_HEIGHT - CELL_GAP;
+        hg::FighterList fList;
+        
+        if (viewMode == AllyViewModeShop)
         {
-            break;
+            fList = hg::UserData::sharedUserData()->getShopList();
         }
-        hg::FighterInfo* fInfo = fList[index];
+        else if (viewMode == AllyViewModeDeployAlly)
+        {
+            fList = hg::UserData::sharedUserData()->getReadyList();
+        }
+        else
+        {
+            fList = hg::UserData::sharedUserData()->getFighterList();
+        }
         
-        // セルコンテナ
-        AllyView* v = [[AllyView alloc] initWithAllyViewMode:viewMode WithFrame:CGRectMake(y, 0, CELL_HEIGHT, CELL_WIDTH) WithFighterInfo:fInfo];
-        [c addSubview:v];
-        
-        y -= (CELL_HEIGHT + CELL_GAP);
+        for (int i = 0; i < maxRowNum; i++)
+        {
+            int index = i + [indexPath row] * maxRowNum;
+            if (fList.size() <= index)
+            {
+                break;
+            }
+            hg::FighterInfo* fInfo = fList[index];
+            
+            // セルコンテナ
+            AllyView* v = [[AllyView alloc] initWithAllyViewMode:viewMode WithFrame:CGRectMake(y, 0, CELL_HEIGHT, CELL_WIDTH) WithFighterInfo:fInfo];
+            [c addSubview:v];
+            
+            y -= (CELL_HEIGHT + CELL_GAP);
+        }
+        return c;
     }
-    return c;
 }
 
 /*

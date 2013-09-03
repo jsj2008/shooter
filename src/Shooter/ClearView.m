@@ -29,8 +29,9 @@
         // Initialization code
         [self setBackgroundColor:[UIColor clearColor]];
         [self setAlpha:0];
+        __weak ClearView* self_ = self;
         [UIView animateWithDuration:0.5 animations:^{
-            [self setAlpha:1];
+            [self_ setAlpha:1];
         }];
         
         // back image
@@ -162,12 +163,13 @@
             [self addSubview:iv];
             double delayInSeconds = 1.5;
             dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+            __weak UIImageView* iv_ = iv;
             dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
                 [UIView animateWithDuration:0.5 animations:^{
-                    [iv setTransform:CGAffineTransformMakeScale(1.3, 1.3)];
+                    [iv_ setTransform:CGAffineTransformMakeScale(1.3, 1.3)];
                 } completion:^(BOOL finished) {
                     [UIView animateWithDuration:0.3 animations:^{
-                        [iv setTransform:CGAffineTransformMakeScale(1, 1)];
+                        [iv_ setTransform:CGAffineTransformMakeScale(1, 1)];
                     }];
                 }];
             });
@@ -190,12 +192,13 @@
             [self addSubview:iv];
             double delayInSeconds = 3.0;
             dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+            __weak UIImageView* iv_ = iv;
             dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
                 [UIView animateWithDuration:0.5 animations:^{
-                    [iv setTransform:CGAffineTransformMakeScale(1.3, 1.3)];
+                    [iv_ setTransform:CGAffineTransformMakeScale(1.3, 1.3)];
                 } completion:^(BOOL finished) {
                     [UIView animateWithDuration:0.3 animations:^{
-                        [iv setTransform:CGAffineTransformMakeScale(1, 1)];
+                        [iv_ setTransform:CGAffineTransformMakeScale(1, 1)];
                     }];
                 }];
             });
@@ -217,12 +220,13 @@
             [self addSubview:iv];
             double delayInSeconds = 3.5;
             dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+            __weak UIImageView* iv_ = iv;
             dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
                 [UIView animateWithDuration:0.5 animations:^{
-                    [iv setTransform:CGAffineTransformMakeScale(1.3, 1.3)];
+                    [iv_ setTransform:CGAffineTransformMakeScale(1.3, 1.3)];
                 } completion:^(BOOL finished) {
                     [UIView animateWithDuration:0.3 animations:^{
-                        [iv setTransform:CGAffineTransformMakeScale(1, 1)];
+                        [iv_ setTransform:CGAffineTransformMakeScale(1, 1)];
                     }];
                 }];
             });
@@ -248,8 +252,9 @@
         {
             double delayInSeconds = 3.5;
             dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+            __weak ClearView* self_ = self;
             dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                UITapGestureRecognizer *tr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap:)];
+                UITapGestureRecognizer *tr = [[UITapGestureRecognizer alloc] initWithTarget:self_ action:@selector(onTap:)];
                 [backView addGestureRecognizer:tr];
             });
         }
@@ -260,8 +265,9 @@
 - (void)onTap:(UIGestureRecognizer*)sender
 {
     [self setUserInteractionEnabled:false];
+    __weak ClearView* self_ = self;
     [UIView animateWithDuration:0.5 animations:^{
-        [self setAlpha:0];
+        [self_ setAlpha:0];
     } completion:^(BOOL finished) {
         if (onEndAction) {
             onEndAction();

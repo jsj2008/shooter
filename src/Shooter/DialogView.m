@@ -92,10 +92,13 @@ const float MessageHeight = 100;
     if (!self.closeOnTapBackground) return;
     // close
     [_curtain removeFromSuperview];
+    _curtain = nil;
+    __weak UIView* mb = _menuBase;
+    __weak DialogView* self_ = self;
     [UIView animateWithDuration:0.2 animations:^{
-        [_menuBase setTransform:CGAffineTransformMakeScale(2, 0)];
+        [mb setTransform:CGAffineTransformMakeScale(2, 0)];
     } completion:^(BOOL finished) {
-        [self removeFromSuperview];
+        [self_ removeFromSuperview];
         if (onCancel)
         {
             onCancel();
@@ -105,127 +108,145 @@ const float MessageHeight = 100;
 
 - (void)show
 {
-    
-    // design
-    [self setBackgroundColor:[UIColor clearColor]];
-    
-    // add subview
-    UIView* rootView = [[UIApplication sharedApplication].keyWindow viewForBaselineLayout];
-    CGRect screenFrame = [UIScreen mainScreen].bounds;
-    CGRect frame = CGRectMake(0, 0, screenFrame.size.height, screenFrame.size.width);
-    
-    [self setFrame:frame];
-    [self setCenter:CGPointMake(frame.size.height/2, frame.size.width/2)];
-    [rootView addSubview:self];
-    
-    // curtain
-    {
-        CGRect frm = CGRectMake(0, 0, frame.size.width, frame.size.height);
-        UIView* curtain = [[UIView alloc] initWithFrame:frm];
-        [curtain setBackgroundColor:[UIColor blackColor]];
-        [curtain setAlpha:0.5];
-        [self addSubview:curtain];
-        _curtain = curtain;
+    @autoreleasepool {
         
+        // design
+        [self setBackgroundColor:[UIColor clearColor]];
+        
+        // add subview
+        UIView* rootView = [[UIApplication sharedApplication].keyWindow viewForBaselineLayout];
+        CGRect screenFrame = [UIScreen mainScreen].bounds;
+        CGRect frame = CGRectMake(0, 0, screenFrame.size.height, screenFrame.size.width);
+        
+        [self setFrame:frame];
+        [self setCenter:CGPointMake(frame.size.height/2, frame.size.width/2)];
+        [rootView addSubview:self];
+        
+        // curtain
+        {
+            CGRect frm = CGRectMake(0, 0, frame.size.width, frame.size.height);
+            UIView* curtain = [[UIView alloc] initWithFrame:frm];
+            [curtain setBackgroundColor:[UIColor blackColor]];
+            [curtain setAlpha:0.5];
+            [self addSubview:curtain];
+            _curtain = curtain;
+            
+        }
+        
+        // base
+        {
+            CGRect frm = CGRectMake(0, 0, frame.size.width, frame.size.height);
+            UIView* base = [[UIView alloc] initWithFrame:frm];
+            [base setBackgroundColor:[UIColor clearColor]];
+            [self addSubview:base];
+            
+            UITapGestureRecognizer *tr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTapBackground:)];
+            [base addGestureRecognizer:tr];
+            
+            _menuBase = base;
+            [_menuBase setCenter:CGPointMake(frame.size.width/2, frame.size.height/2)];
+        }
+        
+        // animation
+        [_menuBase setAlpha:0];
+        [_menuBase setTransform:CGAffineTransformMakeScale(2, 0)];
+        __weak UIView* mb = _menuBase;
+        [UIView animateWithDuration:0.2 animations:^{
+            [mb setAlpha:1];
+            [mb setTransform:CGAffineTransformMakeScale(1.0, 1.0)];
+        }completion:^(BOOL finished) {
+            //[_curtain setAlpha:0.2];
+        }];
+        
+        // message box
+        CGRect msgBoxRect = CGRectMake(
+                                       frame.size.width/2 - MessageBoxWidth/2, frame.size.height/2 - MessageBoxHeight/2, MessageBoxWidth, MessageBoxHeight);
+        UIView* messageBox = [[UIView alloc] initWithFrame:msgBoxRect];
+        [messageBox setBackgroundColor:[UIColor blackColor]];
+        [messageBox.layer setBorderColor:MAIN_BORDER_COLOR.CGColor];
+        [messageBox.layer setBorderWidth:2];
+        [_menuBase addSubview:messageBox];
+        
+        // message label
+        {
+            CGRect msgRect = msgBoxRect;
+            
+            msgRect.size.width -= 10;
+            msgRect.origin.x = 5;
+            msgRect.size.height = MessageHeight;
+            msgRect.origin.y = 5;
+            
+            UILabel* msgLbl = [[UILabel alloc] initWithFrame:msgRect];
+            [msgLbl setBackgroundColor:[UIColor clearColor]];
+            [msgLbl setTextColor:MAIN_FONT_COLOR];
+            [msgLbl setNumberOfLines:0];
+            [msgLbl setLineBreakMode:NSLineBreakByWordWrapping];
+            //UIFont* font = [UIFont fontWithName:@"Copperplate-Bold" size:18];
+            UIFont* font = [[msgLbl font] fontWithSize:18];
+            [msgLbl setTextAlignment:NSTextAlignmentCenter];
+            [msgLbl setFont:font];
+            [msgLbl setText:_message];
+            
+            [messageBox addSubview:msgLbl];
+        }
+        
+        // rotate
+        [self setTransform:CGAffineTransformMakeRotation(-90*M_PI/180)];
+        
+        int index = -1;
+        int x = MessageBoxWidth/2 - ButtonWidth/2 - (floor((_numButton)/2) * ButtonHeight) - (floor((_numButton)/2) * ButtonGap);
+        int y = MessageHeight + 10;
+        __weak DialogView* self_ = self;
+        __weak UIView* ctn = _curtain;
+        __weak NSMutableArray* acl = _actionList;
+        for (id i in _textList)
+        {
+            index++;
+            MenuButton* btn = [[MenuButton alloc] init];
+            [btn setFrame:CGRectMake(x, y, ButtonWidth, ButtonHeight)];
+            btn.tag = index;
+            [btn setBackgroundColor:SUB_BACK_COLOR];
+            [btn.layer setBorderColor:SUB_FONT_COLOR.CGColor];
+            [btn setOnTapAction:^(MenuButton *target) {
+                [self_ onTapButton:target];
+            }];
+            [messageBox addSubview:btn];
+            
+            // label
+            UILabel* lbl = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, ButtonWidth, ButtonHeight)];
+            //UIFont* font = [UIFont fontWithName:@"Copperplate-Bold" size:18];
+            UIFont* font = [[lbl font] fontWithSize:18];
+            [lbl setFont:font];
+            [lbl setTextAlignment:NSTextAlignmentCenter];
+            [lbl setBackgroundColor:[UIColor clearColor]];
+            [lbl setText:i];
+            [btn addSubview:lbl];
+            
+            x += (ButtonWidth + ButtonGap);
+        }
     }
-    
-    // base
-    {
-        CGRect frm = CGRectMake(0, 0, frame.size.width, frame.size.height);
-        UIView* base = [[UIView alloc] initWithFrame:frm];
-        [base setBackgroundColor:[UIColor clearColor]];
-        [self addSubview:base];
-        
-        UITapGestureRecognizer *tr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTapBackground:)];
-        [base addGestureRecognizer:tr];
-        
-        _menuBase = base;
-        [_menuBase setCenter:CGPointMake(frame.size.width/2, frame.size.height/2)];
+}
+
+-(void)onTapButton:(MenuButton*)btn
+{
+    void (^action)() = [_actionList objectAtIndex:btn.tag];
+    if (action){
+        action();
     }
+    // close
     
-    // animation
-    [_menuBase setAlpha:0];
-    [_menuBase setTransform:CGAffineTransformMakeScale(2, 0)];
+    if (_curtain) {
+        [_curtain removeFromSuperview];
+    }
+    __weak UIView* mb = _menuBase;
+    __weak DialogView* self_ = self;
     [UIView animateWithDuration:0.2 animations:^{
-        [_menuBase setAlpha:1];
-        [_menuBase setTransform:CGAffineTransformMakeScale(1.0, 1.0)];
-    }completion:^(BOOL finished) {
-        //[_curtain setAlpha:0.2];
+        [mb setAlpha:0];
+        [mb setTransform:CGAffineTransformMakeScale(2, 0)];
+    } completion:^(BOOL finished) {
+        [self_ removeFromSuperview];
     }];
     
-    // message box
-    CGRect msgBoxRect = CGRectMake(
-                                   frame.size.width/2 - MessageBoxWidth/2, frame.size.height/2 - MessageBoxHeight/2, MessageBoxWidth, MessageBoxHeight);
-    UIView* messageBox = [[UIView alloc] initWithFrame:msgBoxRect];
-    [messageBox setBackgroundColor:[UIColor blackColor]];
-    [messageBox.layer setBorderColor:MAIN_BORDER_COLOR.CGColor];
-    [messageBox.layer setBorderWidth:2];
-    [_menuBase addSubview:messageBox];
-    
-    // message label
-    {
-        CGRect msgRect = msgBoxRect;
-        
-        msgRect.size.width -= 10;
-        msgRect.origin.x = 5;
-        msgRect.size.height = MessageHeight;
-        msgRect.origin.y = 5;
-        
-        UILabel* msgLbl = [[UILabel alloc] initWithFrame:msgRect];
-        [msgLbl setBackgroundColor:[UIColor clearColor]];
-        [msgLbl setTextColor:MAIN_FONT_COLOR];
-        [msgLbl setNumberOfLines:0];
-        [msgLbl setLineBreakMode:NSLineBreakByWordWrapping];
-        //UIFont* font = [UIFont fontWithName:@"Copperplate-Bold" size:18];
-        UIFont* font = [[msgLbl font] fontWithSize:18];
-        [msgLbl setTextAlignment:NSTextAlignmentCenter];
-        [msgLbl setFont:font];
-        [msgLbl setText:_message];
-        
-        [messageBox addSubview:msgLbl];
-    }
-    
-    // rotate
-    [self setTransform:CGAffineTransformMakeRotation(-90*M_PI/180)];
-    
-    int index = -1;
-    int x = MessageBoxWidth/2 - ButtonWidth/2 - (floor((_numButton)/2) * ButtonHeight) - (floor((_numButton)/2) * ButtonGap);
-    int y = MessageHeight + 10;
-    for (id i in _textList)
-    {
-        index++;
-        MenuButton* btn = [[MenuButton alloc] init];
-        [btn setFrame:CGRectMake(x, y, ButtonWidth, ButtonHeight)];
-        btn.tag = index;
-        [btn setBackgroundColor:SUB_BACK_COLOR];
-        [btn.layer setBorderColor:SUB_FONT_COLOR.CGColor];
-        [btn setOnTapAction:^(MenuButton *target) {
-            void (^action)() = [_actionList objectAtIndex:index];
-            // close
-            
-            [_curtain removeFromSuperview];
-            [UIView animateWithDuration:0.2 animations:^{
-                [_menuBase setAlpha:0];
-                [_menuBase setTransform:CGAffineTransformMakeScale(2, 0)];
-            } completion:^(BOOL finished) {
-                [self removeFromSuperview];
-                action();
-            }];
-        }];
-        [messageBox addSubview:btn];
-        
-        // label
-        UILabel* lbl = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, ButtonWidth, ButtonHeight)];
-        //UIFont* font = [UIFont fontWithName:@"Copperplate-Bold" size:18];
-        UIFont* font = [[lbl font] fontWithSize:18];
-        [lbl setFont:font];
-        [lbl setTextAlignment:NSTextAlignmentCenter];
-        [lbl setBackgroundColor:[UIColor clearColor]];
-        [lbl setText:i];
-        [btn addSubview:lbl];
-        
-        x += (ButtonWidth + ButtonGap);
-    }
 }
 
 

@@ -24,7 +24,7 @@
 namespace hg
 {
     
-    const std::string SYSTEM_HEAP_NAME = "SYSTEM HEAP";
+    //const std::string SYSTEM_HEAP_NAME = "SYSTEM HEAP";
     const std::string DEFAULT_HEAP_NAME = "DEFAULT HEAP";
     
     class HGNode;
@@ -210,7 +210,7 @@ namespace hg
         bool isInitialUpdate;
     };
 
-    class HGStateManager : public HGObject
+    class HGStateManager
     {
     public:
         typedef std::stack<HGState*> stateStack;
@@ -369,7 +369,7 @@ namespace hg
     
     // プロセス管理クラス
     typedef std::list<HGProcess*> ProcessList;
-    class HGProcessManager : HGObject
+    class HGProcessManager
     {
     public:
         static inline HGProcessManager* sharedProcessManager()
@@ -377,8 +377,7 @@ namespace hg
             static HGProcessManager* hgProcessManagerPtr = NULL;
             if (!hgProcessManagerPtr)
             {
-                hgProcessManagerPtr = new (SYSTEM_HEAP_NAME)HGProcessManager();
-                hgProcessManagerPtr->retain();
+                hgProcessManagerPtr = new HGProcessManager();
                 hgProcessManagerPtr->init();
             }
             return hgProcessManagerPtr;
@@ -742,6 +741,7 @@ namespace hg
     protected:
         inline void render()
         {
+#if IS_GAME_GL
             assert(this->getRefCount() > 0);
             if (!isTextureInitialized)
             {
@@ -781,6 +781,7 @@ namespace hg
                     hgles::HGLGraphics2D::drawLike3d(&worldPosition, &worldScale, &WorldRotate,  &texture);
                     break;
             }
+#endif
         }
         
         
@@ -928,7 +929,7 @@ namespace hg
     
     ////////////////////
     // グローバルノード
-    class HGDirector : HGObject
+    class HGDirector
     {
     public:
         HGDirector():
@@ -945,8 +946,7 @@ namespace hg
             static HGDirector* directorPtr = NULL;
             if (!directorPtr)
             {
-                directorPtr = new (SYSTEM_HEAP_NAME)HGDirector();
-                directorPtr->retain();
+                directorPtr = new HGDirector();
                 directorPtr->init();
             }
             return directorPtr;
@@ -961,20 +961,15 @@ namespace hg
         {
             return pRootNode;
         }
-    private:
         inline void init()
         {
-            if (pRootNode)
-            {
-                pRootNode->release();
-                pRootNode = NULL;
-            }
-            pRootNode = new (SYSTEM_HEAP_NAME)HGNode();
+            pRootNode = new HGNode();
             pRootNode->retain();
             rootPosition = Vector(0,0,0);
             rootScale = Vector(1,1,1);
             rootRotate = Vector(0,0,0);
         }
+    private:
         HGNode* pRootNode;
         Vector rootPosition;
         Vector rootScale;

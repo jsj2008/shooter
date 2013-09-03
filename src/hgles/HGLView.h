@@ -18,7 +18,8 @@
 - (id)initWithFrame:(CGRect)frame WithRenderBlock:(void (^)())block;
 - (void)start;
 - (void)draw; // request render
-
+- (void)stopRender;
+    
 - (void)setCurrentContext;
 
 @end

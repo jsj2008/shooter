@@ -16,6 +16,7 @@
 #import "DialogView.h"
 #import "StatusView.h"
 #import "AllyTableView.h"
+#import "SystemMonitor.h"
 
 @interface AllyDetailView()
 {
@@ -51,6 +52,10 @@
 
 - (void)show
 {
+#if IS_DEBUG
+    NSLog(@"ally detail show");
+    [SystemMonitor dump];
+#endif
     // design
     [self setBackgroundColor:[UIColor clearColor]];
     
@@ -91,9 +96,10 @@
     // animation
     [self.baseView setAlpha:0];
     [self.baseView setTransform:CGAffineTransformMakeScale(2, 0)];
+    __weak AllyDetailView* self_ = self;
     [UIView animateWithDuration:0.2 animations:^{
-        [self.baseView setAlpha:1];
-        [self.baseView setTransform:CGAffineTransformMakeScale(1.0, 1.0)];
+        [self_.baseView setAlpha:1];
+        [self_.baseView setTransform:CGAffineTransformMakeScale(1.0, 1.0)];
     }completion:^(BOOL finished) {
         //[_curtain setAlpha:0.2];
     }];
@@ -233,47 +239,70 @@
             [m setColor:[UIColor blackColor]];
             [m setBackgroundColor:[UIColor whiteColor]];
             [self.baseView addSubview:m];
+            __weak AllyDetailView* self_ = self;
             [m setOnTapAction:^(MenuButton *target) {
+                [self_ sell];
                 
-                hg::UserData* u = hg::UserData::sharedUserData();
-                int cost = u->getSellValue(_fighterInfo);
-                NSString* msg = [NSString stringWithFormat:NSLocalizedString(@"Are you sure to sell this for %d Gold?", nil), cost];
-                DialogView* dialog = [[DialogView alloc] initWithMessage:msg];
-                [dialog addButtonWithText:NSLocalizedString(@"Sell", nil) withAction:^{
-                    u->sell(_fighterInfo);
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [[StatusView GetInstance] loadUserInfo];
-                    });
-                    [self closeThis];
-                    [AllyTableView ReloadData];
-                }];
-                [dialog addButtonWithText:NSLocalizedString(@"Cancel", nil) withAction:^{
-                    // nothing
-                }];
-                [dialog show];
             }];
         }
         
     }
+#if IS_DEBUG
+    NSLog(@"ally detail show end");
+    [SystemMonitor dump];
+#endif
+}
+
+- (void)sell
+{
+    __weak AllyDetailView* self_ = self;
+    hg::UserData* u = hg::UserData::sharedUserData();
+    int cost = u->getSellValue(_fighterInfo);
+    NSString* msg = [NSString stringWithFormat:NSLocalizedString(@"Are you sure to sell this for %d Gold?", nil), cost];
+    DialogView* dialog = [[DialogView alloc] initWithMessage:msg];
+    [dialog addButtonWithText:NSLocalizedString(@"Sell", nil) withAction:^{
+        hg::UserData::sharedUserData()->sell(_fighterInfo);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[StatusView GetInstance] loadUserInfo];
+        });
+        [self_ closeThis];
+        [AllyTableView ReloadData];
+    }];
+    [dialog addButtonWithText:NSLocalizedString(@"Cancel", nil) withAction:^{
+        // nothing
+    }];
+    [dialog show];
+    
 }
 
 - (void)closeThis
 {
+#if IS_DEBUG
+    NSLog(@"ally detail close");
+    [SystemMonitor dump];
+#endif
     // close
     [_curtain removeFromSuperview];
+    _curtain = nil;
+    __weak UITextField* tf = _nameTextField;
+    __weak AllyDetailView* self_ = self;
     [UIView animateWithDuration:0.2 animations:^{
-        [self.baseView setTransform:CGAffineTransformMakeScale(2, 0)];
+        [self_.baseView setTransform:CGAffineTransformMakeScale(2, 0)];
     } completion:^(BOOL finished) {
-        if (_nameTextField) {
-            NSString* name = [_nameTextField text];
+        if (tf) {
+            NSString* name = [tf text];
             std::string n = NSSTR2STR(name);
             if (n != "") {
                 _fighterInfo->name = n;
                 [AllyTableView ReloadData];
             }
         }
-        [self removeFromSuperview];
+        [self_ removeFromSuperview];
     }];
+#if IS_DEBUG
+    NSLog(@"ally detail close end");
+    [SystemMonitor dump];
+#endif
 }
 
 - (void)onTapBackground:(UIGestureRecognizer*)sender

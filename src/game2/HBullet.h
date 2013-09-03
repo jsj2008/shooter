@@ -130,8 +130,8 @@ namespace hg {
                 case BulletTypeNormal7:
                 case BulletTypeNormal8:
                 {
-                    setSizeByPixel(180, 180);
-                    setCollisionId(CollisionId_BulletNormal);
+                    setSizeByPixel(270, 270);
+                    setCollisionId(CollisionId_BulletNormal2);
                     
                     // core
                     HGSprite* pSprBom = new HGSprite();
@@ -139,32 +139,47 @@ namespace hg {
                     getNode()->addChild(pSprBom);
                     pSprBom->setScale(getWidth(), getHeight());
                     
+                    // core
+                    AlphaMapSprite* pSpr = new AlphaMapSprite();
+                    pSpr->init("sparkle.png", {1.00, 0.5, 0.5, 1.0});
+                    pSpr->setScale(getWidth()*3, getHeight()*3);
+                    getNode()->addChild(pSpr);
+                    
                     switch (type) {
                         case BulletTypeNormal:
                             pSprBom->setTextureRect(0, 20, 20, 20);
+                            pSpr->setColor({1,0.5,0.5,1});
                             break;
                         case BulletTypeNormal2:
                             pSprBom->setTextureRect(0, 84, 20, 20);
+                            pSpr->setColor({(float)0xF7/255.0, (float)0xD3/255.0, (float)0x58/255.0, 1});
                             break;
                         case BulletTypeNormal3:
                             pSprBom->setTextureRect(0, 148, 20, 20);
+                            pSpr->setColor({(float)0xF3/255.0, (float)0xf7/255.0, (float)0x81/255.0, 1});
                             break;
                         case BulletTypeNormal4:
                             pSprBom->setTextureRect(0, 212, 20, 20);
+                            pSpr->setColor({(float)0x9f/255.0, (float)0xf7/255.0, (float)0x81/255.0, 1});
                             break;
                         case BulletTypeNormal5:
                             pSprBom->setTextureRect(0, 276, 20, 20);
+                            pSpr->setColor({(float)0xa9/255.0, (float)0xf5/255.0, (float)0xf2/255.0, 1});
                             break;
                         case BulletTypeNormal6:
                             pSprBom->setTextureRect(0, 340, 20, 20);
+                            pSpr->setColor({(float)0x81/255.0, (float)0x9f/255.0, (float)0xf7/255.0, 1});
                             break;
                         case BulletTypeNormal7:
                             pSprBom->setTextureRect(0, 404, 20, 20);
+                            pSpr->setColor({(float)0xf7/255.0, (float)0x81/255.0, (float)0xf3/255.0, 1});
                             break;
                         case BulletTypeNormal8:
                             pSprBom->setTextureRect(0, 468, 20, 20);
+                            pSpr->setColor({(float)0xf7/255.0, (float)0x81/255.0, (float)0x81/255.0, 1});
                             break;
                     }
+                    
                     
                     break;
                 }
@@ -177,8 +192,8 @@ namespace hg {
                 case BulletTypeMedium7:
                 case BulletTypeMedium8:
                 {
-                    setSizeByPixel(250, 250);
-                    setCollisionId(CollisionId_BulletMedium);
+                    setSizeByPixel(400, 400);
+                    setCollisionId(CollisionId_BulletMedium2);
                     
                     // core
                     HGSprite* pSprBom = new HGSprite();
@@ -186,30 +201,43 @@ namespace hg {
                     getNode()->addChild(pSprBom);
                     pSprBom->setScale(getWidth(), getHeight());
                     
+                    // core
+                    AlphaMapSprite* pSpr = new AlphaMapSprite();
+                    pSpr->init("sparkle.png", {1.00, 0.5, 0.5, 1.0});
+                    pSpr->setScale(getWidth()*3, getHeight()*3);
+                    getNode()->addChild(pSpr);
+                    
                     switch (type) {
                         case BulletTypeMedium:
                             pSprBom->setTextureRect(257, 0, 64, 64);
                             break;
                         case BulletTypeMedium2:
                             pSprBom->setTextureRect(257, 64, 64, 64);
+                            pSpr->setColor({(float)0xF7/255.0, (float)0xD3/255.0, (float)0x58/255.0, 1});
                             break;
                         case BulletTypeMedium3:
                             pSprBom->setTextureRect(257, 128, 64, 64);
+                            pSpr->setColor({(float)0xF3/255.0, (float)0xf7/255.0, (float)0x81/255.0, 1});
                             break;
                         case BulletTypeMedium4:
                             pSprBom->setTextureRect(257, 192, 64, 64);
+                            pSpr->setColor({(float)0x9f/255.0, (float)0xf7/255.0, (float)0x81/255.0, 1});
                             break;
                         case BulletTypeMedium5:
                             pSprBom->setTextureRect(257, 256, 64, 64);
+                            pSpr->setColor({(float)0xa9/255.0, (float)0xf5/255.0, (float)0xf2/255.0, 1});
                             break;
                         case BulletTypeMedium6:
                             pSprBom->setTextureRect(257, 320, 64, 64);
+                            pSpr->setColor({(float)0x81/255.0, (float)0x9f/255.0, (float)0xf7/255.0, 1});
                             break;
                         case BulletTypeMedium7:
                             pSprBom->setTextureRect(257, 384, 64, 64);
+                            pSpr->setColor({(float)0xf7/255.0, (float)0x81/255.0, (float)0xf3/255.0, 1});
                             break;
                         case BulletTypeMedium8:
                             pSprBom->setTextureRect(257, 448, 64, 64);
+                            pSpr->setColor({(float)0xf7/255.0, (float)0x81/255.0, (float)0x81/255.0, 1});
                             break;
                     }
                     
@@ -224,13 +252,20 @@ namespace hg {
                 case BulletTypeBig7:
                 case BulletTypeBig8:
                 {
-                    setSizeByPixel(400, 400);
-                    setCollisionId(CollisionId_BulletBig);
+                    
+                    setSizeByPixel(700, 700);
+                    setCollisionId(CollisionId_BulletBig2);
+                    
+                    // core
+                    AlphaMapSprite* pSprBom = new AlphaMapSprite();
+                    pSprBom->init("sun.png", {1.0, 0.5, 0.5, 1.0});
+                    getNode()->addChild(pSprBom);
+                    pSprBom->setScale(getWidth()*1.35, getHeight()*1.35);
                     
                     // core
                     AlphaMapSprite* pSpr = new AlphaMapSprite();
                     pSpr->init("sparkle.png", {1.00, 0.5, 0.5, 1.0});
-                    pSpr->setScale(getWidth()*5, getHeight()*5);
+                    pSpr->setScale(getWidth()*3.1, getHeight()*3.1);
                     getNode()->addChild(pSpr);
                     
                     break;

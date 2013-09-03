@@ -12,13 +12,13 @@
          contextName = "IndexBuffer::IndexBuffer(unsigned char const*, int):IndexBuffer.mm">
          <PersistentStrings>
             <PersistentString
-               value = "indices[1]">
-            </PersistentString>
-            <PersistentString
                value = "sizeof(Index)">
             </PersistentString>
             <PersistentString
                value = "sizeof(Vertex)">
+            </PersistentString>
+            <PersistentString
+               value = "indices[1]">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -188,13 +188,13 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[AllyView setFighterInfo:]:AllyView.m">
+         contextName = "hg::deployAllFriends():HGame.mm">
       </ContextState>
       <ContextState
          contextName = "hg::Bullet::init(hg::BulletType, float, int, hg::Actor*, float, float, float, hg::SideType):HBullet.h">
       </ContextState>
       <ContextState
-         contextName = "hg::deployAllFriends():HGame.mm">
+         contextName = "-[AllyView setFighterInfo:]:AllyView.m">
       </ContextState>
       <ContextState
          contextName = "HGGame::HGCPU::decideDestination():HGCPU.mm">
@@ -304,10 +304,10 @@
          contextName = "GLES::compileShaders():GLES.mm">
          <PersistentStrings>
             <PersistentString
-               value = "aPositionSlot">
+               value = "aNormalSlot">
             </PersistentString>
             <PersistentString
-               value = "aNormalSlot">
+               value = "aPositionSlot">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -334,13 +334,13 @@
          contextName = "hg::BattleState::onUpdate():HGame.mm">
          <PersistentStrings>
             <PersistentString
+               value = "spawnData">
+            </PersistentString>
+            <PersistentString
                value = "HGProcessManager::sharedProcessManager()">
             </PersistentString>
             <PersistentString
                value = "SpawnGroup">
-            </PersistentString>
-            <PersistentString
-               value = "spawnData">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -389,6 +389,9 @@
       </ContextState>
       <ContextState
          contextName = "Material::bind():Material.mm">
+      </ContextState>
+      <ContextState
+         contextName = "hg::HGHeap::freeAll():HGameEngine.mm">
       </ContextState>
       <ContextState
          contextName = "hg::render():HGame.mm">
@@ -646,6 +649,14 @@
          contextName = "hg::onFighterCollidedWithBullet(hg::Fighter*, hg::Bullet*):HGame.mm">
       </ContextState>
       <ContextState
+         contextName = "hg::HGHeapFactory::CreateHeap(std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;):HGameEngine.mm">
+         <PersistentStrings>
+            <PersistentString
+               value = "heapList">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "hg::HGDirector::sharedDirector():HGameEngine.h">
       </ContextState>
       <ContextState
@@ -691,13 +702,13 @@
          contextName = "-[FMDatabase executeUpdate:error:withArgumentsInArray:orDictionary:orVAList:]:FMDatabase.m">
          <PersistentStrings>
             <PersistentString
-               value = "queryCount">
+               value = "arrayArgs">
             </PersistentString>
             <PersistentString
                value = "args">
             </PersistentString>
             <PersistentString
-               value = "arrayArgs">
+               value = "queryCount">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

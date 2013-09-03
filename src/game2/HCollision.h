@@ -130,14 +130,29 @@ namespace hg {
                         c->push_back({-6, -6, 192, 192});
                         list.push_back(c);
                         break;
+                    case CollisionId_BulletNormal2:
+                        c = new Collision();
+                        c->push_back({5, 5, 260, 260});
+                        list.push_back(c);
+                        break;
                     case CollisionId_BulletMedium:
                         c = new Collision();
                         c->push_back({10, 10, 230, 230});
                         list.push_back(c);
                         break;
+                    case CollisionId_BulletMedium2:
+                        c = new Collision();
+                        c->push_back({20, 20, 360, 360});
+                        list.push_back(c);
+                        break;
                     case CollisionId_BulletBig:
                         c = new Collision();
                         c->push_back({-8, -8, 416, 416});
+                        list.push_back(c);
+                        break;
+                    case CollisionId_BulletBig2:
+                        c = new Collision();
+                        c->push_back({100, 100, 500, 500});
                         list.push_back(c);
                         break;
                     case CollisionId_BulletLaser:
@@ -275,7 +290,7 @@ namespace hg {
                         list.push_back(c);
                         break;
                     default:
-                        assert(0);
+                        //assert(0);
                         HDebug(@"invalid collision id %d", i);
                         break;
                 }

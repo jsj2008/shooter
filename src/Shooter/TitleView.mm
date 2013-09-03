@@ -80,19 +80,21 @@ t_title_btn title_btn_info[] = {
     if(isLabelHidden)
     {
         isLabelHidden = false;
+        __weak TitleView* self_ = self;
         [UIView animateWithDuration:1.0 animations:^{
-            [self.myLabel setAlpha:1];
+            [self_.myLabel setAlpha:1];
         } completion:^(BOOL finished) {
-            [self changeLabelState];
+            [self_ changeLabelState];
         }];
     }
     else
     {
         isLabelHidden = true;
+        __weak TitleView* self_ = self;
         [UIView animateWithDuration:1.0 animations:^{
-            [self.myLabel setAlpha:0];
+            [self_.myLabel setAlpha:0];
         } completion:^(BOOL finished) {
-            [self changeLabelState];
+            [self_ changeLabelState];
         }];
     }
 }
@@ -112,8 +114,10 @@ t_title_btn title_btn_info[] = {
     [imgView setFrame:logoFrame];
     
     imgView.transform = CGAffineTransformMakeScale(1.0, 1.0);
+    __weak UIImageView* imv = imgView;
+    __weak TitleView* self_ = self;
     [UIView animateWithDuration:0.7 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-        imgView.transform = CGAffineTransformMakeScale(1.0, 1.0);
+        imv.transform = CGAffineTransformMakeScale(1.0, 1.0);
     } completion:^(BOOL finished) {
         // message
         {
@@ -126,9 +130,9 @@ t_title_btn title_btn_info[] = {
             [l setFont:font];
             [l setBackgroundColor:[UIColor clearColor]];
             [l setAlpha:0];
-            self.myLabel = l;
-            [self addSubview:l];
-            [self changeLabelState];
+            self_.myLabel = l;
+            [self_ addSubview:l];
+            [self_ changeLabelState];
         }
     }];
     
@@ -137,10 +141,11 @@ t_title_btn title_btn_info[] = {
         UIView* curtain = [[UIView alloc] initWithFrame:self.frame];
         [curtain setBackgroundColor:[UIColor colorWithHexString:@"#000000"]];
         [self addSubview:curtain];
+        __weak UIView* ctn = curtain;
         [UIView animateWithDuration:0.6 animations:^{
-            [curtain setAlpha:0];
+            [ctn setAlpha:0];
         } completion:^(BOOL finished) {
-            [curtain removeFromSuperview];
+            [ctn removeFromSuperview];
         }];
     }
     
@@ -188,9 +193,10 @@ t_title_btn title_btn_info[] = {
         [m setColor:[UIColor blackColor]];
         [m setBackgroundColor:[UIColor whiteColor]];
         [self addSubview:m];
+        __weak TitleView* self_ = self;
         [m setOnTapAction:^(MenuButton *target) {
-            CopyrightView* copyRight = [[CopyrightView alloc] initWithFrame:self.frame];
-            [self addSubview:copyRight];
+            CopyrightView* copyRight = [[CopyrightView alloc] initWithFrame:self_.frame];
+            [self_ addSubview:copyRight];
         }];
     }
     // push start
@@ -219,8 +225,9 @@ t_title_btn title_btn_info[] = {
         [imgView setCenter:CGPointMake(self.frame.size.width/2, self.frame.size.height/2)];
         [self addSubview:imgView];
         [imgView setTransform:CGAffineTransformMakeScale(1, 0)];
+        __weak UIImageView* imv = imgView;
         [UIView animateWithDuration:0.5 animations:^{
-            [imgView setTransform:CGAffineTransformMakeScale(1, 1)];
+            [imv setTransform:CGAffineTransformMakeScale(1, 1)];
         }];
     }
     

@@ -60,6 +60,7 @@ static StageTableView* instance;
     }
 }
 
+
 - (void)endView
 {
     [self setUserInteractionEnabled:FALSE];
@@ -144,9 +145,9 @@ static StageTableView* instance;
         
         [self addSubview:backImgView];
         
+        __weak StageTableView* self_ = self;
         [backImgView setOnTapAction:^(ImageButtonView *target) {
-            [self setUserInteractionEnabled:FALSE];
-            onEndAction();
+            [self_ endView];
         }];
     }
     
@@ -217,6 +218,7 @@ numberOfRowsInSection:(NSInteger)section
     }
     
     // 選択時の処理
+    __weak StageTableView* self_ = self;
     [back setOnTapAction:^(ImageButtonView *target) {
         int stage_id = target.tag;
         hg::StageInfo info = hg::UserData::sharedUserData()->getStageInfo(stage_id);
@@ -240,9 +242,10 @@ numberOfRowsInSection:(NSInteger)section
             
             NSString* msg = [NSString stringWithFormat:NSLocalizedString(@"Go to %@ Stage?", nil), [NSString stringWithCString:info.stage_name_short.c_str() encoding:NSUTF8StringEncoding]];
             DialogView* dv = [[DialogView alloc] initWithMessage:msg];
+            __weak StageTableView* self__ = self_;
             [dv addButtonWithText:NSLocalizedString(@"OK", nil) withAction:^{
-                [self setUserInteractionEnabled:FALSE];
-                onEndAction();
+                [self__ setUserInteractionEnabled:FALSE];
+                [self__ endView];
                 hg::UserData::sharedUserData()->setStageId(stage_id);
                 hg::UserData::sharedUserData()->saveData();
                 //[MainViewController RemoveBackgroundView];

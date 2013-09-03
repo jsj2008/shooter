@@ -36,7 +36,6 @@ const float MessageHeight = 180;
     self = [super init];
     if (self) {
         self.messageList = messageList;
-        self.messageList;
     }
     return self;
 }
@@ -53,11 +52,13 @@ const float MessageHeight = 180;
         [_msgLabel sizeToFit];
     }
     else {
+        __weak MessageView* self_ = self;
         [_curtain removeFromSuperview];
+        __weak UIView* mb = _menuBase;
         [UIView animateWithDuration:0.2 animations:^{
-            [_menuBase setTransform:CGAffineTransformMakeScale(2, 0)];
+            [mb setTransform:CGAffineTransformMakeScale(2, 0)];
         } completion:^(BOOL finished) {
-            [self removeFromSuperview];
+            [self_ removeFromSuperview];
         }];
     }
 }
@@ -105,9 +106,10 @@ const float MessageHeight = 180;
     // animation
     [_menuBase setAlpha:0];
     [_menuBase setTransform:CGAffineTransformMakeScale(2, 0)];
+    __weak UIView* mb = _menuBase;
     [UIView animateWithDuration:0.2 animations:^{
-        [_menuBase setAlpha:1];
-        [_menuBase setTransform:CGAffineTransformMakeScale(1.0, 1.0)];
+        [mb setAlpha:1];
+        [mb setTransform:CGAffineTransformMakeScale(1.0, 1.0)];
     }completion:^(BOOL finished) {
         //[_curtain setAlpha:0.2];
     }];

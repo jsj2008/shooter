@@ -407,12 +407,13 @@
         [self.superview bringSubviewToFront:self];
     }
     
+    __weak AllyView* self_ = self;
     [UIView animateWithDuration:0.10 animations:^{
         CGAffineTransform t = CGAffineTransformMakeScale(1.1, 1.1);
-        [self setTransform:t];
+        [self_ setTransform:t];
     } completion:^(BOOL finished) {
         [UIView animateWithDuration:0.10 animations:^{
-            [self setTransform:CGAffineTransformIdentity];
+            [self_ setTransform:CGAffineTransformIdentity];
         } completion:^(BOOL finished) {
             //[self reloadData];
         }];
@@ -512,7 +513,7 @@
                 NSString* msg = [NSString stringWithFormat:NSLocalizedString(@"It Costs %d gold. Are you sure to buy this?", nil), cost];
                 DialogView* dialog = [[DialogView alloc] initWithMessage:msg];
                 [dialog addButtonWithText:NSLocalizedString(@"Buy", nil) withAction:^{
-                    u->buy(_fighterInfo);
+                    hg::UserData::sharedUserData()->buy(_fighterInfo);
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [[StatusView GetInstance] loadUserInfo];
                     });
@@ -542,7 +543,7 @@
             NSString* msg = [NSString stringWithFormat:NSLocalizedString(@"Are you sure to sell this for %d Gold?", nil), cost];
             DialogView* dialog = [[DialogView alloc] initWithMessage:msg];
             [dialog addButtonWithText:NSLocalizedString(@"Sell", nil) withAction:^{
-                u->sell(_fighterInfo);
+                hg::UserData::sharedUserData()->sell(_fighterInfo);
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [[StatusView GetInstance] loadUserInfo];
                 });
@@ -619,10 +620,12 @@
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    __weak UIView* hv = highlightView;
+    __weak AllyView* self_ = self;
     [UIView animateWithDuration:0.17 animations:^{
         CGAffineTransform t = CGAffineTransformMakeScale(0.8, 0.8);
-        [self setTransform:t];
-        [highlightView setAlpha:0.3];
+        [self_ setTransform:t];
+        [hv setAlpha:0.3];
     } completion:^(BOOL finished) {
         if (touchStart)
         {
@@ -652,9 +655,10 @@
 {
     touchStart = 0;
     [highlightView setAlpha:0];
+    __weak AllyView* self_ = self;
     [UIView animateWithDuration:0.20 animations:^{
         CGAffineTransform t = CGAffineTransformMakeScale(1.0, 1.0);
-        [self setTransform:t];
+        [self_ setTransform:t];
     } completion:^(BOOL finished) {
     }];
 }
@@ -663,9 +667,10 @@
 {
     touchStart = 0;
     [highlightView setAlpha:0];
+    __weak AllyView* self_ = self;
     [UIView animateWithDuration:0.20 animations:^{
         CGAffineTransform t = CGAffineTransformMakeScale(1.0, 1.0);
-        [self setTransform:t];
+        [self_ setTransform:t];
     } completion:^(BOOL finished) {
     }];
 }

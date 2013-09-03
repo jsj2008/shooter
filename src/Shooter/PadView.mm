@@ -131,8 +131,9 @@ CGSize defaultPadSize;
     CGRect tFrm = _touchEffectView.frame;
     tFrm.origin.x = _center.x - _touchEffectRadius;
     tFrm.origin.y = _center.y - _touchEffectRadius;
+    __weak UIView* tv = _touchEffectView;
     [UIView animateWithDuration:0.3 animations:^{
-        _touchEffectView.frame = tFrm;
+        tv.frame = tFrm;
     }];
     
 }

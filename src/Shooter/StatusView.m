@@ -38,21 +38,19 @@ const float ProgressBarWidth = 146;
 
 + (id)CreateInstance
 {
-    if (instance)
-    {
-        //[instance release];
-        instance = nil;
+    
+#if IS_STATUS
+    @autoreleasepool {
+        StatusView* s = [[StatusView alloc] init];
+        instance = s;
+        return [self GetInstance];
     }
-    return [self GetInstance];
+#endif
+    return nil;
 }
 
 + (id)GetInstance
 {
-    if (instance == nil)
-    {
-        StatusView* s = [[StatusView alloc] init];
-        instance = s;
-    }
     return instance;
 }
 
@@ -88,8 +86,9 @@ const float ProgressBarWidth = 146;
     self = [super initWithFrame:f];
     if (self) {
         // Initialization code
+        __weak StatusView* self_ = self;
         [UIView animateWithDuration:0.5 animations:^{
-            [self setFrame:frame];
+            [self_ setFrame:frame];
         }];
         
         // bar
@@ -243,14 +242,16 @@ const float ProgressBarWidth = 146;
 }
 - (void)hideProgress
 {
+    __weak UIView* pb = progressBase;
     [UIView animateWithDuration:0.1 animations:^{
-        [progressBase setAlpha:0.3];
+        [pb setAlpha:0.3];
     }];
 }
 - (void)showProgress
 {
+    __weak UIView* pb = progressBase;
     [UIView animateWithDuration:0.1 animations:^{
-        [progressBase setAlpha:1];
+        [pb setAlpha:1];
     }];
 }
 

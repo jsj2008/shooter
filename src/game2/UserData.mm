@@ -36,7 +36,7 @@ namespace hg {
     const std::string IntKeyClear4 = "clear4";
     const std::string IntKeyClear5 = "clear5";
     
-    const float MaxCamera = -15;
+    const float MaxCamera = -18;
     const float MinCamera = -40;
     
     int status_rand(int from, int to) {
@@ -456,77 +456,77 @@ namespace hg {
             maxAllyNum = 2;
             maxPowerUpNum = 1;
         }
-        else if (score <= 500) {
+        else if (score <= 1500) {
             grade = NSSTR2STR(NSLocalizedString(@"Spaceman", nil));
             maxAllyNum = 2;
             maxPowerUpNum = 1;
         }
-        else if (score <= 1000) {
+        else if (score <= 3000) {
             grade = NSSTR2STR(NSLocalizedString(@"Spaceman 1st Class", nil));
             maxAllyNum = 3;
             maxPowerUpNum = 2;
         }
-        else if (score <= 2500) {
+        else if (score <= 9500) {
             grade = NSSTR2STR(NSLocalizedString(@"Technical Sergeant", nil));
             maxAllyNum = 4;
             maxPowerUpNum = 2;
         }
-        else if (score <= 5000) {
+        else if (score <= 15000) {
             grade = NSSTR2STR(NSLocalizedString(@"Master sergeant", nil));
             maxAllyNum = 6;
             maxPowerUpNum = 2;
         }
-        else if (score <= 20000) {
+        else if (score <= 60000) {
             grade = NSSTR2STR(NSLocalizedString(@"Senior Master sergeant", nil));
             maxAllyNum = 7;
             maxPowerUpNum = 4;
         }
-        else if (score <= 50000) {
+        else if (score <= 150000) {
             grade = NSSTR2STR(NSLocalizedString(@"Warrant Officer", nil));
             maxAllyNum = 8;
             maxPowerUpNum = 4;
         }
-        else if (score <= 100000) {
+        else if (score <= 300000) {
             grade = NSSTR2STR(NSLocalizedString(@"Second Lieutenant", nil));
             maxAllyNum = 9;
             maxPowerUpNum = 4;
         }
-        else if (score <= 200000) {
+        else if (score <= 600000) {
             grade = NSSTR2STR(NSLocalizedString(@"First Lieutenant", nil));
             maxAllyNum = 10;
             maxPowerUpNum = 5;
         }
-        else if (score <= 300000) {
+        else if (score <= 900000) {
             grade = NSSTR2STR(NSLocalizedString(@"Captain", nil));
             maxAllyNum = 11;
             maxPowerUpNum = 5;
         }
-        else if (score <= 500000) {
+        else if (score <= 1500000) {
             grade = NSSTR2STR(NSLocalizedString(@"Major", nil));
             maxAllyNum = 12;
             maxPowerUpNum = 5;
         }
-        else if (score <= 800000) {
+        else if (score <= 2400000) {
             grade = NSSTR2STR(NSLocalizedString(@"Lieutenant Colonel", nil));
             maxAllyNum = 13;
             maxPowerUpNum = 5;
         }
-        else if (score <= 1200000) {
+        else if (score <= 3600000) {
             grade = NSSTR2STR(NSLocalizedString(@"Colonel", nil));
             maxAllyNum = 14;
             maxPowerUpNum = 5;
         }
-        else if (score <= 1500000) {
+        else if (score <= 4500000) {
             grade = NSSTR2STR(NSLocalizedString(@"Major General", nil));
             maxAllyNum = 15;
             maxPowerUpNum = 5;
         }
-        else if (score <= 2000000) {
+        else if (score <= 6000000) {
             grade = NSSTR2STR(NSLocalizedString(@"Lieutenant General", nil));
             maxAllyNum = 16;
             maxPowerUpNum = 6;
         }
-        else if (score <= 10000000) {
+        else if (score <= 30000000) {
             grade = NSSTR2STR(NSLocalizedString(@"General", nil));
             maxAllyNum = 30;
             maxPowerUpNum = 10;
@@ -758,73 +758,75 @@ namespace hg {
     // データ保存
     bool UserData::saveData()
     {
-        try {
-            userdata::initDatabase();
-            if (!userdata::open()) throw "open failed";
-            if (!userdata::begin()) throw "begin failed";
-            
-            // 一旦全部消してから全部をインサート
-            userdata::deleteAllFighterData();
-            
-            int inc_id = -1;
-            // fighter list
-            for (FighterList::iterator it = fighterList.begin(); it != fighterList.end(); ++it) {
-                inc_id++;
-                bool ret = userdata::insertFighterInfo(inc_id, userdata::FighterRecordTypeFighter, *it);
-                if (!ret) throw "insert fighter failed";
+        @autoreleasepool {
+            try {
+                userdata::initDatabase();
+                if (!userdata::open()) throw "open failed";
+                if (!userdata::begin()) throw "begin failed";
+                
+                // 一旦全部消してから全部をインサート
+                userdata::deleteAllFighterData();
+                
+                int inc_id = -1;
+                // fighter list
+                for (FighterList::iterator it = fighterList.begin(); it != fighterList.end(); ++it) {
+                    inc_id++;
+                    bool ret = userdata::insertFighterInfo(inc_id, userdata::FighterRecordTypeFighter, *it);
+                    if (!ret) throw "insert fighter failed";
+                }
+                
+                // shop list
+                for (FighterList::iterator it = shopList.begin(); it != shopList.end(); ++it) {
+                    inc_id++;
+                    bool ret = userdata::insertFighterInfo(inc_id, userdata::FighterRecordTypeShop, *it);
+                    if (!ret) throw "insert shop failed";
+                }
+                
+                // money
+                if (!userdata::updateOrInsertIntegerData(IntKeyMoney, (long)this->money))throw "write money failed";
+                
+                // stageId
+                if (!userdata::updateOrInsertIntegerData(IntKeyStageId, (long)this->stage_id))throw "write stageId failed";
+                
+                // complete point
+                if (!userdata::updateOrInsertIntegerData(IntKeyCompPoint, (long)this->complete_point))throw "write comp point failed";
+                
+                // camera pos
+                if (!userdata::updateOrInsertIntegerData(IntKeyCameraPos, (long)this->cameraPositionY*10))throw "write camera pos failed";
+                
+                // score
+                if (!userdata::updateOrInsertIntegerData(IntKeyScore, (long)this->score))throw "write score failed";
+                
+                // total_kill
+                if (!userdata::updateOrInsertIntegerData(IntKeyTotalKill, (long)this->totalKill))throw "write total kill failed";
+                
+                // total_dead
+                if (!userdata::updateOrInsertIntegerData(IntKeyTotalDead, (long)this->totalDead))throw "write total dead failed";
+                
+                // win
+                if (!userdata::updateOrInsertIntegerData(IntKeyWinCount, (long)this->winCount))throw "write win count failed";
+                
+                // lose
+                if (!userdata::updateOrInsertIntegerData(IntKeyLoseCount, (long)this->loseCount))throw "write lose count failed";
+                
+                // retreat
+                if (!userdata::updateOrInsertIntegerData(IntKeyRetreatCount, (long)this->retreatCount))throw "write retreat count failed";
+                
+                // stage clear count
+                if (!userdata::updateOrInsertIntegerData(IntKeyClear1, (long)clear_count_list[0]))throw "write clear count failed";
+                if (!userdata::updateOrInsertIntegerData(IntKeyClear2, (long)clear_count_list[1]))throw "write clear count failed";
+                if (!userdata::updateOrInsertIntegerData(IntKeyClear3, (long)clear_count_list[2]))throw "write clear count failed";
+                if (!userdata::updateOrInsertIntegerData(IntKeyClear4, (long)clear_count_list[3]))throw "write clear count failed";
+                if (!userdata::updateOrInsertIntegerData(IntKeyClear5, (long)clear_count_list[4]))throw "write clear count failed";
+                
+                if (!userdata::commit()) throw "commit failed";
+                userdata::close();
+            } catch (const char* err) {
+                userdata::rollback();
+                userdata::close();
+                NSLog(@"insert error!(%s)", err);
+                return false;
             }
-            
-            // shop list
-            for (FighterList::iterator it = shopList.begin(); it != shopList.end(); ++it) {
-                inc_id++;
-                bool ret = userdata::insertFighterInfo(inc_id, userdata::FighterRecordTypeShop, *it);
-                if (!ret) throw "insert shop failed";
-            }
-            
-            // money
-            if (!userdata::updateOrInsertIntegerData(IntKeyMoney, (long)this->money))throw "write money failed";
-            
-            // stageId
-            if (!userdata::updateOrInsertIntegerData(IntKeyStageId, (long)this->stage_id))throw "write stageId failed";
-            
-            // complete point
-            if (!userdata::updateOrInsertIntegerData(IntKeyCompPoint, (long)this->complete_point))throw "write comp point failed";
-            
-            // camera pos
-            if (!userdata::updateOrInsertIntegerData(IntKeyCameraPos, (long)this->cameraPositionY*10))throw "write camera pos failed";
-            
-            // score
-            if (!userdata::updateOrInsertIntegerData(IntKeyScore, (long)this->score))throw "write score failed";
-            
-            // total_kill
-            if (!userdata::updateOrInsertIntegerData(IntKeyTotalKill, (long)this->totalKill))throw "write total kill failed";
-            
-            // total_dead
-            if (!userdata::updateOrInsertIntegerData(IntKeyTotalDead, (long)this->totalDead))throw "write total dead failed";
-            
-            // win
-            if (!userdata::updateOrInsertIntegerData(IntKeyWinCount, (long)this->winCount))throw "write win count failed";
-            
-            // lose
-            if (!userdata::updateOrInsertIntegerData(IntKeyLoseCount, (long)this->loseCount))throw "write lose count failed";
-            
-            // retreat
-            if (!userdata::updateOrInsertIntegerData(IntKeyRetreatCount, (long)this->retreatCount))throw "write retreat count failed";
-            
-            // stage clear count
-            if (!userdata::updateOrInsertIntegerData(IntKeyClear1, (long)clear_count_list[0]))throw "write clear count failed";
-            if (!userdata::updateOrInsertIntegerData(IntKeyClear2, (long)clear_count_list[1]))throw "write clear count failed";
-            if (!userdata::updateOrInsertIntegerData(IntKeyClear3, (long)clear_count_list[2]))throw "write clear count failed";
-            if (!userdata::updateOrInsertIntegerData(IntKeyClear4, (long)clear_count_list[3]))throw "write clear count failed";
-            if (!userdata::updateOrInsertIntegerData(IntKeyClear5, (long)clear_count_list[4]))throw "write clear count failed";
-            
-            if (!userdata::commit()) throw "commit failed";
-            userdata::close();
-        } catch (const char* err) {
-            userdata::rollback();
-            userdata::close();
-            NSLog(@"insert error!(%s)", err);
-            return false;
         }
         return true;
     }
@@ -1132,12 +1134,12 @@ namespace hg {
         if (fInfo->life > 0) {
             float lifeToRepair = fInfo->lifeMax - fInfo->life;
             float lifeToRepairRatio = lifeToRepair/fInfo->lifeMax;
-            int value = hg::UserData::sharedUserData()->getCost(fInfo) * 0.1;
+            int value = hg::UserData::sharedUserData()->getCost(fInfo) * 0.2;
             ret = ceil(lifeToRepairRatio * value);
             ret = ceiling(ret, 2);
         }
         else {
-            ret = ceiling(cost * 0.15, 2);
+            ret = ceiling(cost * 0.3, 2);
         }
         return ret;
     }
@@ -1533,7 +1535,7 @@ namespace hg {
                 pInfo->showPixelWidth = 300;
                 pInfo->showPixelHeight = 300;
                 pInfo->collisionId = CollisionId_P_RAPTER;
-                pInfo->power = 32;
+                pInfo->power = 28;
                 pInfo->cpu_lv = 10;
                 
                 pInfo->life = pInfo->lifeMax = 700;
@@ -1541,8 +1543,8 @@ namespace hg {
                 pInfo->speed = 0.68;
                 pInfo->newBuyCost = 20000;
                 
-                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeTwin, BulletTypeFriendNormal, 0, 0, 0.95, 0.20));
-                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeNormal, BulletTypeFriendMedium, 0, 0, 1.05, 0.40));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeTwin, BulletTypeFriendNormal, 0, 0, 0.95, 0.30));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeNormal, BulletTypeFriendMedium, 0, 0, 1.05, 0.60));
                 break;
             }
             case FighterTypeRapter2:
@@ -2241,7 +2243,7 @@ namespace hg {
             }
         }
         pInfo->powerPotential = ((float)status_rand(15, 25) * 0.01 * (float)pInfo->power);
-        pInfo->defencePotential = ((float)status_rand(65, 85) * 0.01 * (float)pInfo->lifeMax);
+        pInfo->defencePotential = ((float)status_rand(45, 65) * 0.01 * (float)pInfo->lifeMax);
         if (pInfo->shieldMax > 0) {
             pInfo->shieldPotential = ((float)status_rand(10, 20) * 0.01 * (float)pInfo->shieldMax);
         }
@@ -2259,45 +2261,45 @@ namespace hg {
                     pInfo->cpu_lv = status_rand(0, 20);
                     break;
                 case 2:
-                    fortify_level = 3;
+                    fortify_level = 5;
                     if (clear_ratio >= 50) {
-                        fortify_level = 2.5;
+                        fortify_level *= 1.2;
                     }
                     if (clear_ratio >= 80) {
-                        fortify_level = 3;
+                        fortify_level *= 1.4;
                     }
                     pInfo->cpu_lv = status_rand(20, 70);
                     break;
                 case 3:
-                    fortify_level = 7.0;
+                    fortify_level = 15;
                     if (clear_ratio >= 50) {
-                        fortify_level *= 1.1;
+                        fortify_level *= 1.2;
                     }
                     if (clear_ratio >= 80) {
-                        fortify_level *= 1.1;
+                        fortify_level *= 1.4;
                     }
                     pInfo->cpu_lv = status_rand(70, 160);
                     break;
                 case 4:
-                    fortify_level = 15.0;
+                    fortify_level = 20;
                     if (clear_ratio >= 50) {
-                        fortify_level *= 1.1;
+                        fortify_level *= 1.2;
                     }
                     if (clear_ratio >= 80) {
-                        fortify_level *= 1.1;
+                        fortify_level *= 1.4;
                     }
                     pInfo->cpu_lv = status_rand(160, 250);
                     break;
                 case 5:
-                    fortify_level = 28.0;
+                    fortify_level = 50;
                     if (clear_ratio >= 50) {
-                        fortify_level *= 1.1;
+                        fortify_level *= 1.2;
                     }
                     if (clear_ratio >= 80) {
-                        fortify_level *= 1.1;
+                        fortify_level *= 1.3;
                     }
                     if (clear_ratio >= 90) {
-                        fortify_level *= 1.1;
+                        fortify_level *= 1.4;
                     }
                     pInfo->cpu_lv = status_rand(250, 300);
                     StageInfo stageInfo = getStageInfo();
@@ -2306,14 +2308,14 @@ namespace hg {
             }
             
             for (WeaponInfoList::iterator it = pInfo->weaponList.begin(); it != pInfo->weaponList.end(); ++it) {
-                (*it).speed *= 0.60;
+                (*it).speed *= 0.70;
             }
             
-            pInfo->lifeMax *= (fortify_level * 2);
+            pInfo->lifeMax *= (fortify_level * 2.4);
             pInfo->life = pInfo->lifeMax;
             int weapon_num = pInfo->weaponList.size();
             for (int i = 0; i < weapon_num; i++) {
-                pInfo->weaponList[i].bulletPower *= (fortify_level*0.7);
+                pInfo->weaponList[i].bulletPower *= (fortify_level*1.1);
             }
             
         } // fortify

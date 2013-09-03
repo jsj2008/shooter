@@ -1,3 +1,4 @@
+#include "Common.h"
 #include "HGameEngine.h"
 
 namespace hg
@@ -185,6 +186,8 @@ namespace hg
     }
     void HGHeap::release(void *pMem)
     {
+#if IS_NORELEASE
+#else
         AllocHeader *pHeader = (AllocHeader *)((char *)pMem - sizeof(AllocHeader));
         assert(pHeader->iSignature == SIGNATURE);
         assert(pHeader->referenceCount > 0);
@@ -193,6 +196,7 @@ namespace hg
         {
             deleteAllocation(pMem);
         }
+#endif
     }
     void HGHeap::addAllocation(size_t size)
     {
@@ -272,8 +276,8 @@ namespace hg
         static HGStateManager* pStateManager = NULL;
         if (!pStateManager)
         {
-            pStateManager = new (SYSTEM_HEAP_NAME)HGStateManager();
-            pStateManager->retain();
+            pStateManager = new HGStateManager();
+            //pStateManager->retain();
         }
         return pStateManager;
     }

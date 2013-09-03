@@ -481,12 +481,13 @@ namespace hg {
             {
                 continue;
             }
-            bool isShield = (*it)->hasShield();
+            /*
+             bool isShield = (*it)->hasShield();
             HGRect shieldRect(0,0,0,0);
             if (isShield)
             {
                 shieldRect = (*it)->getShieldRect();
-            }
+            }*/
             int cida = (*it)->getCollisionId();
             Vector posa = (*it)->getPosition();
             HGSize sizea = (*it)->getSize();
@@ -514,6 +515,7 @@ namespace hg {
                     int cidb = a->getCollisionId();
                     Vector posb = a->getPosition();
                     HGSize sizeb = a->getSize();
+                    /*
                     if (isShield)
                     {
                         if (pColMgr->isIntersect(cidb, posb, sizeb, shieldRect))
@@ -522,12 +524,12 @@ namespace hg {
                         }
                     }
                     else
-                    {
+                    {*/
                         if (pColMgr->isIntersect(cida, posa, sizea, cidb, posb, sizeb))
                         {
                             onFighterCollidedWithBullet(*it, a);
                         }
-                    }
+                    //}
                 }
             }
         }
@@ -1173,6 +1175,7 @@ namespace hg {
             NSLog(@"after delete texture");
             [SystemMonitor dump];
         }
+        isInitialized = false;
         
     }
 
@@ -1217,7 +1220,7 @@ namespace hg {
             NSLog(@"before remove children(initialize)");
             [SystemMonitor dump];
         }
-        HGDirector::sharedDirector()->getRootNode()->removeAllChildren();
+        HGDirector::sharedDirector()->init();
         if (IS_DEBUG) {
             NSLog(@"after remove children(initialize)");
             [SystemMonitor dump];
@@ -1252,77 +1255,45 @@ namespace hg {
         ////////////////////
         // Root Layer
         
-        if (pLayerBattleRoot)
-        {
-            pLayerBattleRoot->release();
-        }
         pLayerBattleRoot = new LayerNode();
         pLayerBattleRoot->retain();
         HGDirector::sharedDirector()->getRootNode()->addChild(pLayerBattleRoot);
         
-        if (pLayerUIRoot)
-        {
-            pLayerUIRoot->release();
-        }
         pLayerUIRoot = new LayerNode();
         pLayerUIRoot->retain();
         pLayerUIRoot->setCameraPosition(0, 0, -15);
-        pLayerUIRoot->setCameraPosition(0, 0, -5);
+        pLayerUIRoot->setCameraPosition(0, 0, -3.5);
         pLayerUIRoot->setCameraPosition(0, 0, -0.1);
         HGDirector::sharedDirector()->getRootNode()->addChild(pLayerUIRoot);
         
         ////////////////////
         // Rader
-        if (pRader)
-        {
-            pRader->release();
-        }
         pRader = new Rader();
         pRader->init(pLayerUIRoot);
         pRader->retain();
         
         ////////////////////
         // layer
-        if (pLayerBackground)
-        {
-            pLayerBackground->release();
-        }
         pLayerBackground = new HGNode();
         pLayerBackground->retain();
         pLayerBattleRoot->addChild(pLayerBackground);
         
         //
-        if (pLayerEnemy)
-        {
-            pLayerEnemy->release();
-        }
         pLayerEnemy = new HGNode();
         pLayerEnemy->retain();
         pLayerBattleRoot->addChild(pLayerEnemy);
         
         //
-        if (pLayerFriend)
-        {
-            pLayerFriend->release();
-        }
         pLayerFriend = new HGNode();
         pLayerFriend->retain();
         pLayerBattleRoot->addChild(pLayerFriend);
         
         //
-        if (pLayerBullet)
-        {
-            pLayerBullet->release();
-        }
         pLayerBullet = new HGNode();
         pLayerBullet->retain();
         pLayerBattleRoot->addChild(pLayerBullet);
         
         //
-        if (pLayerEffect)
-        {
-            pLayerEffect->release();
-        }
         pLayerEffect = new HGNode();
         pLayerEffect->retain();
         pLayerBattleRoot->addChild(pLayerEffect);
@@ -1377,6 +1348,7 @@ namespace hg {
         }*/
         
         // planet
+#if IS_GAME_GL
         {
             float clearRatio = hg::UserData::sharedUserData()->getCurrentClearRatio();
             hg::StageInfo info = hg::UserData::sharedUserData()->getStageInfo();
@@ -1399,6 +1371,7 @@ namespace hg {
             pLayerBackground->addChild(mdl);
             //mdl->release();
         }
+#endif
         
         // フィールド境界
         {
