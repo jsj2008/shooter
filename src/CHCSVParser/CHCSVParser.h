@@ -52,7 +52,7 @@ typedef NSInteger CHCSVErrorCode;
 
 @interface CHCSVParser : NSObject
 
-@property (assign) id<CHCSVParserDelegate> delegate;
+@property (weak) id<CHCSVParserDelegate> delegate;
 @property (assign) BOOL recognizesBackslashesAsEscapes; // default is NO
 @property (assign) BOOL sanitizesFields; // default is NO
 @property (assign) BOOL recognizesComments; // default is NO

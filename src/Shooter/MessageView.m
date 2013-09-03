@@ -22,10 +22,10 @@ const float MessageHeight = 180;
     CGRect defaultMessageRect;
 }
 
-@property(assign)UIView* menuBase;
-@property(assign)UILabel* msgLabel;
-@property(assign)UIView* curtain;
-@property(assign)NSMutableArray* messageList;
+@property(weak)UIView* menuBase;
+@property(weak)UILabel* msgLabel;
+@property(weak)UIView* curtain;
+@property(weak)NSMutableArray* messageList;
 
 @end
 
@@ -36,19 +36,11 @@ const float MessageHeight = 180;
     self = [super init];
     if (self) {
         self.messageList = messageList;
-        [self.messageList retain];
+        self.messageList;
     }
     return self;
 }
 
--(void)dealloc
-{
-    [self.messageList release];
-    [_menuBase release];
-    [_curtain release];
-    [_msgLabel release];
-    [super dealloc];
-}
 
 - (void)onTap:(UIGestureRecognizer*)sender
 {
@@ -103,7 +95,7 @@ const float MessageHeight = 180;
         [base setBackgroundColor:[UIColor clearColor]];
         [self addSubview:base];
         
-        UITapGestureRecognizer *tr = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap:)] autorelease];
+        UITapGestureRecognizer *tr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap:)];
         [base addGestureRecognizer:tr];
         
         _menuBase = base;
@@ -122,8 +114,8 @@ const float MessageHeight = 180;
     
     // message box
     CGRect msgBoxRect = CGRectMake(
-            frame.size.width/2 - MessageBoxWidth/2, frame.size.height - MessageBoxHeight, MessageBoxWidth, MessageBoxHeight);
-    UIView* messageBox = [[[UIView alloc] initWithFrame:msgBoxRect] autorelease];
+                                   frame.size.width/2 - MessageBoxWidth/2, frame.size.height - MessageBoxHeight, MessageBoxWidth, MessageBoxHeight);
+    UIView* messageBox = [[UIView alloc] initWithFrame:msgBoxRect];
     [messageBox setBackgroundColor:[UIColor blackColor]];
     [messageBox.layer setBorderColor:MAIN_BORDER_COLOR.CGColor];
     [messageBox.layer setBorderWidth:2];
@@ -140,7 +132,7 @@ const float MessageHeight = 180;
         msgRect.origin.y = 5;
         defaultMessageRect = msgRect;
         
-        UILabel* msgLbl = [[[UILabel alloc] initWithFrame:msgRect] autorelease];
+        UILabel* msgLbl = [[UILabel alloc] initWithFrame:msgRect];
         [msgLbl setBackgroundColor:[UIColor clearColor]];
         [msgLbl setTextColor:MAIN_FONT_COLOR];
         [msgLbl setNumberOfLines:0];
@@ -159,19 +151,20 @@ const float MessageHeight = 180;
         
         [messageBox addSubview:msgLbl];
     }
-   
+    
     // rotate
     [self setTransform:CGAffineTransformMakeRotation(-90*M_PI/180)];
 }
 
 
 /*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-}
-*/
+ // Only override drawRect: if you perform custom drawing.
+ // An empty implementation adversely affects performance during animation.
+ - (void)drawRect:(CGRect)rect
+ {
+ // Drawing code
+ }
+ */
 
 @end
+

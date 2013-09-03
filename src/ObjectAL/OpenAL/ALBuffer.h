@@ -65,7 +65,7 @@
 @property(nonatomic,readonly,assign) ALint channels;
 
 /** The device this buffer was created for. */
-@property(nonatomic,readonly,retain) ALDevice* device;
+@property(nonatomic,readonly,strong) ALDevice* device;
 
 /** The format of the audio data (see al.h, AL_FORMAT_XXX). */
 @property(nonatomic,readonly,assign) ALenum format;
@@ -74,7 +74,7 @@
 @property(nonatomic,readonly,assign) ALint frequency;
 
 /** The name given to this buffer upon creation. You may change it at runtime if you wish. */
-@property(nonatomic,readwrite,retain) NSString* name;
+@property(nonatomic,readwrite,strong) NSString* name;
 
 /** The size, in bytes, of the currently loaded buffer data. */
 @property(nonatomic,readonly,assign) ALint size;
@@ -88,7 +88,7 @@
 @property(nonatomic,readwrite,assign) bool freeDataOnDestroy;
 
 /** The parent buffer (which owns the uncompressed data) */
-@property(nonatomic,readwrite,retain) ALBuffer* parentBuffer;
+@property(nonatomic,readwrite,strong) ALBuffer* parentBuffer;
 
 #pragma mark Object Management
 

@@ -1,4 +1,4 @@
-#define IS_DEBUG 0
+#define IS_DEBUG 1
 #define IS_BACKGROUND 1
 #define IS_ALLYVIEW 1
 #define IS_STATUS 1

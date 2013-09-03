@@ -86,13 +86,12 @@ static StageTableView* instance;
 
 - (void)dealloc
 {
-    if (onEndAction) [onEndAction release];
+    //if (onEndAction) [onEndAction release];
     if(tableView)
     {
-        [tableView release];
+        //[tableView release];
         tableView = nil;
     }
-    [super dealloc];
 }
 
 - (void)viewDidLoad
@@ -128,10 +127,10 @@ static StageTableView* instance;
     
     // 戻るボタン
     {
-        ImageButtonView* backImgView = [[[ImageButtonView alloc] initWithFrame:CGRectMake(0, 0, 66, 66)] autorelease];
+        ImageButtonView* backImgView = [[ImageButtonView alloc] initWithFrame:CGRectMake(0, 0, 66, 66)];
         //UIImage* img = [UIImage imageNamed:@"checkmark.png"];
         NSString *path = [[NSBundle mainBundle] pathForResource:ICON_CHECK ofType:@"png"];
-        UIImage* img = [[[UIImage alloc] initWithContentsOfFile:path] autorelease];
+        UIImage* img = [[UIImage alloc] initWithContentsOfFile:path];
         
         [backImgView setBackgroundColor:[UIColor whiteColor]];
         [backImgView setFrame:CGRectMake(myFrame.size.width - 76, myFrame.size.height - 84, 66, 66)];
@@ -178,14 +177,14 @@ numberOfRowsInSection:(NSInteger)section
 
 /*
  -(UITableViewCell *)tableView:
- (UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath	ロード時に呼び出される。
+ (UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath    ロード時に呼び出される。
  セルの内容を返すように実装する
  （実装必須）
  */
 -(UITableViewCell *)tableView:
 (UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell* c = [[[UITableViewCell alloc] initWithFrame:CGRectMake(0, 0, cell_width + 40, cell_height)] autorelease];
+    UITableViewCell* c = [[UITableViewCell alloc] initWithFrame:CGRectMake(0, 0, cell_width + 40, cell_height)];
     [c setBackgroundColor:[UIColor clearColor]];
     [c setSelectionStyle:UITableViewCellSelectionStyleNone];
     
@@ -193,8 +192,8 @@ numberOfRowsInSection:(NSInteger)section
     hg::StageInfo info = hg::UserData::sharedUserData()->getStageInfo([indexPath row] + 1);
     
     // 背景
-    ImageButtonView* back = [[[ImageButtonView alloc] initWithFrame:CGRectMake(20, 0, cell_width, cell_height)] autorelease];
-    //UIView* back = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, cell_width, cell_height)] autorelease];
+    ImageButtonView* back = [[ImageButtonView alloc] initWithFrame:CGRectMake(20, 0, cell_width, cell_height)];
+    //UIView* back = [[UIView alloc] initWithFrame:CGRectMake(0, 0, cell_width, cell_height)];
     //[back setBackgroundColor:SUB_BACK_COLOR];
     [back.layer setBorderColor: MAIN_BORDER_COLOR.CGColor];
     back.layer.borderWidth = 1;
@@ -206,7 +205,6 @@ numberOfRowsInSection:(NSInteger)section
     [stageLabel setBackgroundColor:[UIColor clearColor]];
     [stageLabel setTextColor:MAIN_FONT_COLOR];
     [stageLabel setText:[NSString stringWithCString:info.stage_name.c_str() encoding:NSUTF8StringEncoding]];
-    [stageLabel autorelease];
     [back addSubview:stageLabel];
     [back setTag:[indexPath row] + 1];
     
@@ -215,7 +213,6 @@ numberOfRowsInSection:(NSInteger)section
         [l setBackgroundColor:[UIColor clearColor]];
         [l setTextColor:MAIN_FONT_COLOR];
         [l setText:[NSString stringWithFormat:NSLocalizedString(@"Cleared Count: %d", nil), info.clear_count]];
-        [l autorelease];
         [back addSubview:l];
     }
     
@@ -228,7 +225,7 @@ numberOfRowsInSection:(NSInteger)section
             hg::StageInfo info_pre = hg::UserData::sharedUserData()->getStageInfo(stage_id - 1);
             if (info_pre.clear_count == 0) {
                 chk = false;
-                NSString* msg = [[NSString stringWithFormat:NSLocalizedString(@"Soryy, You must clear %@ Stage at first.", nil), [NSString stringWithCString:info_pre.stage_name_short.c_str() encoding:NSUTF8StringEncoding]] autorelease];
+                NSString* msg = [NSString stringWithFormat:NSLocalizedString(@"Soryy, You must clear %@ Stage at first.", nil), [NSString stringWithCString:info_pre.stage_name_short.c_str() encoding:NSUTF8StringEncoding]];
                 DialogView* dv = [[DialogView alloc] initWithMessage:msg];
                 [dv addButtonWithText:NSLocalizedString(@"OK", nil) withAction:^{
                     // do nothing
@@ -241,7 +238,7 @@ numberOfRowsInSection:(NSInteger)section
         }
         if (!(chk == false && !IS_DEBUG_SHOOTER)) {
             
-            NSString* msg = [[NSString stringWithFormat:NSLocalizedString(@"Go to %@ Stage?", nil), [NSString stringWithCString:info.stage_name_short.c_str() encoding:NSUTF8StringEncoding]] autorelease];
+            NSString* msg = [NSString stringWithFormat:NSLocalizedString(@"Go to %@ Stage?", nil), [NSString stringWithCString:info.stage_name_short.c_str() encoding:NSUTF8StringEncoding]];
             DialogView* dv = [[DialogView alloc] initWithMessage:msg];
             [dv addButtonWithText:NSLocalizedString(@"OK", nil) withAction:^{
                 [self setUserInteractionEnabled:FALSE];
@@ -275,3 +272,4 @@ heightForHeaderInSection:(NSInteger)section
 
 
 @end
+

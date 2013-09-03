@@ -34,7 +34,7 @@
     UILabel* gradeLabel;
 }
 
-@property(assign)CAEmitterLayer* emitterLayer;
+@property(weak)CAEmitterLayer* emitterLayer;
 @end
 
 @implementation PlayerDetailView
@@ -73,13 +73,12 @@
             [pullButton.layer setCornerRadius:10];
             [pullButton.layer setBorderWidth:1];
             [pullButton.layer setBorderColor:[UIColor colorWithHexString:@"#444444"].CGColor];
-             
+            
             // label
             {
                 CGRect lblFrame = CGRectMake(5, 20, pullFrame.size.width - 10, pullFrame.size.height - 20);
                 UILabel* lbl = [self createLabel];
                 gradeLabel = lbl;
-                [gradeLabel retain];
                 [gradeLabel setTextAlignment:NSTextAlignmentCenter];
                 [pullButton addSubview:lbl];
                 [lbl setFrame:lblFrame];
@@ -88,7 +87,7 @@
             
             // tap
             {
-                UITapGestureRecognizer *tr = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap:)] autorelease];
+                UITapGestureRecognizer *tr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap:)];
                 [pullButton addGestureRecognizer:tr];
             }
         }
@@ -104,15 +103,15 @@
             //UIImage *img = [UIImage imageNamed:@"metal_back2.jpg"];
             
             /*
-            NSString *path = [[NSBundle mainBundle] pathForResource:@"metal_back2" ofType:@"png"];
-            UIImage* img = [[[UIImage alloc] initWithContentsOfFile:path] autorelease];
-            
-            UIImageView* backView = [[[UIImageView alloc] initWithFrame:CGRectMake(x,y,width,height)] autorelease];
-            [backView setImage:img];
-            [backView setUserInteractionEnabled:true];
-            [self addSubview:backView];
+             NSString *path = [[NSBundle mainBundle] pathForResource:@"metal_back2" ofType:@"png"];
+             UIImage* img = [[UIImage alloc] initWithContentsOfFile:path];
+             
+             UIImageView* backView = [[UIImageView alloc] initWithFrame:CGRectMake(x,y,width,height)];
+             [backView setImage:img];
+             [backView setUserInteractionEnabled:true];
+             [self addSubview:backView];
              */
-            UIView* backView = [[[UIView alloc] initWithFrame:CGRectMake(x,y,width,height)] autorelease];
+            UIView* backView = [[UIView alloc] initWithFrame:CGRectMake(x,y,width,height)];
             [backView setBackgroundColor:[UIColor blackColor]];
             [backView setUserInteractionEnabled:true];
             [self addSubview:backView];
@@ -126,7 +125,7 @@
             float width = height*(422/94);
             float x = mainFrame.size.width/2 - width/2;
             float y = 20;
-            RRSGlowLabel* lbl = [[[RRSGlowLabel alloc] init] autorelease];
+            RRSGlowLabel* lbl = [[RRSGlowLabel alloc] init];
             [lbl setGlowAmount:10];
             [lbl setGlowColor:[UIColor colorWithHexString:@"ffffff"]];
             UIFont* font = [UIFont fontWithName:@"HiraKakuProN-W6" size:40];
@@ -139,11 +138,11 @@
             [lbl setTextColor:[UIColor colorWithHexString:@"#F7F7F7"]];
             [self addSubview:lbl];
             /*
-            UIImage *img = [UIImage imageNamed:@"statistics.png"];
-            UIImageView* imgView = [[[UIImageView alloc] initWithFrame:CGRectMake(x,y,width,height)] autorelease];
-            [imgView setImage:img];
-            [imgView setFrame:CGRectMake(x, y, width, height)];
-            [self addSubview:imgView];*/
+             UIImage *img = [UIImage imageNamed:@"statistics.png"];
+             UIImageView* imgView = [[UIImageView alloc] initWithFrame:CGRectMake(x,y,width,height)];
+             [imgView setImage:img];
+             [imgView setFrame:CGRectMake(x, y, width, height)];
+             [self addSubview:imgView];*/
         }
         
         float adheight = 0;
@@ -265,10 +264,10 @@
         }
         // 戻るボタン
         {
-            ImageButtonView* backImgView = [[[ImageButtonView alloc] initWithFrame:CGRectMake(0, 0, 66, 66)] autorelease];
+            ImageButtonView* backImgView = [[ImageButtonView alloc] initWithFrame:CGRectMake(0, 0, 66, 66)];
             //UIImage* img = [UIImage imageNamed:@"checkmark.png"];
             NSString *path = [[NSBundle mainBundle] pathForResource:ICON_CHECK ofType:@"png"];
-            UIImage* img = [[[UIImage alloc] initWithContentsOfFile:path] autorelease];
+            UIImage* img = [[UIImage alloc] initWithContentsOfFile:path];
             
             [backImgView setBackgroundColor:[UIColor whiteColor]];
             [backImgView setFrame:CGRectMake(mainFrame.size.width - 76, mainFrame.size.height - 84, 66, 66)];
@@ -289,9 +288,9 @@
                 //onEndAction();
             }];
         }
-    
+        
         [self setBackgroundColor:[UIColor clearColor]];
-
+        
     }
     return self;
 }
@@ -307,7 +306,7 @@
 
 - (UILabel*)createLabel
 {
-    UILabel* lbl = [[[UILabel alloc] init] autorelease];
+    UILabel* lbl = [[UILabel alloc] init];
     //UIFont* font = [UIFont fontWithName:@"HiraKakuProN-W6" size:16];
     UIFont* font = [UIFont systemFontOfSize:16];
     [lbl setFont:font];
@@ -317,9 +316,9 @@
     [lbl setAdjustsFontSizeToFitWidth:YES];
     //[lbl setTransform:CGAffineTransformTranslate(CGAffineTransformIdentity, 1, 0)];
     /*
-    [UIView animateWithDuration:0.3 animations:^{
-        [lbl setTransform:CGAffineTransformTranslate(CGAffineTransformIdentity, 1, 1)];
-    }];*/
+     [UIView animateWithDuration:0.3 animations:^{
+     [lbl setTransform:CGAffineTransformTranslate(CGAffineTransformIdentity, 1, 1)];
+     }];*/
     return lbl;
 }
 
@@ -338,22 +337,21 @@
     //if (onEndAction) [onEndAction release];
     if(tableView)
     {
-        [tableView release];
+        //[tableView release];
         tableView = nil;
     }
     if (gradeLabel)
     {
-        [gradeLabel release];
+        //[gradeLabel release];
         gradeLabel = nil;
     }
-    [super dealloc];
 }
 
 /*
-- (void) setOnEndAction:(void(^)(void))action
-{
-    onEndAction = [action copy];
-}*/
+ - (void) setOnEndAction:(void(^)(void))action
+ {
+ onEndAction = [action copy];
+ }*/
 
 /*
  ロード時に呼び出される。
@@ -387,14 +385,14 @@ heightForHeaderInSection:(NSInteger)section
 
 /*
  -(UITableViewCell *)tableView:
- (UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath	ロード時に呼び出される。
+ (UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath    ロード時に呼び出される。
  セルの内容を返すように実装する
  （実装必須）
  */
 -(UITableViewCell *)tableView:
 (UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell* c = [[[UITableViewCell alloc] initWithFrame:CGRectMake(0, 0, rowSize.width, rowSize.height)] autorelease];
+    UITableViewCell* c = [[UITableViewCell alloc] initWithFrame:CGRectMake(0, 0, rowSize.width, rowSize.height)];
     [c setBackgroundColor:[UIColor clearColor]];
     [c setSelectionStyle:UITableViewCellSelectionStyleNone];
     
@@ -406,7 +404,7 @@ heightForHeaderInSection:(NSInteger)section
     {
         
         CGRect frame = CGRectMake(0, 0, rowSize.width/2, rowSize.height);
-        UIView* titleFrame = [[[UIView alloc] initWithFrame:frame] autorelease];
+        UIView* titleFrame = [[UIView alloc] initWithFrame:frame];
         [titleFrame setBackgroundColor:[UIColor colorWithHexString:@"#18394c"]];
         [titleFrame.layer setBorderWidth:1];
         [titleFrame.layer setBorderColor:MAIN_BORDER_COLOR.CGColor];
@@ -424,7 +422,7 @@ heightForHeaderInSection:(NSInteger)section
     // message
     {
         CGRect frame = CGRectMake(rowSize.width/2, 0, rowSize.width/2, rowSize.height);
-        UIView* titleFrame = [[[UIView alloc] initWithFrame:frame] autorelease];
+        UIView* titleFrame = [[UIView alloc] initWithFrame:frame];
         [titleFrame setBackgroundColor:[UIColor clearColor]];
         [titleFrame.layer setBorderWidth:1];
         [titleFrame.layer setBorderColor:MAIN_BORDER_COLOR.CGColor];
@@ -444,12 +442,13 @@ heightForHeaderInSection:(NSInteger)section
 
 
 /*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-}
-*/
+ // Only override drawRect: if you perform custom drawing.
+ // An empty implementation adversely affects performance during animation.
+ - (void)drawRect:(CGRect)rect
+ {
+ // Drawing code
+ }
+ */
 
 @end
+

@@ -32,7 +32,7 @@
             // highlight タッチされたときのハイライト用
             CGRect f = self.frame;
             f.origin.x = 0; f.origin.y = 0;
-            highlightView = [[[UIView alloc] initWithFrame:f] autorelease];
+            highlightView = [[UIView alloc] initWithFrame:f];
             [highlightView setBackgroundColor:[UIColor whiteColor]];
             [highlightView setAlpha:0];
             [highlightView setUserInteractionEnabled:NO];
@@ -42,18 +42,13 @@
     return self;
 }
 
-- (void)dealloc
-{
-    if (onTap)[onTap release];
-    [super dealloc];
-}
 
 - (void)setOnTapAction:(void(^)(ImageButtonView* target)) _onTap
 {
     onTap = [_onTap copy];
     // touch
     {
-        UITapGestureRecognizer *tr = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap:)] autorelease];
+        UITapGestureRecognizer *tr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap:)];
         [self addGestureRecognizer:tr];
     }
 }
@@ -127,20 +122,21 @@
     }];
     
     /*
-    // callback
-    dispatch_async(dispatch_get_main_queue(), ^{
-        onTap(self);
-    });*/
+     // callback
+     dispatch_async(dispatch_get_main_queue(), ^{
+     onTap(self);
+     });*/
 }
 
 
 /*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-}
-*/
+ // Only override drawRect: if you perform custom drawing.
+ // An empty implementation adversely affects performance during animation.
+ - (void)drawRect:(CGRect)rect
+ {
+ // Drawing code
+ }
+ */
 
 @end
+

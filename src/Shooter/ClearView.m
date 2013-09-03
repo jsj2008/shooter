@@ -17,7 +17,7 @@
     // action
     void (^onEndAction)();
 }
-@property(assign)CAEmitterLayer* emitterLayer;
+@property(weak)CAEmitterLayer* emitterLayer;
 @end
 
 @implementation ClearView
@@ -41,7 +41,7 @@
         //UIImage *img = [UIImage imageNamed:@"space2.png"];
         NSString *path = [[NSBundle mainBundle] pathForResource:@"space2" ofType:@"png"];
         UIImage* img = [[UIImage alloc] initWithContentsOfFile:path];
-        UIImageView* backView = [[[UIImageView alloc] initWithFrame:CGRectMake(x,y,width,height)] autorelease];
+        UIImageView* backView = [[UIImageView alloc] initWithFrame:CGRectMake(x,y,width,height)];
         [backView setImage:img];
         [backView setCenter:CGPointMake(frame.size.width/2, frame.size.height/2)];
         [backView setUserInteractionEnabled:true];
@@ -51,7 +51,7 @@
         CGRect particleViewRect = frame;
         particleViewRect.origin.x = 0;
         particleViewRect.origin.y = 0;
-        UIView* particleView = [[[UIView alloc] initWithFrame:particleViewRect] autorelease];
+        UIView* particleView = [[UIView alloc] initWithFrame:particleViewRect];
         [particleView setBackgroundColor:[UIColor clearColor]];
         [particleView setUserInteractionEnabled:false];
         [self addSubview:particleView];
@@ -83,7 +83,7 @@
             // パーティクル画像
             //UIImage *particleImage = [UIImage imageNamed:@"star_cross.png"];
             NSString *path = [[NSBundle mainBundle] pathForResource:@"star_cross" ofType:@"png"];
-            UIImage* particleImage = [[[UIImage alloc] initWithContentsOfFile:path] autorelease];
+            UIImage* particleImage = [[UIImage alloc] initWithContentsOfFile:path];
             
             // 花火自体の発生源
             CAEmitterCell *baseCell = [CAEmitterCell emitterCell];
@@ -153,9 +153,9 @@
             float y = frame.size.height/2 - height/2 - frame.size.height/4;
             //UIImage *img = [UIImage imageNamed:@"congraturation.png"];
             NSString *path = [[NSBundle mainBundle] pathForResource:@"congraturation" ofType:@"png"];
-            UIImage* img = [[[UIImage alloc] initWithContentsOfFile:path] autorelease];
+            UIImage* img = [[UIImage alloc] initWithContentsOfFile:path];
             
-            UIImageView* iv = [[[UIImageView alloc] initWithFrame:CGRectMake(x,y,width,height)] autorelease];
+            UIImageView* iv = [[UIImageView alloc] initWithFrame:CGRectMake(x,y,width,height)];
             [iv setImage:img];
             [iv setTransform:CGAffineTransformMakeScale(0, 0)];
             [iv setUserInteractionEnabled:false];
@@ -179,10 +179,10 @@
             float x = frame.size.width/2 - width/2;
             float y = frame.size.height/2 - height/2;
             //UIImage *img = [UIImage imageNamed:@"yougot.png"];
-            UIImageView* iv = [[[UIImageView alloc] initWithFrame:CGRectMake(x,y,width,height)] autorelease];
+            UIImageView* iv = [[UIImageView alloc] initWithFrame:CGRectMake(x,y,width,height)];
             
             NSString *path = [[NSBundle mainBundle] pathForResource:@"yougot" ofType:@"png"];
-            UIImage* img = [[[UIImage alloc] initWithContentsOfFile:path] autorelease];
+            UIImage* img = [[UIImage alloc] initWithContentsOfFile:path];
             
             [iv setImage:img];
             [iv setTransform:CGAffineTransformMakeScale(0, 0)];
@@ -208,9 +208,9 @@
             float y = frame.size.height/2 - height/2 + frame.size.height/4;
             //UIImage *img = [UIImage imageNamed:@"greatvictory.png"];
             NSString *path = [[NSBundle mainBundle] pathForResource:@"greatvictory" ofType:@"png"];
-            UIImage* img = [[[UIImage alloc] initWithContentsOfFile:path] autorelease];
+            UIImage* img = [[UIImage alloc] initWithContentsOfFile:path];
             
-            UIImageView* iv = [[[UIImageView alloc] initWithFrame:CGRectMake(x,y,width,height)] autorelease];
+            UIImageView* iv = [[UIImageView alloc] initWithFrame:CGRectMake(x,y,width,height)];
             [iv setImage:img];
             [iv setTransform:CGAffineTransformMakeScale(0, 0)];
             [iv setUserInteractionEnabled:false];
@@ -240,7 +240,7 @@
                 [msgList addObject:[NSString stringWithCString:msg.c_str() encoding:NSUTF8StringEncoding]];
             }
             
-            MessageView* msgView = [[[MessageView alloc] initWithMessageList:msgList] autorelease];
+            MessageView* msgView = [[MessageView alloc] initWithMessageList:msgList];
             [msgView show];
         }
         
@@ -249,7 +249,7 @@
             double delayInSeconds = 3.5;
             dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
             dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                UITapGestureRecognizer *tr = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap:)] autorelease];
+                UITapGestureRecognizer *tr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap:)];
                 [backView addGestureRecognizer:tr];
             });
         }
@@ -269,11 +269,6 @@
     }];
 }
 
-- (void)dealloc
-{
-    if (onEndAction) [onEndAction release];
-    [super dealloc];
-}
 
 - (void) setOnEndAction:(void(^)(void))action
 {
@@ -282,12 +277,13 @@
 
 
 /*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-}
-*/
+ // Only override drawRect: if you perform custom drawing.
+ // An empty implementation adversely affects performance during animation.
+ - (void)drawRect:(CGRect)rect
+ {
+ // Drawing code
+ }
+ */
 
 @end
+

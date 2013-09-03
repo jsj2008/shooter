@@ -20,10 +20,10 @@
 - (void)setGlowColor:(UIColor *)newGlowColor
 {
     if (newGlowColor != glowColor) {
-        [glowColor release];
+        //[glowColor release];
         CGColorRelease(glowColorRef);
 
-        glowColor = [newGlowColor retain];
+        glowColor = newGlowColor;
         glowColorRef = CGColorCreate(colorSpaceRef, CGColorGetComponents(glowColor.CGColor));
     }
 }
@@ -63,8 +63,7 @@
 - (void)dealloc {
     CGColorRelease(glowColorRef);
     CGColorSpaceRelease(colorSpaceRef);
-    [glowColor release];
-    [super dealloc];
+    //[glowColor release];
 }
 
 @end

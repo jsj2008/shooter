@@ -77,13 +77,6 @@ static MainViewController* instance = nil;
 
 @implementation MainViewController
 
-- (void)dealloc
-{
-    if (menuBaseView) {
-        [menuBaseView release];
-    }
-    [super dealloc];
-}
 
 - (id) init
 {
@@ -103,7 +96,7 @@ static MainViewController* instance = nil;
         viewFrame = CGRectMake(0, 0, frame.size.height, frame.size.width);
         mainFrame = CGRectMake(0, StatusViewHeight, frame.size.height, frame.size.width - StatusViewHeight);
         
-        bottomView = [[[UIView alloc] initWithFrame:viewFrame] autorelease];
+        bottomView = [[UIView alloc] initWithFrame:viewFrame];
         [bottomView setBackgroundColor:[UIColor clearColor]];
         [self.view addSubview:bottomView];
         
@@ -135,10 +128,10 @@ static MainViewController* instance = nil;
     GADBannerView *bannerView_;
     // 画面下部に標準サイズのビューを作成する
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone){
-        bannerView_ = [[[GADBannerView alloc] initWithAdSize:kGADAdSizeBanner] autorelease];
+        bannerView_ = [[GADBannerView alloc] initWithAdSize:kGADAdSizeBanner];
     }
     else{
-        bannerView_ = [[[GADBannerView alloc] initWithAdSize:kGADAdSizeSmartBannerLandscape] autorelease];
+        bannerView_ = [[GADBannerView alloc] initWithAdSize:kGADAdSizeSmartBannerLandscape];
     }
     
     // 広告の「ユニット ID」を指定する。これは AdMob パブリッシャー ID です。
@@ -212,7 +205,7 @@ static MainViewController* instance = nil;
 {
 #if IS_BACKGROUND
     // 背景
-    backgroundView = [[[BackgroundView alloc] init] autorelease];
+    backgroundView = [[BackgroundView alloc] init];
     [bottomView addSubview:backgroundView];
 #endif
 }
@@ -220,7 +213,7 @@ static MainViewController* instance = nil;
 - (void)showTitle
 {
     // タイトルメニュー
-    title = [[[TitleView alloc] init] autorelease];
+    title = [[TitleView alloc] init];
     assert(title != nil);
     [self.view addSubview:title];
     
@@ -243,7 +236,6 @@ static MainViewController* instance = nil;
 {
     if (menuBaseView) {
         [menuBaseView removeFromSuperview];
-        [menuBaseView release];
         menuBaseView = nil;
     }
     [mainBaseView removeFromSuperview];
@@ -264,9 +256,9 @@ static MainViewController* instance = nil;
         }
                          completion:^(BOOL finished) {
                              /*
-                             [removeView removeFromSuperview];
-                             //[self earthQuake];
-                             [removeView release];*/
+                              [removeView removeFromSuperview];
+                              //[self earthQuake];
+                              [removeView release];*/
                          }];
     });
 }
@@ -274,21 +266,21 @@ static MainViewController* instance = nil;
 - (void)saveData
 {
 #if IS_DEBUG
-        NSLog(@"save data1");
-        [SystemMonitor dump];
+    NSLog(@"save data1");
+    [SystemMonitor dump];
 #endif
     
     // データ保存
     bool ret = hg::UserData::sharedUserData()->saveData();
     if (!ret) {
-        DialogView* dialog = [[[DialogView alloc] initWithMessage:NSLocalizedString(@"Sorry, an unexpected error happend!", nil)] autorelease];
+        DialogView* dialog = [[DialogView alloc] initWithMessage:NSLocalizedString(@"Sorry, an unexpected error happend!", nil)];
         [dialog addButtonWithText:@"OK" withAction:^{
         }];
         [dialog show];
     }
 #if IS_DEBUG
-        NSLog(@"save data2");
-        [SystemMonitor dump];
+    NSLog(@"save data2");
+    [SystemMonitor dump];
 #endif
 }
 
@@ -311,278 +303,384 @@ static MainViewController* instance = nil;
             }
             else {
                 
-            menuBaseView = [[UIView alloc] initWithFrame:mainFrame];
-            [mainBaseView setBackgroundColor:[UIColor clearColor]];
-            [mainBaseView addSubview:menuBaseView];
-            
-            // Menu animation
-            CGRect tmpFrame = mainFrame;
-            tmpFrame.origin.x = mainFrame.size.width;
-            [menuBaseView setFrame:tmpFrame];
-            
-            // animation
-            [UIView animateWithDuration:0.2 animations:^{
-                [menuBaseView setFrame:mainFrame];
-            } completion:^(BOOL finished) {
-                //[self earthQuake];
-            }];
-            
-            {
-                // start battle
-                float buttonX = mainFrame.size.width - 10 - MenuButtonWidth;
-                float buttonY = StatusViewHeight + 5;
+                menuBaseView = [[UIView alloc] initWithFrame:mainFrame];
+                [mainBaseView setBackgroundColor:[UIColor clearColor]];
+                [mainBaseView addSubview:menuBaseView];
+                
+                // Menu animation
+                CGRect tmpFrame = mainFrame;
+                tmpFrame.origin.x = mainFrame.size.width;
+                [menuBaseView setFrame:tmpFrame];
+                
+                // animation
+                [UIView animateWithDuration:0.2 animations:^{
+                    [menuBaseView setFrame:mainFrame];
+                } completion:^(BOOL finished) {
+                    //[self earthQuake];
+                }];
                 
                 {
-                    CGRect frm = CGRectMake(buttonX, buttonY, MenuButtonWidth, MenuButtonHeight);
-                    MenuButton* m = [[[MenuButton alloc] initWithFrame:frm] autorelease];
-                    [m setText:NSLocalizedString(@"Battle", nil)];
-                    [m setColor:[UIColor colorWithHexString:@"#ff4444"]];
-                    [menuBaseView addSubview:m];
-                    [m setOnTapAction:^(MenuButton *target) {
-                        
-                        if (hg::UserData::sharedUserData()->getCurrentClearRatio() < 1.0) {
-                            [self stageStart];
-                        }
-                        else {
-                            NSString* msg = [NSString stringWithFormat:NSLocalizedString(@"You've already cleared this stage. Please Select new Stage.", nil)];
-                            DialogView* dialog = [[[DialogView alloc] initWithMessage:msg] autorelease];
-                            [dialog addButtonWithText:@"OK" withAction:^{
-                                // nothing
-                            }];
-                            [dialog show];
-                        }
-                    }];
-                }
-                
-                // repair all
-                buttonY += (MenuButtonHeight + MenuButtonGap);
-                {
-                    CGRect frm = CGRectMake(buttonX, buttonY, MenuButtonWidth, MenuButtonHeight);
-                    MenuButton* m = [[[MenuButton alloc] initWithFrame:frm] autorelease];
-                    [m setText:NSLocalizedString(@"Repair All Units", nil)];
-                    [menuBaseView addSubview:m];
-                    [m setColor:[UIColor greenColor]];
-                    [m setOnTapAction:^(MenuButton *target) {
-                        // buy
-                        int cost = hg::UserData::sharedUserData()->getRepairAllCost();
-                        if (cost == 0) {
-                            NSString* msg = [NSString stringWithFormat:NSLocalizedString(@"You don't need to do this.", nil)];
-                            DialogView* dialog = [[[DialogView alloc] initWithMessage:msg] autorelease];
-                            [dialog addButtonWithText:@"OK" withAction:^{
-                                // nothing
-                            }];
-                            [dialog show];
-                        } else if (hg::UserData::sharedUserData()->getMoney() >= cost) {
-                            NSString* msg = [NSString stringWithFormat:NSLocalizedString(@"It Costs %d gold. Are you sure to repair all?", nil), cost];
-                            DialogView* dialog = [[[DialogView alloc] initWithMessage:msg] autorelease];
-                            [dialog addButtonWithText:@"OK" withAction:^{
-                                hg::UserData::sharedUserData()->repairAll();
+                    // start battle
+                    float buttonX = mainFrame.size.width - 10 - MenuButtonWidth;
+                    float buttonY = StatusViewHeight + 5;
+                    
+                    {
+                        CGRect frm = CGRectMake(buttonX, buttonY, MenuButtonWidth, MenuButtonHeight);
+                        MenuButton* m = [[MenuButton alloc] initWithFrame:frm];
+                        [m setText:NSLocalizedString(@"Battle", nil)];
+                        [m setColor:[UIColor colorWithHexString:@"#ff4444"]];
+                        [menuBaseView addSubview:m];
+                        [m setOnTapAction:^(MenuButton *target) {
+                            
+                            if (hg::UserData::sharedUserData()->getCurrentClearRatio() < 1.0) {
+                                [self stageStart];
+                            }
+                            else {
+                                NSString* msg = [NSString stringWithFormat:NSLocalizedString(@"You've already cleared this stage. Please Select new Stage.", nil)];
+                                DialogView* dialog = [[DialogView alloc] initWithMessage:msg];
+                                [dialog addButtonWithText:@"OK" withAction:^{
+                                    // nothing
+                                }];
+                                [dialog show];
+                            }
+                        }];
+                    }
+                    
+                    // repair all
+                    buttonY += (MenuButtonHeight + MenuButtonGap);
+                    {
+                        CGRect frm = CGRectMake(buttonX, buttonY, MenuButtonWidth, MenuButtonHeight);
+                        MenuButton* m = [[MenuButton alloc] initWithFrame:frm];
+                        [m setText:NSLocalizedString(@"Repair All Units", nil)];
+                        [menuBaseView addSubview:m];
+                        [m setColor:[UIColor greenColor]];
+                        [m setOnTapAction:^(MenuButton *target) {
+                            // buy
+                            int cost = hg::UserData::sharedUserData()->getRepairAllCost();
+                            if (cost == 0) {
+                                NSString* msg = [NSString stringWithFormat:NSLocalizedString(@"You don't need to do this.", nil)];
+                                DialogView* dialog = [[DialogView alloc] initWithMessage:msg];
+                                [dialog addButtonWithText:@"OK" withAction:^{
+                                    // nothing
+                                }];
+                                [dialog show];
+                            } else if (hg::UserData::sharedUserData()->getMoney() >= cost) {
+                                NSString* msg = [NSString stringWithFormat:NSLocalizedString(@"It Costs %d gold. Are you sure to repair all?", nil), cost];
+                                DialogView* dialog = [[DialogView alloc] initWithMessage:msg];
+                                [dialog addButtonWithText:@"OK" withAction:^{
+                                    hg::UserData::sharedUserData()->repairAll();
 #if IS_STATUS
-                                dispatch_async(dispatch_get_main_queue(), ^{
-                                    [[StatusView GetInstance] loadUserInfo];
-                                });
+                                    dispatch_async(dispatch_get_main_queue(), ^{
+                                        [[StatusView GetInstance] loadUserInfo];
+                                    });
 #endif
-                            }];
-                            [dialog addButtonWithText:@"Cancel" withAction:^{
-                                // nothing
-                            }];
-                            [dialog show];
-                        }
-                        else {
-                            NSString* msg = [NSString stringWithFormat:NSLocalizedString(@"It Costs %d gold. You need more gold", nil), cost];
-                            DialogView* dialog = [[[DialogView alloc] initWithMessage:msg] autorelease];
-                            [dialog addButtonWithText:@"OK" withAction:^{
-                                // nothing
-                            }];
-                            [dialog show];
-                        }
-                        
-                    }];
-                }
-                
-                // fix ally
-                buttonY += (MenuButtonHeight + MenuButtonGap);
-                {
-                    CGRect frm = CGRectMake(buttonX, buttonY, MenuButtonWidth, MenuButtonHeight);
-                    MenuButton* m = [[[MenuButton alloc] initWithFrame:frm] autorelease];
-                    [m setColor:[UIColor greenColor]];
-                    [m setText:NSLocalizedString(@"Repair", nil)];
-                    [menuBaseView addSubview:m];
-                    [m setOnTapAction:^(MenuButton *target) {
+                                }];
+                                [dialog addButtonWithText:@"Cancel" withAction:^{
+                                    // nothing
+                                }];
+                                [dialog show];
+                            }
+                            else {
+                                NSString* msg = [NSString stringWithFormat:NSLocalizedString(@"It Costs %d gold. You need more gold", nil), cost];
+                                DialogView* dialog = [[DialogView alloc] initWithMessage:msg];
+                                [dialog addButtonWithText:@"OK" withAction:^{
+                                    // nothing
+                                }];
+                                [dialog show];
+                            }
+                            
+                        }];
+                    }
+                    
+                    // fix ally
+                    buttonY += (MenuButtonHeight + MenuButtonGap);
+                    {
+                        CGRect frm = CGRectMake(buttonX, buttonY, MenuButtonWidth, MenuButtonHeight);
+                        MenuButton* m = [[MenuButton alloc] initWithFrame:frm];
+                        [m setColor:[UIColor greenColor]];
+                        [m setText:NSLocalizedString(@"Repair", nil)];
+                        [menuBaseView addSubview:m];
+                        [m setOnTapAction:^(MenuButton *target) {
 #if IS_DEBUG
-        NSLog(@"show fix");
-        [SystemMonitor dump];
+                            NSLog(@"show fix");
+                            [SystemMonitor dump];
 #endif
-                        [self hideMenuViewAnimate];
-                        AllyTableView* vc = [[[AllyTableView alloc] initWithViewMode:AllyViewModeFix WithFrame:mainFrame] autorelease];
-                        [self.view addSubview:vc];
+                            [self hideMenuViewAnimate];
+                            AllyTableView* vc = [[AllyTableView alloc] initWithViewMode:AllyViewModeFix WithFrame:mainFrame];
+                            [self.view addSubview:vc];
 #if IS_STATUS
-                        [[StatusView GetInstance] hideProgress];
-#endif
-                        // animate
-                        {
-                            [vc setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
-                            [vc setUserInteractionEnabled:FALSE];
-                            [UIView animateWithDuration:MenuAnimationDuration animations:^{
-                                [vc setAlpha:1];
-                                [vc setTransform:CGAffineTransformMakeScale(1,1)];
-                            }completion:^(BOOL finished) {
-                                [vc setUserInteractionEnabled:TRUE];
-                            }];
-                        }
-#if IS_DEBUG
-        NSLog(@"show fix2");
-        [SystemMonitor dump];
-#endif
-                        [vc setOnEndAction:^{
-#if IS_DEBUG
-        NSLog(@"end fix");
-        [SystemMonitor dump];
-#endif
-                            [self showMenu];
-                            [self saveData];
-#if IS_STATUS
-                            [[StatusView GetInstance] showProgress];
+                            [[StatusView GetInstance] hideProgress];
 #endif
                             // animate
                             {
+                                [vc setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
                                 [vc setUserInteractionEnabled:FALSE];
                                 [UIView animateWithDuration:MenuAnimationDuration animations:^{
-                                    [vc setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
-                                } completion:^(BOOL finished) {
-                                    [vc removeFromSuperview];
+                                    [vc setAlpha:1];
+                                    [vc setTransform:CGAffineTransformMakeScale(1,1)];
+                                }completion:^(BOOL finished) {
+                                    [vc setUserInteractionEnabled:TRUE];
                                 }];
                             }
 #if IS_DEBUG
-        NSLog(@"end fix2");
-        [SystemMonitor dump];
+                            NSLog(@"show fix2");
+                            [SystemMonitor dump];
 #endif
-                        }];
-                    }];
-                }
-                
-                // battle with someone
-                buttonY += (MenuButtonHeight + MenuButtonGap);
-                // buy ally
-                {
-                    CGRect frm = CGRectMake(buttonX, buttonY, MenuButtonWidth, MenuButtonHeight);
-                    MenuButton* m = [[[MenuButton alloc] initWithFrame:frm] autorelease];
-                    [m setColor: [UIColor yellowColor]];
-                    [m setText:NSLocalizedString(@"Buy Units", nil)];
-                    [menuBaseView addSubview:m];
-                    [m setOnTapAction:^(MenuButton *target) {
-                        [self hideMenuViewAnimate];
-                        AllyTableView* vc = [[[AllyTableView alloc] initWithViewMode:AllyViewModeShop WithFrame:mainFrame] autorelease];
-                        [self.view addSubview:vc];
+                            [vc setOnEndAction:^{
+#if IS_DEBUG
+                                NSLog(@"end fix");
+                                [SystemMonitor dump];
+#endif
+                                [self showMenu];
+                                [self saveData];
 #if IS_STATUS
-                        [[StatusView GetInstance] hideProgress];
+                                [[StatusView GetInstance] showProgress];
 #endif
-                        // animate
-                        {
-                            [vc setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
-                            [vc setUserInteractionEnabled:FALSE];
-                            [UIView animateWithDuration:MenuAnimationDuration animations:^{
-                                [vc setAlpha:1];
-                                [vc setTransform:CGAffineTransformMakeScale(1,1)];
-                            }completion:^(BOOL finished) {
-                                [vc setUserInteractionEnabled:TRUE];
-                            }];
-                        }
-                        [vc setOnEndAction:^{
-                            [self showMenu];
-                            [self saveData];
-#if IS_STATUS
-                            [[StatusView GetInstance] showProgress];
-#endif
-                            // animate
-                            {
-                                [vc setUserInteractionEnabled:FALSE];
-                                [UIView animateWithDuration:MenuAnimationDuration animations:^{
-                                    [vc setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
-                                } completion:^(BOOL finished) {
-                                    [vc removeFromSuperview];
-                                }];
-                            }
-                        }];
-                    }];
-                }
-            
-            } // end of menu 1
-            
-            {
-                //float buttonX2 = mainFrame.size.width - 10 - MenuButtonWidth - 20 - MenuButtonWidth;
-                float buttonX2 = 10;
-                float buttonY2 = StatusViewHeight + 5;
-                
-                // select stage
-                {
-                    CGRect frm = CGRectMake(buttonX2, buttonY2, MenuButtonWidth, MenuButtonHeight);
-                    MenuButton* m = [[[MenuButton alloc] initWithFrame:frm] autorelease];
-                    [m setText:NSLocalizedString(@"Return to Base", nil)];
-                    [menuBaseView addSubview:m];
-                    [m setOnTapAction:^(MenuButton *target) {
-                        NSString* msg = @"";
-                        if (hg::UserData::sharedUserData()->getCurrentClearRatio() < 1.0) {
-                            msg = NSLocalizedString(@"You will get All fighters repaired and lose half of the Money. Are you sure to do this?", nil);
-                            DialogView* dialog = [[[DialogView alloc] initWithMessage:msg] autorelease];
-                            [dialog addButtonWithText:@"OK" withAction:^{
-                                hg::UserData* u = hg::UserData::sharedUserData();
-                                u->returnToBase();
-                                u->saveData();
-#if IS_STATUS
-                                [[StatusView GetInstance] loadUserInfo];
-#endif
-                                if (playerDetailView) {
-                                    [playerDetailView loadGrade];
+                                __weak AllyTableView* avc = vc;
+                                // animate
+                                {
+                                    [avc setUserInteractionEnabled:FALSE];
+                                    [UIView animateWithDuration:MenuAnimationDuration animations:^{
+                                        [avc setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
+                                    } completion:^(BOOL finished) {
+                                        [avc removeFromSuperview];
+                                    }];
                                 }
-                                DialogView* dialog2 = [[[DialogView alloc] initWithMessage:NSLocalizedString(@"Welcome back to the Base! All fighters are repaired now!", nil)] autorelease];
+#if IS_DEBUG
+                                NSLog(@"end fix2");
+                                [SystemMonitor dump];
+#endif
+                            }];
+                        }];
+                    }
+                    
+                    // battle with someone
+                    buttonY += (MenuButtonHeight + MenuButtonGap);
+                    // buy ally
+                    {
+                        CGRect frm = CGRectMake(buttonX, buttonY, MenuButtonWidth, MenuButtonHeight);
+                        MenuButton* m = [[MenuButton alloc] initWithFrame:frm];
+                        [m setColor: [UIColor yellowColor]];
+                        [m setText:NSLocalizedString(@"Buy Units", nil)];
+                        [menuBaseView addSubview:m];
+                        [m setOnTapAction:^(MenuButton *target) {
+                            [self hideMenuViewAnimate];
+                            AllyTableView* vc = [[AllyTableView alloc] initWithViewMode:AllyViewModeShop WithFrame:mainFrame];
+                            [self.view addSubview:vc];
+#if IS_STATUS
+                            [[StatusView GetInstance] hideProgress];
+#endif
+                            // animate
+                            {
+                                [vc setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
+                                [vc setUserInteractionEnabled:FALSE];
+                                [UIView animateWithDuration:MenuAnimationDuration animations:^{
+                                    [vc setAlpha:1];
+                                    [vc setTransform:CGAffineTransformMakeScale(1,1)];
+                                }completion:^(BOOL finished) {
+                                    [vc setUserInteractionEnabled:TRUE];
+                                }];
+                            }
+                            [vc setOnEndAction:^{
+                                [self showMenu];
+                                [self saveData];
+#if IS_STATUS
+                                [[StatusView GetInstance] showProgress];
+#endif
+                                __weak AllyTableView* avc = vc;
+                                // animate
+                                {
+                                    [avc setUserInteractionEnabled:FALSE];
+                                    [UIView animateWithDuration:MenuAnimationDuration animations:^{
+                                        [avc setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
+                                    } completion:^(BOOL finished) {
+                                        [avc removeFromSuperview];
+                                    }];
+                                }
+                            }];
+                        }];
+                    }
+                    
+                } // end of menu 1
+                
+                {
+                    //float buttonX2 = mainFrame.size.width - 10 - MenuButtonWidth - 20 - MenuButtonWidth;
+                    float buttonX2 = 10;
+                    float buttonY2 = StatusViewHeight + 5;
+                    
+                    // select stage
+                    {
+                        CGRect frm = CGRectMake(buttonX2, buttonY2, MenuButtonWidth, MenuButtonHeight);
+                        MenuButton* m = [[MenuButton alloc] initWithFrame:frm];
+                        [m setText:NSLocalizedString(@"Return to Base", nil)];
+                        [menuBaseView addSubview:m];
+                        [m setOnTapAction:^(MenuButton *target) {
+                            NSString* msg = @"";
+                            if (hg::UserData::sharedUserData()->getCurrentClearRatio() < 1.0) {
+                                msg = NSLocalizedString(@"You will get All fighters repaired and lose half of the Money. Are you sure to do this?", nil);
+                                DialogView* dialog = [[DialogView alloc] initWithMessage:msg];
+                                [dialog addButtonWithText:@"OK" withAction:^{
+                                    hg::UserData* u = hg::UserData::sharedUserData();
+                                    u->returnToBase();
+                                    u->saveData();
+#if IS_STATUS
+                                    [[StatusView GetInstance] loadUserInfo];
+#endif
+                                    if (playerDetailView) {
+                                        [playerDetailView loadGrade];
+                                    }
+                                    DialogView* dialog2 = [[DialogView alloc] initWithMessage:NSLocalizedString(@"Welcome back to the Base! All fighters are repaired now!", nil)];
+                                    [dialog2 addButtonWithText:NSLocalizedString(@"OK", nil) withAction:^{
+                                        // do nothing
+                                    }];
+                                    [dialog2 show];
+                                }];
+                                [dialog addButtonWithText:NSLocalizedString(@"Cancel", nil) withAction:^{
+                                    // do nothing
+                                }];
+                                [dialog show];
+                            }
+                            // no penalty
+                            else {
+                                DialogView* dialog2 = [[DialogView alloc] initWithMessage:NSLocalizedString(@"Do you want to start over this stage again?", nil)];
                                 [dialog2 addButtonWithText:NSLocalizedString(@"OK", nil) withAction:^{
+                                    hg::UserData* u = hg::UserData::sharedUserData();
+                                    u->returnToBase();
+                                    u->saveData();
+#if IS_STATUS
+                                    [[StatusView GetInstance] loadUserInfo];
+#endif
+                                    if (playerDetailView) {
+                                        [playerDetailView loadGrade];
+                                    }
+                                }];
+                                [dialog2 addButtonWithText:NSLocalizedString(@"Cancel", nil) withAction:^{
                                     // do nothing
                                 }];
                                 [dialog2 show];
-                            }];
-                            [dialog addButtonWithText:NSLocalizedString(@"Cancel", nil) withAction:^{
-                                // do nothing
-                            }];
-                            [dialog show];
-                        }
-                        // no penalty
-                        else {
-                            DialogView* dialog2 = [[[DialogView alloc] initWithMessage:NSLocalizedString(@"Do you want to start over this stage again?", nil)] autorelease];
-                            [dialog2 addButtonWithText:NSLocalizedString(@"OK", nil) withAction:^{
-                                hg::UserData* u = hg::UserData::sharedUserData();
-                                u->returnToBase();
-                                u->saveData();
+                            }
+                        }];
+                    }
+                    
+                    // select area
+                    buttonY2 += (MenuButtonHeight + MenuButtonGap);
+                    {
+                        CGRect frm = CGRectMake(buttonX2, buttonY2, MenuButtonWidth, MenuButtonHeight);
+                        MenuButton* m = [[MenuButton alloc] initWithFrame:frm];
+                        [m setText:NSLocalizedString(@"Select Stage", nil)];
+                        [menuBaseView addSubview:m];
+                        [m setOnTapAction:^(MenuButton *target) {
+                            
+                            hg::UserData* u = hg::UserData::sharedUserData();
+                            if (u->getCurrentClearRatio() == 0 || u->getCurrentClearRatio() >= 1.0) {
+                                
+                                // show select area table view
+                                [self hideMenuViewAnimate];
+                                StageTableView* vc = [[StageTableView alloc] initWithFrame:mainFrame];
+                                [self.view addSubview:vc];
 #if IS_STATUS
-                                [[StatusView GetInstance] loadUserInfo];
+                                [[StatusView GetInstance] hideProgress];
 #endif
-                                if (playerDetailView) {
-                                    [playerDetailView loadGrade];
+                                // animate
+                                {
+                                    [vc setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
+                                    [vc setUserInteractionEnabled:FALSE];
+                                    [UIView animateWithDuration:MenuAnimationDuration animations:^{
+                                        [vc setAlpha:1];
+                                        [vc setTransform:CGAffineTransformMakeScale(1,1)];
+                                    }completion:^(BOOL finished) {
+                                        [vc setUserInteractionEnabled:TRUE];
+                                    }];
+                                }
+                                [vc setOnEndAction:^{
+#if IS_STATUS
+                                    [[StatusView GetInstance] showProgress];
+#endif
+                                    [self showMenu];
+                                    [self saveData];
+                                    // animate
+                                    {
+                                        __weak StageTableView* avc = vc;
+                                        [avc setUserInteractionEnabled:FALSE];
+                                        [UIView animateWithDuration:MenuAnimationDuration animations:^{
+                                            [avc setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
+                                        } completion:^(BOOL finished) {
+                                            [avc removeFromSuperview];
+                                        }];
+                                    }
+                                }];
+                                
+                            }
+                            else {
+                                // 途中
+                                DialogView* dialog = [[DialogView alloc] initWithMessage:NSLocalizedString(@"You can change the Stage when the Occupy Ratio is 0% or 100%", nil)];
+                                [dialog addButtonWithText:@"OK" withAction:^{
+                                    // do nothing
+                                }];
+                                [dialog show];
+                                
+                            }
+                            
+                        }];
+                    }
+                    
+                    buttonY2 += (MenuButtonHeight + MenuButtonGap);
+                    {
+                        CGRect frm = CGRectMake(buttonX2, buttonY2, MenuButtonWidth, MenuButtonHeight);
+                        MenuButton* m = [[MenuButton alloc] initWithFrame:frm];
+                        [m setText:NSLocalizedString(@"Select Units", nil)];
+                        [menuBaseView addSubview:m];
+                        [m setColor:[UIColor colorWithHexString:@"#ffcc00"]];
+                        [m setOnTapAction:^(MenuButton *target) {
+                            [self hideMenuViewAnimate];
+                            AllyTableView* vc = [[AllyTableView alloc] initWithViewMode:AllyViewModeSelectAlly WithFrame:mainFrame];
+                            [self.view addSubview:vc];
+#if IS_STATUS
+                            [[StatusView GetInstance] hideProgress];
+#endif
+                            // animate
+                            {
+                                [vc setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
+                                [vc setUserInteractionEnabled:FALSE];
+                                [UIView animateWithDuration:MenuAnimationDuration animations:^{
+                                    [vc setAlpha:1];
+                                    [vc setTransform:CGAffineTransformMakeScale(1,1)];
+                                }completion:^(BOOL finished) {
+                                    [vc setUserInteractionEnabled:TRUE];
+                                }];
+                            }
+                            [vc setOnEndAction:^{
+                                [self showMenu];
+                                [self saveData];
+#if IS_STATUS
+                                [[StatusView GetInstance] showProgress];
+#endif
+                                // animate
+                                {
+                                    __weak AllyTableView* avc = vc;
+                                    [avc setUserInteractionEnabled:FALSE];
+                                    [UIView animateWithDuration:MenuAnimationDuration animations:^{
+                                        [avc setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
+                                    } completion:^(BOOL finished) {
+                                        [avc removeFromSuperview];
+                                    }];
                                 }
                             }];
-                            [dialog2 addButtonWithText:NSLocalizedString(@"Cancel", nil) withAction:^{
-                                // do nothing
-                            }];
-                            [dialog2 show];
-                        }
-                    }];
-                }
-                
-                // select area
-                buttonY2 += (MenuButtonHeight + MenuButtonGap);
-                {
-                    CGRect frm = CGRectMake(buttonX2, buttonY2, MenuButtonWidth, MenuButtonHeight);
-                    MenuButton* m = [[[MenuButton alloc] initWithFrame:frm] autorelease];
-                    [m setText:NSLocalizedString(@"Select Stage", nil)];
-                    [menuBaseView addSubview:m];
-                    [m setOnTapAction:^(MenuButton *target) {
-                        
-                        hg::UserData* u = hg::UserData::sharedUserData();
-                        if (u->getCurrentClearRatio() == 0 || u->getCurrentClearRatio() >= 1.0) {
-                            
-                            // show select area table view
+                        }];
+                    }
+                    
+                    
+                    // Select your ship.
+                    buttonY2 += (MenuButtonHeight + MenuButtonGap);
+                    {
+                        CGRect frm = CGRectMake(buttonX2, buttonY2, MenuButtonWidth, MenuButtonHeight);
+                        MenuButton* m = [[MenuButton alloc] initWithFrame:frm];
+                        [m setText:NSLocalizedString(@"Select My Unit", nil)];
+                        [m setColor:[UIColor colorWithHexString:@"#ffcc00"]];
+                        [menuBaseView addSubview:m];
+                        [m setOnTapAction:^(MenuButton *target) {
                             [self hideMenuViewAnimate];
-                            StageTableView* vc = [[[StageTableView alloc] initWithFrame:mainFrame] autorelease];
+                            AllyTableView* vc = [[AllyTableView alloc] initWithViewMode:AllyViewModeSelectPlayer WithFrame:mainFrame];
                             [self.view addSubview:vc];
 #if IS_STATUS
                             [[StatusView GetInstance] hideProgress];
@@ -606,164 +704,63 @@ static MainViewController* instance = nil;
                                 [self saveData];
                                 // animate
                                 {
-                                    [vc setUserInteractionEnabled:FALSE];
+                                    __weak AllyTableView* avc = vc;
+                                    [avc setUserInteractionEnabled:FALSE];
                                     [UIView animateWithDuration:MenuAnimationDuration animations:^{
-                                        [vc setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
+                                        [avc setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
                                     } completion:^(BOOL finished) {
-                                        [vc removeFromSuperview];
+                                        [avc removeFromSuperview];
                                     }];
                                 }
                             }];
-                            
-                        }
-                        else {
-                            // 途中
-                            DialogView* dialog = [[[DialogView alloc] initWithMessage:NSLocalizedString(@"You can change the Stage when the Occupy Ratio is 0% or 100%", nil)] autorelease];
-                            [dialog addButtonWithText:@"OK" withAction:^{
-                                // do nothing
-                            }];
-                            [dialog show];
-                            
-                        }
-                        
-                    }];
-                }
-                
-                buttonY2 += (MenuButtonHeight + MenuButtonGap);
-                {
-                    CGRect frm = CGRectMake(buttonX2, buttonY2, MenuButtonWidth, MenuButtonHeight);
-                    MenuButton* m = [[[MenuButton alloc] initWithFrame:frm] autorelease];
-                    [m setText:NSLocalizedString(@"Select Units", nil)];
-                    [menuBaseView addSubview:m];
-                    [m setColor:[UIColor colorWithHexString:@"#ffcc00"]];
-                    [m setOnTapAction:^(MenuButton *target) {
-                        [self hideMenuViewAnimate];
-                        AllyTableView* vc = [[[AllyTableView alloc] initWithViewMode:AllyViewModeSelectAlly WithFrame:mainFrame] autorelease];
-                        [self.view addSubview:vc];
-#if IS_STATUS
-                        [[StatusView GetInstance] hideProgress];
-#endif
-                        // animate
-                        {
-                            [vc setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
-                            [vc setUserInteractionEnabled:FALSE];
-                            [UIView animateWithDuration:MenuAnimationDuration animations:^{
-                                [vc setAlpha:1];
-                                [vc setTransform:CGAffineTransformMakeScale(1,1)];
-                            }completion:^(BOOL finished) {
-                                [vc setUserInteractionEnabled:TRUE];
-                            }];
-                        }
-                        [vc setOnEndAction:^{
-                            [self showMenu];
-                            [self saveData];
-#if IS_STATUS
-                            [[StatusView GetInstance] showProgress];
-#endif
-                            // animate
-                            {
-                                [vc setUserInteractionEnabled:FALSE];
-                                [UIView animateWithDuration:MenuAnimationDuration animations:^{
-                                    [vc setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
-                                } completion:^(BOOL finished) {
-                                    [vc removeFromSuperview];
-                                }];
-                            }
                         }];
-                    }];
-                }
+                    }
+                    
+                    // sell ally
+                    /*
+                     buttonY2 += (MenuButtonHeight + MenuButtonGap);
+                     {
+                     CGRect frm = CGRectMake(buttonX2, buttonY2, MenuButtonWidth, MenuButtonHeight);
+                     MenuButton* m = [[MenuButton alloc] initWithFrame:frm];
+                     [m setText:NSLocalizedString(@"Sell Units", nil)];
+                     [menuBaseView addSubview:m];
+                     [m setOnTapAction:^(MenuButton *target) {
+                     [self hideMenuViewAnimate];
+                     AllyTableView* vc = [[AllyTableView alloc] initWithViewMode:AllyViewModeSell WithFrame:mainFrame];
+                     [self.view addSubview:vc];
+                     [[StatusView GetInstance] hideProgress];
+                     // animate
+                     {
+                     [vc setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
+                     [vc setUserInteractionEnabled:FALSE];
+                     [UIView animateWithDuration:MenuAnimationDuration animations:^{
+                     [vc setAlpha:1];
+                     [vc setTransform:CGAffineTransformMakeScale(1,1)];
+                     }completion:^(BOOL finished) {
+                     [vc setUserInteractionEnabled:TRUE];
+                     }];
+                     }
+                     [vc setOnEndAction:^{
+                     [self showMenu];
+                     [self saveData];
+                     [[StatusView GetInstance] showProgress];
+                     // animate
+                     {
+                     [vc setUserInteractionEnabled:FALSE];
+                     [UIView animateWithDuration:MenuAnimationDuration animations:^{
+                     [vc setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
+                     } completion:^(BOOL finished) {
+                     [vc removeFromSuperview];
+                     }];
+                     }
+                     }];
+                     }];
+                     }*/
+                    
+                    
+                } // end of menu 2
                 
-                
-                // Select your ship.
-                buttonY2 += (MenuButtonHeight + MenuButtonGap);
-                {
-                    CGRect frm = CGRectMake(buttonX2, buttonY2, MenuButtonWidth, MenuButtonHeight);
-                    MenuButton* m = [[[MenuButton alloc] initWithFrame:frm] autorelease];
-                    [m setText:NSLocalizedString(@"Select My Unit", nil)];
-                    [m setColor:[UIColor colorWithHexString:@"#ffcc00"]];
-                    [menuBaseView addSubview:m];
-                    [m setOnTapAction:^(MenuButton *target) {
-                        [self hideMenuViewAnimate];
-                        AllyTableView* vc = [[[AllyTableView alloc] initWithViewMode:AllyViewModeSelectPlayer WithFrame:mainFrame] autorelease];
-                        [self.view addSubview:vc];
-#if IS_STATUS
-                        [[StatusView GetInstance] hideProgress];
-#endif
-                        // animate
-                        {
-                            [vc setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
-                            [vc setUserInteractionEnabled:FALSE];
-                            [UIView animateWithDuration:MenuAnimationDuration animations:^{
-                                [vc setAlpha:1];
-                                [vc setTransform:CGAffineTransformMakeScale(1,1)];
-                            }completion:^(BOOL finished) {
-                                [vc setUserInteractionEnabled:TRUE];
-                            }];
-                        }
-                        [vc setOnEndAction:^{
-#if IS_STATUS
-                            [[StatusView GetInstance] showProgress];
-#endif
-                            [self showMenu];
-                            [self saveData];
-                            // animate
-                            {
-                                [vc setUserInteractionEnabled:FALSE];
-                                [UIView animateWithDuration:MenuAnimationDuration animations:^{
-                                    [vc setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
-                                } completion:^(BOOL finished) {
-                                    [vc removeFromSuperview];
-                                }];
-                            }
-                        }];
-                    }];
-                }
-                
-                // sell ally
-                /*
-                buttonY2 += (MenuButtonHeight + MenuButtonGap);
-                {
-                    CGRect frm = CGRectMake(buttonX2, buttonY2, MenuButtonWidth, MenuButtonHeight);
-                    MenuButton* m = [[[MenuButton alloc] initWithFrame:frm] autorelease];
-                    [m setText:NSLocalizedString(@"Sell Units", nil)];
-                    [menuBaseView addSubview:m];
-                    [m setOnTapAction:^(MenuButton *target) {
-                        [self hideMenuViewAnimate];
-                        AllyTableView* vc = [[[AllyTableView alloc] initWithViewMode:AllyViewModeSell WithFrame:mainFrame] autorelease];
-                        [self.view addSubview:vc];
-                        [[StatusView GetInstance] hideProgress];
-                        // animate
-                        {
-                            [vc setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
-                            [vc setUserInteractionEnabled:FALSE];
-                            [UIView animateWithDuration:MenuAnimationDuration animations:^{
-                                [vc setAlpha:1];
-                                [vc setTransform:CGAffineTransformMakeScale(1,1)];
-                            }completion:^(BOOL finished) {
-                                [vc setUserInteractionEnabled:TRUE];
-                            }];
-                        }
-                        [vc setOnEndAction:^{
-                            [self showMenu];
-                            [self saveData];
-                            [[StatusView GetInstance] showProgress];
-                            // animate
-                            {
-                                [vc setUserInteractionEnabled:FALSE];
-                                [UIView animateWithDuration:MenuAnimationDuration animations:^{
-                                    [vc setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
-                                } completion:^(BOOL finished) {
-                                    [vc removeFromSuperview];
-                                }];
-                            }
-                        }];
-                    }];
-                }*/
-                
-                
-            } // end of menu 2
-        
-            // admob
+                // admob
                 if (IS_MAIN_ADMOB)
                 {
                     GADBannerView* ad = [MainViewController CreateGADBannerView];
@@ -783,7 +780,7 @@ static MainViewController* instance = nil;
                     float buttonY = mainFrame.size.height - 10 - h;
                     {
                         CGRect frm = CGRectMake(buttonX, buttonY, w, h);
-                        MenuButton* m = [[[MenuButton alloc] initWithFrame:frm] autorelease];
+                        MenuButton* m = [[MenuButton alloc] initWithFrame:frm];
                         [m setText:NSLocalizedString(@"Other Great Games!", nil)];
                         [m setColor:[UIColor cyanColor]];
                         [menuBaseView addSubview:m];
@@ -802,10 +799,9 @@ static MainViewController* instance = nil;
                     UIView* v = [[UIView alloc] initWithFrame:CGRectMake(buttonX, buttonY, w, h)];
                     [menuBaseView addSubview:v];
                     
-                    MasIconadManagerViewController *m = [[[MasIconadManagerViewController alloc] init] autorelease];
+                    MasIconadManagerViewController *m = [[MasIconadManagerViewController alloc] init];
                     mas_ = m;
                     [v addSubview:mas_.view];
-                    [m release];
                     mas_.adOrigin = CGPointMake(0, 0);
                     mas_.textVisible = 0;
                     mas_.iconCount = 6;
@@ -819,7 +815,7 @@ static MainViewController* instance = nil;
         NSLog(@"showMenu2");
         [SystemMonitor dump];
 #endif
-            
+        
     });
     
 }
@@ -833,7 +829,7 @@ static MainViewController* instance = nil;
         [SystemMonitor dump];
 #endif
         [self showBackgroundView];
-        mainBaseView = [[[UIView alloc] initWithFrame:viewFrame] autorelease];
+        mainBaseView = [[UIView alloc] initWithFrame:viewFrame];
         [mainBaseView setBackgroundColor:[UIColor clearColor]];
         [self.view addSubview:mainBaseView];
         
@@ -847,7 +843,6 @@ static MainViewController* instance = nil;
         // player detail view
         {
             if (playerDetailView) {
-                [playerDetailView release];
                 playerDetailView = nil;
             }
             CGRect playderDetailViewFrame = CGRectMake(0, 0, viewFrame.size.width, viewFrame.size.height);
@@ -866,7 +861,7 @@ static MainViewController* instance = nil;
         }
         /*
          // dialog test
-         DialogView* v = [[[DialogView alloc] initWithMessage:@"test?"] autorelease];
+         DialogView* v = [[DialogView alloc] initWithMessage:@"test?"];
          [v addButtonWithText:@"test" withAction:^{
          NSLog(@"test button pushed");
          }];
@@ -892,7 +887,7 @@ static MainViewController* instance = nil;
             [msgList addObject:[NSString stringWithCString:msg.c_str() encoding:NSUTF8StringEncoding]];
         }
         
-        MessageView* msgView = [[[MessageView alloc] initWithMessageList:msgList] autorelease];
+        MessageView* msgView = [[MessageView alloc] initWithMessageList:msgList];
         [msgView show];
     }
 }
@@ -900,15 +895,15 @@ static MainViewController* instance = nil;
 -(void)stageStart
 {
 #if IS_DEBUG
-        NSLog(@"stagestart 1");
-        [SystemMonitor dump];
+    NSLog(@"stagestart 1");
+    [SystemMonitor dump];
 #endif
     // check
     hg::UserData* userData = hg::UserData::sharedUserData();
     hg::FighterInfo* playerFighterInfo = userData->getPlayerFighterInfo();
     if (playerFighterInfo == NULL)
     {
-        DialogView* dialog = [[[DialogView alloc] initWithMessage:NSLocalizedString(@"Please select your Unit.", nil)] autorelease];
+        DialogView* dialog = [[DialogView alloc] initWithMessage:NSLocalizedString(@"Please select your Unit.", nil)];
         [dialog addButtonWithText:@"OK" withAction:^{
             // do nothing
         }];
@@ -917,7 +912,7 @@ static MainViewController* instance = nil;
     }
     if (playerFighterInfo->life <= 0)
     {
-        DialogView* dialog = [[[DialogView alloc] initWithMessage:NSLocalizedString(@"Your unit is bloken. Please repair or change your Units.", nil)] autorelease];
+        DialogView* dialog = [[DialogView alloc] initWithMessage:NSLocalizedString(@"Your unit is bloken. Please repair or change your Units.", nil)];
         [dialog addButtonWithText:@"OK" withAction:^{
             // do nothing
         }];
@@ -943,18 +938,17 @@ static MainViewController* instance = nil;
         [self removeMainView];
         
         // ゲーム開始
-        gameView = [[[GameView alloc] initWithOnEndAction:^{
+        gameView = [[GameView alloc] initWithOnEndAction:^{
             // ゲーム終了後の結果画面
             [self saveData];
             dispatch_async(dispatch_get_main_queue(), ^{
 #if IS_DEBUG
-        NSLog(@"report 1");
-        [SystemMonitor dump];
+                NSLog(@"report 1");
+                [SystemMonitor dump];
 #endif
                 ReportView* rv = [[ReportView alloc] initWithFrame:mainFrame];
                 [[OALSimpleAudio sharedInstance] playBg:BGM_MENU loop:true];
                 [self.view addSubview:rv];
-                [rv autorelease];
                 [rv setOnEndAction:^{
                     // ゲーム終了結果画面の終了後
                     dispatch_async(dispatch_get_main_queue(), ^{
@@ -966,10 +960,11 @@ static MainViewController* instance = nil;
                             [self showMainView:false showMessage:false];
                             [curtain removeFromSuperview];
                             dispatch_async(dispatch_get_main_queue(), ^{
-                                ClearView* cv = [[[ClearView alloc] initWithFrame:viewFrame] autorelease];
+                                ClearView* cv = [[ClearView alloc] initWithFrame:viewFrame];
+                                __weak ClearView* acv = cv;
                                 [cv setOnEndAction:^{
-                                    [cv setUserInteractionEnabled:false];
-                                    [cv removeFromSuperview];
+                                    [acv setUserInteractionEnabled:false];
+                                    [acv removeFromSuperview];
                                     [self showMenu];
                                     [self showMessage];
                                 }];
@@ -988,13 +983,13 @@ static MainViewController* instance = nil;
                 [SystemMonitor dump];
 #endif
             }); // dispatch_async
-        }] autorelease]; // [[GameView alloc] initWithOnEndAction:
+        }];  // [[GameView alloc] initWithOnEndAction:
         [self.view addSubview:gameView];
     }];
     
 #if IS_DEBUG
-        NSLog(@"stagestart 2");
-        [SystemMonitor dump];
+    NSLog(@"stagestart 2");
+    [SystemMonitor dump];
 #endif
 }
 
@@ -1014,3 +1009,4 @@ static MainViewController* instance = nil;
 
 
 @end
+

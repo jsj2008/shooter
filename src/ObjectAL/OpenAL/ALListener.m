@@ -37,7 +37,7 @@
 /** \cond */
 @interface ALListener ()
 
-@property(nonatomic,readwrite,assign) ALContext* context;
+@property(nonatomic,readwrite,weak) ALContext* context;
 
 @end
 /** \endcond */

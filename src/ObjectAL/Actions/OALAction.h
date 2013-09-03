@@ -131,7 +131,7 @@
 #pragma mark Properties
 
 /** The target to perform the action on.  WEAK REFERENCE. */
-@property(nonatomic,readonly,assign) id target;
+@property(nonatomic,readonly,weak) id target;
 
 /** The duration of the action, in seconds. */
 @property(nonatomic,readonly,assign) float duration;

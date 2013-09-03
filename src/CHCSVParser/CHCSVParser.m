@@ -686,7 +686,7 @@ NSString *const CHCSVErrorDomain = @"com.davedelong.csv";
 @interface _CHCSVAggregator : NSObject <CHCSVParserDelegate>
 
 @property (readonly) NSArray *lines;
-@property (readonly) NSError *error;
+@property (weak, readonly) NSError *error;
 
 @end
 

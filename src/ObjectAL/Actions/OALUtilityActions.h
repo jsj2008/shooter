@@ -43,7 +43,7 @@
 }
 
 /** The target which this action will actually be invoked upon. */
-@property(nonatomic,readwrite,assign) id forcedTarget;
+@property(nonatomic,readwrite,weak) id forcedTarget;
 
 /** Create an action.
  *
@@ -91,7 +91,7 @@
 #pragma mark Properties
 
 /** The actions which will be run. */
-@property(nonatomic,readwrite,retain) NSMutableArray* actions;
+@property(nonatomic,readwrite,strong) NSMutableArray* actions;
 
 
 #pragma mark Object Management
@@ -133,7 +133,7 @@
 #pragma mark Properties
 
 /** The actions which will be run. */
-@property(nonatomic,readwrite,retain) NSMutableArray* actions;
+@property(nonatomic,readwrite,strong) NSMutableArray* actions;
 
 
 #pragma mark Object Management

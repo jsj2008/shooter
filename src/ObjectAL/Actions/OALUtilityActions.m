@@ -38,7 +38,7 @@
 /** \cond */
 @interface OALTargetedAction ()
 
-@property(nonatomic,readwrite,retain) OALAction* action;
+@property(nonatomic,readwrite,strong) OALAction* action;
 
 @end
 /** \endcond */
@@ -124,10 +124,10 @@
 @interface OALSequentialActions ()
 
 /** The durations of the actions. */
-@property(nonatomic,readwrite,retain) NSMutableArray* pDurations;
+@property(nonatomic,readwrite,strong) NSMutableArray* pDurations;
 
 /** The current action being processed. */
-@property(nonatomic,readwrite,assign) OALAction* currentAction;
+@property(nonatomic,readwrite,weak) OALAction* currentAction;
 
 @end
 /** \endcond */
@@ -333,10 +333,10 @@ COCOS2D_SUBCLASS(OALSequentialActions)
 @interface OALConcurrentActions ()
 
 /** The durations of the actions. */
-@property(nonatomic,readwrite,retain) NSMutableArray* pDurations;
+@property(nonatomic,readwrite,strong) NSMutableArray* pDurations;
 
 /** A list of actions that have duration > 0. */
-@property(nonatomic,readwrite,assign) NSMutableArray* actionsWithDuration;
+@property(nonatomic,readwrite,weak) NSMutableArray* actionsWithDuration;
 
 @end
 /** \endcond */

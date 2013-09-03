@@ -55,7 +55,7 @@
 #pragma mark Properties
 
 /** The context this listener belongs to (WEAK reference). */
-@property(nonatomic,readonly,assign) ALContext* context;
+@property(nonatomic,readonly,weak) ALContext* context;
 
 /** Causes this listener to stop hearing sound.
  * It's called "muted" rather than "deaf" to give a consistent name with other mute functions.

@@ -11,7 +11,7 @@
 /** \cond */
 @interface OALAction ()
 
-@property(nonatomic,readwrite,assign) id target;
+@property(nonatomic,readwrite,weak) id target;
 
 @property(nonatomic,readwrite,assign) float duration;
 

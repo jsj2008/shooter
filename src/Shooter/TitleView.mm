@@ -52,7 +52,7 @@ t_title_btn title_btn_info[] = {
     bool is3DInitialized;
     bool isLabelHidden;
 }
-@property (assign, atomic) IBOutlet UILabel *myLabel;
+@property (weak, atomic) IBOutlet UILabel *myLabel;
 
 @end
 
@@ -102,9 +102,9 @@ t_title_btn title_btn_info[] = {
     
     // logo
     //UIImage* img = [UIImage imageNamed:@"ShooterTitle.jpg"];
-    NSString *path = [[[NSBundle mainBundle] pathForResource:@"ShooterTitle" ofType:@"jpg"] autorelease];
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"ShooterTitle" ofType:@"jpg"];
     UIImage* img = [[UIImage alloc] initWithContentsOfFile:path];
-    UIImageView* imgView = [[[UIImageView alloc] initWithImage:img] autorelease];
+    UIImageView* imgView = [[UIImageView alloc] initWithImage:img];
     float w = self.frame.size.width;
     float h = w/884*944;
     [self addSubview:imgView];
@@ -126,7 +126,6 @@ t_title_btn title_btn_info[] = {
             [l setFont:font];
             [l setBackgroundColor:[UIColor clearColor]];
             [l setAlpha:0];
-            [l autorelease];
             self.myLabel = l;
             [self addSubview:l];
             [self changeLabelState];
@@ -135,7 +134,7 @@ t_title_btn title_btn_info[] = {
     
     // curtain
     {
-        UIView* curtain = [[[UIView alloc] initWithFrame:self.frame] autorelease];
+        UIView* curtain = [[UIView alloc] initWithFrame:self.frame];
         [curtain setBackgroundColor:[UIColor colorWithHexString:@"#000000"]];
         [self addSubview:curtain];
         [UIView animateWithDuration:0.6 animations:^{
@@ -152,19 +151,19 @@ t_title_btn title_btn_info[] = {
     // delete data button
     {
         CGRect frm = CGRectMake(buttonX2, buttonY2, MenuButtonWidth, MenuButtonHeight);
-        MenuButton* m = [[[MenuButton alloc] initWithFrame:frm] autorelease];
+        MenuButton* m = [[MenuButton alloc] initWithFrame:frm];
         [m setBackgroundColor:[UIColor whiteColor]];
         [m setText:NSLocalizedString(@"Initialize Data", nil)];
         [m setColor:[UIColor blackColor]];
         [m setBackgroundColor:[UIColor whiteColor]];
         [self addSubview:m];
         [m setOnTapAction:^(MenuButton *target) {
-            DialogView* dialog = [[[DialogView alloc] initWithMessage:NSLocalizedString(@"Are you sure to initialize your playing data of this game?", nil)] autorelease];
+            DialogView* dialog = [[DialogView alloc] initWithMessage:NSLocalizedString(@"Are you sure to initialize your playing data of this game?", nil)];
             [dialog addButtonWithText:NSLocalizedString(@"OK", nil) withAction:^{
-                DialogView* dialog = [[[DialogView alloc] initWithMessage:NSLocalizedString(@"Is it really OK?", nil)] autorelease];
+                DialogView* dialog = [[DialogView alloc] initWithMessage:NSLocalizedString(@"Is it really OK?", nil)];
                 [dialog addButtonWithText:NSLocalizedString(@"OK", nil) withAction:^{
                     hg::UserData::DeleteAllData();
-                    DialogView* dialog = [[[DialogView alloc] initWithMessage:NSLocalizedString(@"GameData is initialized.", nil)] autorelease];
+                    DialogView* dialog = [[DialogView alloc] initWithMessage:NSLocalizedString(@"GameData is initialized.", nil)];
                     [dialog addButtonWithText:NSLocalizedString(@"OK", nil) withAction:^{
                     }];
                     [dialog show];
@@ -183,14 +182,14 @@ t_title_btn title_btn_info[] = {
     buttonX2 = 10;
     {
         CGRect frm = CGRectMake(buttonX2, buttonY2, MenuButtonWidth, MenuButtonHeight);
-        MenuButton* m = [[[MenuButton alloc] initWithFrame:frm] autorelease];
+        MenuButton* m = [[MenuButton alloc] initWithFrame:frm];
         [m setBackgroundColor:[UIColor whiteColor]];
         [m setText:NSLocalizedString(@"Show Credits", nil)];
         [m setColor:[UIColor blackColor]];
         [m setBackgroundColor:[UIColor whiteColor]];
         [self addSubview:m];
         [m setOnTapAction:^(MenuButton *target) {
-            CopyrightView* copyRight = [[[CopyrightView alloc] initWithFrame:self.frame] autorelease];
+            CopyrightView* copyRight = [[CopyrightView alloc] initWithFrame:self.frame];
             [self addSubview:copyRight];
         }];
     }
@@ -211,9 +210,9 @@ t_title_btn title_btn_info[] = {
     
     // title logo
     {
-        NSString *path = [[[NSBundle mainBundle] pathForResource:@"title2" ofType:@"png"] autorelease];
+        NSString *path = [[NSBundle mainBundle] pathForResource:@"title2" ofType:@"png"];
         UIImage* img = [[UIImage alloc] initWithContentsOfFile:path];
-        UIImageView* imgView = [[[UIImageView alloc] initWithImage:img] autorelease];
+        UIImageView* imgView = [[UIImageView alloc] initWithImage:img];
         float w = MIN(self.frame.size.width - 20, 400);
         float h = w*58/286;
         [imgView setFrame:CGRectMake(0, 0, w, h)];
@@ -227,15 +226,15 @@ t_title_btn title_btn_info[] = {
     
     // cover
     /*
-    {
-        UIView* v = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
-        [v setBackgroundColor:[UIColor blackColor]];
-        [v setUserInteractionEnabled:NO];
-        [self addSubview:v];
-        [UIView animateWithDuration:0.3 animations:^{
-            [v setAlpha:0];
-        }];
-    }*/
+     {
+     UIView* v = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
+     [v setBackgroundColor:[UIColor blackColor]];
+     [v setUserInteractionEnabled:NO];
+     [self addSubview:v];
+     [UIView animateWithDuration:0.3 animations:^{
+     [v setAlpha:0];
+     }];
+     }*/
     
 }
 
@@ -245,10 +244,7 @@ t_title_btn title_btn_info[] = {
     [MainViewController Start];
 }
 
--(void)dealloc
-{
-    [super dealloc];
-}
 
 
 @end
+

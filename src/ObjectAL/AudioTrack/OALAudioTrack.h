@@ -86,14 +86,14 @@
 #pragma mark Properties
 
 /** The URL of the currently loaded audio data. */
-@property(nonatomic,readonly,retain) NSURL* currentlyLoadedUrl;
+@property(nonatomic,readonly,strong) NSURL* currentlyLoadedUrl;
 
 /** Optional object that will receive notifications for decoding errors,
  * audio interruptions (such as an incoming phone call), and playback completion. <br>
  * <strong>Note:</strong> OALAudioTrack keeps a WEAK reference to delegate, so make sure you clear it
  * when your object is going to be deallocated.
  */
-@property(nonatomic,readwrite,assign) id<AVAudioPlayerDelegate> delegate;
+@property(nonatomic,readwrite,weak) id<AVAudioPlayerDelegate> delegate;
 
 /** The gain (volume) for playback (0.0 - 1.0, where 1.0 = no attenuation). */
 @property(nonatomic,readwrite,assign) float gain;
@@ -128,7 +128,7 @@
  * WARNING: Be VERY careful when accessing this, as some methods could cause
  * it to fall out of sync with OALAudioTrack (particularly play/pause/stop methods).
  */
-@property(nonatomic,readonly,retain) AVAudioPlayer* player;
+@property(nonatomic,readonly,strong) AVAudioPlayer* player;
 
 /** If true, background music is currently playing. */
 @property(nonatomic,readonly,assign) bool playing;

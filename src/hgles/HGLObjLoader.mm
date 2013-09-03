@@ -1,5 +1,5 @@
 //G
-         //  IndexBuffer.m
+//  IndexBuffer.m
 //  Shooter
 //
 //  Created by 濱田 洋太 on 12/12/24.
@@ -38,7 +38,7 @@ namespace hgles {
         // ファイルを文字列に読み込む
         NSString *path = [[NSBundle mainBundle] pathForResource:name ofType:@"obj"];
         NSData *modelData = [NSData dataWithContentsOfFile:path];
-        NSString *modelDataStr = [[[NSString alloc] initWithData:modelData encoding:NSUTF8StringEncoding] autorelease];
+        NSString *modelDataStr = [[NSString alloc] initWithData:modelData encoding:NSUTF8StringEncoding];
         string* s_dat = new string([modelDataStr UTF8String]);
         
         // １行ずつ処理
@@ -241,7 +241,7 @@ namespace hgles {
         NSString* s = [NSString stringWithCString:name->c_str() encoding:NSUTF8StringEncoding];
         NSString *path = [[NSBundle mainBundle] pathForResource:s ofType:@""];
         NSData *modelData = [NSData dataWithContentsOfFile:path];
-        NSString *modelDataStr = [[[NSString alloc] initWithData:modelData encoding:NSUTF8StringEncoding] autorelease];
+        NSString *modelDataStr = [[NSString alloc] initWithData:modelData encoding:NSUTF8StringEncoding];
         string* s_dat = new string([modelDataStr UTF8String]);
         
         // １行ずつ処理
@@ -315,6 +315,7 @@ namespace hgles {
     }
     
 }
+
 
 
 

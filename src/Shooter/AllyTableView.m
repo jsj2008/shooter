@@ -62,14 +62,14 @@ static AllyTableView* instance;
 {
     // animate
     /*
-    {
-        [self setUserInteractionEnabled:FALSE];
-        [UIView animateWithDuration:MENU_ANIMATION_DURATION animations:^{
-            [self setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
-        } completion:^(BOOL finished) {
-            [self removeFromSuperview];
-        }];
-    }*/
+     {
+     [self setUserInteractionEnabled:FALSE];
+     [UIView animateWithDuration:MENU_ANIMATION_DURATION animations:^{
+     [self setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
+     } completion:^(BOOL finished) {
+     [self removeFromSuperview];
+     }];
+     }*/
     onEndAction();
 }
 
@@ -93,13 +93,12 @@ static AllyTableView* instance;
 
 - (void)dealloc
 {
-    if (onEndAction) [onEndAction release];
-    if(allyTableView)
-    {
-        [allyTableView release];
-        allyTableView = nil;
-    }
-    [super dealloc];
+    if (onEndAction) //[onEndAction release];
+        if(allyTableView)
+        {
+            //[allyTableView release];
+            allyTableView = nil;
+        }
 }
 
 - (void)viewDidLoad
@@ -139,11 +138,11 @@ static AllyTableView* instance;
     
     // 戻るボタン
     {
-        ImageButtonView* backImgView = [[[ImageButtonView alloc] initWithFrame:CGRectMake(0, 0, 66, 66)] autorelease];
+        ImageButtonView* backImgView = [[ImageButtonView alloc] initWithFrame:CGRectMake(0, 0, 66, 66)];
         //UIImage* img = [UIImage imageNamed:@"checkmark.png"];
         
         NSString *path = [[NSBundle mainBundle] pathForResource:ICON_CHECK ofType:@"png"];
-        UIImage* img = [[[UIImage alloc] initWithContentsOfFile:path] autorelease];
+        UIImage* img = [[UIImage alloc] initWithContentsOfFile:path];
         
         [backImgView setBackgroundColor:[UIColor whiteColor]];
         [backImgView setFrame:CGRectMake(frame.size.width - 76, frame.size.height - 84, 66, 66)];
@@ -169,7 +168,7 @@ static AllyTableView* instance;
         ImageButtonView* backImgView = [[ImageButtonView alloc] initWithFrame:CGRectMake(0, 0, 66, 66)];
         //UIImage* img = [UIImage imageNamed:@"checkmark.png"];
         NSString *path = [[NSBundle mainBundle] pathForResource:ICON_SORT ofType:@"png"];
-        UIImage* img = [[[UIImage alloc] initWithContentsOfFile:path] autorelease];
+        UIImage* img = [[UIImage alloc] initWithContentsOfFile:path];
         
         [backImgView setBackgroundColor:[UIColor whiteColor]];
         [backImgView setFrame:CGRectMake(frame.size.width - 76, frame.size.height - 84 - 10 - 66, 66, 66)];
@@ -196,7 +195,7 @@ static AllyTableView* instance;
             ImageButtonView* backImgView = [[ImageButtonView alloc] initWithFrame:CGRectMake(0, 0, 66, 66)];
             //UIImage* img = [UIImage imageNamed:@"checkmark.png"];
             NSString *path = [[NSBundle mainBundle] pathForResource:ICON_SELECT_ALL ofType:@"png"];
-            UIImage* img = [[[UIImage alloc] initWithContentsOfFile:path] autorelease];
+            UIImage* img = [[UIImage alloc] initWithContentsOfFile:path];
             
             [backImgView setBackgroundColor:[UIColor whiteColor]];
             [backImgView setFrame:CGRectMake(frame.size.width - 76, frame.size.height - 84 - 10 - 66 - 10 - 66, 66, 66)];
@@ -221,7 +220,7 @@ static AllyTableView* instance;
             ImageButtonView* backImgView = [[ImageButtonView alloc] initWithFrame:CGRectMake(0, 0, 66, 66)];
             //UIImage* img = [UIImage imageNamed:@"checkmark.png"];
             NSString *path = [[NSBundle mainBundle] pathForResource:ICON_DESELECT ofType:@"png"];
-            UIImage* img = [[[UIImage alloc] initWithContentsOfFile:path] autorelease];
+            UIImage* img = [[UIImage alloc] initWithContentsOfFile:path];
             
             [backImgView setBackgroundColor:[UIColor whiteColor]];
             [backImgView setFrame:CGRectMake(frame.size.width - 76, frame.size.height - 84 - 10 - 66 - 10 - 66 - 10 - 66, 66, 66)];
@@ -288,14 +287,14 @@ numberOfRowsInSection:(NSInteger)section
 
 /*
  -(UITableViewCell *)tableView:
- (UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath	ロード時に呼び出される。
+ (UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath    ロード時に呼び出される。
  セルの内容を返すように実装する
  （実装必須）
  */
 -(UITableViewCell *)tableView:
 (UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell* c = [[[UITableViewCell alloc] initWithFrame:CGRectMake(0, 0, CELL_HEIGHT, CELL_WIDTH)] autorelease];
+    UITableViewCell* c = [[UITableViewCell alloc] initWithFrame:CGRectMake(0, 0, CELL_HEIGHT, CELL_WIDTH)];
     [c setBackgroundColor:[UIColor clearColor]];
     [c setSelectionStyle:UITableViewCellSelectionStyleNone];
     
@@ -326,7 +325,7 @@ numberOfRowsInSection:(NSInteger)section
         hg::FighterInfo* fInfo = fList[index];
         
         // セルコンテナ
-        AllyView* v = [[[AllyView alloc] initWithAllyViewMode:viewMode WithFrame:CGRectMake(y, 0, CELL_HEIGHT, CELL_WIDTH) WithFighterInfo:fInfo] autorelease];
+        AllyView* v = [[AllyView alloc] initWithAllyViewMode:viewMode WithFrame:CGRectMake(y, 0, CELL_HEIGHT, CELL_WIDTH) WithFighterInfo:fInfo];
         [c addSubview:v];
         
         y -= (CELL_HEIGHT + CELL_GAP);
@@ -345,3 +344,4 @@ heightForHeaderInSection:(NSInteger)section
 
 
 @end
+

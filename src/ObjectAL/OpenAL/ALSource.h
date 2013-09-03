@@ -86,7 +86,7 @@ typedef void (^OALSourceNotificationCallback)(ALSource* source, ALuint notificat
 /** The sound buffer this source is attached to (set to nil to detach the currently attached
  * buffer).
  */
-@property(nonatomic,readwrite,retain) ALBuffer* buffer;
+@property(nonatomic,readwrite,strong) ALBuffer* buffer;
 
 /** How many buffers this source has queued. */
 @property(nonatomic,readonly,assign) int buffersQueued;
@@ -95,7 +95,7 @@ typedef void (^OALSourceNotificationCallback)(ALSource* source, ALuint notificat
 @property(nonatomic,readonly,assign) int buffersProcessed;
 
 /** The context this source was opened on. */
-@property(nonatomic,readonly,retain) ALContext* context;
+@property(nonatomic,readonly,strong) ALContext* context;
 
 /** The offset into the current buffer (in bytes). */
 @property(nonatomic,readwrite,assign) float offsetInBytes;

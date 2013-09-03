@@ -30,7 +30,7 @@
     UIImage *image          = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     [self setBackgroundImage:image forState:state];
-    [view release];
+    //[view release];
 }
 
 /**

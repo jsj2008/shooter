@@ -143,7 +143,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_PROTOTYPE(OpenALManager);
 
 /** (INTERNAL USE) Real reference to the current context.
  */
-@property(nonatomic,readwrite,assign) ALContext* realCurrentContext;
+@property(nonatomic,readwrite,weak) ALContext* realCurrentContext;
 
 @end
 /** \endcond */

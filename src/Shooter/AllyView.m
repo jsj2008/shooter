@@ -80,7 +80,7 @@
         [self.layer setCornerRadius:3];
         // touch
         {
-            UITapGestureRecognizer *tr = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(touchAlly:)] autorelease];
+            UITapGestureRecognizer *tr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(touchAlly:)];
             [self addGestureRecognizer:tr];
         }
         [self setFighterInfo:info];
@@ -89,14 +89,6 @@
     
 }
 
-- (void) dealloc
-{
-    [backView release];
-    [labels release];
-    [highlightView release];
-    [baseView release];
-    [super dealloc];
-}
 
 - (void)reloadData
 {
@@ -105,7 +97,7 @@
 
 - (UILabel*)labelWithIndex:(int)index WithText:(NSString*)text
 {
-    UILabel* lb = [[[UILabel alloc] init] autorelease];
+    UILabel* lb = [[UILabel alloc] init];
     //UIFont* font = [UIFont fontWithName:@"Copperplate-Bold" size:12];
     UIFont* font = [[lb font] fontWithSize:12];
     CGRect labelFrame = self.frame;
@@ -244,10 +236,10 @@
                     coinf.size.width = coinf.size.height = 16;
                     //UIImage* img = [UIImage imageNamed:@"goldCoin5.png"];
                     
-                    NSString *path = [[[NSBundle mainBundle] pathForResource:@"goldCoin5" ofType:@"png"] autorelease];
+                    NSString *path = [[NSBundle mainBundle] pathForResource:@"goldCoin5" ofType:@"png"];
                     UIImage* img = [[UIImage alloc] initWithContentsOfFile:path];
                     
-                    UIImageView* iv = [[[UIImageView alloc] initWithFrame:coinf] autorelease];
+                    UIImageView* iv = [[UIImageView alloc] initWithFrame:coinf];
                     [iv setImage:img];
                     [baseView addSubview:iv];
                 }
@@ -280,9 +272,9 @@
                     CGRect coinf = f;
                     coinf.size.width = coinf.size.height = 16;
                     //UIImage* img = [UIImage imageNamed:@"goldCoin5.png"];
-                    NSString *path = [[[NSBundle mainBundle] pathForResource:@"goldCoin5" ofType:@"png"] autorelease];
+                    NSString *path = [[NSBundle mainBundle] pathForResource:@"goldCoin5" ofType:@"png"];
                     UIImage* img = [[UIImage alloc] initWithContentsOfFile:path];
-                    UIImageView* iv = [[[UIImageView alloc] initWithFrame:coinf] autorelease];
+                    UIImageView* iv = [[UIImageView alloc] initWithFrame:coinf];
                     [iv setImage:img];
                     [baseView addSubview:iv];
                 }
@@ -315,9 +307,9 @@
                     CGRect coinf = f;
                     coinf.size.width = coinf.size.height = 16;
                     //UIImage* img = [UIImage imageNamed:@"goldCoin5.png"];
-                    NSString *path = [[[NSBundle mainBundle] pathForResource:@"goldCoin5" ofType:@"png"] autorelease];
+                    NSString *path = [[NSBundle mainBundle] pathForResource:@"goldCoin5" ofType:@"png"];
                     UIImage* img = [[UIImage alloc] initWithContentsOfFile:path];
-                    UIImageView* iv = [[[UIImageView alloc] initWithFrame:coinf] autorelease];
+                    UIImageView* iv = [[UIImageView alloc] initWithFrame:coinf];
                     [iv setImage:img];
                     [baseView addSubview:iv];
                 }
@@ -428,8 +420,8 @@
     
     switch (_mode)
     {
-        ////////////////////
-        // Ally Select
+            ////////////////////
+            // Ally Select
         case AllyViewModeDeployAlly:
         {
             if (_fighterInfo->isPlayer)
@@ -454,7 +446,7 @@
                 int maxAllyNum = hg::UserData::sharedUserData()->getMaxAllyNum();
                 if (hg::UserData::sharedUserData()->getReadyList().size() >= maxAllyNum) {
                     NSString* rankName = STR2NSSTR(hg::UserData::sharedUserData()->getGrade());
-                    DialogView* dialog = [[[DialogView alloc] initWithMessage:[NSString stringWithFormat:NSLocalizedString(@"Sorry, %@ can take only %d Units to battle area.", nil), rankName, maxAllyNum]] autorelease];
+                    DialogView* dialog = [[DialogView alloc] initWithMessage:[NSString stringWithFormat:NSLocalizedString(@"Sorry, %@ can take only %d Units to battle area.", nil), rankName, maxAllyNum]];
                     [dialog addButtonWithText:@"OK" withAction:^{
                         // nothing
                     }];
@@ -465,8 +457,8 @@
             }
             break;
         }
-        ////////////////////
-        // Fix Ally
+            ////////////////////
+            // Fix Ally
         case AllyViewModeFix:
         {
             hg::UserData* u = hg::UserData::sharedUserData();
@@ -474,7 +466,7 @@
             // check money
             if (_fighterInfo->life >= _fighterInfo->lifeMax)
             {
-                DialogView* dialog = [[[DialogView alloc] initWithMessage:NSLocalizedString(@"You don't need to repair this.", nil)] autorelease];
+                DialogView* dialog = [[DialogView alloc] initWithMessage:NSLocalizedString(@"You don't need to repair this.", nil)];
                 [dialog addButtonWithText:@"OK" withAction:^{
                     // nothing
                 }];
@@ -492,7 +484,7 @@
             }
             else
             {
-                DialogView* dialog = [[[DialogView alloc] initWithMessage:NSLocalizedString(@"You need more gold.", nil)] autorelease];
+                DialogView* dialog = [[DialogView alloc] initWithMessage:NSLocalizedString(@"You need more gold.", nil)];
                 [dialog addButtonWithText:@"OK" withAction:^{
                     // nothing
                 }];
@@ -501,15 +493,15 @@
             
             break;
         }
-        ////////////////////
-        // buy fighter
+            ////////////////////
+            // buy fighter
         case AllyViewModeShop:
         {
             hg::UserData* u = hg::UserData::sharedUserData();
             int cost = u->getBuyCost(_fighterInfo);
             // check money
             if (u->getFighterList().size() >= 50) {
-                DialogView* dialog = [[[DialogView alloc] initWithMessage:NSLocalizedString(@"The garage is full now.", nil)] autorelease];
+                DialogView* dialog = [[DialogView alloc] initWithMessage:NSLocalizedString(@"The garage is full now.", nil)];
                 [dialog addButtonWithText:NSLocalizedString(@"OK", nil) withAction:^{
                     // nothing
                 }];
@@ -518,7 +510,7 @@
             {
                 // buy
                 NSString* msg = [NSString stringWithFormat:NSLocalizedString(@"It Costs %d gold. Are you sure to buy this?", nil), cost];
-                DialogView* dialog = [[[DialogView alloc] initWithMessage:msg] autorelease];
+                DialogView* dialog = [[DialogView alloc] initWithMessage:msg];
                 [dialog addButtonWithText:NSLocalizedString(@"Buy", nil) withAction:^{
                     u->buy(_fighterInfo);
                     dispatch_async(dispatch_get_main_queue(), ^{
@@ -533,7 +525,7 @@
             }
             else
             {
-                DialogView* dialog = [[[DialogView alloc] initWithMessage:NSLocalizedString(@"You need more gold.", nil)] autorelease];
+                DialogView* dialog = [[DialogView alloc] initWithMessage:NSLocalizedString(@"You need more gold.", nil)];
                 [dialog addButtonWithText:NSLocalizedString(@"OK", nil) withAction:^{
                     // nothing
                 }];
@@ -541,14 +533,14 @@
             }
             break;
         }
-        ////////////////////
-        // sell fighter
+            ////////////////////
+            // sell fighter
         case AllyViewModeSell:
         {
             hg::UserData* u = hg::UserData::sharedUserData();
             int cost = u->getSellValue(_fighterInfo);
             NSString* msg = [NSString stringWithFormat:NSLocalizedString(@"Are you sure to sell this for %d Gold?", nil), cost];
-            DialogView* dialog = [[[DialogView alloc] initWithMessage:msg] autorelease];
+            DialogView* dialog = [[DialogView alloc] initWithMessage:msg];
             [dialog addButtonWithText:NSLocalizedString(@"Sell", nil) withAction:^{
                 u->sell(_fighterInfo);
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -563,7 +555,7 @@
             break;
         }
             ////////////////////
-        // select fighter
+            // select fighter
         case AllyViewModeSelectPlayer:
         {
             hg::UserData* u = hg::UserData::sharedUserData();
@@ -648,7 +640,7 @@
             }
             NSLog(@"show detail!");
             isShowDetail = true;
-            AllyDetailView* adv = [[[AllyDetailView alloc] initWithFighterInfo:_fighterInfo isUsers:isUsers] autorelease];
+            AllyDetailView* adv = [[AllyDetailView alloc] initWithFighterInfo:_fighterInfo isUsers:isUsers];
             [adv show];
         }
     }];
@@ -680,3 +672,5 @@
 
 
 @end
+
+

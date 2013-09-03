@@ -58,7 +58,7 @@
 @property(nonatomic,readwrite,assign) bool muted;
 
 /** All instantiated audio tracks. */
-@property(nonatomic,readonly,retain) NSArray* tracks;
+@property(nonatomic,readonly,strong) NSArray* tracks;
 
 
 #pragma mark Playback

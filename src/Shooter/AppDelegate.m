@@ -18,12 +18,12 @@
 
 @interface AppDelegate()
 {
-// Inside @interface
-HGLView* _glView;
+    // Inside @interface
+    HGLView* _glView;
 }
- 
+
 // After @interface
-@property (nonatomic, retain) IBOutlet HGLView *glView;
+@property (nonatomic, strong) IBOutlet HGLView *glView;
 
 @end
 
@@ -33,12 +33,6 @@ HGLView* _glView;
 
 bool isBackGround = false;
 
-- (void)dealloc
-{
-    [_window release];
-    [_viewController release];
-    [super dealloc];
-}
 
 + (bool)IsBackGround
 {
@@ -49,9 +43,9 @@ bool isBackGround = false;
 {
     isBackGround = false;
     [[UIApplication sharedApplication] setStatusBarHidden:YES];
-    self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     UINavigationController* navCon = [[UINavigationController alloc] init];
-    [navCon addChildViewController:[[[MainViewController alloc] init] autorelease]];
+    [navCon addChildViewController:[[MainViewController alloc] init]];
     self.viewController = navCon;
     [navCon setNavigationBarHidden:YES];
     self.window.rootViewController = self.viewController;
@@ -125,3 +119,4 @@ bool isBackGround = false;
 }
 
 @end
+

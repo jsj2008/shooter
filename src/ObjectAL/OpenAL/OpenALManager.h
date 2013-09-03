@@ -66,24 +66,24 @@
 #pragma mark Properties
 
 /** List of available playback devices (NSString*). */
-@property(nonatomic,readonly,retain) NSArray* availableDevices;
+@property(nonatomic,readonly,strong) NSArray* availableDevices;
 
 /** List of available capture devices (NSString*). */
-@property(nonatomic,readonly,retain) NSArray* availableCaptureDevices;
+@property(nonatomic,readonly,strong) NSArray* availableCaptureDevices;
 
 /** The current context (some context operations require the context to be the "current" one).
  * WEAK reference.
  */
-@property(nonatomic,readwrite,assign) ALContext* currentContext;
+@property(nonatomic,readwrite,weak) ALContext* currentContext;
 
 /** Name of the default capture device. */
-@property(nonatomic,readonly,retain) NSString* defaultCaptureDeviceSpecifier;
+@property(nonatomic,readonly,strong) NSString* defaultCaptureDeviceSpecifier;
 
 /** Name of the default playback device. */
-@property(nonatomic,readonly,retain) NSString* defaultDeviceSpecifier;
+@property(nonatomic,readonly,strong) NSString* defaultDeviceSpecifier;
 
 /** List of all open devices (ALDevice*). */
-@property(nonatomic,readonly,retain) NSArray* devices;
+@property(nonatomic,readonly,strong) NSArray* devices;
 
 /** The frequency of the output mixer. */
 @property(nonatomic,readwrite,assign) ALdouble mixerOutputFrequency;

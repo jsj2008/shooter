@@ -12,15 +12,15 @@
 
 @interface QBFlatButton ()
 
-@property (nonatomic, retain) UIColor *faceColorNormal;
-@property (nonatomic, retain) UIColor *faceColorHighlighted;
-@property (nonatomic, retain) UIColor *faceColorSelected;
-@property (nonatomic, retain) UIColor *faceColorDisabled;
+@property (nonatomic, strong) UIColor *faceColorNormal;
+@property (nonatomic, strong) UIColor *faceColorHighlighted;
+@property (nonatomic, strong) UIColor *faceColorSelected;
+@property (nonatomic, strong) UIColor *faceColorDisabled;
 
-@property (nonatomic, retain) UIColor *sideColorNormal;
-@property (nonatomic, retain) UIColor *sideColorHighlighted;
-@property (nonatomic, retain) UIColor *sideColorSelected;
-@property (nonatomic, retain) UIColor *sideColorDisabled;
+@property (nonatomic, strong) UIColor *sideColorNormal;
+@property (nonatomic, strong) UIColor *sideColorHighlighted;
+@property (nonatomic, strong) UIColor *sideColorSelected;
+@property (nonatomic, strong) UIColor *sideColorDisabled;
 
 - (void)drawRoundedRect:(CGRect)rect radius:(CGFloat)radius context:(CGContextRef)context;
 

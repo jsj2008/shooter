@@ -40,7 +40,7 @@ const float ProgressBarWidth = 146;
 {
     if (instance)
     {
-        [instance release];
+        //[instance release];
         instance = nil;
     }
     return [self GetInstance];
@@ -60,24 +60,23 @@ const float ProgressBarWidth = 146;
 {
     //[moneyLabel dealloc];
     if (progressBarLeft) {
-        [progressBarLeft release];
+        //[progressBarLeft release];
     }
     if (moneyLabel) {
-        [moneyLabel release];
+        //[moneyLabel release];
     }
     if (progressLabel) {
-        [progressLabel release];
+        //[progressLabel release];
     }
     if (stageLevelLabel) {
-        [stageLevelLabel release];
+        //[stageLevelLabel release];
     }
     if (progressBase) {
-        [progressBase release];
+        //[progressBase release];
     }
     if (progressBarLayer) {
-        [progressBarLayer release];
+        //[progressBarLayer release];
     }
-    [super dealloc];
 }
 
 - (id)init
@@ -95,19 +94,19 @@ const float ProgressBarWidth = 146;
         
         // bar
         /*
-        {
-            UIView* v = [[[UIView alloc] initWithFrame:CGRectMake(-10, 15, 150, 4)] autorelease];
-            [v setBackgroundColor:[UIColor colorWithHexString:@"#cc44bb"]];
-            [v.layer setCornerRadius:2];
-            [self addSubview:v];
-        }*/
+         {
+         UIView* v = [[UIView alloc] initWithFrame:CGRectMake(-10, 15, 150, 4)];
+         [v setBackgroundColor:[UIColor colorWithHexString:@"#cc44bb"]];
+         [v.layer setCornerRadius:2];
+         [self addSubview:v];
+         }*/
         // money icon
         {
             CGRect f = CGRectMake(10, 0, 20, 20);
-            //UIImage* img = [[UIImage imageNamed:@"goldCoin5.png"] autorelease];
-            NSString *path = [[[NSBundle mainBundle] pathForResource:@"goldCoin5" ofType:@"png"] autorelease];
+            //UIImage* img = [UIImage imageNamed:@"goldCoin5.png"];
+            NSString *path = [[NSBundle mainBundle] pathForResource:@"goldCoin5" ofType:@"png"];
             UIImage* img = [[UIImage alloc] initWithContentsOfFile:path];
-            UIImageView* iv = [[[UIImageView alloc] initWithFrame:f] autorelease];
+            UIImageView* iv = [[UIImageView alloc] initWithFrame:f];
             [iv setImage:img];
             [self addSubview:iv];
         }
@@ -132,12 +131,12 @@ const float ProgressBarWidth = 146;
         
         // bar2
         /*
-        {
-            UIView* v = [[[UIView alloc] initWithFrame:CGRectMake(-10, 31, 150, 4)] autorelease];
-            [v setBackgroundColor:[UIColor colorWithHexString:@"#44ccbb"]];
-            [v.layer setCornerRadius:2];
-            [progressBase addSubview:v];
-        }*/
+         {
+         UIView* v = [[UIView alloc] initWithFrame:CGRectMake(-10, 31, 150, 4)];
+         [v setBackgroundColor:[UIColor colorWithHexString:@"#44ccbb"]];
+         [v.layer setCornerRadius:2];
+         [progressBase addSubview:v];
+         }*/
         
         // score
         {
@@ -156,7 +155,7 @@ const float ProgressBarWidth = 146;
         
         // progress bar background
         {
-            UIView* view = [[[UIView alloc] initWithFrame:frame] autorelease];
+            UIView* view = [[UIView alloc] initWithFrame:frame];
             CAGradientLayer *pageGradient = [CAGradientLayer layer];
             pageGradient.frame = progressBarFrame;
             pageGradient.colors =
@@ -188,7 +187,7 @@ const float ProgressBarWidth = 146;
         
         // progress bar
         {
-            UIView* view = [[[UIView alloc] initWithFrame:frame] autorelease];
+            UIView* view = [[UIView alloc] initWithFrame:frame];
             [progressBase addSubview:view];
             progressBarLeft = view;
             progressBarLayer = nil;
@@ -197,9 +196,9 @@ const float ProgressBarWidth = 146;
         // progress frame
         {
             //UIImage* img = [UIImage imageNamed:@"enemy_health_bar_foreground_001.png"];
-            NSString *path = [[[NSBundle mainBundle] pathForResource:@"enemy_health_bar_foreground_001" ofType:@"png"] autorelease];
+            NSString *path = [[NSBundle mainBundle] pathForResource:@"enemy_health_bar_foreground_001" ofType:@"png"];
             UIImage* img = [[UIImage alloc] initWithContentsOfFile:path];
-            UIImageView* imgView = [[[UIImageView alloc] initWithImage:img] autorelease];
+            UIImageView* imgView = [[UIImageView alloc] initWithImage:img];
             [imgView setFrame:progressFrameFrame];
             //[self addSubview:imgView];
             [progressBase addSubview:imgView];
@@ -265,7 +264,7 @@ const float ProgressBarWidth = 146;
     {
         if (progressBarLayer) {
             [progressBarLayer removeFromSuperlayer];
-            [progressBarLayer release];
+            //[progressBarLayer release];
             progressBarLayer = nil;
         }
         CAGradientLayer *pageGradient = [CAGradientLayer layer];
@@ -293,7 +292,6 @@ const float ProgressBarWidth = 146;
             [pageGradient addAnimation:theAnimation forKey:@"progress anime"];
         }
         progressBarLayer = pageGradient;
-        [progressBarLayer retain];
         
         CGRect f = progressBarLayer.frame;
         f.size.width = clearRatio * ProgressBarWidth;
@@ -310,12 +308,14 @@ const float ProgressBarWidth = 146;
 }
 
 /*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-}
-*/
+ // Only override drawRect: if you perform custom drawing.
+ // An empty implementation adversely affects performance during animation.
+ - (void)drawRect:(CGRect)rect
+ {
+ // Drawing code
+ }
+ */
 
 @end
+
+

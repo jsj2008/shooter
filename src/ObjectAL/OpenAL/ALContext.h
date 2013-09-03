@@ -70,18 +70,18 @@
  * “[spec major number].[spec minor number] [optional vendor version information]”
  * Only valid when this is the current context.
  */
-@property(nonatomic,readonly,retain) NSString* alVersion;
+@property(nonatomic,readonly,strong) NSString* alVersion;
 
 /** The current context's attribute list.
  * Only valid when this is the current context.
  */
-@property(nonatomic,readonly,retain) NSArray* attributes;
+@property(nonatomic,readonly,strong) NSArray* attributes;
 
 /** The OpenAL context pointer. */
 @property(nonatomic,readonly,assign) ALCcontext* context;
 
 /** The device this context was opened on. */
-@property(nonatomic,readonly,retain) ALDevice* device;
+@property(nonatomic,readonly,strong) ALDevice* device;
 
 /** The current distance model.
  * Legal values are AL_NONE, AL_INVERSE_DISTANCE, AL_INVERSE_DISTANCE_CLAMPED,
@@ -99,18 +99,18 @@
 /** List of available extensions (NSString*).
  * Only valid when this is the current context.
  */
-@property(nonatomic,readonly,retain) NSArray* extensions;
+@property(nonatomic,readonly,strong) NSArray* extensions;
 
 /** This context's listener. */
-@property(nonatomic,readonly,retain) ALListener* listener;
+@property(nonatomic,readonly,strong) ALListener* listener;
 
 /** Information about the specific renderer.
  * Only valid when this is the current context.
  */
-@property(nonatomic,readonly,retain) NSString* renderer;
+@property(nonatomic,readonly,strong) NSString* renderer;
 
 /** All sources associated with this context (ALSource*). */
-@property(nonatomic,readonly,retain) NSArray* sources;
+@property(nonatomic,readonly,strong) NSArray* sources;
 
 /** Speed of sound in same units as velocities.
  * Only valid when this is the current context.
@@ -120,7 +120,7 @@
 /** Name of the vendor.
  * Only valid when this is the current context.
  */
-@property(nonatomic,readonly,retain) NSString* vendor;
+@property(nonatomic,readonly,strong) NSString* vendor;
 
 
 #pragma mark Object Management

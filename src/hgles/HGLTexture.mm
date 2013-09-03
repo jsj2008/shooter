@@ -51,7 +51,7 @@ namespace hgles {
             NSString* lastPathComponent = [[fullFileName lastPathComponent] stringByDeletingPathExtension];
             NSString* pathExtension = [fullFileName pathExtension];
             NSString *path = [[NSBundle mainBundle] pathForResource:lastPathComponent ofType:pathExtension];
-            UIImage* uiImg = [[[UIImage alloc] initWithContentsOfFile:path] autorelease];
+            UIImage* uiImg = [[UIImage alloc] initWithContentsOfFile:path];
             image = uiImg.CGImage;
             
             width = CGImageGetWidth(image);
@@ -125,7 +125,7 @@ namespace hgles {
             UIGraphicsBeginImageContext(CGSizeMake(width, height));
             CGContextRef context = UIGraphicsGetCurrentContext();
             
-            UILabel* label = [[[UILabel alloc] initWithFrame:CGRectMake(0,0,width, height)] autorelease];
+            UILabel* label = [[UILabel alloc] initWithFrame:CGRectMake(0,0,width, height)];
             [label setText:[NSString stringWithCString:text.c_str() encoding:NSUTF8StringEncoding]];
             [label setFont: font];
             label.textColor = [UIColor colorWithRed:fontColor.r green:fontColor.g blue:fontColor.b alpha:fontColor.a];
@@ -136,7 +136,7 @@ namespace hgles {
             image = img.CGImage;
             UIGraphicsEndImageContext();
         }
-    
+        
         HGLTexture* tex = new HGLTexture();
         glEnable(GL_TEXTURE_2D);
         glBlendFunc(GL_ONE, GL_ZERO);
@@ -297,3 +297,4 @@ namespace hgles {
     }
     
 }
+

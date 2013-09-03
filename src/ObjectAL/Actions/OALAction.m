@@ -209,7 +209,7 @@
 
 @property(nonatomic,readwrite,assign) float delta;
 
-@property(nonatomic,readwrite,retain) NSString* propertyKey;
+@property(nonatomic,readwrite,strong) NSString* propertyKey;
 
 @end
 
@@ -366,7 +366,7 @@ static EaseFunctionPtr g_easeFunctions[2][3] =
 
 @interface OALEaseAction ()
 
-@property(nonatomic, readwrite, retain) OALAction* action;
+@property(nonatomic, readwrite, strong) OALAction* action;
 @property(nonatomic, readwrite, assign) EaseFunctionPtr easeFunction;
 
 @end

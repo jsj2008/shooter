@@ -160,10 +160,10 @@
 #pragma mark Properties
 
 /** This source's owning context. */
-@property(nonatomic,readonly,retain) ALContext* context;
+@property(nonatomic,readonly,strong) ALContext* context;
 
 /** All sources being used by this channel. Do not modify! */
-@property(nonatomic,readonly,retain) ALSoundSourcePool* sourcePool;
+@property(nonatomic,readonly,strong) ALSoundSourcePool* sourcePool;
 
 /** The number of sources reserved by this channel. */
 @property(nonatomic,readwrite,assign) int reservedSources;

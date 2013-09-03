@@ -36,7 +36,7 @@
 
 typedef struct EnemyData {
     EnemyData(int _fighterType):
-        fighterType(_fighterType)
+    fighterType(_fighterType)
     {
     }
     int fighterType = 1000;
@@ -121,37 +121,36 @@ static EnemyGroupInfoList enemyGroupInfoList;
 - (void)dealloc
 {
     if (_glview) {
-        [_glview release];
+        //[_glview release];
     }
     if (onEndAction)
     {
-        [onEndAction release];
+        //[onEndAction release];
     }
     if (baseView) {
-        [baseView release];
+        //[baseView release];
     }
     if (baseCurtain) {
-        [baseCurtain release];
+        //[baseCurtain release];
     }
     if (hpGaugeBar) {
-        [hpGaugeBar release];
+        //[hpGaugeBar release];
     }
     if (shieldGaugeBar) {
-        [shieldGaugeBar release];
+        //[shieldGaugeBar release];
     }
     
     if (messageList) {
         for (UILabel* a in messageList) {
-            [a release];
+            //[a release];
         }
         [messageList removeAllObjects];
-        [messageList release];
+        //[messageList release];
     }
     if (messageView) {
-        [messageView release];
+        //[messageView release];
     }
     
-    [super dealloc];
 }
 
 - (id) initWithOnEndAction:(void(^)(void))action
@@ -166,14 +165,14 @@ static EnemyGroupInfoList enemyGroupInfoList;
     {
         
         /*
-        double delayInSeconds = 2.0;
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            onEndAction();
-        });
-        return;
-        */
-    
+         double delayInSeconds = 2.0;
+         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+         onEndAction();
+         });
+         return;
+         */
+        
         
         messageList = [[NSMutableArray alloc] init];
         isPlaying = false;
@@ -271,7 +270,7 @@ static EnemyGroupInfoList enemyGroupInfoList;
             UILabel* tmp = [messageList objectAtIndex:0];
             [tmp removeFromSuperview];
             [messageList removeObjectAtIndex:0];
-            [tmp release];
+            //[tmp release];
         }
     }
     float x = 0;
@@ -313,7 +312,7 @@ static EnemyGroupInfoList enemyGroupInfoList;
         {
             hg::initRandom();
             [self initSpawnData];
-
+            
             upCamera = false;
             downCamera = false;
             enemyList.clear();
@@ -466,11 +465,11 @@ static EnemyGroupInfoList enemyGroupInfoList;
              hg::UserData::sharedUserData()->setDefaultInfo(f, fighterType);
              f->level = [[d valueForKey:@"level"] integerValue];
              if (tmpGroup >= spawnData.size())
-                {
-                    spawnData.push_back(hg::SpawnGroup());
-                }
-                spawnData[tmpGroup].push_back(f);
-            }*/
+             {
+             spawnData.push_back(hg::SpawnGroup());
+             }
+             spawnData[tmpGroup].push_back(f);
+             }*/
             
             // initialize game
             hg::FighterInfo* pPlayerInfo = hg::UserData::sharedUserData()->getPlayerInfo();
@@ -595,10 +594,10 @@ static EnemyGroupInfoList enemyGroupInfoList;
         // タッチイベント(左)
         {
             CGRect frame = baseFrame;
-            UIView* _leftPadView = [[[PadView alloc] initWithFrame:frame WithOnTouchBlock:^(int degree, float power, bool touchBegan, bool touchEnd) {
+            UIView* _leftPadView = [[PadView alloc] initWithFrame:frame WithOnTouchBlock:^(int degree, float power, bool touchBegan, bool touchEnd) {
                 keyState.degree = degree;
                 keyState.power = power;
-            }] autorelease];
+            }];
             [baseView addSubview:_leftPadView];
         }
         
@@ -658,10 +657,10 @@ static EnemyGroupInfoList enemyGroupInfoList;
             frame.origin.x = x;
             frame.origin.y = y;
             
-            ImageButtonView* backImgView = [[[ImageButtonView alloc] initWithFrame:CGRectMake(0, 0, 66, 66)] autorelease];
+            ImageButtonView* backImgView = [[ImageButtonView alloc] initWithFrame:CGRectMake(0, 0, 66, 66)];
             //UIImage* img = [UIImage imageNamed:@"checkmark.png"];
             NSString *path = [[NSBundle mainBundle] pathForResource:@"Icon.1_04" ofType:@"png"];
-            UIImage* img = [[[UIImage alloc] initWithContentsOfFile:path] autorelease];
+            UIImage* img = [[UIImage alloc] initWithContentsOfFile:path];
             
             [backImgView setBackgroundColor:[UIColor whiteColor]];
             [backImgView setFrame:frame];
@@ -684,7 +683,7 @@ static EnemyGroupInfoList enemyGroupInfoList;
                     [baseCurtain setAlpha:0.8];
                 }];
                 
-                AllyTableView* vc = [[[AllyTableView alloc] initWithViewMode:AllyViewModeDeployAlly WithFrame:baseFrame] autorelease];
+                AllyTableView* vc = [[AllyTableView alloc] initWithViewMode:AllyViewModeDeployAlly WithFrame:baseFrame];
                 [self addSubview:vc];
                 // animate
                 {
@@ -700,13 +699,14 @@ static EnemyGroupInfoList enemyGroupInfoList;
                 [vc setOnEndAction:^{
                     // animate
                     {
-                        [vc setUserInteractionEnabled:FALSE];
+                        __weak AllyTableView* avc = vc;
+                        [avc setUserInteractionEnabled:FALSE];
                         [UIView animateWithDuration:0.2 animations:^{
                             [baseCurtain setAlpha:0];
                             [baseCurtain setUserInteractionEnabled:false];
-                            [vc setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
+                            [avc setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
                         } completion:^(BOOL finished) {
-                            [vc removeFromSuperview];
+                            [avc removeFromSuperview];
                             hg::setPause(false);
                             hg::deployFriends();
                         }];
@@ -727,7 +727,7 @@ static EnemyGroupInfoList enemyGroupInfoList;
             ImageButtonView* backImgView = [[ImageButtonView alloc] initWithFrame:CGRectMake(0, 0, 66, 66)];
             //UIImage* img = [UIImage imageNamed:@"checkmark.png"];
             NSString *path = [[NSBundle mainBundle] pathForResource:@"Icon.4_33" ofType:@"png"];
-            UIImage* img = [[[UIImage alloc] initWithContentsOfFile:path] autorelease];
+            UIImage* img = [[UIImage alloc] initWithContentsOfFile:path];
             
             [backImgView setBackgroundColor:[UIColor whiteColor]];
             [backImgView setFrame:frame];
@@ -751,7 +751,7 @@ static EnemyGroupInfoList enemyGroupInfoList;
                 }];
                 
                 // 退却するか確認して退却
-                DialogView* dialog = [[[DialogView alloc] initWithMessage:NSLocalizedString(@"Are you sure to reatreat?", nil)] autorelease];
+                DialogView* dialog = [[DialogView alloc] initWithMessage:NSLocalizedString(@"Are you sure to reatreat?", nil)];
                 [dialog addButtonWithText:NSLocalizedString(@"OK", nil) withAction:^{
                     [UIView animateWithDuration:0.2 animations:^{
                         [baseCurtain setAlpha:0];
@@ -790,14 +790,14 @@ static EnemyGroupInfoList enemyGroupInfoList;
         {
             hpGaugeFrameRect = CGRectMake(10, 10, GAUGE_FRAME_WIDTH, GAUGE_FRAME_HEIGHT);
             hpGaugeRect = CGRectMake(10 + (GAUGE_FRAME_WIDTH - GAUGE_BAR_WIDTH)/2, 10 + (GAUGE_FRAME_HEIGHT - GAUGE_BAR_HEIGHT)/2, GAUGE_BAR_WIDTH, GAUGE_BAR_HEIGHT);
-            UIView* gaugeFrame = [[[UIView alloc] initWithFrame:hpGaugeFrameRect] autorelease];
+            UIView* gaugeFrame = [[UIView alloc] initWithFrame:hpGaugeFrameRect];
             [gaugeFrame setBackgroundColor:[UIColor clearColor]];
             [gaugeFrame.layer setBorderColor:[UIColor whiteColor].CGColor];
             [gaugeFrame.layer setBorderWidth:2];
             [gaugeFrame.layer setCornerRadius:GAUGE_FRAME_WIDTH/2];
             [baseView addSubview:gaugeFrame];
             
-            hpGaugeBar = [[[UIView alloc] initWithFrame:hpGaugeRect] autorelease];
+            hpGaugeBar = [[UIView alloc] initWithFrame:hpGaugeRect];
             [hpGaugeBar setBackgroundColor:[UIColor greenColor]];
             [hpGaugeBar.layer setBorderWidth:0];
             [hpGaugeBar.layer setCornerRadius:GAUGE_BAR_WIDTH/2];
@@ -808,14 +808,14 @@ static EnemyGroupInfoList enemyGroupInfoList;
         if (hg::UserData::sharedUserData()->getPlayerInfo()->shieldMax > 0) {
             shieldGaugeFrameRect = CGRectMake(10 + GAUGE_FRAME_WIDTH + 2, 10, GAUGE_FRAME_WIDTH, GAUGE_FRAME_HEIGHT);
             shieldGaugeRect = CGRectMake(10 + GAUGE_FRAME_WIDTH + 2 + (GAUGE_FRAME_WIDTH - GAUGE_BAR_WIDTH)/2, 10 + (GAUGE_FRAME_HEIGHT - GAUGE_BAR_HEIGHT)/2, GAUGE_BAR_WIDTH, GAUGE_BAR_HEIGHT);
-            UIView* gaugeFrame = [[[UIView alloc] initWithFrame:shieldGaugeFrameRect] autorelease];
+            UIView* gaugeFrame = [[UIView alloc] initWithFrame:shieldGaugeFrameRect];
             [gaugeFrame setBackgroundColor:[UIColor clearColor]];
             [gaugeFrame.layer setBorderColor:[UIColor whiteColor].CGColor];
             [gaugeFrame.layer setBorderWidth:2];
             [gaugeFrame.layer setCornerRadius:GAUGE_FRAME_WIDTH/2];
             [baseView addSubview:gaugeFrame];
             
-            shieldGaugeBar = [[[UIView alloc] initWithFrame:shieldGaugeRect] autorelease];
+            shieldGaugeBar = [[UIView alloc] initWithFrame:shieldGaugeRect];
             [shieldGaugeBar setBackgroundColor:[UIColor blueColor]];
             [shieldGaugeBar.layer setBorderWidth:0];
             [shieldGaugeBar.layer setCornerRadius:GAUGE_BAR_WIDTH/2];
@@ -851,7 +851,7 @@ static EnemyGroupInfoList enemyGroupInfoList;
             ImageButtonView* backImgView = [[ImageButtonView alloc] initWithFrame:CGRectMake(0, 0, 66, 66)];
             //UIImage* img = [UIImage imageNamed:@"checkmark.png"];
             NSString *path = [[NSBundle mainBundle] pathForResource:@"ic_up" ofType:@"png"];
-            UIImage* img = [[[UIImage alloc] initWithContentsOfFile:path] autorelease];
+            UIImage* img = [[UIImage alloc] initWithContentsOfFile:path];
             
             [backImgView setBackgroundColor:[UIColor whiteColor]];
             [backImgView setFrame:frame];
@@ -885,7 +885,7 @@ static EnemyGroupInfoList enemyGroupInfoList;
             ImageButtonView* backImgView = [[ImageButtonView alloc] initWithFrame:CGRectMake(0, 0, 66, 66)];
             //UIImage* img = [UIImage imageNamed:@"checkmark.png"];
             NSString *path = [[NSBundle mainBundle] pathForResource:@"ic_down" ofType:@"png"];
-            UIImage* img = [[[UIImage alloc] initWithContentsOfFile:path] autorelease];
+            UIImage* img = [[UIImage alloc] initWithContentsOfFile:path];
             
             [backImgView setBackgroundColor:[UIColor whiteColor]];
             [backImgView setFrame:frame];
@@ -919,7 +919,7 @@ static EnemyGroupInfoList enemyGroupInfoList;
             ImageButtonView* backImgView = [[ImageButtonView alloc] initWithFrame:CGRectMake(0, 0, 66, 66)];
             //UIImage* img = [UIImage imageNamed:@"checkmark.png"];
             NSString *path = [[NSBundle mainBundle] pathForResource:@"Icon.1_51" ofType:@"png"];
-            UIImage* img = [[[UIImage alloc] initWithContentsOfFile:path] autorelease];
+            UIImage* img = [[UIImage alloc] initWithContentsOfFile:path];
             
             [backImgView setBackgroundColor:[UIColor whiteColor]];
             [backImgView setFrame:frame];
@@ -934,12 +934,15 @@ static EnemyGroupInfoList enemyGroupInfoList;
             
             [baseView addSubview:backImgView];
             
+            
+            __weak ImageButtonView* abackImgView = backImgView;
             [backImgView setOnTapAction:^(ImageButtonView *target) {
+                
                 if (!isPlaying || !hg::isControllable()) return;
                 hg::FighterList list = hg::UserData::sharedUserData()->getReadyList();
                 for (hg::FighterList::iterator it = list.begin(); it != list.end(); ++it) {
                     hg::FighterInfo* info = *it;
-                    if (backImgView.tag == 0 ) {
+                    if (abackImgView.tag == 0 ) {
                         if (!info->isOnBattleGround && !info->isPlayer && info->life > 0) {
                             info->isOnBattleGround = true;
                         }
@@ -949,16 +952,16 @@ static EnemyGroupInfoList enemyGroupInfoList;
                         }
                     }
                 }
-                if (backImgView.tag == 0 ) {
+                if (abackImgView.tag == 0 ) {
                     NSString *path = [[NSBundle mainBundle] pathForResource:@"Icon.1_51_2" ofType:@"png"];
-                    UIImage* img = [[[UIImage alloc] initWithContentsOfFile:path] autorelease];
-                    [backImgView setImage:img];
-                    backImgView.tag = 1;
+                    UIImage* img = [[UIImage alloc] initWithContentsOfFile:path];
+                    [abackImgView setImage:img];
+                    abackImgView.tag = 1;
                 } else {
                     NSString *path = [[NSBundle mainBundle] pathForResource:@"Icon.1_51" ofType:@"png"];
-                    UIImage* img = [[[UIImage alloc] initWithContentsOfFile:path] autorelease];
-                    [backImgView setImage:img];
-                    backImgView.tag = 0;
+                    UIImage* img = [[UIImage alloc] initWithContentsOfFile:path];
+                    [abackImgView setImage:img];
+                    abackImgView.tag = 0;
                 }
                 hg::deployFriends();
             }];
@@ -1016,3 +1019,5 @@ static EnemyGroupInfoList enemyGroupInfoList;
 }
 
 @end
+
+

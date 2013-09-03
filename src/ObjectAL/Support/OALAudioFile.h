@@ -53,7 +53,7 @@
 }
 
 /** The URL of the audio file */
-@property(nonatomic,readonly,retain) NSURL* url;
+@property(nonatomic,readonly,strong) NSURL* url;
 
 /** A description of the audio data in this file. */
 @property(nonatomic,readonly,assign) AudioStreamBasicDescription* streamDescription;

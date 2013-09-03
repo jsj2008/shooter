@@ -27,7 +27,7 @@
     CopyrightMessageList reportMessageList;
 }
 
-@property(assign)CAEmitterLayer* emitterLayer;
+@property(weak)CAEmitterLayer* emitterLayer;
 @end
 
 @implementation CopyrightView
@@ -59,7 +59,7 @@
             float width = mainFrame.size.width;
             float x = 0;
             float y = 0;
-            RRSGlowLabel* lbl = [[[RRSGlowLabel alloc] init] autorelease];
+            RRSGlowLabel* lbl = [[RRSGlowLabel alloc] init];
             [lbl setGlowAmount:10];
             [lbl setGlowColor:[UIColor colorWithHexString:@"ffffff"]];
             UIFont* font = [UIFont fontWithName:@"HiraKakuProN-W6" size:40];
@@ -123,10 +123,10 @@
         
         // 戻るボタン
         {
-            ImageButtonView* backImgView = [[[ImageButtonView alloc] initWithFrame:CGRectMake(0, 0, 66, 66)] autorelease];
+            ImageButtonView* backImgView = [[ImageButtonView alloc] initWithFrame:CGRectMake(0, 0, 66, 66)];
             //UIImage* img = [UIImage imageNamed:@"checkmark.png"];
             NSString *path = [[NSBundle mainBundle] pathForResource:ICON_CHECK ofType:@"png"];
-            UIImage* img = [[[UIImage alloc] initWithContentsOfFile:path] autorelease];
+            UIImage* img = [[UIImage alloc] initWithContentsOfFile:path];
             
             [backImgView setBackgroundColor:[UIColor whiteColor]];
             [backImgView setFrame:CGRectMake(mainFrame.size.width - 76, mainFrame.size.height - 84, 66, 66)];
@@ -156,16 +156,16 @@
                                  }];
             }];
         }
-    
+        
         [self setBackgroundColor:[UIColor blackColor]];
-
+        
     }
     return self;
 }
 
 - (UILabel*)createLabel
 {
-    UILabel* lbl = [[[UILabel alloc] init] autorelease];
+    UILabel* lbl = [[UILabel alloc] init];
     //UIFont* font = [UIFont fontWithName:@"HiraKakuProN-W6" size:16];
     UIFont* font = [UIFont systemFontOfSize:16];
     [lbl setFont:font];
@@ -190,13 +190,12 @@
 
 - (void)dealloc
 {
-    if (onEndAction) [onEndAction release];
+    //if (onEndAction) [onEndAction release];
     if(tableView)
     {
-        [tableView release];
+        //[tableView release];
         tableView = nil;
     }
-    [super dealloc];
 }
 
 - (void) setOnEndAction:(void(^)(void))action
@@ -236,14 +235,14 @@ heightForHeaderInSection:(NSInteger)section
 
 /*
  -(UITableViewCell *)tableView:
- (UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath	ロード時に呼び出される。
+ (UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath    ロード時に呼び出される。
  セルの内容を返すように実装する
  （実装必須）
  */
 -(UITableViewCell *)tableView:
 (UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell* c = [[[UITableViewCell alloc] initWithFrame:CGRectMake(0, 0, rowSize.width, rowSize.height)] autorelease];
+    UITableViewCell* c = [[UITableViewCell alloc] initWithFrame:CGRectMake(0, 0, rowSize.width, rowSize.height)];
     [c setBackgroundColor:[UIColor clearColor]];
     [c setSelectionStyle:UITableViewCellSelectionStyleNone];
     
@@ -255,7 +254,7 @@ heightForHeaderInSection:(NSInteger)section
     {
         
         CGRect frame = CGRectMake(0, 0, rowSize.width/2 - 50, rowSize.height);
-        UIView* titleFrame = [[[UIView alloc] initWithFrame:frame] autorelease];
+        UIView* titleFrame = [[UIView alloc] initWithFrame:frame];
         [titleFrame setBackgroundColor:[UIColor colorWithHexString:@"#ffffff"]];
         [titleFrame.layer setBorderWidth:1];
         [titleFrame.layer setBorderColor:MAIN_BORDER_COLOR.CGColor];
@@ -273,7 +272,7 @@ heightForHeaderInSection:(NSInteger)section
     // message
     {
         CGRect frame = CGRectMake(rowSize.width/2 - 50, 0, rowSize.width/2 + 50, rowSize.height);
-        UIView* titleFrame = [[[UIView alloc] initWithFrame:frame] autorelease];
+        UIView* titleFrame = [[UIView alloc] initWithFrame:frame];
         [titleFrame setBackgroundColor:[UIColor clearColor]];
         [titleFrame.layer setBorderWidth:1];
         [titleFrame.layer setBorderColor:MAIN_BORDER_COLOR.CGColor];
@@ -294,12 +293,13 @@ heightForHeaderInSection:(NSInteger)section
 
 
 /*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-}
-*/
+ // Only override drawRect: if you perform custom drawing.
+ // An empty implementation adversely affects performance during animation.
+ - (void)drawRect:(CGRect)rect
+ {
+ // Drawing code
+ }
+ */
 
 @end
+

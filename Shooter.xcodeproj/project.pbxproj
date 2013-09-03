@@ -105,7 +105,6 @@
 		078E950D1787DE7D00ED4AF1 /* goldCoin5.png in Resources */ = {isa = PBXBuildFile; fileRef = 078E950C1787DE7D00ED4AF1 /* goldCoin5.png */; };
 		078F423D176DA9D70026CD17 /* particlesheet01.png in Resources */ = {isa = PBXBuildFile; fileRef = 078F423C176DA9D70026CD17 /* particlesheet01.png */; };
 		0792492917ACF4C90071AA9A /* MessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0792492817ACF4C70071AA9A /* MessageView.m */; };
-		0792C778175BF7BD00E72380 /* JPStupidButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 0792C777175BF7BD00E72380 /* JPStupidButton.m */; };
 		0792C77C175C025400E72380 /* QBFlatButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 0792C77B175C025400E72380 /* QBFlatButton.m */; };
 		0792C77E176360F600E72380 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 0792C77D176360F600E72380 /* logo.png */; };
 		0792C7811764154F00E72380 /* AllyTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0792C7801764154F00E72380 /* AllyTableView.m */; };
@@ -542,8 +541,6 @@
 		078F423C176DA9D70026CD17 /* particlesheet01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = particlesheet01.png; sourceTree = "<group>"; };
 		0792492717ACF4C60071AA9A /* MessageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageView.h; sourceTree = "<group>"; };
 		0792492817ACF4C70071AA9A /* MessageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageView.m; sourceTree = "<group>"; };
-		0792C776175BF7BD00E72380 /* JPStupidButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JPStupidButton.h; sourceTree = "<group>"; };
-		0792C777175BF7BD00E72380 /* JPStupidButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JPStupidButton.m; sourceTree = "<group>"; };
 		0792C77A175C025400E72380 /* QBFlatButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBFlatButton.h; sourceTree = "<group>"; };
 		0792C77B175C025400E72380 /* QBFlatButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBFlatButton.m; sourceTree = "<group>"; };
 		0792C77D176360F600E72380 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
@@ -1452,8 +1449,6 @@
 				07DE747116EC368F0048877C /* GameView.mm */,
 				07BB8FCA17757A7A007FF3D0 /* ImageButtonView.h */,
 				07BB8FCB17757A7B007FF3D0 /* ImageButtonView.m */,
-				0792C776175BF7BD00E72380 /* JPStupidButton.h */,
-				0792C777175BF7BD00E72380 /* JPStupidButton.m */,
 				07DE746916EC368F0048877C /* main.m */,
 				07339E251706C5DA0057041F /* MainViewController.h */,
 				07339E261706C5DA0057041F /* MainViewController.mm */,
@@ -2011,7 +2006,6 @@
 				07341B321751D44300601A9A /* CellManager.cpp in Sources */,
 				077207AC175B5604009FCD2D /* UIButton+MyCategory.m in Sources */,
 				077207AF175B5644009FCD2D /* UIColor+MyCategory.m in Sources */,
-				0792C778175BF7BD00E72380 /* JPStupidButton.m in Sources */,
 				0792C77C175C025400E72380 /* QBFlatButton.m in Sources */,
 				0792C7811764154F00E72380 /* AllyTableView.m in Sources */,
 				07AB4F60176469AA0071482F /* AllyView.m in Sources */,
@@ -2150,6 +2144,7 @@
 		07E0465E16886E73001F9CCE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Yota Hamada (K63JZ995U2)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Yota Hamada (K63JZ995U2)";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2179,6 +2174,7 @@
 		07E0465F16886E73001F9CCE /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				FRAMEWORK_SEARCH_PATHS = (

@@ -38,7 +38,7 @@
 /** \endcond */
 
 /** Slave object that is notified when this object suspends or unsuspends. WEAK reference */
-@property(nonatomic,readwrite,assign) id suspendStatusChangeTarget;
+@property(nonatomic,readwrite,weak) id suspendStatusChangeTarget;
 
 @end
 

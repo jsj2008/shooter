@@ -22,9 +22,9 @@
     bool isUsers_;
     hg::FighterInfo* _fighterInfo;
 }
-@property(assign)UIView* curtain;
-@property(assign)UIView* baseView;
-@property(assign)UITextField* nameTextField;
+@property(weak)UIView* curtain;
+@property(weak)UIView* baseView;
+@property(weak)UITextField* nameTextField;
 @end
 
 @implementation AllyDetailView
@@ -42,12 +42,11 @@
 
 -(void)dealloc
 {
-    [_curtain release];
-    [_baseView release];
+    //[_curtain release];
+    //[_baseView release];
     if (_nameTextField) {
-        [_nameTextField release];
+        //[_nameTextField release];
     }
-    [super dealloc];
 }
 
 - (void)show
@@ -71,7 +70,7 @@
         [curtain setBackgroundColor:[UIColor blackColor]];
         [curtain setAlpha:0.5];
         [self addSubview:curtain];
-        UITapGestureRecognizer *tr = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTapBackground:)] autorelease];
+        UITapGestureRecognizer *tr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTapBackground:)];
         [curtain addGestureRecognizer:tr];
         self.curtain = curtain;
     }
@@ -113,7 +112,7 @@
         UILabel* lb = [self labelWithIndex:labelIndex WithText:[NSString stringWithCString:info->name.c_str() encoding:NSUTF8StringEncoding]];
         [self.baseView addSubview:lb];
     } else {
-    // delete data button
+        // delete data button
         labelIndex++;
         UILabel* lb = [self labelWithIndex:labelIndex WithText:[NSString stringWithCString:info->name.c_str() encoding:NSUTF8StringEncoding]];
         CGRect frame = lb.frame;
@@ -192,18 +191,18 @@
         [self.baseView addSubview:lb];
     }
     /*
-    // kill
-    {
-        labelIndex++;
-        UILabel* lb = [self labelWithIndex:labelIndex WithText:[NSString stringWithFormat:@"Kill %d", info->killCnt]];
-        [self.baseView addSubview:lb];
-    }
-    // die
-    {
-        labelIndex++;
-        UILabel* lb = [self labelWithIndex:labelIndex WithText:[NSString stringWithFormat:@"Dead %d", info->dieCnt]];
-        [self.baseView addSubview:lb];
-    }*/
+     // kill
+     {
+     labelIndex++;
+     UILabel* lb = [self labelWithIndex:labelIndex WithText:[NSString stringWithFormat:@"Kill %d", info->killCnt]];
+     [self.baseView addSubview:lb];
+     }
+     // die
+     {
+     labelIndex++;
+     UILabel* lb = [self labelWithIndex:labelIndex WithText:[NSString stringWithFormat:@"Dead %d", info->dieCnt]];
+     [self.baseView addSubview:lb];
+     }*/
     // total kill
     {
         labelIndex++;
@@ -228,7 +227,7 @@
         // delete data button
         {
             CGRect frm = CGRectMake(x, y, w, h);
-            MenuButton* m = [[[MenuButton alloc] initWithFrame:frm] autorelease];
+            MenuButton* m = [[MenuButton alloc] initWithFrame:frm];
             [m setBackgroundColor:[UIColor whiteColor]];
             [m setText:NSLocalizedString(@"Sell", nil)];
             [m setColor:[UIColor blackColor]];
@@ -239,7 +238,7 @@
                 hg::UserData* u = hg::UserData::sharedUserData();
                 int cost = u->getSellValue(_fighterInfo);
                 NSString* msg = [NSString stringWithFormat:NSLocalizedString(@"Are you sure to sell this for %d Gold?", nil), cost];
-                DialogView* dialog = [[[DialogView alloc] initWithMessage:msg] autorelease];
+                DialogView* dialog = [[DialogView alloc] initWithMessage:msg];
                 [dialog addButtonWithText:NSLocalizedString(@"Sell", nil) withAction:^{
                     u->sell(_fighterInfo);
                     dispatch_async(dispatch_get_main_queue(), ^{
@@ -285,7 +284,7 @@
 
 - (UILabel*)labelWithIndex:(int)index WithText:(NSString*)text
 {
-    UILabel* lb = [[[UILabel alloc] init] autorelease];
+    UILabel* lb = [[UILabel alloc] init];
     //UIFont* font = [UIFont fontWithName:@"HiraKakuProN-W6" size:12];
     UIFont* font = [[lb font] fontWithSize:12];
     CGRect labelFrame;
@@ -305,3 +304,4 @@
 
 
 @end
+

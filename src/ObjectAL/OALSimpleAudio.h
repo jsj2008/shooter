@@ -138,20 +138,20 @@
 /** The number of sources OALSimpleAudio is using (max 32 on current iOS devices). */
 @property(nonatomic,readwrite,assign) int reservedSources;
 
-@property(nonatomic,readonly,retain) ALDevice* device;
+@property(nonatomic,readonly,strong) ALDevice* device;
 
-@property(nonatomic,readonly,retain) ALContext* context;
+@property(nonatomic,readonly,strong) ALContext* context;
 
 /** The channel source used by OALSimpleAudio.
  * Only mess with this if you know what you are doing!
  */
-@property(nonatomic,readonly,retain) ALChannelSource* channel;
+@property(nonatomic,readonly,strong) ALChannelSource* channel;
 
 /** Background audio URL */
-@property(nonatomic,readonly,retain) NSURL* backgroundTrackURL;
+@property(nonatomic,readonly,strong) NSURL* backgroundTrackURL;
 
 /** Background audio track */
-@property(nonatomic,readonly,retain) OALAudioTrack* backgroundTrack;
+@property(nonatomic,readonly,strong) OALAudioTrack* backgroundTrack;
 
 /** Pauses BG music playback */
 @property(nonatomic,readwrite,assign) bool bgPaused;

@@ -294,10 +294,6 @@ float fighterMoveDiffZ = -0.05;
     }
 }
 
--(void)dealloc
-{
-    [super dealloc];
-}
 
 
 @end

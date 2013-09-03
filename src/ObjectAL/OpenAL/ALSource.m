@@ -58,7 +58,7 @@
 
 - (void) receiveNotification:(ALuint) notificationID userData:(void*) userData;
 
-@property(nonatomic, readwrite, retain) NSMutableDictionary* notificationCallbacks;
+@property(nonatomic, readwrite, strong) NSMutableDictionary* notificationCallbacks;
 
 @end
 

@@ -54,7 +54,7 @@
 
 
 @interface ALContext ()
-@property(nonatomic, readwrite, retain) ALDevice *device;
+@property(nonatomic, readwrite, strong) ALDevice *device;
 
 @end
 

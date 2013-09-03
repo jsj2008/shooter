@@ -85,7 +85,7 @@
  *
  * Default value: nil
  */
-@property(nonatomic,readwrite,retain) NSString* audioSessionCategory;
+@property(nonatomic,readwrite,strong) NSString* audioSessionCategory;
 
 /** If YES, allow ipod music to continue playing (NOT SUPPORTED ON THE SIMULATOR).
  * Note: If this is enabled, and another app is playing music, background audio
@@ -140,7 +140,7 @@
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 /** Delegate that will receive all audio session events (WEAK reference).
  */
-@property(nonatomic,readwrite,assign) id<AVAudioSessionDelegate> audioSessionDelegate;
+@property(nonatomic,readwrite,weak) id<AVAudioSessionDelegate> audioSessionDelegate;
 #endif
 
 /** If true, the audio session is active */
@@ -175,7 +175,7 @@
  * (not supported on the simulator).
  * @deprecated Use AVAudioSession instead.
  */
-@property(nonatomic,readonly,retain) NSString* audioRoute __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_NA,__MAC_NA,__IPHONE_2_0,__IPHONE_6_1);
+@property(nonatomic,readonly,strong) NSString* audioRoute __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_NA,__MAC_NA,__IPHONE_2_0,__IPHONE_6_1);
 
 
 #pragma mark Object Management

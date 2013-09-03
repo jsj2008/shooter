@@ -52,13 +52,13 @@
 #pragma mark Properties
 
 /** All contexts created on this device (ALContext*). */
-@property(nonatomic,readonly,retain) NSArray* contexts;
+@property(nonatomic,readonly,strong) NSArray* contexts;
 
 /** The OpenAL device pointer. */
 @property(nonatomic,readonly,assign) ALCdevice* device;
 
 /** List of strings describing all extensions available on this device (NSString*). */
-@property(nonatomic,readonly,retain) NSArray* extensions;
+@property(nonatomic,readonly,strong) NSArray* extensions;
 
 /** The specification revision for this implementation (major version). */
 @property(nonatomic,readonly,assign) int majorVersion;
