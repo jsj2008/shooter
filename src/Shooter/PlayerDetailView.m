@@ -7,6 +7,7 @@
 //
 
 #import "PlayerDetailView.h"
+#import "MainViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "DialogView.h"
 #import "ImageButtonView.h"
@@ -17,6 +18,9 @@
 #import "RRSGlowLabel.h"
 #import <sstream>
 #import <stdlib.h>
+
+// Google AdMob
+#import "GADBannerView.h"
 
 @interface PlayerDetailView()
 {
@@ -126,6 +130,7 @@
             [lbl setGlowAmount:10];
             [lbl setGlowColor:[UIColor colorWithHexString:@"ffffff"]];
             UIFont* font = [UIFont fontWithName:@"HiraKakuProN-W6" size:40];
+            //UIFont* font = [UIFont systemFontOfSize:18];
             [lbl setFont:font];
             [lbl setText:NSLocalizedString(@"Statistics", nil)];
             [lbl setFrame:CGRectMake(x, y, width, height)];
@@ -141,11 +146,25 @@
             [self addSubview:imgView];*/
         }
         
+        float adheight = 0;
+        
+        // admob
+        if (IS_PLAYER_DETAIL_ADMOB)
+        {
+            GADBannerView* ad = [MainViewController CreateGADBannerView];
+            [self addSubview:ad];
+            CGRect r = ad.frame;
+            r.origin.x = mainFrame.size.width/2 - r.size.width/2;
+            r.origin.y = mainFrame.size.height - r.size.height;
+            [ad setFrame:r];
+            adheight = r.size.height;
+        }
+        
         // table
         float row_height = 25;
         rowSize.height = row_height;
         rowSize.width = mainFrame.size.width - 30;
-        CGRect scrollFrame = CGRectMake(15, 75, rowSize.width, mainFrame.size.height - 75);
+        CGRect scrollFrame = CGRectMake(15, 75, rowSize.width, mainFrame.size.height - 75 - (adheight + 5));
         UITableView* tbv = [[UITableView alloc] initWithFrame:scrollFrame];
         [tbv setBackgroundColor:[UIColor clearColor]];
         [tbv setRowHeight:row_height];
@@ -289,7 +308,8 @@
 - (UILabel*)createLabel
 {
     UILabel* lbl = [[[UILabel alloc] init] autorelease];
-    UIFont* font = [UIFont fontWithName:@"HiraKakuProN-W6" size:16];
+    //UIFont* font = [UIFont fontWithName:@"HiraKakuProN-W6" size:16];
+    UIFont* font = [UIFont systemFontOfSize:16];
     [lbl setFont:font];
     [lbl setTextAlignment:NSTextAlignmentLeft];
     [lbl setBackgroundColor:[UIColor clearColor]];

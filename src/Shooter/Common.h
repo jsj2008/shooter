@@ -1,4 +1,7 @@
-#define IS_DEBUG 1
+#define IS_DEBUG 0
+#define IS_BACKGROUND 1
+#define IS_ALLYVIEW 1
+#define IS_STATUS 1
 
 #define STR2NSSTR(a) [NSString stringWithCString:a.c_str() encoding:NSUTF8StringEncoding]
 #define NSSTR2STR(a) std::string([a UTF8String])
@@ -25,4 +28,15 @@
 #define ICON_SELECT_ALL @"ic_select_all"
 #define ICON_DESELECT @"ic_deselect"
 #define ICON_SORT @"ic_sort"
+
+#define ADDMOB_PUBLISHER_ID @"a1522432707c35f"
+#define GAMEFEAT_MEDIA_ID @"2344"
+
+#define IS_GAMEFEAT 0
+#define IS_MEDIBAAD 0
+#define IS_MAIN_ADMOB 1
+#define IS_PLAYER_DETAIL_ADMOB 0
+#define IS_REPORT_VIEW_ADMOB 1
+
+#define MENU_ANIMATION_DURATION 0.2
 

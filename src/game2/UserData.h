@@ -59,6 +59,7 @@ namespace hg {
         FighterListSortTypeFirst,
         FighterListSortTypeReady,
         FighterListSortTypeLife,
+        FighterListSortTypeName,
         FighterListSortTypeLast,
     } FighterListSortType;
     

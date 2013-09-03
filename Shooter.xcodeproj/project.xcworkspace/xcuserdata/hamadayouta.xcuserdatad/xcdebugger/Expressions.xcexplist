@@ -12,13 +12,13 @@
          contextName = "IndexBuffer::IndexBuffer(unsigned char const*, int):IndexBuffer.mm">
          <PersistentStrings>
             <PersistentString
-               value = "sizeof(Vertex)">
-            </PersistentString>
-            <PersistentString
                value = "indices[1]">
             </PersistentString>
             <PersistentString
                value = "sizeof(Index)">
+            </PersistentString>
+            <PersistentString
+               value = "sizeof(Vertex)">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -194,6 +194,9 @@
          contextName = "hg::Bullet::init(hg::BulletType, float, int, hg::Actor*, float, float, float, hg::SideType):HBullet.h">
       </ContextState>
       <ContextState
+         contextName = "hg::deployAllFriends():HGame.mm">
+      </ContextState>
+      <ContextState
          contextName = "HGGame::HGCPU::decideDestination():HGCPU.mm">
       </ContextState>
       <ContextState
@@ -301,10 +304,10 @@
          contextName = "GLES::compileShaders():GLES.mm">
          <PersistentStrings>
             <PersistentString
-               value = "aNormalSlot">
+               value = "aPositionSlot">
             </PersistentString>
             <PersistentString
-               value = "aPositionSlot">
+               value = "aNormalSlot">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -331,13 +334,13 @@
          contextName = "hg::BattleState::onUpdate():HGame.mm">
          <PersistentStrings>
             <PersistentString
+               value = "HGProcessManager::sharedProcessManager()">
+            </PersistentString>
+            <PersistentString
                value = "SpawnGroup">
             </PersistentString>
             <PersistentString
                value = "spawnData">
-            </PersistentString>
-            <PersistentString
-               value = "HGProcessManager::sharedProcessManager()">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -688,13 +691,13 @@
          contextName = "-[FMDatabase executeUpdate:error:withArgumentsInArray:orDictionary:orVAList:]:FMDatabase.m">
          <PersistentStrings>
             <PersistentString
+               value = "queryCount">
+            </PersistentString>
+            <PersistentString
                value = "args">
             </PersistentString>
             <PersistentString
                value = "arrayArgs">
-            </PersistentString>
-            <PersistentString
-               value = "queryCount">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -706,6 +709,14 @@
          <PersistentStrings>
             <PersistentString
                value = "size1">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[GameView showMessage]:GameView.mm">
+         <PersistentStrings>
+            <PersistentString
+               value = "[messageList count]">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

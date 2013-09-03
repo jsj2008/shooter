@@ -426,7 +426,7 @@ namespace hg {
         inline void showTracks(float rad)
         {
             // 軌跡
-            if (side == SideTypeFriend && rand(0, 100) <= 50)
+            if (side == SideTypeFriend && rand(0, 100) <= 20)
             {
                 for (int i = 0; i < 2; i++)
                 {
@@ -435,12 +435,17 @@ namespace hg {
                     float ty = sin(r) * getHeight() + getPositionY();
                     {
                         AlphaMapSprite* pSpr = new AlphaMapSprite();
-                        pSpr->init("star_cross.png", (Color){0.9, 0.9, 1.0, 1.0});
+                        float r = rand(50, 100) * 0.01;
+                        float g = rand(50, 100) * 0.01;
+                        float b = rand(50, 100) * 0.01;
+                        pSpr->init("star_cross.png", (Color){r, g, b, 1.0});
+                        //pSpr->init("star_cross.png", (Color){0.9, 0.9, 1.0, 1.0});
                         pSpr->setPosition(tx, ty);
-                        pSpr->setScale(0, 0);
+                        float size = rand(PXL2REAL(0), PXL2REAL(30));
+                        pSpr->setScale(size, size);
                         pSpr->setRotateZ(toRad(rand(0, 359)));
                         pLayerEffect->addChild(pSpr);
-                        {
+                        /*{
                             // 回転
                             HGProcessOwner* po = new HGProcessOwner();
                             RotateNodeProcess* rnp = new RotateNodeProcess();
@@ -448,11 +453,20 @@ namespace hg {
                             rnp->init(po, pSpr, r, f(40));
                             rnp->setEaseFunc(&ease_out);
                             HGProcessManager::sharedProcessManager()->addProcess(rnp);
+                        }*/
+                        {
+                            // 色
+                            HGProcessOwner* po = new HGProcessOwner();
+                            ChangeSpriteColorProcess* rnp = new ChangeSpriteColorProcess();
+                            Color c = {g, r, b, 1.0};
+                            rnp->init(po, pSpr, c, f(10));
+                            rnp->setEaseFunc(&ease_out);
+                            HGProcessManager::sharedProcessManager()->addProcess(rnp);
                         }
                         {
-                            float size = rand(PXL2REAL(80), PXL2REAL(170));
-                            // 拡大
+                            float size = rand(PXL2REAL(120), PXL2REAL(250));
                             HGProcessOwner* po = new HGProcessOwner();
+                            // 拡大
                             ChangeScaleProcess* ssp = new ChangeScaleProcess();
                             ssp->init(po, pSpr, size, size, f(10));
                             ssp->setEaseFunc(&ease_out);
@@ -461,7 +475,7 @@ namespace hg {
                             ChangeScaleProcess* ssp2 = new ChangeScaleProcess();
                             ssp2->init(po, pSpr, 0, 0, f(25));
                             ssp2->setEaseFunc(&ease_in);
-                            ssp->setNext(ssp2);
+                            //ssp->setNext(ssp2);
                             
                             // 削除
                             NodeRemoveProcess* nrp = new NodeRemoveProcess();
@@ -469,7 +483,7 @@ namespace hg {
                             ssp2->setNext(nrp);
                             
                             // プロセス開始
-                            HGProcessManager::sharedProcessManager()->addProcess(ssp);
+                            HGProcessManager::sharedProcessManager()->addProcess(ssp2);
                         }
                     }
                 }

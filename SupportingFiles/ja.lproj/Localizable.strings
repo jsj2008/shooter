@@ -6,6 +6,18 @@
   Copyright (c) 2013年 hayogame. All rights reserved.
 */
 
+"Enemies approaching!" = "敵の増援が出現しました!";
+
+"%@ is in Danger Now!" = "%@のHPが低下しています!";
+
+"%@ destroyed by enemy!" = "%@が撃墜されました";
+
+"You destroyed %@!!" = "%@を撃破しました!";
+
+"%@ destroyed %@!!" = "%@が%@を撃破しました!";
+
+"Other Great Games!" = "いま人気のゲームを見る!";
+
 "Cleared Count: %d" = "%d回クリア";
 
 "You can change the Stage when the Occupy Ratio is 0% or 100%" = "支配率が0%か100%の時だけステージを変更できます";
@@ -41,7 +53,7 @@
 "\tTeq Lv: %d → %d\n" = "\t技量レベル: %d → %d\n";
 
 /* No comment provided by engineer. */
-"All Fighters are repaired!" = "全ての機体が修理された!";
+"All Fighters are repaired!" = "全ての機体が修理されました!";
 
 /* No comment provided by engineer. */
 "Ammo Cost" = "弾薬使用コスト";
@@ -128,7 +140,7 @@
 "Hit Ratio" = "命中率";
 
 /* No comment provided by engineer. */
-"Hits" = "名仲介数";
+"Hits" = "命中回数";
 
 /* No comment provided by engineer. */
 "HP %d/%d" = "HP %d/%d";
@@ -143,7 +155,7 @@
 "It Costs %d gold. Are you sure to buy this?" = "%dゴールドで購入しますか？";
 
 /* No comment provided by engineer. */
-"It Costs %d gold. Are you sure to repair all?" = "%dで全ての機体を修理しますか？";
+"It Costs %d gold. Are you sure to repair all?" = "%dゴールドで全ての機体を修理しますか？";
 
 /* No comment provided by engineer. */
 "It Costs %d gold. You need more gold" = "全ての機体を修理するには%dゴールド必要です";
@@ -176,7 +188,7 @@
 "Master sergeant" = "1曹";
 
 /* No comment provided by engineer. */
-"Max Units" = "最大部下数";
+"Max Units" = "最大僚機数";
 
 /* No comment provided by engineer. */
 "No Shield" = "シールド無し";
@@ -227,7 +239,7 @@
 "Select Stage" = "ステージを選択";
 
 /* No comment provided by engineer. */
-"Select Units" = "部下を選択";
+"Select Units" = "僚機を選択";
 
 /* No comment provided by engineer. */
 "Sell" = "売却";
@@ -245,7 +257,7 @@
 "Show Credits" = "クレジット表示";
 
 /* No comment provided by engineer. */
-"Sorry, %@ can take only %d Units to battle area." = "ランクが%@の場合、選択可能な部下の数は%d体までです";
+"Sorry, %@ can take only %d Units to battle area." = "ランクが%@の場合、選択可能な僚機の数は%d体までです";
 
 /* No comment provided by engineer. */
 "Sorry, an unexpected error happend!" = "エラーが発生しました";

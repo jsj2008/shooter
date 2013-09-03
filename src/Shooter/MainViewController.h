@@ -7,8 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+// gamefeat
+#import <GameFeatKit/GFView.h>
+#import <GameFeatKit/GFController.h>
 
-@interface MainViewController : UIViewController
+// Google AdMob
+#import "GADBannerView.h"
+
+@interface MainViewController : UIViewController<GFViewDelegate>
 {
 }
 
@@ -16,6 +22,7 @@
 +(void)PresentViewController:(UIViewController*) vc;
 + (void)RemoveBackgroundView;
 + (void)ShowBackgroundView;
++(GADBannerView*)CreateGADBannerView;
 
 @end
 

@@ -17,12 +17,12 @@
     if (self) {
         // Initialization code
         CABasicAnimation *theAnimation;
-        theAnimation=[CABasicAnimation animationWithKeyPath:@"opacity"];
-        theAnimation.duration=1.0;
-        theAnimation.repeatCount=999999;
-        theAnimation.autoreverses=YES;
-        theAnimation.fromValue=[NSNumber numberWithFloat:1.0];
-        theAnimation.toValue=[NSNumber numberWithFloat:0.0];
+        theAnimation = [CABasicAnimation animationWithKeyPath:@"opacity"];
+        theAnimation.duration = 1.0;
+        theAnimation.repeatCount = 99999999;
+        theAnimation.autoreverses = YES;
+        theAnimation.fromValue = [NSNumber numberWithFloat:1.0];
+        theAnimation.toValue = [NSNumber numberWithFloat:0.0];
         [self.layer addAnimation:theAnimation forKey:@"animateOpacity"];
     }
     return self;

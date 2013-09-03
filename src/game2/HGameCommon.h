@@ -17,14 +17,20 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define IS_DEBUG_SHOOTER 1
+#define IS_DEBUG_SHOOTER 0
 #define IS_DEBUG_COLLISION 0
 #define ENEMY_NUM 10
 #define EFFECT_NUM 30
 #define BULLET_NUM 100
 #define ENEMY_BULLET_NUM 250
+/*
+#define EFFECT_NUM 0
+#define BULLET_NUM 0
+#define ENEMY_BULLET_NUM 0
+*/
+
 #define FIELD_SIZE 100
-#define CPU_LV_MAX 100
+#define CPU_LV_MAX 150
 #define ZPOS 0
 #define BACKGROUND_SCALE 2000
 #define STAGE_SCALE 100

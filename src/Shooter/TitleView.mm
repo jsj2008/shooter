@@ -121,7 +121,8 @@ t_title_btn title_btn_info[] = {
             [l setTextAlignment:NSTextAlignmentCenter];
             [l setTextColor:[UIColor greenColor]];
             [l setText:@"Touch to start"];
-            UIFont* font = [UIFont fontWithName:@"Copperplate-Bold" size:20];
+            //UIFont* font = [UIFont fontWithName:@"Copperplate-Bold" size:20];
+            UIFont* font = [UIFont systemFontOfSize:20];
             [l setFont:font];
             [l setBackgroundColor:[UIColor clearColor]];
             [l setAlpha:0];
@@ -199,8 +200,9 @@ t_title_btn title_btn_info[] = {
     CGRect labelRect = CGRectMake(self.frame.size.width/2 - labelWidth/2, self.frame.size.height/2 - labelHeight/2 + 80, labelWidth, labelHeight);
     BlinkLabel* startLabel = [[BlinkLabel alloc] initWithFrame:labelRect];
     [startLabel setTextColor:[UIColor redColor]];
-    NSString* fontName = @"HiraKakuProN-W6";
-    UIFont* font = [UIFont fontWithName:fontName size:15];
+    //NSString* fontName = @"HiraKakuProN-W6";
+    //UIFont* font = [UIFont fontWithName:fontName size:15];
+    UIFont* font = [UIFont systemFontOfSize:15];
     [startLabel setFont:font];
     [startLabel setBackgroundColor:[UIColor clearColor]];
     [startLabel setUserInteractionEnabled:NO];
@@ -224,6 +226,7 @@ t_title_btn title_btn_info[] = {
     }
     
     // cover
+    /*
     {
         UIView* v = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
         [v setBackgroundColor:[UIColor blackColor]];
@@ -232,7 +235,7 @@ t_title_btn title_btn_info[] = {
         [UIView animateWithDuration:0.3 animations:^{
             [v setAlpha:0];
         }];
-    }
+    }*/
     
 }
 

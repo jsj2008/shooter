@@ -17,6 +17,7 @@
 #import "GlowLabel.h"
 #import <sstream>
 #import <stdlib.h>
+#import "MainViewController.h"
 
 @interface ReportView ()
 {
@@ -103,11 +104,26 @@
              */
         }
         
+        float adheight = 0;
+        
+        // admob
+        if (IS_REPORT_VIEW_ADMOB)
+        {
+            // admob
+            GADBannerView* ad = [MainViewController CreateGADBannerView];
+            [self addSubview:ad];
+            CGRect r = ad.frame;
+            r.origin.x = mainFrame.size.width/2 - r.size.width/2;
+            r.origin.y = mainFrame.size.height - r.size.height;
+            [ad setFrame:r];
+            adheight = r.size.height;
+        }
+        
         // table
         float row_height = 25;
         rowSize.height = row_height;
         rowSize.width = mainFrame.size.width - 30;
-        CGRect scrollFrame = CGRectMake(15, 55, rowSize.width, mainFrame.size.height - 75);
+        CGRect scrollFrame = CGRectMake(15, 55, rowSize.width, mainFrame.size.height - 75 - (adheight + 5));
         UITableView* tbv = [[UITableView alloc] initWithFrame:scrollFrame];
         [tbv setBackgroundColor:[UIColor clearColor]];
         [tbv setRowHeight:row_height];
@@ -322,7 +338,19 @@
                 onEndAction();
             }];
         }
-    
+        // cover
+        {
+            UIView* v = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
+            [v setBackgroundColor:[UIColor blackColor]];
+            [v setUserInteractionEnabled:YES];
+            [self addSubview:v];
+            [UIView animateWithDuration:0.7 animations:^{
+                [v setAlpha:0];
+            } completion:^(BOOL finished) {
+                [v removeFromSuperview];
+            }];
+        }
+        
         [self setBackgroundColor:[UIColor blackColor]];
 
     }
@@ -332,7 +360,8 @@
 - (UILabel*)createLabel
 {
     UILabel* lbl = [[[UILabel alloc] init] autorelease];
-    UIFont* font = [UIFont fontWithName:@"HiraKakuProN-W6" size:16];
+    //UIFont* font = [UIFont fontWithName:@"HiraKakuProN-W6" size:16];
+    UIFont* font = [UIFont systemFontOfSize:16];
     [lbl setFont:font];
     [lbl setTextAlignment:NSTextAlignmentLeft];
     [lbl setBackgroundColor:[UIColor clearColor]];

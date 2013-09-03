@@ -7,6 +7,7 @@
 //
 
 #import "GameView.h"
+#import "SystemMonitor.h"
 //#import "HGGame.h"
 #import "HGame.h"
 #import "HGLView.h"
@@ -89,6 +90,7 @@ typedef std::vector<EnemyGroupInfo> EnemyGroupInfoList;
     
     // base
     UIView* baseView;
+    UIView* messageView;
     CGRect baseFrame;
     
     UIView* baseCurtain;
@@ -104,6 +106,8 @@ typedef std::vector<EnemyGroupInfo> EnemyGroupInfoList;
     UIView* hpGaugeBar;
     UIView* shieldGaugeBar;
     hg::FighterList enemyList;
+    
+    NSMutableArray* messageList;
     
 }
 @end
@@ -123,14 +127,30 @@ static EnemyGroupInfoList enemyGroupInfoList;
     {
         [onEndAction release];
     }
-    [baseView release];
-    [baseCurtain release];
+    if (baseView) {
+        [baseView release];
+    }
+    if (baseCurtain) {
+        [baseCurtain release];
+    }
     if (hpGaugeBar) {
         [hpGaugeBar release];
     }
     if (shieldGaugeBar) {
         [shieldGaugeBar release];
     }
+    
+    if (messageList) {
+        for (UILabel* a in messageList) {
+            [a release];
+        }
+        [messageList removeAllObjects];
+        [messageList release];
+    }
+    if (messageView) {
+        [messageView release];
+    }
+    
     [super dealloc];
 }
 
@@ -144,6 +164,18 @@ static EnemyGroupInfoList enemyGroupInfoList;
     }
     if (self)
     {
+        
+        /*
+        double delayInSeconds = 2.0;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            onEndAction();
+        });
+        return;
+        */
+    
+        
+        messageList = [[NSMutableArray alloc] init];
         isPlaying = false;
         CGRect frame = [[UIScreen mainScreen] applicationFrame];
         CGRect viewFrame = CGRectMake(0, 0, frame.size.height, frame.size.width);
@@ -162,6 +194,10 @@ static EnemyGroupInfoList enemyGroupInfoList;
         // 描画開始
         [_glview start];
         
+    }
+    if (IS_DEBUG) {
+        NSLog(@"game init");
+        [SystemMonitor dump];
     }
     return self;
 }
@@ -217,10 +253,60 @@ static EnemyGroupInfoList enemyGroupInfoList;
     }
 }
 
+#define SHOW_MESSAGE_NUM 3
+- (void)showMessage
+{
+    // message
+    hg::GameMessageList gameMessageList = hg::getGameMessageList();
+    if (gameMessageList.size() <= 0) {
+        return;
+    }
+    
+    int addCnt = gameMessageList.size();
+    int nowCnt = [messageList count];
+    int sumCnt = addCnt + nowCnt;
+    int delCnt = sumCnt - SHOW_MESSAGE_NUM;
+    if (delCnt > 0 && delCnt <= nowCnt) {
+        for (int i = 0; i < delCnt; i++) {
+            UILabel* tmp = [messageList objectAtIndex:0];
+            [tmp removeFromSuperview];
+            [messageList removeObjectAtIndex:0];
+            [tmp release];
+        }
+    }
+    float x = 0;
+    float w = messageView.frame.size.width;
+    float h = 14;
+    for (hg::GameMessageList::iterator it = gameMessageList.begin(); it != gameMessageList.end(); ++it) {
+        UILabel* l = [[UILabel alloc] initWithFrame:CGRectMake(x, 0, w, h)];
+        //NSString* fontName = @"HiraKakuProN-W6";
+        //UIFont* font = [UIFont fontWithName:fontName size:12];
+        UIFont* font  = [[l font] fontWithSize:12];
+        //l.adjustsFontSizeToFitWidth = true;
+        [l setFont:font];
+        [l setBackgroundColor:[UIColor clearColor]];
+        [l setTextColor:[UIColor colorWithHexString:STR2NSSTR((*it).colorHex)]];
+        [l setText:STR2NSSTR((*it).message)];
+        [messageList addObject:l];
+        [messageView addSubview:l];
+        int nowCnt = [messageList count];
+        if (nowCnt > SHOW_MESSAGE_NUM) {
+            break;
+        }
+    }
+    float y = 5;
+    for (UILabel* l in messageList) {
+        CGRect r = l.frame;
+        r.origin.y = y;
+        l.frame = r;
+        y += h;
+    }
+    hg::clearGameMessageList();
+}
+
 // UI初期化
 - (void)initialize
 {
-    
     @synchronized(lock)
     {
         // initialize game
@@ -426,6 +512,11 @@ static EnemyGroupInfoList enemyGroupInfoList;
                             }
                             [_glview draw];
                             
+                            // message
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                [self showMessage];
+                            });
+                            
                             // update life bar
                             dispatch_async(dispatch_get_main_queue()
                                            , ^{
@@ -436,6 +527,11 @@ static EnemyGroupInfoList enemyGroupInfoList;
                             {
                                 isPlaying = false;
                                 NSLog(@"is game end");
+                                if (IS_DEBUG) {
+                                    NSLog(@"game end");
+                                    [SystemMonitor dump];
+                                }
+                                
                                 // 終了処理
                                 hg::UserData::sharedUserData()->initAfterBattle();
                                 // 戦果集計
@@ -536,7 +632,9 @@ static EnemyGroupInfoList enemyGroupInfoList;
             [button setBackgroundColorString:@"#67e300" forState:UIControlStateNormal radius:0];
             [button setBackgroundColorString:@"#ff4940" forState:UIControlStateHighlighted radius:0];
             
-            [button.titleLabel setFont:[UIFont fontWithName:@"EuphemiaUCAS" size:12]];
+            UIFont* font = [UIFont systemFontOfSize:12];
+            //[button.titleLabel setFont:[UIFont fontWithName:@"EuphemiaUCAS" size:12]];
+            [button.titleLabel setFont:font];
             [button setContentVerticalAlignment:UIControlContentVerticalAlignmentCenter];
             [button setContentHorizontalAlignment:UIControlContentHorizontalAlignmentCenter];
             
@@ -845,19 +943,22 @@ static EnemyGroupInfoList enemyGroupInfoList;
                         if (!info->isOnBattleGround && !info->isPlayer && info->life > 0) {
                             info->isOnBattleGround = true;
                         }
-                        NSString *path = [[NSBundle mainBundle] pathForResource:@"Icon.1_51_2" ofType:@"png"];
-                        UIImage* img = [[[UIImage alloc] initWithContentsOfFile:path] autorelease];
-                        [backImgView setImage:img];
-                        backImgView.tag = 1;
                     } else {
-                        if (!info->isOnBattleGround && !info->isPlayer && info->life > 0) {
+                        if (info->isOnBattleGround && !info->isPlayer && info->life > 0) {
                             info->isOnBattleGround = false;
                         }
-                        NSString *path = [[NSBundle mainBundle] pathForResource:@"Icon.1_51" ofType:@"png"];
-                        UIImage* img = [[[UIImage alloc] initWithContentsOfFile:path] autorelease];
-                        [backImgView setImage:img];
-                        backImgView.tag = 0;
                     }
+                }
+                if (backImgView.tag == 0 ) {
+                    NSString *path = [[NSBundle mainBundle] pathForResource:@"Icon.1_51_2" ofType:@"png"];
+                    UIImage* img = [[[UIImage alloc] initWithContentsOfFile:path] autorelease];
+                    [backImgView setImage:img];
+                    backImgView.tag = 1;
+                } else {
+                    NSString *path = [[NSBundle mainBundle] pathForResource:@"Icon.1_51" ofType:@"png"];
+                    UIImage* img = [[[UIImage alloc] initWithContentsOfFile:path] autorelease];
+                    [backImgView setImage:img];
+                    backImgView.tag = 0;
                 }
                 hg::deployFriends();
             }];
@@ -865,6 +966,16 @@ static EnemyGroupInfoList enemyGroupInfoList;
         
         [[OALSimpleAudio sharedInstance] playBg:BGM_BATTLE loop:true];
         
+    }
+    // message view
+    {
+        float x = GAUGE_FRAME_WIDTH * 2 + 30;
+        float y = 0;
+        float w = self.frame.size.width * 0.8;
+        float h = 100;
+        messageView = [[UIView alloc] initWithFrame:CGRectMake(x, y, w, h)];
+        [messageView setUserInteractionEnabled:NO];
+        [baseView addSubview:messageView];
     }
     
 }

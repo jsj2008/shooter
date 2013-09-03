@@ -79,9 +79,21 @@ bool isBackGround = false;
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
+    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     isBackGround = true;
+    
+    // gamefeat
+    {
+        UIDevice *device = [UIDevice currentDevice];
+        BOOL backgroundSupported = NO;
+        if ([device respondsToSelector:@selector(isMultitaskingSupported)]) {
+            backgroundSupported = device.multitaskingSupported;
+        }
+        if (backgroundSupported) {
+            [GFController backgroundTask];
+        }
+    }
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
@@ -92,12 +104,18 @@ bool isBackGround = false;
         [sv loadUserInfo];
     }
     isBackGround = true;
+    
+    // gamefeat
+    {
+        [GFController conversionCheckStop];
+    }
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     isBackGround = false;
+    [GFController activateGF:GAMEFEAT_MEDIA_ID];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application

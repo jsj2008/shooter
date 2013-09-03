@@ -206,6 +206,9 @@ using namespace hgles;
 }
 
 - (void)render:(CADisplayLink*)displayLink {
+    
+    if ([AppDelegate IsBackGround]) return;
+    
     // FPS計算
     NSDate* nowDate = [NSDate date];
     NSTimeInterval start = [nowDate timeIntervalSince1970];

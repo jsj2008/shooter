@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <GameFeatKit/GFController.h>
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 

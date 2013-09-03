@@ -106,7 +106,8 @@
 - (UILabel*)labelWithIndex:(int)index WithText:(NSString*)text
 {
     UILabel* lb = [[[UILabel alloc] init] autorelease];
-    UIFont* font = [UIFont fontWithName:@"Copperplate-Bold" size:12];
+    //UIFont* font = [UIFont fontWithName:@"Copperplate-Bold" size:12];
+    UIFont* font = [[lb font] fontWithSize:12];
     CGRect labelFrame = self.frame;
     labelFrame.size.width = mainFrame.size.width - 10;
     labelFrame.size.height = 16;
@@ -577,11 +578,10 @@
                 else
                 {
                     _fighterInfo->isPlayer = true;
-                    /*
                     if (_fighterInfo->isReady)
                     {
                         hg::UserData::sharedUserData()->setUnReady(_fighterInfo);
-                    }*/
+                    }
                 }
             }
             [AllyTableView ReloadData];
@@ -634,9 +634,21 @@
     } completion:^(BOOL finished) {
         if (touchStart)
         {
+            bool isUsers = false;
+            switch (_mode) {
+                case AllyViewModeFix:
+                case AllyViewModeSelectAlly:
+                    isUsers = true;
+                    break;
+                case AllyViewModeDeployAlly:
+                case AllyViewModeSelectPlayer:
+                case AllyViewModeSell:
+                case AllyViewModeShop:
+                    break;
+            }
             NSLog(@"show detail!");
             isShowDetail = true;
-            AllyDetailView* adv = [[[AllyDetailView alloc] initWithFighterInfo:_fighterInfo] autorelease];
+            AllyDetailView* adv = [[[AllyDetailView alloc] initWithFighterInfo:_fighterInfo isUsers:isUsers] autorelease];
             [adv show];
         }
     }];

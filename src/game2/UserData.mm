@@ -80,9 +80,10 @@ namespace hg {
         }
         
         // cpu level
-        if (status_rand(1, 100) <= 50) {
-            if (fighterInfo->cpu_lv < 100) {
-                fighterInfo->cpu_lv += status_rand(1, 3);
+        if (status_rand(1, 100) <= 25) {
+            if (fighterInfo->cpu_lv < CPU_LV_MAX) {
+                fighterInfo->cpu_lv += status_rand(2, 6);
+                fighterInfo->cpu_lv = MIN(CPU_LV_MAX, fighterInfo->cpu_lv);
             }
         }
         
@@ -187,7 +188,7 @@ namespace hg {
     {
         is_cleared = false;
         checkLevelup();
-        br.allShotMoney = ceil(br.allShotPower*0.01);
+        br.allShotMoney = ceil(br.allShotPower*0.018);
         int income = br.allShotMoney * -1;
         //br.battleScore = -1 * ceil(br.deadValue * 0.0001);
         totalDead += br.killedFriend;
@@ -200,7 +201,7 @@ namespace hg {
             this->addPoint(getStageInfo().win_point);
             
             // 戦果
-            br.battleScore += ceil(br.killedValue * 0.001);
+            br.battleScore += ceil(br.killedValue * 0.0015);
             
             // clear?
             if (this->getCurrentClearRatio() >= 1) {
@@ -431,7 +432,7 @@ namespace hg {
                 });
             }
             if (battleMoneyReward > 0) {
-                addBattleScore(battleScoreReward);
+                addMoney(battleMoneyReward);
                 char tmp[200];
                 sprintf(tmp, NSSTR2STR(NSLocalizedString(@"You got %d Bonus Gold", nil)).c_str(), battleMoneyReward);
                 rewardInfoList.push_back({
@@ -452,7 +453,7 @@ namespace hg {
     {
         if (score <= 250) {
             grade = NSSTR2STR(NSLocalizedString(@"Spaceman Basic", nil));
-            maxAllyNum = 1;
+            maxAllyNum = 2;
             maxPowerUpNum = 1;
         }
         else if (score <= 500) {
@@ -606,10 +607,16 @@ namespace hg {
             if (IS_DEBUG_SHOOTER) {
                 hg::UserData::sharedUserData()->setDefaultInfo(pPlayerInfo, FighterTypePegasus);
             } else {
-                hg::UserData::sharedUserData()->setDefaultInfo(pPlayerInfo, FighterTypeViper);
+                hg::UserData::sharedUserData()->setDefaultInfo(pPlayerInfo, FighterTypeViperC);
                 {
                     hg::FighterInfo* i = new hg::FighterInfo();
                     hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypeViper);
+                    fighterList.push_back(i);
+                    this->setReady(i);
+                }
+                {
+                    hg::FighterInfo* i = new hg::FighterInfo();
+                    hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypeRapter);
                     fighterList.push_back(i);
                     this->setReady(i);
                 }
@@ -617,69 +624,83 @@ namespace hg {
             fighterList.push_back(pPlayerInfo);
             pPlayerInfo->isPlayer = true;
             if (IS_DEBUG_SHOOTER) {
+                int exp = 1000000;
                 {
                     hg::FighterInfo* i = new hg::FighterInfo();
                     hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypeRaderC);
+                    i->exp += exp;
                     fighterList.push_back(i);
                 }
                 {
                     hg::FighterInfo* i = new hg::FighterInfo();
                     hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypeVesariusC);
+                    i->exp += exp;
                     fighterList.push_back(i);
                 }
                 {
                     hg::FighterInfo* i = new hg::FighterInfo();
                     hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypeViper);
+                    i->exp += exp;
                     fighterList.push_back(i);
                 }
                 {
                     hg::FighterInfo* i = new hg::FighterInfo();
                     hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypePegasus);
+                    i->exp += exp;
                     fighterList.push_back(i);
                 }
                 {
                     hg::FighterInfo* i = new hg::FighterInfo();
                     hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypeRapter);
+                    i->exp += exp;
                     fighterList.push_back(i);
                 }
                 {
                     hg::FighterInfo* i = new hg::FighterInfo();
                     hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypeRapter2);
+                    i->exp += exp;
                     fighterList.push_back(i);
                 }
                 {
                     hg::FighterInfo* i = new hg::FighterInfo();
                     hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypeAstray);
+                    i->exp += exp;
                     fighterList.push_back(i);
                 }
                 {
                     hg::FighterInfo* i = new hg::FighterInfo();
                     hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypeAstray2);
+                    i->exp += exp;
                     fighterList.push_back(i);
                 }
                 {
                     hg::FighterInfo* i = new hg::FighterInfo();
                     hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypeStarFighter);
+                    i->exp += exp;
                     fighterList.push_back(i);
                 }
                 {
                     hg::FighterInfo* i = new hg::FighterInfo();
                     hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypeViperL);
+                    i->exp += exp;
                     fighterList.push_back(i);
                 }
                 {
                     hg::FighterInfo* i = new hg::FighterInfo();
                     hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypeFox);
+                    i->exp += exp;
                     fighterList.push_back(i);
                 }
                 {
                     hg::FighterInfo* i = new hg::FighterInfo();
                     hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypeGloire);
+                    i->exp += exp;
                     fighterList.push_back(i);
                 }
                 {
                     hg::FighterInfo* i = new hg::FighterInfo();
                     hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypelambda);
+                    i->exp += exp;
                     fighterList.push_back(i);
                 }
             }
@@ -1123,7 +1144,7 @@ namespace hg {
     int UserData::getKillReward(hg::FighterInfo* fInfo)
     {
         int cost = hg::UserData::sharedUserData()->getCost(fInfo);
-        return cost*0.05;
+        return cost*0.078;
     }
     // return false if failed.
     bool UserData::sell(hg::FighterInfo* fInfo)
@@ -1177,7 +1198,7 @@ namespace hg {
         {
             (*it)->life = (*it)->lifeMax;
         }
-        if (complete_point < 1.0) {
+        if (complete_point != 100) {
             this->addMoney(-1*money/2);
         }
         complete_point = 0;
@@ -1279,6 +1300,14 @@ namespace hg {
         }
         return false;
     }
+    bool compare_by_name(const FighterInfo* left, const FighterInfo* right)
+    {
+        if (left->name < right->name)
+        {
+            return true;
+        }
+        return false;
+    }
     void UserData::sortFighterList(FighterListSortType sortType)
     {
         switch (sortType) {
@@ -1289,6 +1318,10 @@ namespace hg {
             case FighterListSortTypeLife:
                 std::sort(fighterList.begin(), fighterList.end(), compare_by_life);
                 std::sort(readyList.begin(), readyList.end(), compare_by_life);
+                break;
+            case FighterListSortTypeName:
+                std::sort(fighterList.begin(), fighterList.end(), compare_by_name);
+                std::sort(readyList.begin(), readyList.end(), compare_by_name);
                 break;
             default:
                 break;
@@ -1369,7 +1402,6 @@ namespace hg {
     
     void UserData::setDefaultInfo(FighterInfo* pInfo, int type, int fix_enemy_lv)
     {
-        std::srand((unsigned int)time(NULL));
         pInfo->fighterType = type;
         float stageProgressRatio = stage_id/getStageNum();
         // 種類別の初期化
@@ -1402,7 +1434,7 @@ namespace hg {
             }
             case FighterTypeAstray2:
             {
-                pInfo->name = "Astray MkⅡ";
+                pInfo->name = "Astray Mk2";
                 pInfo->textureName = "p_robo1.png";
                 pInfo->textureSrcOffsetX = 0;
                 pInfo->textureSrcOffsetY = 0;
@@ -1470,7 +1502,7 @@ namespace hg {
             }
             case FighterTypeViperL:
             {
-                pInfo->name = "Viper MkⅡ";
+                pInfo->name = "Viper Mk2";
                 pInfo->textureName = "p_robo1.png";
                 pInfo->textureSrcOffsetX = 0;
                 pInfo->textureSrcOffsetY = 16;
@@ -1515,7 +1547,7 @@ namespace hg {
             }
             case FighterTypeRapter2:
             {
-                pInfo->name = "Rapter MkⅡ";
+                pInfo->name = "Rapter Mk2";
                 pInfo->textureName = "p_robo1.png";
                 pInfo->textureSrcOffsetX = 0;
                 pInfo->textureSrcOffsetY = 32;
@@ -1593,12 +1625,12 @@ namespace hg {
                 pInfo->power = 40;
                 pInfo->cpu_lv = 10;
                 
-                pInfo->life = pInfo->lifeMax = 380;
+                pInfo->life = pInfo->lifeMax = 480;
                 pInfo->shield = pInfo->shieldMax = 120;
                 pInfo->speed = 0.85;
                 pInfo->newBuyCost = 200000;
                 
-                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeShotgun, BulletTypeFriendMedium, 0, 0, 1.3, 0.23));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeShotgun, BulletTypeFriendMedium, 0, 0, 1.7, 0.23));
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeTriple, BulletTypeFriendNormal, 0, 0, 1.4, 0.15));
                 break;
             }
@@ -1621,7 +1653,9 @@ namespace hg {
                 pInfo->speed = 0.92;
                 pInfo->newBuyCost = 250000;
                 
-                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeMegaLaser, BulletTypeFriendBig, 0, 0, 1.9, 0.30));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeTwinLaser, BulletTypeFriendLaser, 0, 0, 1.9, 0.20));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeTwinLaser, BulletTypeFriendLaser, 0, 0, 1.9, 0.20));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeLaser, BulletTypeFriendLaser, 0, 0, 1.9, 0.20));
                 break;
             }
             case FighterTypePegasus:
@@ -1648,6 +1682,7 @@ namespace hg {
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeThreeWay, BulletTypeFriendNormal, 34*10, -140, 0.6, 0.38));
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeCircle, BulletTypeFriendMedium, 0, 0, 0.5, 1.28));
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeTwinLaser, BulletTypeFriendLaser, -240, 0, 0.9, 0.40));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeCircle, BulletTypeFriendNormal, 0, 0, 0.7, 1.08));
                 
                 pInfo->isShip = true;
                 break;
@@ -1701,6 +1736,7 @@ namespace hg {
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeTwinLaser, BulletTypeFriendLaser, 90*10, 0, 1.7, 0.25));
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeTwinLaser, BulletTypeFriendLaser, -90*10, 0, 1.9, 0.28));
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeCircle, BulletTypeFriendMedium, 0, 0, 0.6, 1.38));
+                pInfo->weaponList.push_back(WeaponInfo(WeaponTypeRotateQuad, BulletTypeFriendNormal, 0, 0, 0.7, 0.38));
                 
                 pInfo->isShip = true;
                 break;
@@ -1848,8 +1884,7 @@ namespace hg {
                 pInfo->collisionId = CollisionId_E_RADER;
                 pInfo->power = 75;
                 
-                pInfo->life = pInfo->lifeMax = 3000;
-                pInfo->shield = pInfo->shieldMax = 1000;
+                pInfo->life = pInfo->lifeMax = 2500;
                 pInfo->speed = 0.5;
                 
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeThreeWay, BulletTypeNormal, 0, 0, 0.3, 0.3));
@@ -1942,8 +1977,7 @@ namespace hg {
                 pInfo->collisionId = CollisionId_E_GATES;
                 pInfo->power = 95;
                 
-                pInfo->life = pInfo->lifeMax = 5000;
-                pInfo->shield = pInfo->shieldMax = 2000;
+                pInfo->life = pInfo->lifeMax = 3500;
                 pInfo->speed = 0.6;
                 
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeStraight, BulletTypeNormal, 0, 0, 1.7, 0.4));
@@ -2028,7 +2062,7 @@ namespace hg {
                 pInfo->collisionId = CollisionId_E_DESTROYER;
                 pInfo->power = 100;
                 
-                pInfo->life = pInfo->lifeMax = 8000;
+                pInfo->life = pInfo->lifeMax = 3000;
                 pInfo->shield = pInfo->shieldMax = 2000;
                 pInfo->speed = 0.60;
                 
@@ -2059,8 +2093,8 @@ namespace hg {
                 pInfo->showPixelHeight = 78*10;
                 pInfo->collisionId = CollisionId_E_SENKAN;
                 pInfo->power = 25;
+                pInfo->life = pInfo->lifeMax = 3500;
                 
-                pInfo->life = pInfo->lifeMax = 5000;
                 pInfo->shield = pInfo->shieldMax = 0;
                 pInfo->speed = 0.33;
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeNormal, BulletTypeNormal, 45*10, 0, 0.7, 0.08));
@@ -2088,7 +2122,7 @@ namespace hg {
                 pInfo->collisionId = CollisionId_E_TRIANGLE;
                 pInfo->power = 50;
                 
-                pInfo->life = pInfo->lifeMax = 6000;
+                pInfo->life = pInfo->lifeMax = 5000;
                 pInfo->speed = 0.25;
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeRotateShotgun, BulletTypeNormal, 0, 0, 1.5, 0.55));
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeRotate, BulletTypeMedium, 0, 0, 0.3, 0.20));
@@ -2207,9 +2241,9 @@ namespace hg {
             }
         }
         pInfo->powerPotential = ((float)status_rand(15, 25) * 0.01 * (float)pInfo->power);
-        pInfo->defencePotential = ((float)status_rand(15, 25) * 0.01 * (float)pInfo->lifeMax);
+        pInfo->defencePotential = ((float)status_rand(65, 85) * 0.01 * (float)pInfo->lifeMax);
         if (pInfo->shieldMax > 0) {
-            pInfo->shieldPotential = ((float)status_rand(10, 15) * 0.01 * (float)pInfo->shieldMax);
+            pInfo->shieldPotential = ((float)status_rand(10, 20) * 0.01 * (float)pInfo->shieldMax);
         }
         
         // stageに応じて強化
@@ -2225,37 +2259,37 @@ namespace hg {
                     pInfo->cpu_lv = status_rand(0, 20);
                     break;
                 case 2:
-                    fortify_level = 2;
+                    fortify_level = 3;
                     if (clear_ratio >= 50) {
                         fortify_level = 2.5;
                     }
                     if (clear_ratio >= 80) {
                         fortify_level = 3;
                     }
-                    pInfo->cpu_lv = status_rand(20, 40);
+                    pInfo->cpu_lv = status_rand(20, 70);
                     break;
                 case 3:
-                    fortify_level = 5.0;
+                    fortify_level = 7.0;
                     if (clear_ratio >= 50) {
                         fortify_level *= 1.1;
                     }
                     if (clear_ratio >= 80) {
                         fortify_level *= 1.1;
                     }
-                    pInfo->cpu_lv = status_rand(40, 60);
+                    pInfo->cpu_lv = status_rand(70, 160);
                     break;
                 case 4:
-                    fortify_level = 10.0;
+                    fortify_level = 15.0;
                     if (clear_ratio >= 50) {
                         fortify_level *= 1.1;
                     }
                     if (clear_ratio >= 80) {
                         fortify_level *= 1.1;
                     }
-                    pInfo->cpu_lv = status_rand(60, 80);
+                    pInfo->cpu_lv = status_rand(160, 250);
                     break;
                 case 5:
-                    fortify_level = 20.0;
+                    fortify_level = 28.0;
                     if (clear_ratio >= 50) {
                         fortify_level *= 1.1;
                     }
@@ -2265,10 +2299,14 @@ namespace hg {
                     if (clear_ratio >= 90) {
                         fortify_level *= 1.1;
                     }
-                    pInfo->cpu_lv = status_rand(80, 100);
+                    pInfo->cpu_lv = status_rand(250, 300);
                     StageInfo stageInfo = getStageInfo();
                     fortify_level += stageInfo.clear_count * 10;
                     break;
+            }
+            
+            for (WeaponInfoList::iterator it = pInfo->weaponList.begin(); it != pInfo->weaponList.end(); ++it) {
+                (*it).speed *= 0.60;
             }
             
             pInfo->lifeMax *= (fortify_level * 2);

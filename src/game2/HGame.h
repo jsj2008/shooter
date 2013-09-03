@@ -2,10 +2,25 @@
 #define INC_HGGAME
 #include "HGLVector3.h"
 #include "HGameCommon.h"
+#include "Common.h"
 #include <vector>
 
 namespace hg
 {
+    
+    typedef struct GameMessage {
+        GameMessage(std::string _message):
+            message(_message)
+        {
+        }
+        GameMessage(std::string _message, std::string _colorHex):
+            message(_message), colorHex(_colorHex)
+        {
+        }
+        std::string message;
+        std::string colorHex = "#ffffff";
+    } GameMessage;
+    typedef std::vector<GameMessage> GameMessageList;
     
     // classes
     class HGObject;
@@ -27,5 +42,7 @@ namespace hg
     float getHPRatio();
     float getShieldRatio();
     bool isControllable();
+    GameMessageList getGameMessageList();
+    void clearGameMessageList();
 }
 #endif

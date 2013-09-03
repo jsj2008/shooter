@@ -11,23 +11,31 @@
 #import "UIColor+MyCategory.h"
 #import "ObjectAL.h"
 #import <QuartzCore/QuartzCore.h>
+#import "ImageButtonView.h"
+#import "MenuButton.h"
+#import "DialogView.h"
+#import "StatusView.h"
+#import "AllyTableView.h"
 
 @interface AllyDetailView()
 {
+    bool isUsers_;
     hg::FighterInfo* _fighterInfo;
 }
 @property(assign)UIView* curtain;
 @property(assign)UIView* baseView;
+@property(assign)UITextField* nameTextField;
 @end
 
 @implementation AllyDetailView
 
-- (id)initWithFighterInfo:(hg::FighterInfo*)fighterInfo
+- (id)initWithFighterInfo:(hg::FighterInfo*)fighterInfo isUsers:(bool)_isUsers
 {
     self = [super init];
     if (self) {
         assert(fighterInfo != NULL);
         _fighterInfo = fighterInfo;
+        isUsers_ = _isUsers;
     }
     return self;
 }
@@ -36,6 +44,9 @@
 {
     [_curtain release];
     [_baseView release];
+    if (_nameTextField) {
+        [_nameTextField release];
+    }
     [super dealloc];
 }
 
@@ -70,7 +81,7 @@
         CGRect frm = CGRectMake(0, 0, 250, 280);
         UIView* base = [[UIView alloc] initWithFrame:frm];
         [base setBackgroundColor:[UIColor blackColor]];
-        [base setUserInteractionEnabled:NO];
+        [base setUserInteractionEnabled:YES];
         [self addSubview:base];
         self.baseView = base;
         [self.baseView setCenter:CGPointMake(frame.size.width/2, frame.size.height/2)];
@@ -97,11 +108,28 @@
     hg::FighterInfo* info = _fighterInfo;
     int labelIndex = -1;
     // name
-    {
+    if (!isUsers_){
         labelIndex++;
         UILabel* lb = [self labelWithIndex:labelIndex WithText:[NSString stringWithCString:info->name.c_str() encoding:NSUTF8StringEncoding]];
         [self.baseView addSubview:lb];
+    } else {
+    // delete data button
+        labelIndex++;
+        UILabel* lb = [self labelWithIndex:labelIndex WithText:[NSString stringWithCString:info->name.c_str() encoding:NSUTF8StringEncoding]];
+        CGRect frame = lb.frame;
+        frame.size.height = 15;
+        frame.size.width = 150;
+        UITextField* tf = [[UITextField alloc] initWithFrame:lb.frame];
+        [tf setBackgroundColor:[UIColor grayColor]];
+        //[tf setBackgroundColor:[UIColor whiteColor]];
+        [tf setBorderStyle:UITextBorderStyleLine];
+        [tf setTextColor:MAIN_FONT_COLOR];
+        [tf setFont:lb.font];
+        [tf setText:STR2NSSTR(info->name)];
+        [self.baseView addSubview:tf];
+        self.nameTextField = tf;
     }
+    
     // level
     {
         labelIndex++;
@@ -188,29 +216,83 @@
         UILabel* lb = [self labelWithIndex:labelIndex WithText:[NSString stringWithFormat:NSLocalizedString(@"Total dead %d", nil), info->dieCnt]];
         [self.baseView addSubview:lb];
     }
+    
+    // sell button
+    if (isUsers_)
+    {
+        float w = (self.baseView.frame.size.width - 10) / 2;
+        float h = 30;
+        float x = self.baseView.frame.size.width/2 - w/2;
+        float y = self.baseView.frame.size.height - h - 5;
+        
+        // delete data button
+        {
+            CGRect frm = CGRectMake(x, y, w, h);
+            MenuButton* m = [[[MenuButton alloc] initWithFrame:frm] autorelease];
+            [m setBackgroundColor:[UIColor whiteColor]];
+            [m setText:NSLocalizedString(@"Sell", nil)];
+            [m setColor:[UIColor blackColor]];
+            [m setBackgroundColor:[UIColor whiteColor]];
+            [self.baseView addSubview:m];
+            [m setOnTapAction:^(MenuButton *target) {
+                
+                hg::UserData* u = hg::UserData::sharedUserData();
+                int cost = u->getSellValue(_fighterInfo);
+                NSString* msg = [NSString stringWithFormat:NSLocalizedString(@"Are you sure to sell this for %d Gold?", nil), cost];
+                DialogView* dialog = [[[DialogView alloc] initWithMessage:msg] autorelease];
+                [dialog addButtonWithText:NSLocalizedString(@"Sell", nil) withAction:^{
+                    u->sell(_fighterInfo);
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [[StatusView GetInstance] loadUserInfo];
+                    });
+                    [self closeThis];
+                    [AllyTableView ReloadData];
+                }];
+                [dialog addButtonWithText:NSLocalizedString(@"Cancel", nil) withAction:^{
+                    // nothing
+                }];
+                [dialog show];
+            }];
+        }
+        
+    }
 }
 
-- (void)onTapBackground:(UIGestureRecognizer*)sender
+- (void)closeThis
 {
-    [[OALSimpleAudio sharedInstance] playEffect:SE_CLICK];
     // close
     [_curtain removeFromSuperview];
     [UIView animateWithDuration:0.2 animations:^{
         [self.baseView setTransform:CGAffineTransformMakeScale(2, 0)];
     } completion:^(BOOL finished) {
+        if (_nameTextField) {
+            NSString* name = [_nameTextField text];
+            std::string n = NSSTR2STR(name);
+            if (n != "") {
+                _fighterInfo->name = n;
+                [AllyTableView ReloadData];
+            }
+        }
         [self removeFromSuperview];
     }];
+}
+
+- (void)onTapBackground:(UIGestureRecognizer*)sender
+{
+    [[OALSimpleAudio sharedInstance] playEffect:SE_CLICK];
+    [self closeThis];
 }
 
 - (UILabel*)labelWithIndex:(int)index WithText:(NSString*)text
 {
     UILabel* lb = [[[UILabel alloc] init] autorelease];
-    UIFont* font = [UIFont fontWithName:@"Copperplate-Bold" size:12];
+    //UIFont* font = [UIFont fontWithName:@"HiraKakuProN-W6" size:12];
+    UIFont* font = [[lb font] fontWithSize:12];
     CGRect labelFrame;
     labelFrame.size.width = self.baseView.frame.size.width - 10;
-    labelFrame.size.height = 16;
+    labelFrame.size.height = 20;
     labelFrame.origin.x = 10;
-    labelFrame.origin.y = index * 12 + 10;
+    labelFrame.origin.y = index * 18 + 10;
     [lb setFrame:labelFrame];
     [lb setTextAlignment:NSTextAlignmentLeft];
     [lb setFont:font];

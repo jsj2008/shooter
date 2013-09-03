@@ -40,7 +40,8 @@
         // label
         {
             UILabel * l = [[[UILabel alloc] init] autorelease];
-            UIFont* font = [UIFont fontWithName:@"Copperplate-Bold" size:17];
+            //UIFont* font = [UIFont fontWithName:@"Copperplate-Bold" size:17];
+            UIFont* font = [UIFont systemFontOfSize:17];
             [l setFont:font];
             [l setTextColor:MAIN_FONT_COLOR];
             [l setText:@"Battle"];

@@ -2,6 +2,7 @@
 #include <list>
 #include <stack>
 
+#include "Common.h"
 #include "HGameCommon.h"
 #include "HGLES.h"
 #include "HGLGraphics2D.h"
@@ -26,6 +27,7 @@
 #include "HGLObjLoader.h"
 #include "UserData.h"
 #include "AppDelegate.h"
+#include "SystemMonitor.h"
 
 namespace hg {
     
@@ -223,8 +225,20 @@ namespace hg {
     HGSize sizeOfField(0,0);
     HGPoint pointOfFieldCenter(0,0);
     bool bgmChanged = false;
+    int enemySpawnCount = 0;
     
     float cameraZposition = -25;
+    
+    GameMessageList gameMessageList;
+    
+    GameMessageList getGameMessageList()
+    {
+        return gameMessageList;
+    }
+    void clearGameMessageList()
+    {
+        gameMessageList.clear();
+    }
     
     // アニメ
     void showHitAnimation(Actor* a)
@@ -372,14 +386,14 @@ namespace hg {
             } else {
                 // cpu lvに応じてダメージ増加
                 int cpu_lv = pFighter->getFighterInfo()->cpu_lv;
-                dmg += (dmg * cpu_lv * 0.01 * 2);
+                dmg += ((float)dmg * (float)cpu_lv/CPU_LV_MAX * 3.0);
             }
             battleResult.allHit++;
         } else {
             // 回避チェック
             if (!pFighter->isPlayer()) {
                 int cpu_lv = pFighter->getFighterInfo()->cpu_lv;
-                if (rand(0, 120) <= cpu_lv) {
+                if (rand(0, CPU_LV_MAX*1.1) <= cpu_lv) {
                     return;
                 }
             }
@@ -412,6 +426,18 @@ namespace hg {
                             attackerInfo->tmpExp += u->getExp(pFighter->getFighterInfo());
                             attackerInfo->killCnt++;
                             attackerInfo->totalKill++;
+                            // message
+                            if (!attackerInfo->isPlayer) {
+                                NSString* name1 = STR2NSSTR(attackerInfo->name);
+                                NSString* name2 = STR2NSSTR(pFighter->getFighterInfo()->name);
+                                NSString* msg = [NSString stringWithFormat:NSLocalizedString(@"%@ destroyed %@!!", nil),
+                                                 name1, name2];
+                                gameMessageList.push_back(GameMessage(NSSTR2STR(msg), "#00ffff"));
+                            } else {
+                                NSString* msg = [NSString stringWithFormat:NSLocalizedString(@"You destroyed %@!!", nil),
+                                                 STR2NSSTR(pFighter->getFighterInfo()->name)];
+                                gameMessageList.push_back(GameMessage(NSSTR2STR(msg), "#00ff00"));
+                            }
                         }
                     }
                 }
@@ -422,6 +448,23 @@ namespace hg {
                     pFighter->getFighterInfo()->dieCnt++;
                     pFighter->getFighterInfo()->totalDie++;
                     battleResult.deadValue += u->getCost(pFighter->getFighterInfo());
+                    // message
+                    if (!pFighter->isPlayer()) {
+                        NSString* msg = [NSString stringWithFormat:NSLocalizedString(@"%@ destroyed by enemy!", nil),
+                                         STR2NSSTR(pFighter->getFighterInfo()->name)];
+                        gameMessageList.push_back(GameMessage(NSSTR2STR(msg), "#ff0000"));
+                    }
+                }
+            } else {
+                
+                if (pFighter->getSide() == SideTypeFriend && !pFighter->isPlayer())
+                {
+                    float lifeRatio = pFighter->getLifeRatio();
+                    if (lifeRatio <= 0.25) {
+                        NSString* msg = [NSString stringWithFormat:NSLocalizedString(@"%@ is in Danger Now!", nil),
+                                         STR2NSSTR(pFighter->getFighterInfo()->name)];
+                        gameMessageList.push_back(GameMessage(NSSTR2STR(msg), "#ffff00"));
+                    }
                 }
             }
         }
@@ -671,10 +714,14 @@ namespace hg {
         {
             return;
         }
+        if (!shouldDeployFriends) {
+            return;
+        }
+        shouldDeployFriends = false;
         float wait = 0;
         using namespace hg;
         UserData* userData = UserData::sharedUserData();
-        FighterList fList = userData->getFighterList();
+        FighterList fList = userData->getReadyList();
         for (FighterList::iterator it = fList.begin(); it != fList.end(); ++it)
         {
             FighterInfo* pFighterInfo = (*it);
@@ -1027,15 +1074,14 @@ namespace hg {
             enemyFighterList.removeInactiveActors();
             
             // 援軍判定
-            if (enemyFighterList.size() <= 0)
+            int enemyNum = enemyFighterList.size();
+            if ((enemyNum <= 0) || (enemyNum <= 3 && rand(1, 1000) <= 30))
             {
                 // 援軍出現
                 if (spawnData.size() > 0)
                 {
                     if (spawningEnemyCount <= 0)
                     {
-                        [[OALSimpleAudio sharedInstance] playEffect:SE_ENEMY_APPROACH];
-
                         SpawnGroup sg = spawnData.front();
                         spawnData.pop_front();
                         int wait = 0;
@@ -1049,6 +1095,11 @@ namespace hg {
                                          wait * f(30));
                             wait++;
                         }
+                        if (enemySpawnCount > 0) {
+                            [[OALSimpleAudio sharedInstance] playEffect:SE_ENEMY_APPROACH];
+                            gameMessageList.push_back(GameMessage(NSSTR2STR(NSLocalizedString(@"Enemies approaching!", nil)), "#ffcc00"));
+                        }
+                        enemySpawnCount++;
                     }
                 }
             }
@@ -1079,10 +1130,7 @@ namespace hg {
             }
             
             //
-            if (shouldDeployFriends)
-            {
-                deployAllFriends();
-            }
+            deployAllFriends();
             /*
             if (keyInfo.shouldDeployFriend)
             {
@@ -1104,9 +1152,27 @@ namespace hg {
     void cleanup()
     {
         NSLog(@"CLEAN UP START");
+        
         // メモリ掃除
-        //HGHeapFactory::CreateHeap(DEFAULT_HEAP_NAME)->freeAll();
-        NSLog(@"CLEAN UP END");
+        if (IS_DEBUG) {
+            NSLog(@"before free all");
+            [SystemMonitor dump];
+        }
+        HGHeapFactory::CreateHeap(DEFAULT_HEAP_NAME)->freeAll();
+        if (IS_DEBUG) {
+            NSLog(@"after free all");
+            [SystemMonitor dump];
+        }
+        
+        if (IS_DEBUG) {
+            NSLog(@"before delete texture");
+            [SystemMonitor dump];
+        }
+        hgles::HGLTexture::deleteAllTextures();
+        if (IS_DEBUG) {
+            NSLog(@"after delete texture");
+            [SystemMonitor dump];
+        }
         
     }
 
@@ -1116,6 +1182,8 @@ namespace hg {
     void initialize(SpawnData sd, FighterInfo* pl)
     {
         NSLog(@"INITIALIZE START");
+        enemySpawnCount = 0;
+        gameMessageList.clear();
         bgmChanged = false;
         numOfEffect = 0;
         updateCount = 0;
@@ -1135,9 +1203,25 @@ namespace hg {
         friendData.clear();
         
         // メモリ掃除
+        if (IS_DEBUG) {
+            NSLog(@"before free all (initialize)");
+            [SystemMonitor dump];
+        }
         HGHeapFactory::CreateHeap(DEFAULT_HEAP_NAME)->freeAll();
+        if (IS_DEBUG) {
+            NSLog(@"after free all (initialize)");
+            [SystemMonitor dump];
+        }
         
+        if (IS_DEBUG) {
+            NSLog(@"before remove children(initialize)");
+            [SystemMonitor dump];
+        }
         HGDirector::sharedDirector()->getRootNode()->removeAllChildren();
+        if (IS_DEBUG) {
+            NSLog(@"after remove children(initialize)");
+            [SystemMonitor dump];
+        }
         
         // init data
         UserData::sharedUserData()->initBeforeBattle();

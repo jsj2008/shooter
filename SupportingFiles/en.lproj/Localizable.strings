@@ -5,6 +5,18 @@
   Created by 濱田 洋太 on 13/09/01.
   Copyright (c) 2013年 hayogame. All rights reserved.
 */
+"Enemies approaching!" = "Enemies approaching!";
+
+"%@ is in Danger Now!" = "%@ is in Danger Now!";
+
+"%@ destroyed by enemy!" = "%@ destroyed by enemy!";
+
+"You destroyed %@!!" = "You destroyed %@!!";
+
+"%@ destroyed %@!!" = "%@ destroyed %@!!";
+
+"Other Great Games!" = "Other Great Games!";
+
 "Cleared Count: %d" = "Cleared Count: %d";
 
 "You can change the Stage when the Occupy Ratio is 0% or 100%" = "You can change the Stage when the Occupy Ratio is 0% or 100%";

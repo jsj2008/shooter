@@ -115,10 +115,11 @@ const float ProgressBarWidth = 146;
         // money
         {
             moneyLabel = [[UILabel alloc] init];
-            UIFont* font = [UIFont fontWithName:@"HiraKakuProN-W6" size:11];
+            //UIFont* font = [UIFont fontWithName:@"HiraKakuProN-W6" size:11];
+            UIFont* font = [UIFont systemFontOfSize:11];
             [moneyLabel setFont:font];
             [moneyLabel setTextAlignment:NSTextAlignmentLeft];
-            [moneyLabel setFrame:CGRectMake(26, 5, 200, 16)];
+            [moneyLabel setFrame:CGRectMake(26, 0, 200, 16)];
             [moneyLabel setBackgroundColor:[UIColor clearColor]];
             [moneyLabel setTextColor:MAIN_FONT_COLOR];
             [self addSubview:moneyLabel];
@@ -141,7 +142,8 @@ const float ProgressBarWidth = 146;
         // score
         {
             scoreLabel = [[UILabel alloc] init];
-            UIFont* font = [UIFont fontWithName:@"HiraKakuProN-W6" size:11];
+            //UIFont* font = [UIFont fontWithName:@"HiraKakuProN-W6" size:11];
+            UIFont* font = [UIFont systemFontOfSize:11];
             [scoreLabel setFont:font];
             [scoreLabel setTextAlignment:NSTextAlignmentLeft];
             [scoreLabel setFrame:CGRectMake(26, 20, 200, 16)];
@@ -206,7 +208,8 @@ const float ProgressBarWidth = 146;
         // progress label
         {
             progressLabel = [[UILabel alloc] init];
-            UIFont* font = [UIFont fontWithName:@"Arial-BoldMT" size:12];
+            //UIFont* font = [UIFont fontWithName:@"Arial-BoldMT" size:12];
+            UIFont* font = [UIFont systemFontOfSize:12];
             [progressLabel setFont:font];
             [progressLabel setTextAlignment:NSTextAlignmentRight];
             [progressLabel setFrame:CGRectMake(progressBarFrame.origin.x, progressBarFrame.origin.y, progressBarFrame.size.width, progressBarFrame.size.height)];
@@ -222,12 +225,13 @@ const float ProgressBarWidth = 146;
             stageLevelLabel = [[UILabel alloc] init];
             //UIFont* font = [UIFont fontWithName:@"Mutsuki" size:15];
             //[stageLevelLabel setFont:font];
-            UIFont* font = [UIFont fontWithName:@"HiraKakuProN-W6" size:11];
+            //UIFont* font = [UIFont fontWithName:@"HiraKakuProN-W6" size:11];
+            UIFont* font = [UIFont systemFontOfSize:11];
             [stageLevelLabel setFont:font];
             [stageLevelLabel setTextAlignment:NSTextAlignmentLeft];
             //[stageLevelLabel setFrame:CGRectMake(frame.size.width - 200, 5, 200, StatusViewHeight)];
             [stageLevelLabel setAdjustsFontSizeToFitWidth:YES];
-            [stageLevelLabel setFrame:CGRectMake(progressBarFrame.origin.x + 10, 5, 200, StatusViewHeight)];
+            [stageLevelLabel setFrame:CGRectMake(progressBarFrame.origin.x + 10, 0, 200, StatusViewHeight)];
             [stageLevelLabel setBackgroundColor:[UIColor clearColor]];
             [stageLevelLabel setTextColor:MAIN_FONT_COLOR];
             //[self addSubview:stageLevelLabel];

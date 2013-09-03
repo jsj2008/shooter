@@ -177,7 +177,8 @@ const float MessageHeight = 100;
         [msgLbl setTextColor:MAIN_FONT_COLOR];
         [msgLbl setNumberOfLines:0];
         [msgLbl setLineBreakMode:NSLineBreakByWordWrapping];
-        UIFont* font = [UIFont fontWithName:@"Copperplate-Bold" size:18];
+        //UIFont* font = [UIFont fontWithName:@"Copperplate-Bold" size:18];
+        UIFont* font = [[msgLbl font] fontWithSize:18];
         [msgLbl setTextAlignment:NSTextAlignmentCenter];
         [msgLbl setFont:font];
         [msgLbl setText:_message];
@@ -216,7 +217,8 @@ const float MessageHeight = 100;
         
         // label
         UILabel* lbl = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, ButtonWidth, ButtonHeight)];
-        UIFont* font = [UIFont fontWithName:@"Copperplate-Bold" size:18];
+        //UIFont* font = [UIFont fontWithName:@"Copperplate-Bold" size:18];
+        UIFont* font = [[lbl font] fontWithSize:18];
         [lbl setFont:font];
         [lbl setTextAlignment:NSTextAlignmentCenter];
         [lbl setBackgroundColor:[UIColor clearColor]];

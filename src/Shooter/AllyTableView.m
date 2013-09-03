@@ -60,7 +60,16 @@ static AllyTableView* instance;
 
 - (void)endView
 {
-    [self setUserInteractionEnabled:FALSE];
+    // animate
+    /*
+    {
+        [self setUserInteractionEnabled:FALSE];
+        [UIView animateWithDuration:MENU_ANIMATION_DURATION animations:^{
+            [self setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
+        } completion:^(BOOL finished) {
+            [self removeFromSuperview];
+        }];
+    }*/
     onEndAction();
 }
 
@@ -245,6 +254,7 @@ static AllyTableView* instance;
 -(NSInteger)tableView:(UITableView *)tableView
 numberOfRowsInSection:(NSInteger)section
 {
+#if IS_ALLYVIEW || 1
     hg::FighterList list;
     
     if (viewMode == AllyViewModeShop)
@@ -261,6 +271,9 @@ numberOfRowsInSection:(NSInteger)section
     }
     int rows = (int)(list.size()/maxRowNum) + 1 + 1;
     return rows;
+#else
+    return 0;
+#endif
 }
 
 /*

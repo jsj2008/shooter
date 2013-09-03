@@ -73,6 +73,7 @@ std::vector<Fighter> fighter_list;
 
 -(void)initialize
 {
+    
     ////////////////////
     // 3d描画用ビューを初期化
     _glview = [[HGLView alloc] initWithFrame:self.frame WithRenderBlock:^{
@@ -172,11 +173,6 @@ std::vector<Fighter> fighter_list;
     planetObj->position.z = -600;
     planetObj->rotate.y = [self rand:0 to:10] * 0.1;
     
-    // size
-    float size = stageInfo.small_size  + stageInfo.big_size * currentClearRatio;
-    size = 100;
-    planetObj->scale.set(size, size, size);
-    */
     
     // fighter
     srand((unsigned int)time(NULL));
@@ -194,7 +190,7 @@ std::vector<Fighter> fighter_list;
         f.position.y = sin([self rand:0 to:360]*M_PI/180) * [self rand:2 to:80];
         f.spd = [self rand:3 to:100] * 0.02 * -1;
         fighter_list.push_back(f);
-    }
+    }*/
     
 }
 

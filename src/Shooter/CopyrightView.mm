@@ -166,7 +166,8 @@
 - (UILabel*)createLabel
 {
     UILabel* lbl = [[[UILabel alloc] init] autorelease];
-    UIFont* font = [UIFont fontWithName:@"HiraKakuProN-W6" size:16];
+    //UIFont* font = [UIFont fontWithName:@"HiraKakuProN-W6" size:16];
+    UIFont* font = [UIFont systemFontOfSize:16];
     [lbl setFont:font];
     [lbl setTextAlignment:NSTextAlignmentLeft];
     [lbl setBackgroundColor:[UIColor clearColor]];

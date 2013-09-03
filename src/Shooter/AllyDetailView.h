@@ -11,7 +11,7 @@
 
 @interface AllyDetailView : UIView
 
-- (id)initWithFighterInfo:(hg::FighterInfo*)fighterInfo;
+- (id)initWithFighterInfo:(hg::FighterInfo*)fighterInfo isUsers:(bool)_isUsers;
 - (void)show;
 
 @end
