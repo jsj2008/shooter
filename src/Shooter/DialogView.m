@@ -11,6 +11,7 @@
 #import "MenuButton.h"
 #import "UIColor+MyCategory.h"
 #import <QuartzCore/QuartzCore.h>
+#import "SystemMonitor.h"
 
 const float ButtonHeight = 44;
 const float ButtonGap = 10;
@@ -108,6 +109,10 @@ const float MessageHeight = 100;
 
 - (void)show
 {
+#if IS_DEBUG
+    NSLog(@"show dialog");
+    [SystemMonitor dump];
+#endif
     @autoreleasepool {
         
         // design
@@ -225,6 +230,10 @@ const float MessageHeight = 100;
             x += (ButtonWidth + ButtonGap);
         }
     }
+#if IS_DEBUG
+    NSLog(@"show dialog end");
+    [SystemMonitor dump];
+#endif
 }
 
 -(void)onTapButton:(MenuButton*)btn

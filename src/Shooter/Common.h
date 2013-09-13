@@ -9,6 +9,10 @@
 #define IS_PLAYER_DETAIL 1
 #define IS_GAME_EXEC 1
 #define IS_REPORT 1
+#define IS_BGM 1
+#define IS_MENU_REUSE 1
+#define IS_STATUS_REUSE 1
+#define IS_REPORT_REUSE 1
 
 #define STR2NSSTR(a) [NSString stringWithCString:a.c_str() encoding:NSUTF8StringEncoding]
 #define NSSTR2STR(a) std::string([a UTF8String])
@@ -39,11 +43,19 @@
 #define ADDMOB_PUBLISHER_ID @"a1522432707c35f"
 #define GAMEFEAT_MEDIA_ID @"2344"
 
+#if IS_DEBUG
 #define IS_GAMEFEAT 0
 #define IS_MEDIBAAD 0
 #define IS_MAIN_ADMOB 1
 #define IS_PLAYER_DETAIL_ADMOB 0
 #define IS_REPORT_VIEW_ADMOB 1
+#else
+#define IS_GAMEFEAT 0
+#define IS_MEDIBAAD 0
+#define IS_MAIN_ADMOB 1
+#define IS_PLAYER_DETAIL_ADMOB 0
+#define IS_REPORT_VIEW_ADMOB 1
+#endif
 
 #define MENU_ANIMATION_DURATION 0.2
 

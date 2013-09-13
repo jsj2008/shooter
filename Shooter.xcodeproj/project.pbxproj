@@ -228,7 +228,6 @@
 		07DE749B16EC372B0048877C /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 07DE749416EC372B0048877C /* Default.png */; };
 		07DE749C16EC372B0048877C /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 07DE749516EC372B0048877C /* Default@2x.png */; };
 		07DE749D16EC372B0048877C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 07DE749616EC372B0048877C /* InfoPlist.strings */; };
-		07DE749E16EC372B0048877C /* Shooter-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 07DE749816EC372B0048877C /* Shooter-Info.plist */; };
 		07DE74A616EC38780048877C /* smart_ptr.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07DE74A516EC38780048877C /* smart_ptr.mm */; };
 		07DE74C816EC38A40048877C /* HGLES.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07DE74AA16EC38A40048877C /* HGLES.mm */; };
 		07DE74C916EC38A40048877C /* HGLGraphics2D.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07DE74AC16EC38A40048877C /* HGLGraphics2D.mm */; };
@@ -1672,7 +1671,7 @@
 		07E0462816886E73001F9CCE /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0450;
+				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = hayogame;
 			};
 			buildConfigurationList = 07E0462B16886E73001F9CCE /* Build configuration list for PBXProject "Shooter" */;
@@ -1806,7 +1805,6 @@
 				07DE749B16EC372B0048877C /* Default.png in Resources */,
 				07DE749C16EC372B0048877C /* Default@2x.png in Resources */,
 				07DE749D16EC372B0048877C /* InfoPlist.strings in Resources */,
-				07DE749E16EC372B0048877C /* Shooter-Info.plist in Resources */,
 				07DE74D516EC38A40048877C /* fragment.glsl in Resources */,
 				07DE74D616EC38A40048877C /* fragment2d.glsl in Resources */,
 				07DE74D716EC38A40048877C /* vertex.glsl in Resources */,

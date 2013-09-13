@@ -43,7 +43,7 @@ namespace hgles {
         
         // １行ずつ処理
         HGLObject3D* obj3d = new HGLObject3D();
-        bool mesh_flg = false;
+        //bool mesh_flg = false;
         string::size_type current = 0;
         string::size_type eol = 0;
         string l;
@@ -114,7 +114,7 @@ namespace hgles {
             // index
             else if (words[0] == "f")
             {
-                mesh_flg = true;
+                //mesh_flg = true;
                 vector<string>::iterator wItr = words.begin();
                 while (++wItr != words.end())
                 {
@@ -311,7 +311,7 @@ namespace hgles {
         } catch (...) {
             LOG(@"%@", @"failed to load material");
         }
-        //delete s_dat;
+        delete s_dat;
     }
     
 }

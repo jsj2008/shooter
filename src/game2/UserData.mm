@@ -201,7 +201,7 @@ namespace hg {
             this->addPoint(getStageInfo().win_point);
             
             // 戦果
-            br.battleScore += ceil(br.killedValue * 0.0015);
+            br.battleScore += ceil(br.killedValue * 0.0085);
             
             // clear?
             if (this->getCurrentClearRatio() >= 1) {
@@ -239,7 +239,7 @@ namespace hg {
                 case 1: // earth
                 {
                     battleScoreReward = 1000;
-                    battleMoneyReward = 25000;
+                    battleMoneyReward = 20000;
                     int a = rand(1,3);
                     if (a == 1) {
                         hg::FighterInfo* i = new hg::FighterInfo();
@@ -258,7 +258,7 @@ namespace hg {
                 }
                 case 2:
                 {
-                    battleScoreReward = 10000;
+                    battleScoreReward = 3000;
                     battleMoneyReward = 50000;
                     if (stageInfo.clear_count == 0) {
                         hg::FighterInfo* i = new hg::FighterInfo();
@@ -283,7 +283,7 @@ namespace hg {
                     break;
                 }
                 case 3:
-                    battleScoreReward = 50000;
+                    battleScoreReward = 5000;
                     battleMoneyReward = 100000;
                     if (stageInfo.clear_count == 0) {
                         hg::FighterInfo* i = new hg::FighterInfo();
@@ -308,8 +308,8 @@ namespace hg {
                     }
                     break;
                 case 4:
-                    battleScoreReward = 150000;
-                    battleMoneyReward = 300000;
+                    battleScoreReward = 15000;
+                    battleMoneyReward = 200000;
                     if (stageInfo.clear_count == 0) {
                         hg::FighterInfo* i = new hg::FighterInfo();
                         hg::UserData::sharedUserData()->setDefaultInfo(i, FighterTypeGloire);
@@ -333,8 +333,8 @@ namespace hg {
                     }
                     break;
                 case 5:
-                    battleScoreReward = 300000;
-                    battleMoneyReward = 1000000;
+                    battleScoreReward = 100000;
+                    battleMoneyReward = 300000;
                     break;
                     /*
                 case 6:
@@ -468,62 +468,62 @@ namespace hg {
         }
         else if (score <= 9500) {
             grade = NSSTR2STR(NSLocalizedString(@"Technical Sergeant", nil));
-            maxAllyNum = 4;
+            maxAllyNum = 3;
             maxPowerUpNum = 2;
         }
         else if (score <= 15000) {
             grade = NSSTR2STR(NSLocalizedString(@"Master sergeant", nil));
-            maxAllyNum = 6;
+            maxAllyNum = 4;
             maxPowerUpNum = 2;
         }
         else if (score <= 60000) {
             grade = NSSTR2STR(NSLocalizedString(@"Senior Master sergeant", nil));
-            maxAllyNum = 7;
+            maxAllyNum = 4;
             maxPowerUpNum = 4;
         }
         else if (score <= 150000) {
             grade = NSSTR2STR(NSLocalizedString(@"Warrant Officer", nil));
-            maxAllyNum = 8;
+            maxAllyNum = 5;
             maxPowerUpNum = 4;
         }
         else if (score <= 300000) {
             grade = NSSTR2STR(NSLocalizedString(@"Second Lieutenant", nil));
-            maxAllyNum = 9;
+            maxAllyNum = 5;
             maxPowerUpNum = 4;
         }
         else if (score <= 600000) {
             grade = NSSTR2STR(NSLocalizedString(@"First Lieutenant", nil));
-            maxAllyNum = 10;
+            maxAllyNum = 6;
             maxPowerUpNum = 5;
         }
         else if (score <= 900000) {
             grade = NSSTR2STR(NSLocalizedString(@"Captain", nil));
-            maxAllyNum = 11;
+            maxAllyNum = 6;
             maxPowerUpNum = 5;
         }
         else if (score <= 1500000) {
             grade = NSSTR2STR(NSLocalizedString(@"Major", nil));
-            maxAllyNum = 12;
+            maxAllyNum = 7;
             maxPowerUpNum = 5;
         }
         else if (score <= 2400000) {
             grade = NSSTR2STR(NSLocalizedString(@"Lieutenant Colonel", nil));
-            maxAllyNum = 13;
+            maxAllyNum = 7;
             maxPowerUpNum = 5;
         }
         else if (score <= 3600000) {
             grade = NSSTR2STR(NSLocalizedString(@"Colonel", nil));
-            maxAllyNum = 14;
+            maxAllyNum = 8;
             maxPowerUpNum = 5;
         }
         else if (score <= 4500000) {
             grade = NSSTR2STR(NSLocalizedString(@"Major General", nil));
-            maxAllyNum = 15;
+            maxAllyNum = 9;
             maxPowerUpNum = 5;
         }
         else if (score <= 6000000) {
             grade = NSSTR2STR(NSLocalizedString(@"Lieutenant General", nil));
-            maxAllyNum = 16;
+            maxAllyNum = 10;
             maxPowerUpNum = 6;
         }
         else if (score <= 30000000) {
@@ -1676,7 +1676,7 @@ namespace hg {
                 
                 pInfo->life = pInfo->lifeMax = 3000;
                 pInfo->shield = pInfo->shieldMax = 1500;
-                pInfo->speed = 0.65;
+                pInfo->speed = 0.35;
                 pInfo->newBuyCost = 200000;
                 
                 pInfo->weaponList.push_back(WeaponInfo(WeaponTypeMegaLaser, BulletTypeFriendBig, 0, 0, 1.4, 0.68));
@@ -2261,45 +2261,36 @@ namespace hg {
                     pInfo->cpu_lv = status_rand(0, 20);
                     break;
                 case 2:
-                    fortify_level = 5;
+                    fortify_level = 3;
                     if (clear_ratio >= 50) {
                         fortify_level *= 1.2;
-                    }
-                    if (clear_ratio >= 80) {
-                        fortify_level *= 1.4;
                     }
                     pInfo->cpu_lv = status_rand(20, 70);
                     break;
                 case 3:
-                    fortify_level = 15;
+                    fortify_level = 6;
                     if (clear_ratio >= 50) {
                         fortify_level *= 1.2;
-                    }
-                    if (clear_ratio >= 80) {
-                        fortify_level *= 1.4;
                     }
                     pInfo->cpu_lv = status_rand(70, 160);
                     break;
                 case 4:
-                    fortify_level = 20;
+                    fortify_level = 10;
                     if (clear_ratio >= 50) {
                         fortify_level *= 1.2;
-                    }
-                    if (clear_ratio >= 80) {
-                        fortify_level *= 1.4;
                     }
                     pInfo->cpu_lv = status_rand(160, 250);
                     break;
                 case 5:
-                    fortify_level = 50;
+                    fortify_level = 20;
                     if (clear_ratio >= 50) {
-                        fortify_level *= 1.2;
+                        fortify_level *= 1.1;
                     }
                     if (clear_ratio >= 80) {
-                        fortify_level *= 1.3;
+                        fortify_level *= 1.1;
                     }
                     if (clear_ratio >= 90) {
-                        fortify_level *= 1.4;
+                        fortify_level *= 1.1;
                     }
                     pInfo->cpu_lv = status_rand(250, 300);
                     StageInfo stageInfo = getStageInfo();

@@ -78,6 +78,7 @@ bool isBackGround = false;
     isBackGround = true;
     
     // gamefeat
+#if IS_GAMEFEAT
     {
         UIDevice *device = [UIDevice currentDevice];
         BOOL backgroundSupported = NO;
@@ -88,6 +89,7 @@ bool isBackGround = false;
             [GFController backgroundTask];
         }
     }
+#endif
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
@@ -100,16 +102,20 @@ bool isBackGround = false;
     isBackGround = true;
     
     // gamefeat
+#if IS_GAMEFEAT
     {
         [GFController conversionCheckStop];
     }
+#endif
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     isBackGround = false;
+#if IS_GAMEFEAT
     [GFController activateGF:GAMEFEAT_MEDIA_ID];
+#endif
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application

@@ -96,10 +96,10 @@
             baseCell.velocity = 400;
             baseCell.velocityRange = 50;
             baseCell.yAcceleration = 250;
-            baseCell.color = CGColorCreateCopy([UIColor colorWithRed:0.6
+            baseCell.color = [UIColor colorWithRed:0.6
                                                                green:0.6
                                                                 blue:0.6
-                                                               alpha:0.6].CGColor);
+                                                               alpha:0.6].CGColor;
             baseCell.redRange   = 0.4;
             baseCell.greenRange = 0.4;
             baseCell.blueRange  = 0.4;
@@ -269,6 +269,8 @@
     [UIView animateWithDuration:0.5 animations:^{
         [self_ setAlpha:0];
     } completion:^(BOOL finished) {
+        [self_ setUserInteractionEnabled:false];
+        [self_ removeFromSuperview];
         if (onEndAction) {
             onEndAction();
         }

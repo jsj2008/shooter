@@ -42,6 +42,6 @@ namespace hgles {
         if (vertexBuffer) delete vertexBuffer;
         if (indexBuffer) delete indexBuffer;
         if (material) delete material;
-        if (texture) delete texture;
+        //if (texture) delete texture;
     }
 }

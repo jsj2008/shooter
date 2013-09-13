@@ -13,6 +13,7 @@
 @interface ReportView : UIView <UITableViewDataSource, UITableViewDelegate>
 
 - (void) setOnEndAction:(void(^)(void))action;
+-(void)loadReport;
 
 typedef struct ReportMessage
 {

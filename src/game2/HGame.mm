@@ -193,7 +193,7 @@ namespace hg {
     HGNode* pLayerEnemy = NULL;
     HGNode* pLayerBullet = NULL;
     HGNode* pLayerEffect = NULL;
-    HG3DModel* pPlanetModel;
+    HG3DModel* pPlanetModel = NULL;
     Rader* pRader = NULL;
     SpawnData spawnData;
     float spawningEnemyCount = 0;
@@ -1160,7 +1160,56 @@ namespace hg {
             NSLog(@"before free all");
             [SystemMonitor dump];
         }
-        HGHeapFactory::CreateHeap(DEFAULT_HEAP_NAME)->freeAll();
+        if (pPlanetModel) {
+            pPlanetModel->removeFromParent();
+            pPlanetModel = NULL;
+        }
+        if (pRader) {
+            pRader->release();
+            pRader = NULL;
+        }
+        if (pLayerUIRoot) {
+            pLayerUIRoot->release();
+            pLayerUIRoot = NULL;
+        }
+        if (pLayerBattleRoot)
+        {
+            pLayerBattleRoot->release();
+            pLayerBattleRoot = NULL;
+        }
+        
+        if (pLayerBackground) {
+            pLayerBackground->release();
+            pLayerBackground = NULL;
+        }
+        if (pLayerEnemy) {
+            pLayerEnemy->release();
+            pLayerEnemy = NULL;
+        }
+        if (pLayerFriend) {
+            pLayerFriend->release();
+            pLayerFriend = NULL;
+        }
+        if (pLayerBullet) {
+            pLayerBullet->release();
+            pLayerBullet = NULL;
+        }
+        if (pLayerEffect) {
+            pLayerEffect->release();
+            pLayerEffect = NULL;
+        }
+        if (pPlayer) {
+            pPlayer->release();
+            pPlayer = NULL;
+        }
+        HGDirector::sharedDirector()->getRootNode()->removeAllChildren();
+        friendFighterList.removeAllActor();
+        enemyFighterList.removeAllActor();
+        friendBulletList.removeAllActor();
+        enemyBulletList.removeAllActor();
+        
+        //HGHeapFactory::CreateHeap(DEFAULT_HEAP_NAME)->freeAll();
+        hg::cleanupMemory();
         if (IS_DEBUG) {
             NSLog(@"after free all");
             [SystemMonitor dump];
@@ -1175,6 +1224,7 @@ namespace hg {
             NSLog(@"after delete texture");
             [SystemMonitor dump];
         }
+        
         isInitialized = false;
         
     }
@@ -1184,6 +1234,10 @@ namespace hg {
     //hgles::HGLObject3D* planetObj = NULL;
     void initialize(SpawnData sd, FighterInfo* pl)
     {
+        if (IS_DEBUG) {
+            NSLog(@"initialize start(initialize)");
+            [SystemMonitor dump];
+        }
         NSLog(@"INITIALIZE START");
         enemySpawnCount = 0;
         gameMessageList.clear();
@@ -1210,11 +1264,6 @@ namespace hg {
             NSLog(@"before free all (initialize)");
             [SystemMonitor dump];
         }
-        HGHeapFactory::CreateHeap(DEFAULT_HEAP_NAME)->freeAll();
-        if (IS_DEBUG) {
-            NSLog(@"after free all (initialize)");
-            [SystemMonitor dump];
-        }
         
         if (IS_DEBUG) {
             NSLog(@"before remove children(initialize)");
@@ -1230,10 +1279,10 @@ namespace hg {
         UserData::sharedUserData()->initBeforeBattle();
         
         // list
-        friendFighterList.removeAllActor();
-        enemyFighterList.removeAllActor();
-        friendBulletList.removeAllActor();
-        enemyBulletList.removeAllActor();
+        friendFighterList = ActorList<Fighter>();
+        enemyFighterList = ActorList<Fighter>();
+        friendBulletList = ActorList<Bullet>();
+        enemyBulletList = ActorList<Bullet>();
         
         enemyCellManager.clear();
         friendCellManager.clear();
@@ -1241,10 +1290,10 @@ namespace hg {
         friendBulletCellManager.clear();
         
         // process
-        HGProcessManager::sharedProcessManager()->clear();
+        HGProcessManager::sharedProcessManager()->initInstance();
         
         // state
-        HGStateManager::sharedStateManger()->clear();
+        HGStateManager::sharedStateManger()->initInstance();
         HGState* s = new BattleState();
         HGStateManager::sharedStateManger()->push(s);
         
@@ -1279,22 +1328,22 @@ namespace hg {
         pLayerBattleRoot->addChild(pLayerBackground);
         
         //
-        pLayerEnemy = new HGNode();
+        pLayerEnemy = new HGNode(ENEMY_NUM);
         pLayerEnemy->retain();
         pLayerBattleRoot->addChild(pLayerEnemy);
         
         //
-        pLayerFriend = new HGNode();
+        pLayerFriend = new HGNode(50);
         pLayerFriend->retain();
         pLayerBattleRoot->addChild(pLayerFriend);
         
         //
-        pLayerBullet = new HGNode();
+        pLayerBullet = new HGNode(ENEMY_BULLET_NUM + BULLET_NUM + 100);
         pLayerBullet->retain();
         pLayerBattleRoot->addChild(pLayerBullet);
         
         //
-        pLayerEffect = new HGNode();
+        pLayerEffect = new HGNode(EFFECT_NUM + 100);
         pLayerEffect->retain();
         pLayerBattleRoot->addChild(pLayerEffect);
         
@@ -1383,13 +1432,22 @@ namespace hg {
             pLayerBackground->addChild(pSprite);
             
             {
-                // 色変更
+                // 色
                 HGProcessOwner* po = new HGProcessOwner();
-                ChangeSpriteBlendColorProcess* cscp = new ChangeSpriteBlendColorProcess();
+                ChangeSpriteColorProcess* rnp = new ChangeSpriteColorProcess();
                 Color c = {0.1, 0.1, 0.8, 0.2};
-                cscp->init(po, pSprite, c, f(40));
-                cscp->setEaseFunc(&ease_linear);
-                HGProcessManager::sharedProcessManager()->addProcess(cscp);
+                rnp->init(po, pSprite, c, f(10));
+                rnp->setEaseFunc(&ease_out);
+                HGProcessManager::sharedProcessManager()->addProcess(rnp);
+                {
+                    // 色変更
+                    HGProcessOwner* po = new HGProcessOwner();
+                    ChangeSpriteBlendColorProcess* cscp = new ChangeSpriteBlendColorProcess();
+                    Color c = {0.1, 0.0, 0.8, 0.2};
+                    cscp->init(po, pSprite, c, f(40));
+                    cscp->setEaseFunc(&ease_linear);
+                    HGProcessManager::sharedProcessManager()->addProcess(cscp);
+                }
             }
         }
         {
@@ -1408,11 +1466,6 @@ namespace hg {
         
         // player
         {
-            if (pPlayer)
-            {
-                pPlayer->release();
-            }
-            
             pPlayer = new Fighter();
             pPlayer->init(pLayerFriend, SideTypeFriend, playerInfo);
             pPlayer->setPosition(sizeOfField.width/2, sizeOfField.height/2);
@@ -1445,6 +1498,10 @@ namespace hg {
         }*/
         isInitialized = true;
         NSLog(@"INITIALIZE END");
+        if (IS_DEBUG) {
+            NSLog(@"initialize end(initialize)");
+            [SystemMonitor dump];
+        }
     }
     
     void deployFriends()

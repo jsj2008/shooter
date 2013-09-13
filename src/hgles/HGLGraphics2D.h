@@ -41,6 +41,7 @@ namespace hgles {
                          HGLVector3* scale,
                          HGLVector3* rotate,
                          HGLTexture* texture);
+        static void cleanup();
         
         /*
     private:

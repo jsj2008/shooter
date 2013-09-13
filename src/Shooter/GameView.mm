@@ -176,95 +176,93 @@ static EnemyGroupInfoList enemyGroupInfoList;
     float base_sleep = 1.0/GAMEFPS;
     float sleep;
     isPlaying = true;
-    @autoreleasepool {
-        while (1)
+    while (1)
+    {
+        nowDt = [NSDate date];
+        start = [nowDt timeIntervalSince1970];
         {
-            nowDt = [NSDate date];
-            start = [nowDt timeIntervalSince1970];
+            // calling game's main process
+            @synchronized(lock)
             {
-                // calling game's main process
-                @synchronized(lock)
+                hg::update(keyState);
+                keyState.shouldDeployFriend = false;
+                keyState.shouldCollectFriend = false;
+                if (upCamera) {
+                    hg::UserData::sharedUserData()->upCamera();
+                    hg::setCameraZPostion(hg::UserData::sharedUserData()->getCameraPosition());
+                }
+                if (downCamera) {
+                    hg::UserData::sharedUserData()->downCamera();
+                    hg::setCameraZPostion(hg::UserData::sharedUserData()->getCameraPosition());
+                }
+                [_glview draw];
+                
+                // message
                 {
-                    hg::update(keyState);
-                    keyState.shouldDeployFriend = false;
-                    keyState.shouldCollectFriend = false;
-                    if (upCamera) {
-                        hg::UserData::sharedUserData()->upCamera();
-                        hg::setCameraZPostion(hg::UserData::sharedUserData()->getCameraPosition());
-                    }
-                    if (downCamera) {
-                        hg::UserData::sharedUserData()->downCamera();
-                        hg::setCameraZPostion(hg::UserData::sharedUserData()->getCameraPosition());
-                    }
-                    [_glview draw];
-                    
-                    // message
-                    {
-                        __weak GameView* self_ = self;
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            [self_ showMessage];
-                            [self_ updateGauge];
-                        });
+                    __weak GameView* self_ = self;
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [self_ showMessage];
+                        [self_ updateGauge];
+                    });
+                }
+                
+                if (hg::isGameEnd())
+                {
+                    isPlaying = false;
+                    NSLog(@"is game end");
+                    if (IS_DEBUG) {
+                        NSLog(@"game end");
+                        [SystemMonitor dump];
                     }
                     
-                    if (hg::isGameEnd())
+                    // 終了処理
+                    hg::UserData::sharedUserData()->initAfterBattle();
+                    // 戦果集計
                     {
-                        isPlaying = false;
-                        NSLog(@"is game end");
-                        if (IS_DEBUG) {
-                            NSLog(@"game end");
-                            [SystemMonitor dump];
-                        }
-                        
-                        // 終了処理
-                        hg::UserData::sharedUserData()->initAfterBattle();
-                        // 戦果集計
-                        {
-                            using namespace hg;
-                            BattleResult br = getResult();
-                            UserData::sharedUserData()->setBattleResult(br);
-                            // データ保存
-                            UserData::sharedUserData()->saveData();
-                        }
-                        
-                        // Fighter Infoのインスタンスを削除
-                        for (hg::FighterList::iterator it = enemyList.begin(); it != enemyList.end(); ++it) {
-                            delete *it;
-                        }
-                        enemyList.clear();
-                        
-                        // フェードアウト
-                        __weak UIView* bc = baseCurtain;
-                        __weak GameView* self_ = self;
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            CGRect f = [UIScreen mainScreen].applicationFrame;
-                            CGRect cf = f;
-                            cf.size.width = f.size.height;
-                            cf.size.height = f.size.width;
-                            [bc setUserInteractionEnabled:true];
-                            [bc setBackgroundColor:[UIColor blackColor]];
-                            [bc setAlpha:0];
-                            __weak GameView* self__ = self_;
-                            __weak UIView* bc__ = bc;
-                            [UIView animateWithDuration:1.0 animations:^{
-                                [bc__ setAlpha:1];
-                            } completion:^(BOOL finished) {
-                                [self__ endThis];
-                            }];
-                        });
-                        break;
+                        using namespace hg;
+                        BattleResult br = getResult();
+                        UserData::sharedUserData()->setBattleResult(br);
+                        // データ保存
+                        UserData::sharedUserData()->saveData();
                     }
+                    
+                    // Fighter Infoのインスタンスを削除
+                    for (hg::FighterList::iterator it = enemyList.begin(); it != enemyList.end(); ++it) {
+                        delete *it;
+                    }
+                    enemyList.clear();
+                    
+                    // フェードアウト
+                    __weak UIView* bc = baseCurtain;
+                    __weak GameView* self_ = self;
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        CGRect f = [UIScreen mainScreen].applicationFrame;
+                        CGRect cf = f;
+                        cf.size.width = f.size.height;
+                        cf.size.height = f.size.width;
+                        [bc setUserInteractionEnabled:true];
+                        [bc setBackgroundColor:[UIColor blackColor]];
+                        [bc setAlpha:0];
+                        __weak GameView* self__ = self_;
+                        __weak UIView* bc__ = bc;
+                        [UIView animateWithDuration:1.0 animations:^{
+                            [bc__ setAlpha:1];
+                        } completion:^(BOOL finished) {
+                            [self__ endThis];
+                        }];
+                    });
+                    break;
                 }
             }
-            nowDt = [NSDate date];
-            end = [nowDt timeIntervalSince1970];
-            sleep = base_sleep - (end - start);
-            if (sleep > 0)
-            {
-                [NSThread sleepForTimeInterval:sleep];
-            }
-            
         }
+        nowDt = [NSDate date];
+        end = [nowDt timeIntervalSince1970];
+        sleep = base_sleep - (end - start);
+        if (sleep > 0)
+        {
+            [NSThread sleepForTimeInterval:sleep];
+        }
+        
     }
     
 }
@@ -371,29 +369,29 @@ static EnemyGroupInfoList enemyGroupInfoList;
 #define SHOW_MESSAGE_NUM 3
 - (void)showMessage
 {
+    // message
+    hg::GameMessageList gameMessageList = hg::getGameMessageList();
+    if (gameMessageList.size() <= 0) {
+        return;
+    }
+    
+    int addCnt = gameMessageList.size();
+    int nowCnt = [messageList count];
+    int sumCnt = addCnt + nowCnt;
+    int delCnt = sumCnt - SHOW_MESSAGE_NUM;
+    if (delCnt > 0 && delCnt <= nowCnt) {
+        for (int i = 0; i < delCnt; i++) {
+            UILabel* tmp = [messageList objectAtIndex:0];
+            [tmp removeFromSuperview];
+            tmp = nil;
+            [messageList removeObjectAtIndex:0];
+            //[tmp release];
+        }
+    }
+    float x = 0;
+    float w = messageView.frame.size.width;
+    float h = 14;
     @autoreleasepool {
-        // message
-        hg::GameMessageList gameMessageList = hg::getGameMessageList();
-        if (gameMessageList.size() <= 0) {
-            return;
-        }
-        
-        int addCnt = gameMessageList.size();
-        int nowCnt = [messageList count];
-        int sumCnt = addCnt + nowCnt;
-        int delCnt = sumCnt - SHOW_MESSAGE_NUM;
-        if (delCnt > 0 && delCnt <= nowCnt) {
-            for (int i = 0; i < delCnt; i++) {
-                UILabel* tmp = [messageList objectAtIndex:0];
-                [tmp removeFromSuperview];
-                tmp = nil;
-                [messageList removeObjectAtIndex:0];
-                //[tmp release];
-            }
-        }
-        float x = 0;
-        float w = messageView.frame.size.width;
-        float h = 14;
         for (hg::GameMessageList::iterator it = gameMessageList.begin(); it != gameMessageList.end(); ++it) {
             UILabel* l = [[UILabel alloc] initWithFrame:CGRectMake(x, 0, w, h)];
             //NSString* fontName = @"HiraKakuProN-W6";
@@ -411,15 +409,15 @@ static EnemyGroupInfoList enemyGroupInfoList;
                 break;
             }
         }
-        float y = 5;
-        for (UILabel* l in messageList) {
-            CGRect r = l.frame;
-            r.origin.y = y;
-            l.frame = r;
-            y += h;
-        }
-        hg::clearGameMessageList();
     }
+    float y = 5;
+    for (UILabel* l in messageList) {
+        CGRect r = l.frame;
+        r.origin.y = y;
+        l.frame = r;
+        y += h;
+    }
+    hg::clearGameMessageList();
 }
 
 - (void)retreatDo
@@ -544,16 +542,17 @@ static EnemyGroupInfoList enemyGroupInfoList;
 // UI初期化
 - (void)initialize
 {
+    /*
     unsigned int memory = [SystemMonitor getFreeMemory];
     if (memory <= 10*1024*1024)
     {
         // 10M以下になったら落とす
         int a = 0;
         int c = 10/a;
-        NSLog(@"t : %d", c);
+        NSLog(@"overflow : %d", c);
         std::string* s = NULL;
         s->clear();
-    }
+    }*/
     
     __weak GameView* self_ = self;
     @synchronized(lock)
@@ -602,19 +601,15 @@ static EnemyGroupInfoList enemyGroupInfoList;
                         break;
                     case 2:
                         appear_num = 3;
-                        plus = 1.2;
                         break;
                     case 3:
                         appear_num = 3;
-                        plus = 1.4;
                         break;
                     case 4:
                         appear_num = 4;
-                        plus = 1.6;
                         break;
                     case 5:
                         appear_num = 4;
-                        plus = 2;
                         break;
                 }
             }
@@ -726,7 +721,7 @@ static EnemyGroupInfoList enemyGroupInfoList;
             assert(pPlayerInfo != NULL);
             
             // setup game
-            hg::cleanup();
+            //hg::cleanup();
             
             hg::initialize(spawnData, pPlayerInfo);
             

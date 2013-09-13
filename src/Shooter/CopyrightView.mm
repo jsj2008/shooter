@@ -16,6 +16,7 @@
 #import "GlowLabel.h"
 #import <sstream>
 #import <stdlib.h>
+#import "MainViewController.h"
 
 @interface CopyrightView ()
 {
@@ -46,11 +47,11 @@
         mainFrame = frame;
         
         // back image
-        float width = frame.size.width;
+        //float width = frame.size.width;
         //float height = width * (float)(512.0/512.0);
-        float height = frame.size.height;
-        float x = 0;
-        float y = 0;
+        //float height = frame.size.height;
+        //float x = 0;
+        //float y = 0;
         //UIImage *img = [UIImage imageNamed:@"report_background.jpg"];
         //UIImage *img = [UIImage imageNamed:@"metal_back2.jpg"];
         
@@ -126,8 +127,9 @@
         {
             ImageButtonView* backImgView = [[ImageButtonView alloc] initWithFrame:CGRectMake(0, 0, 66, 66)];
             //UIImage* img = [UIImage imageNamed:@"checkmark.png"];
-            NSString *path = [[NSBundle mainBundle] pathForResource:ICON_CHECK ofType:@"png"];
-            UIImage* img = [[UIImage alloc] initWithContentsOfFile:path];
+            //NSString *path = [[NSBundle mainBundle] pathForResource:ICON_CHECK ofType:@"png"];
+            //UIImage* img = [[UIImage alloc] initWithContentsOfFile:path];
+            UIImage* img = [MainViewController getCheckImage];
             
             [backImgView setBackgroundColor:[UIColor whiteColor]];
             [backImgView setFrame:CGRectMake(mainFrame.size.width - 76, mainFrame.size.height - 84, 66, 66)];

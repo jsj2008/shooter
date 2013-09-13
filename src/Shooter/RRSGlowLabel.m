@@ -15,14 +15,14 @@
 
 @implementation RRSGlowLabel
 
-@synthesize glowColor, glowOffset, glowAmount;
+@synthesize glowOffset, glowAmount;
 
 - (void)setGlowColor:(UIColor *)newGlowColor
 {
     if (newGlowColor != glowColor) {
-        //[glowColor release];
+        glowColor = nil;
         CGColorRelease(glowColorRef);
-
+        
         glowColor = newGlowColor;
         glowColorRef = CGColorCreate(colorSpaceRef, CGColorGetComponents(glowColor.CGColor));
     }
@@ -58,12 +58,13 @@
     [super drawTextInRect:rect];
     
     CGContextRestoreGState(context);
+    
 }
 
 - (void)dealloc {
+    //[glowColor release];
     CGColorRelease(glowColorRef);
     CGColorSpaceRelease(colorSpaceRef);
-    //[glowColor release];
 }
 
 @end

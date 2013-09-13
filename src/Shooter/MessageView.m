@@ -25,7 +25,7 @@ const float MessageHeight = 180;
 @property(weak)UIView* menuBase;
 @property(weak)UILabel* msgLabel;
 @property(weak)UIView* curtain;
-@property(weak)NSMutableArray* messageList;
+@property(strong)NSMutableArray* messageList;
 
 @end
 

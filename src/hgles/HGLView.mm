@@ -121,6 +121,7 @@ using namespace hgles;
 
 - (void)stopRender {
     [displayLink removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
+    hgles::cleanup();
 }
 
 - (void)setupLayer

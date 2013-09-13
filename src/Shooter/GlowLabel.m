@@ -36,6 +36,7 @@
     CGContextSetTextDrawingMode(ctx, kCGTextFillStroke);
     
     [self.text drawInRect:self.bounds withFont:self.font lineBreakMode:self.lineBreakMode alignment:self.textAlignment];
+    //CGContextRelease(ctx);
 }
 
 

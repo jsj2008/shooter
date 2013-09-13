@@ -51,6 +51,9 @@ const float MenuButtonGap = 10;
 #if IS_BACKGROUND
     BackgroundView* backgroundView;
 #endif
+#if IS_REPORT_REUSE
+    ReportView* reportView;
+#endif
     
     // menu
     UIView* menuBaseView;
@@ -66,6 +69,9 @@ const float MenuButtonGap = 10;
     PlayerDetailView* playerDetailView;
 #endif
     MasIconadManagerViewController *mas_;
+#if IS_MAIN_ADMOB
+    GADBannerView* gadBannerView_;
+#endif
     
 }
 @end
@@ -103,6 +109,17 @@ static MainViewController* instance = nil;
     return self;
 }
 
+
+static UIImage* checkImg = nil;
++ (UIImage*)getCheckImage
+{
+    if (checkImg == nil) {
+        NSString *path = [[NSBundle mainBundle] pathForResource:ICON_CHECK ofType:@"png"];
+        checkImg = [[UIImage alloc] initWithContentsOfFile:path];
+    }
+    return checkImg;
+}
+
 -(void)earthquake
 {
     UIView* v = mainBaseView;
@@ -122,29 +139,35 @@ static MainViewController* instance = nil;
 // AdMob
 +(GADBannerView*)CreateGADBannerView
 {
-    GADBannerView *bannerView_;
-    // 画面下部に標準サイズのビューを作成する
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone){
-        bannerView_ = [[GADBannerView alloc] initWithAdSize:kGADAdSizeBanner];
+    if (instance) {
+        @autoreleasepool {
+            GADBannerView *bannerView_;
+            // 画面下部に標準サイズのビューを作成する
+            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone){
+                bannerView_ = [[GADBannerView alloc] initWithAdSize:kGADAdSizeBanner];
+            }
+            else{
+                bannerView_ = [[GADBannerView alloc] initWithAdSize:kGADAdSizeSmartBannerLandscape];
+            }
+            
+            // 広告の「ユニット ID」を指定する。これは AdMob パブリッシャー ID です。
+            bannerView_.adUnitID = ADDMOB_PUBLISHER_ID;
+            
+            // ユーザーに広告を表示した場所に後で復元する UIViewController をランタイムに知らせて
+            // ビュー階層に追加する。
+            bannerView_.rootViewController = instance;
+            // 一般的なリクエストを行って広告を読み込む。
+            [bannerView_ loadRequest:[GADRequest request]];
+            return bannerView_;
+        }
     }
-    else{
-        bannerView_ = [[GADBannerView alloc] initWithAdSize:kGADAdSizeSmartBannerLandscape];
-    }
-    
-    // 広告の「ユニット ID」を指定する。これは AdMob パブリッシャー ID です。
-    bannerView_.adUnitID = ADDMOB_PUBLISHER_ID;
-    
-    // ユーザーに広告を表示した場所に後で復元する UIViewController をランタイムに知らせて
-    // ビュー階層に追加する。
-    bannerView_.rootViewController = self;
-    // 一般的なリクエストを行って広告を読み込む。
-    [bannerView_ loadRequest:[GADRequest request]];
-    return bannerView_;
+    return nil;
 }
 
 //=======================================================
 // GFViewDelegate
 //=======================================================
+#if IS_GAMEFEAT
 - (void)didShowGameFeat{
     // GameFeatが表示されたタイミングで呼び出されるdelegateメソッド
     NSLog(@"didShowGameFeat");
@@ -153,6 +176,7 @@ static MainViewController* instance = nil;
     // GameFeatが閉じられたタイミングで呼び出されるdelegateメソッド
     NSLog(@"didCloseGameFeat");
 }
+#endif
 
 
 +(void)Start
@@ -167,7 +191,9 @@ static MainViewController* instance = nil;
 {
     [self removeTitle];
     [self showMainView:true showMessage:true];
+#if IS_BGM
     [[OALSimpleAudio sharedInstance] playBg:BGM_MENU loop:true];
+#endif
 }
 
 + (void)RemoveBackgroundView
@@ -199,6 +225,10 @@ static MainViewController* instance = nil;
 - (void)showBackgroundView
 {
 #if IS_BACKGROUND
+    if (backgroundView) {
+        [backgroundView removeFromSuperview];
+        backgroundView = nil;
+    }
     // 背景
     backgroundView = [[BackgroundView alloc] init];
     [bottomView addSubview:backgroundView];
@@ -213,13 +243,15 @@ static MainViewController* instance = nil;
     [self.view addSubview:title];
     
     // admob
+    if (!gadBannerView_)
     {
-        GADBannerView* ad = [MainViewController CreateGADBannerView];
-        [title addSubview:ad];
-        CGRect r = ad.frame;
-        r.origin.x = title.frame.size.width/2 - r.size.width/2;
-        [ad setFrame:r];
+        gadBannerView_ = [MainViewController CreateGADBannerView];
     }
+    [title addSubview:gadBannerView_];
+    CGRect r = gadBannerView_.frame;
+    r.origin.x = title.frame.size.width/2 - r.size.width/2;
+    [gadBannerView_ setFrame:r];
+    
 }
 
 - (void)removeTitle
@@ -231,12 +263,22 @@ static MainViewController* instance = nil;
 -(void)removeMainView
 {
     if (menuBaseView) {
+#if IS_MENU_REUSE
+        [menuBaseView setUserInteractionEnabled:NO];
+        [menuBaseView setAlpha:0];
+#else
         [menuBaseView removeFromSuperview];
         menuBaseView = nil;
+#endif
     }
     if (mainBaseView) {
+#if IS_MENU_REUSE
+        [mainBaseView setUserInteractionEnabled:NO];
+        [mainBaseView setAlpha:0];
+#else
         [mainBaseView removeFromSuperview];
         mainBaseView = nil;
+#endif
     }
 }
 
@@ -247,16 +289,10 @@ static MainViewController* instance = nil;
     f.origin.x = mainFrame.size.width;
     
     __weak UIView* removeView = menuBaseView;
-    //menuBaseView = nil;
     [UIView animateWithDuration:MenuAnimationDuration animations:^{
         [removeView setFrame:f];
-        /*[removeView setAlpha:0];*/
     }
                      completion:^(BOOL finished) {
-                         /*
-                          [removeView removeFromSuperview];
-                          //[self earthQuake];
-                          [removeView release];*/
                      }];
 }
 
@@ -345,31 +381,36 @@ static MainViewController* instance = nil;
     // animate
     [vc setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
     [vc setUserInteractionEnabled:FALSE];
-    __weak AllyTableView* vc_ = vc;
-    [UIView animateWithDuration:MenuAnimationDuration animations:^{
-        [vc_ setAlpha:1];
-        [vc_ setTransform:CGAffineTransformMakeScale(1,1)];
-    }completion:^(BOOL finished) {
-        [vc_ setUserInteractionEnabled:TRUE];
-    }];
-    __weak AllyTableView* avc = vc;
-    __weak MainViewController* self_ = self;
-    [vc setOnEndAction:^{
-        [self_ showMenu];
-        [self_ saveData];
+    {
+        __weak AllyTableView* vc_ = vc;
+        [UIView animateWithDuration:MenuAnimationDuration animations:^{
+            [vc_ setAlpha:1];
+            [vc_ setTransform:CGAffineTransformMakeScale(1,1)];
+        }completion:^(BOOL finished) {
+            [vc_ setUserInteractionEnabled:TRUE];
+        }];
+    }
+    {
+        __weak AllyTableView* vc_ = vc;
+        __weak MainViewController* self_ = self;
+        [vc setOnEndAction:^{
+            [self_ showMenu];
+            [self_ saveData];
 #if IS_STATUS
-        [[StatusView GetInstance] showProgress];
+            [[StatusView GetInstance] showProgress];
 #endif
-        // animate
-        {
-            [avc setUserInteractionEnabled:FALSE];
-            [UIView animateWithDuration:MenuAnimationDuration animations:^{
-                [avc setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
-            } completion:^(BOOL finished) {
-                [avc removeFromSuperview];
-            }];
-        }
-    }];
+            // animate
+            {
+                [vc_ setUserInteractionEnabled:FALSE];
+                __weak AllyTableView* vc__ = vc_;
+                [UIView animateWithDuration:MenuAnimationDuration animations:^{
+                    [vc__ setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
+                } completion:^(BOOL finished) {
+                    [vc__ removeFromSuperview];
+                }];
+            }
+        }];
+    }
     
 }
 
@@ -380,27 +421,29 @@ static MainViewController* instance = nil;
     if (hg::UserData::sharedUserData()->getCurrentClearRatio() < 1.0) {
         msg = NSLocalizedString(@"You will get All fighters repaired and lose half of the Money. Are you sure to do this?", nil);
         DialogView* dialog = [[DialogView alloc] initWithMessage:msg];
+        {
 #if IS_PLAYER_DETAIL
-        __weak PlayerDetailView* pdv = playerDetailView;
+            __weak PlayerDetailView* pdv_ = playerDetailView;
 #endif
-        [dialog addButtonWithText:@"OK" withAction:^{
-            hg::UserData* u = hg::UserData::sharedUserData();
-            u->returnToBase();
-            u->saveData();
+            [dialog addButtonWithText:@"OK" withAction:^{
+                hg::UserData* u = hg::UserData::sharedUserData();
+                u->returnToBase();
+                u->saveData();
 #if IS_STATUS
-            [[StatusView GetInstance] loadUserInfo];
+                [[StatusView GetInstance] loadUserInfo];
 #endif
 #if IS_PLAYER_DETAIL
-            if (pdv) {
-                [pdv loadGrade];
-            }
+                if (pdv_) {
+                    [pdv_ loadGrade];
+                }
 #endif
-            DialogView* dialog2 = [[DialogView alloc] initWithMessage:NSLocalizedString(@"Welcome back to the Base! All fighters are repaired now!", nil)];
-            [dialog2 addButtonWithText:NSLocalizedString(@"OK", nil) withAction:^{
-                // do nothing
+                DialogView* dialog2 = [[DialogView alloc] initWithMessage:NSLocalizedString(@"Welcome back to the Base! All fighters are repaired now!", nil)];
+                [dialog2 addButtonWithText:NSLocalizedString(@"OK", nil) withAction:^{
+                    // do nothing
+                }];
+                [dialog2 show];
             }];
-            [dialog2 show];
-        }];
+        }
         [dialog addButtonWithText:NSLocalizedString(@"Cancel", nil) withAction:^{
             // do nothing
         }];
@@ -410,7 +453,7 @@ static MainViewController* instance = nil;
     else {
         DialogView* dialog2 = [[DialogView alloc] initWithMessage:NSLocalizedString(@"Do you want to start over this stage again?", nil)];
 #if IS_PLAYER_DETAIL
-        __weak PlayerDetailView* pdv = playerDetailView;
+        __weak PlayerDetailView* pdv_ = playerDetailView;
 #endif
         [dialog2 addButtonWithText:NSLocalizedString(@"OK", nil) withAction:^{
             hg::UserData* u = hg::UserData::sharedUserData();
@@ -420,8 +463,8 @@ static MainViewController* instance = nil;
             [[StatusView GetInstance] loadUserInfo];
 #endif
 #if IS_PLAYER_DETAIL
-            if (pdv) {
-                [pdv loadGrade];
+            if (pdv_) {
+                [pdv_ loadGrade];
             }
 #endif
         }];
@@ -452,25 +495,27 @@ static MainViewController* instance = nil;
             [vc_ setUserInteractionEnabled:TRUE];
         }];
     }
-    __weak MainViewController* self_ = self;
-    __weak AllyTableView* vc_ = vc;
-    [vc setOnEndAction:^{
-        [self_ showMenu];
-        [self_ saveData];
+    {
+        __weak MainViewController* self_ = self;
+        __weak AllyTableView* vc_ = vc;
+        [vc setOnEndAction:^{
+            [self_ showMenu];
+            [self_ saveData];
 #if IS_STATUS
-        [[StatusView GetInstance] showProgress];
+            [[StatusView GetInstance] showProgress];
 #endif
-        // animate
-        __weak AllyTableView* vc__ = vc_;
-        {
-            [vc__ setUserInteractionEnabled:FALSE];
-            [UIView animateWithDuration:MenuAnimationDuration animations:^{
-                [vc__ setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
-            } completion:^(BOOL finished) {
-                [vc__ removeFromSuperview];
-            }];
-        }
-    }];
+            // animate
+            {
+                [vc_ setUserInteractionEnabled:FALSE];
+                __weak AllyTableView* vc__ = vc_;
+                [UIView animateWithDuration:MenuAnimationDuration animations:^{
+                    [vc__ setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
+                } completion:^(BOOL finished) {
+                    [vc__ removeFromSuperview];
+                }];
+            }
+        }];
+    }
     
 }
 
@@ -494,25 +539,27 @@ static MainViewController* instance = nil;
             [vc_ setUserInteractionEnabled:TRUE];
         }];
     }
-    __weak AllyTableView* vc_ = vc;
-    __weak MainViewController* self_ = self;
-    [vc setOnEndAction:^{
+    {
+        __weak AllyTableView* vc_ = vc;
+        __weak MainViewController* self_ = self;
+        [vc setOnEndAction:^{
 #if IS_STATUS
-        [[StatusView GetInstance] showProgress];
+            [[StatusView GetInstance] showProgress];
 #endif
-        [self_ showMenu];
-        [self_ saveData];
-        // animate
-        {
-            [vc_ setUserInteractionEnabled:FALSE];
-            __weak AllyTableView* vc__ = vc_;
-            [UIView animateWithDuration:MenuAnimationDuration animations:^{
-                [vc__ setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
-            } completion:^(BOOL finished) {
-                [vc__ removeFromSuperview];
-            }];
-        }
-    }];
+            [self_ showMenu];
+            [self_ saveData];
+            // animate
+            {
+                [vc_ setUserInteractionEnabled:FALSE];
+                __weak AllyTableView* vc__ = vc_;
+                [UIView animateWithDuration:MenuAnimationDuration animations:^{
+                    [vc__ setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
+                } completion:^(BOOL finished) {
+                    [vc__ removeFromSuperview];
+                }];
+            }
+        }];
+    }
     
 }
 
@@ -523,15 +570,30 @@ static MainViewController* instance = nil;
     NSLog(@"showMenu1");
     [SystemMonitor dump];
 #endif
+    
     // Menu
     {
         if (menuBaseView != nil) {
             // animation
+#if IS_MENU_REUSE
+            CGRect tmpFrame = mainFrame;
+            tmpFrame.origin.x = mainFrame.size.width;
+            [menuBaseView setFrame:tmpFrame];
+            [menuBaseView setTransform:CGAffineTransformMakeScale(1,1)];
+            __weak UIView* mb_ = menuBaseView;
+            [UIView animateWithDuration:0.2 animations:^{
+                [mb_ setFrame:mainFrame];
+                [mb_ setUserInteractionEnabled:TRUE];
+                [mb_ setAlpha:1];
+            } completion:^(BOOL finished) {
+            }];
+#else
             __weak UIView* mb = menuBaseView;
             [UIView animateWithDuration:0.2 animations:^{
                 [mb setFrame:mainFrame];
             } completion:^(BOOL finished) {
             }];
+#endif
         }
         else {
             
@@ -540,7 +602,6 @@ static MainViewController* instance = nil;
                 menuBaseView = nil;
             }
             menuBaseView = [[UIView alloc] initWithFrame:mainFrame];
-            [mainBaseView setBackgroundColor:[UIColor clearColor]];
             [mainBaseView addSubview:menuBaseView];
             
             // Menu animation
@@ -549,9 +610,9 @@ static MainViewController* instance = nil;
             [menuBaseView setFrame:tmpFrame];
             
             // animation
-            __weak UIView* mb = menuBaseView;
+            __weak UIView* mb_ = menuBaseView;
             [UIView animateWithDuration:0.2 animations:^{
-                [mb setFrame:mainFrame];
+                [mb_ setFrame:mainFrame];
             } completion:^(BOOL finished) {
                 //[self earthQuake];
             }];
@@ -681,19 +742,25 @@ static MainViewController* instance = nil;
                 
             } // end of menu 2
             
+#if IS_MAIN_ADMOB
             // admob
-            if (IS_MAIN_ADMOB)
             {
-                GADBannerView* ad = [MainViewController CreateGADBannerView];
-                [menuBaseView addSubview:ad];
-                CGRect r = ad.frame;
+                if (!gadBannerView_) {
+                    gadBannerView_ = [MainViewController CreateGADBannerView];
+                }
+                [gadBannerView_ removeFromSuperview];
+                [menuBaseView addSubview:gadBannerView_];
+                CGRect r = gadBannerView_.frame;
                 r.origin.x = menuBaseView.frame.size.width/2 - r.size.width/2;
                 r.origin.y = menuBaseView.frame.size.height - r.size.height;
-                [ad setFrame:r];
+                [gadBannerView_ setFrame:r];
+                [gadBannerView_ loadRequest:[GADRequest request]];
             }
+#endif
             
+#if IS_GAMEFEAT
             // gamefeat
-            if (IS_GAMEFEAT){
+            {
                 // start battle
                 float w = 350;
                 float h = MenuButtonHeight;
@@ -711,9 +778,11 @@ static MainViewController* instance = nil;
                     }];
                 }
             }
+#endif
             
+#if IS_MEDIBAAD
             // medibaad
-            if (IS_MEDIBAAD){
+            {
                 float w = mainFrame.size.width;
                 float h = MenuButtonHeight;
                 float buttonX = mainFrame.size.width/2 - w/2;
@@ -731,6 +800,7 @@ static MainViewController* instance = nil;
                 mas_.sID = @"ea7ab6746abb4a15de2a82deee207d5f3582b275b8f80021";
                 [mas_ loadRequest];
             }
+#endif
         }
     }
 #if IS_DEBUG
@@ -749,7 +819,6 @@ static MainViewController* instance = nil;
         // show select area table view
         [self_ hideMenuViewAnimate];
         StageTableView* vc = [[StageTableView alloc] initWithFrame:mainFrame];
-        __weak StageTableView* vc_ = vc;
         [self_.view addSubview:vc];
 #if IS_STATUS
         [[StatusView GetInstance] hideProgress];
@@ -758,6 +827,7 @@ static MainViewController* instance = nil;
         {
             [vc setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
             [vc setUserInteractionEnabled:FALSE];
+            __weak StageTableView* vc_ = vc;
             [UIView animateWithDuration:MenuAnimationDuration animations:^{
                 [vc_ setAlpha:1];
                 [vc_ setTransform:CGAffineTransformMakeScale(1,1)];
@@ -765,6 +835,8 @@ static MainViewController* instance = nil;
                 [vc_ setUserInteractionEnabled:TRUE];
             }];
         }
+        
+        __weak StageTableView* vc_ = vc;
         [vc setOnEndAction:^{
 #if IS_STATUS
             [[StatusView GetInstance] showProgress];
@@ -774,10 +846,11 @@ static MainViewController* instance = nil;
             // animate
             {
                 [vc_ setUserInteractionEnabled:FALSE];
+                __weak StageTableView* vc__ = vc_;
                 [UIView animateWithDuration:MenuAnimationDuration animations:^{
-                    [vc_ setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
+                    [vc__ setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
                 } completion:^(BOOL finished) {
-                    [vc_ removeFromSuperview];
+                    [vc__ removeFromSuperview];
                 }];
             }
         }];
@@ -798,26 +871,46 @@ static MainViewController* instance = nil;
 -(void)showMainView:(bool)showMenu showMessage:(bool)showMessage
 {
     
-    __weak MainViewController* self_ = self;
 #if IS_DEBUG
     NSLog(@"show main1");
     [SystemMonitor dump];
 #endif
-    [self_ showBackgroundView];
+    [self showBackgroundView];
+#if IS_MENU_REUSE
+    if (!mainBaseView) {
+        mainBaseView = [[UIView alloc] initWithFrame:viewFrame];
+        [mainBaseView setBackgroundColor:[UIColor clearColor]];
+        [self.view addSubview:mainBaseView];
+    }
+    [mainBaseView setTransform:CGAffineTransformMakeScale(1,1)];
+    [mainBaseView setFrame:viewFrame];
+    [mainBaseView setAlpha:1];
+    [mainBaseView setUserInteractionEnabled:YES];
+#else
     if (mainBaseView) {
         [mainBaseView removeFromSuperview];
         mainBaseView = nil;
     }
     mainBaseView = [[UIView alloc] initWithFrame:viewFrame];
     [mainBaseView setBackgroundColor:[UIColor clearColor]];
-    [self_.view addSubview:mainBaseView];
+    [self.view addSubview:mainBaseView];
+#endif
     
     // ステータス
 #if IS_STATUS
-    
+#if IS_STATUS_REUSE
+    StatusView* statusView = [StatusView GetInstance];
+    if (statusView == nil) {
+        [mainBaseView addSubview:[StatusView CreateInstance]];
+        statusView = [StatusView GetInstance];
+    }
+    [statusView loadUserInfo];
+    [statusView showProgress];
+#else
     StatusView* statusView = [StatusView CreateInstance];
     [mainBaseView addSubview:statusView];
     [statusView loadUserInfo];
+#endif
 #endif
     
     // player detail view
@@ -829,18 +922,18 @@ static MainViewController* instance = nil;
             playerDetailView = nil;
         }
         playerDetailView = [[PlayerDetailView alloc] initWithFrame:playderDetailViewFrame];
-        [self_.view addSubview:playerDetailView];
+        [self.view addSubview:playerDetailView];
         [playerDetailView loadGrade];
 #endif
     }
     
     // MENU
     if (showMenu) {
-        [self_ showMenu];
+        [self showMenu];
     }
     
     if (showMessage) {
-        [self_ showMessage];
+        [self showMessage];
     }
     /*
      // dialog test
@@ -857,76 +950,87 @@ static MainViewController* instance = nil;
 
 -(void)fixAlly
 {
-    __weak MainViewController* self_ = self;
 #if IS_DEBUG
     NSLog(@"show fix");
     [SystemMonitor dump];
 #endif
-    [self_ hideMenuViewAnimate];
+    [self hideMenuViewAnimate];
     AllyTableView* vc = [[AllyTableView alloc] initWithViewMode:AllyViewModeFix WithFrame:mainFrame];
-    __weak AllyTableView* vc_ = vc;
-    [self_.view addSubview:vc];
-#if IS_STATUS
-    [[StatusView GetInstance] hideProgress];
-#endif
-    // animate
+    
     {
-        [vc setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
-        [vc setUserInteractionEnabled:FALSE];
-        [UIView animateWithDuration:MenuAnimationDuration animations:^{
-            [vc_ setAlpha:1];
-            [vc_ setTransform:CGAffineTransformMakeScale(1,1)];
-        }completion:^(BOOL finished) {
-            [vc_ setUserInteractionEnabled:TRUE];
-        }];
+        [self.view addSubview:vc];
+#if IS_STATUS
+        [[StatusView GetInstance] hideProgress];
+#endif
+        // animate
+        {
+            [vc setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
+            [vc setUserInteractionEnabled:FALSE];
+            __weak AllyTableView* vc_ = vc;
+            [UIView animateWithDuration:MenuAnimationDuration animations:^{
+                [vc_ setAlpha:1];
+                [vc_ setTransform:CGAffineTransformMakeScale(1,1)];
+            }completion:^(BOOL finished) {
+                [vc_ setUserInteractionEnabled:TRUE];
+            }];
+        }
     }
 #if IS_DEBUG
     NSLog(@"show fix2");
     [SystemMonitor dump];
 #endif
-    [vc setOnEndAction:^{
+    
+    {
+        __weak AllyTableView* vc_ = vc;
+        __weak MainViewController* self_ = self;
+        [vc setOnEndAction:^{
 #if IS_DEBUG
-        NSLog(@"end fix");
-        [SystemMonitor dump];
+            NSLog(@"end fix");
+            [SystemMonitor dump];
 #endif
-        [self_ showMenu];
-        [self_ saveData];
+            [self_ showMenu];
+            [self_ saveData];
 #if IS_STATUS
-        [[StatusView GetInstance] showProgress];
+            [[StatusView GetInstance] showProgress];
 #endif
-        // animate
-        {
-            [vc_ setUserInteractionEnabled:FALSE];
-            [UIView animateWithDuration:MenuAnimationDuration animations:^{
-                [vc_ setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
-            } completion:^(BOOL finished) {
-                [vc_ removeFromSuperview];
-            }];
-        }
+            // animate
+            {
+                [vc_ setUserInteractionEnabled:FALSE];
+                __weak AllyTableView* vc__ = vc_;
+                [UIView animateWithDuration:MenuAnimationDuration animations:^{
+                    [vc__ setTransform:CGAffineTransformMakeScale(1.5, 0.0)];
+                } completion:^(BOOL finished) {
+                    [vc__ removeFromSuperview];
+                }];
+            }
 #if IS_DEBUG
-        NSLog(@"end fix2");
-        [SystemMonitor dump];
+            NSLog(@"end fix2");
+            [SystemMonitor dump];
 #endif
-    }];
+        }];
+    }
+    vc = nil;
     
 }
 
 -(void) showMessage
 {
-    if (hg::UserData::sharedUserData()->hasLevelUpInfo())
-    {
-        NSMutableArray* msgList = [NSMutableArray arrayWithObjects: nil];
-        // レベルアップメッセージを作成
-        while (1) {
-            if (!hg::UserData::sharedUserData()->hasLevelUpInfo()) {
-                break;
+    @autoreleasepool {
+        if (hg::UserData::sharedUserData()->hasLevelUpInfo())
+        {
+            NSMutableArray* msgList = [NSMutableArray arrayWithObjects: nil];
+            // レベルアップメッセージを作成
+            while (1) {
+                if (!hg::UserData::sharedUserData()->hasLevelUpInfo()) {
+                    break;
+                }
+                std::string msg = hg::UserData::sharedUserData()->popLevelupMessage();
+                [msgList addObject:[NSString stringWithCString:msg.c_str() encoding:NSUTF8StringEncoding]];
             }
-            std::string msg = hg::UserData::sharedUserData()->popLevelupMessage();
-            [msgList addObject:[NSString stringWithCString:msg.c_str() encoding:NSUTF8StringEncoding]];
+            
+            MessageView* msgView = [[MessageView alloc] initWithMessageList:msgList];
+            [msgView show];
         }
-        
-        MessageView* msgView = [[MessageView alloc] initWithMessageList:msgList];
-        [msgView show];
     }
 }
 
@@ -936,18 +1040,20 @@ static MainViewController* instance = nil;
     // 背景復活
     // クリア画面
     if (hg::UserData::sharedUserData()->isCleared()) {
+#if IS_BGM
         [[OALSimpleAudio sharedInstance] playBg:BGM_CLEAR loop:true];
-        [self showMainView:false showMessage:false];
+#endif
         ClearView* cv = [[ClearView alloc] initWithFrame:viewFrame];
-        __weak MainViewController* self_ = self;
-        __weak ClearView* cv_ = cv;
+        __weak MainViewController* self_ =self;
         [cv setOnEndAction:^{
-            [cv_ setUserInteractionEnabled:false];
-            [cv_ removeFromSuperview];
-            [self_ showMenu];
-            [self_ showMessage];
+            [self_ showMainView:true showMessage:true];
         }];
-        [self.view addSubview:cv];
+        [bottomView addSubview:cv];
+        /*
+        [self showMainView:true showMessage:true];
+        ClearView* cv = [[ClearView alloc] initWithFrame:viewFrame];
+        [mainBaseView addSubview:cv];
+         */
     }
     else {
         // レベルアップ情報を表示
@@ -985,9 +1091,12 @@ static MainViewController* instance = nil;
     }
     
     // 消す
-    curtain = [[UIView alloc] initWithFrame:viewFrame];
-    [curtain setBackgroundColor:[UIColor blackColor]];
-    [curtain setUserInteractionEnabled:NO];
+    if (curtain == nil) {
+        curtain = [[UIView alloc] initWithFrame:viewFrame];
+        [curtain setBackgroundColor:[UIColor blackColor]];
+        [curtain setUserInteractionEnabled:NO];
+        [curtain setAlpha:0];
+    }
     [self.view addSubview:curtain];
     
     [self hideMenuViewAnimate];
@@ -1040,56 +1149,80 @@ static MainViewController* instance = nil;
 
 -(void)onGameEnd
 {
-    // ゲーム終了後の結果画面
-    [self saveData];
-    [curtain removeFromSuperview];
+    @autoreleasepool {
+        // ゲーム終了後の結果画面
+        [self saveData];
+        [curtain removeFromSuperview];
 #if IS_DEBUG
-    NSLog(@"report 1");
-    [SystemMonitor dump];
+        NSLog(@"report 1");
+        [SystemMonitor dump];
 #endif
-    if (gameView) {
-        [gameView removeFromSuperview];
-        gameView = nil;
-    }
+        if (gameView) {
+            [gameView removeFromSuperview];
+            gameView = nil;
+        }
 #if IS_REPORT
-    ReportView* rv = [[ReportView alloc] initWithFrame:mainFrame];
-    [self.view addSubview:rv];
-#endif
-    [[OALSimpleAudio sharedInstance] playBg:BGM_MENU loop:true];
-    __weak MainViewController* self_ = self;
-#if IS_REPORT
-    __weak ReportView* rv_ = rv;
-    [rv setOnEndAction:^{
-        [self_ endReport];
-        [rv_ removeFromSuperview];
-    }]; // rv setOnEndAction
+#if IS_REPORT_REUSE
+        if (!reportView) {
+            reportView = [[ReportView alloc] initWithFrame:mainFrame];
+            __weak MainViewController* self_ = self;
+            [reportView setOnEndAction:^{
+                [self_ endReport];
+            }]; // rv setOnEndAction
+        }
+        [self.view addSubview:reportView];
+        [reportView loadReport];
 #else
-    // ゲーム終了結果画面の終了後
-    // 背景復活
-    // クリア画面
-    if (hg::UserData::sharedUserData()->isCleared()) {
-        [[OALSimpleAudio sharedInstance] playBg:BGM_CLEAR loop:true];
-        [self_ showMainView:false showMessage:false];
-        ClearView* cv = [[ClearView alloc] initWithFrame:viewFrame];
-        __weak ClearView* acv = cv;
-        __weak MainViewController* self__ = self_;
-        [cv setOnEndAction:^{
-            [acv setUserInteractionEnabled:false];
-            [acv removeFromSuperview];
-            [self__ showMenu];
-            [self__ showMessage];
-        }];
-        [self_.view addSubview:cv];
-    }
-    else {
-        // レベルアップ情報を表示
-        [self_ showMainView:true showMessage:true];
-    }
+        reportView = [[ReportView alloc] initWithFrame:mainFrame];
+        [self.view addSubview:rv];
+#endif
+#endif
+#if IS_BGM
+        [[OALSimpleAudio sharedInstance] playBg:BGM_MENU loop:true];
+#endif
+#if IS_REPORT
+        {
+#if IS_REPORT_REUSE
+            __weak MainViewController* self_ = self;
+            [reportView setOnEndAction:^{
+                [self_ endReport];
+            }]; // rv setOnEndAction
+#else
+#endif
+        }
+#else
+        // ゲーム終了結果画面の終了後
+        // 背景復活
+        // クリア画面
+        if (hg::UserData::sharedUserData()->isCleared()) {
+#if IS_BGM
+            [[OALSimpleAudio sharedInstance] playBg:BGM_CLEAR loop:true];
+#endif
+            [self showMainView:false showMessage:false];
+            ClearView* cv = [[ClearView alloc] initWithFrame:viewFrame];
+            __weak ClearView* acv = cv;
+            __weak MainViewController* self_ = self;
+            [cv setOnEndAction:^{
+                [acv setUserInteractionEnabled:false];
+                [acv removeFromSuperview];
+                [self_ showMenu];
+                [self_ showMessage];
+            }];
+            [self_.view addSubview:cv];
+        }
+        else {
+            // レベルアップ情報を表示
+            [self showMainView:true showMessage:true];
+        }
 #endif
 #if IS_DEBUG
-    NSLog(@"report 2");
-    [SystemMonitor dump];
+        NSLog(@"report 2");
+        [SystemMonitor dump];
 #endif
+#if IS_MAIN_ADMOB
+        [gadBannerView_ loadRequest:[GADRequest request]];
+#endif
+    }
     
 }
 

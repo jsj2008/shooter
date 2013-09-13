@@ -80,31 +80,33 @@ std::vector<Fighter> fighter_list;
     NSTimeInterval end;
     float base_sleep = 1.0/60;
     float sleep;
-    while (1)
-    {
-        if (isEnd || !_glview)
+    @autoreleasepool {
+        while (1)
         {
-            break;
-        }
-        nowDt = [NSDate date];
-        start = [nowDt timeIntervalSince1970];
-        {
-            // calling game's main process
-            [self update];
-#if IS_GAME_GL
-            if (_glview) {
-                [_glview draw];
+            if (isEnd || !_glview)
+            {
+                break;
             }
+            nowDt = [NSDate date];
+            start = [nowDt timeIntervalSince1970];
+            {
+                // calling game's main process
+                [self update];
+#if IS_GAME_GL
+                if (_glview) {
+                    [_glview draw];
+                }
 #endif
+            }
+            nowDt = [NSDate date];
+            end = [nowDt timeIntervalSince1970];
+            sleep = base_sleep - (end - start);
+            if (sleep > 0)
+            {
+                [NSThread sleepForTimeInterval:sleep];
+            }
+            
         }
-        nowDt = [NSDate date];
-        end = [nowDt timeIntervalSince1970];
-        sleep = base_sleep - (end - start);
-        if (sleep > 0)
-        {
-            [NSThread sleepForTimeInterval:sleep];
-        }
-        
     }
 }
 
@@ -174,7 +176,6 @@ std::vector<Fighter> fighter_list;
         }
     }
     
-    float currentClearRatio = hg::UserData::sharedUserData()->getCurrentClearRatio();
     
     // planet
     /*

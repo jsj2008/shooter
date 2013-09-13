@@ -14,6 +14,7 @@
 #import "UIColor+MyCategory.h"
 #import "ImageButtonView.h"
 #import "SystemMonitor.h"
+#import "MainViewController.h"
 
 @interface AllyTableView ()
 {
@@ -139,8 +140,9 @@ static AllyTableView* instance;
         //UIImage* img = [UIImage imageNamed:@"checkmark.png"];
         
 #if IS_BUTTON_IMAGE
-        NSString *path = [[NSBundle mainBundle] pathForResource:ICON_CHECK ofType:@"png"];
-        UIImage* img = [[UIImage alloc] initWithContentsOfFile:path];
+        //NSString *path = [[NSBundle mainBundle] pathForResource:ICON_CHECK ofType:@"png"];
+        //UIImage* img = [[UIImage alloc] initWithContentsOfFile:path];
+        UIImage* img = [MainViewController getCheckImage];
 #endif
         
         [backImgView setBackgroundColor:[UIColor whiteColor]];

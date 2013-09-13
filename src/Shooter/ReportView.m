@@ -24,15 +24,207 @@
     // action
     void (^onEndAction)();
     CGRect mainFrame;
-    UITableView* tableView;
     CGSize rowSize;
     ReportMessageList reportMessageList;
+    UITableView* tableView;
 }
 
 @property(weak)CAEmitterLayer* emitterLayer;
 @end
 
 @implementation ReportView
+
+#if IS_REPORT_VIEW_ADMOB
+    static GADBannerView* gadBannerView_;
+#endif
+
+
+#if IS_REPORT_REUSE
+-(void)loadReport
+{
+    if (1) {
+        reportMessageList.clear();
+        hg::BattleResult battleResult = hg::UserData::sharedUserData()->getLatestBattleResult();
+        {
+            ReportMessage r = {
+                NSSTR2STR(NSLocalizedString(@"Result", nil)),
+                ""
+            };
+            if (battleResult.isWin) {
+                r.message = NSSTR2STR(NSLocalizedString(@"WIN", nil));
+            } else if (battleResult.isRetreat) {
+                r.message = NSSTR2STR(NSLocalizedString(@"RETREAT", nil));
+            } else {
+                r.message = NSSTR2STR(NSLocalizedString(@"LOSE", nil));
+            }
+            reportMessageList.push_back(r);
+        }
+        {
+            std::stringstream ss;
+            if (battleResult.battleScore > 0) {
+                ss << "+";
+            }
+            ss << battleResult.battleScore << NSSTR2STR(NSLocalizedString(@" Pt", nil));
+            ReportMessage r = {
+                NSSTR2STR(NSLocalizedString(@"Score", nil)),
+                ss.str()
+            };
+            reportMessageList.push_back(r);
+        }
+        {
+            std::stringstream ss;
+            ss <<  battleResult.earnedMoney << NSSTR2STR(NSLocalizedString(@" Gold", nil));
+            ReportMessage r = {
+                NSSTR2STR(NSLocalizedString(@"Reward", nil)),
+                ss.str()
+            };
+            reportMessageList.push_back(r);
+        }
+        {
+            std::stringstream ss;
+            ss << battleResult.allShotMoney << NSSTR2STR(NSLocalizedString(@" Gold", nil));
+            ReportMessage r = {
+                NSSTR2STR(NSLocalizedString(@"Ammo Cost", nil)),
+                ss.str()
+            };
+            reportMessageList.push_back(r);
+        }
+        {
+            std::stringstream ss;
+            if (battleResult.finalIncome >= 0) {
+                ss << "+" << battleResult.finalIncome << NSSTR2STR(NSLocalizedString(@" Gold", nil));
+            }
+            else {
+                ss << battleResult.finalIncome << NSSTR2STR(NSLocalizedString(@" Gold", nil));
+            }
+            ReportMessage r = {
+                NSSTR2STR(NSLocalizedString(@"Total Balance", nil)),
+                ss.str()
+            };
+            reportMessageList.push_back(r);
+        }
+        {
+            std::stringstream ss;
+            ss << battleResult.killedEnemy;
+            ReportMessage r = {
+                NSSTR2STR(NSLocalizedString(@"Destroyed Enemy", nil)),
+                ss.str()
+            };
+            reportMessageList.push_back(r);
+        }
+        {
+            std::stringstream ss;
+            ss << battleResult.killedFriend;
+            ReportMessage r = {
+                NSSTR2STR(NSLocalizedString(@"Destroyed Friend", nil)),
+                ss.str()
+            };
+            reportMessageList.push_back(r);
+        }
+        {
+            std::stringstream ss;
+            ss << battleResult.myShot;
+            ReportMessage r = {
+                NSSTR2STR(NSLocalizedString(@"Ammo Used", nil)),
+                ss.str()
+            };
+            reportMessageList.push_back(r);
+        }
+        {
+            std::stringstream ss;
+            ss << battleResult.myHit;
+            ReportMessage r = {
+                NSSTR2STR(NSLocalizedString(@"Hits", nil)),
+                ss.str()
+            };
+            reportMessageList.push_back(r);
+        }
+        {
+            std::string msg = "-";
+            if (battleResult.myShot > 0) {
+                char ch[100];
+                sprintf(ch, "%0.2f%%", ((float)battleResult.myHit/(float)battleResult.myShot*100.0));
+                msg = std::string(ch);
+            }
+            ReportMessage r = {
+                NSSTR2STR(NSLocalizedString(@"Hit Ratio", nil)),
+                msg
+            };
+            reportMessageList.push_back(r);
+        }
+        {
+            std::stringstream ss;
+            ss << battleResult.allShot;
+            ReportMessage r = {
+                NSSTR2STR(NSLocalizedString(@"Team Ammo Used", nil)),
+                ss.str()
+            };
+            reportMessageList.push_back(r);
+        }
+        {
+            std::stringstream ss;
+            ss << battleResult.allHit;
+            ReportMessage r = {
+                NSSTR2STR(NSLocalizedString(@"Team Hits", nil)),
+                ss.str()
+            };
+            reportMessageList.push_back(r);
+        }
+        {
+            std::string msg = "-";
+            if (battleResult.allShot > 0) {
+                char ch[100];
+                sprintf(ch, "%0.2f%%", ((float)battleResult.allHit/(float)battleResult.allShot*100.0));
+                msg = std::string(ch);
+            }
+            ReportMessage r = {
+                NSSTR2STR(NSLocalizedString(@"Team Hit Ratio", nil)),
+                msg
+            };
+            reportMessageList.push_back(r);
+        }
+        {
+            std::stringstream ss;
+            ss << battleResult.enemyShot;
+            ReportMessage r = {
+                NSSTR2STR(NSLocalizedString(@"Enemy's Ammo Used", nil)),
+                ss.str()
+            };
+            reportMessageList.push_back(r);
+        }
+        {
+            std::stringstream ss;
+            ss << battleResult.enemyHit;
+            ReportMessage r = {
+                NSSTR2STR(NSLocalizedString(@"Enemy's Total Hits", nil)),
+                ss.str()
+            };
+            reportMessageList.push_back(r);
+        }
+        {
+            std::string msg = "-";
+            if (battleResult.enemyShot > 0) {
+                char ch[100];
+                sprintf(ch, "%0.2f%%", ((float)battleResult.enemyHit/(float)battleResult.enemyShot*100.0));
+                msg = std::string(ch);
+            }
+            ReportMessage r = {
+                NSSTR2STR(NSLocalizedString(@"Enemy's Hit Ratio", nil)),
+                msg
+            };
+            reportMessageList.push_back(r);
+        }
+    }
+    [tableView reloadData];
+    [self setAlpha:1];
+    [self setUserInteractionEnabled:YES];
+    
+#if IS_REPORT_REUSE
+    [gadBannerView_ loadRequest:[GADRequest request]];
+#endif
+    
+}
+#endif
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -110,18 +302,22 @@
             
             float adheight = 0;
             
+#if IS_REPORT_VIEW_ADMOB
             // admob
-            if (IS_REPORT_VIEW_ADMOB)
             {
-                // admob
-                GADBannerView* ad = [MainViewController CreateGADBannerView];
-                [self addSubview:ad];
-                CGRect r = ad.frame;
+                if (gadBannerView_ == nil) {
+                    gadBannerView_ = [MainViewController CreateGADBannerView];
+                }
+                [gadBannerView_ removeFromSuperview];
+                [self addSubview:gadBannerView_];
+                CGRect r = gadBannerView_.frame;
                 r.origin.x = mainFrame.size.width/2 - r.size.width/2;
                 r.origin.y = mainFrame.size.height - r.size.height;
-                [ad setFrame:r];
+                [gadBannerView_ setFrame:r];
+                [gadBannerView_ loadRequest:[GADRequest request]];
                 adheight = r.size.height;
             }
+#endif
             
             // table
             float row_height = 25;
@@ -145,6 +341,10 @@
             
             // init messages
             reportMessageList.clear();
+            
+            
+#if IS_REPORT_REUSE
+#else
             hg::BattleResult battleResult = hg::UserData::sharedUserData()->getLatestBattleResult();
             {
                 ReportMessage r = {
@@ -315,44 +515,47 @@
                 };
                 reportMessageList.push_back(r);
             }
-            // 戻るボタン
-            {
-                ImageButtonView* backImgView = [[ImageButtonView alloc] initWithFrame:CGRectMake(0, 0, 66, 66)];
-                //UIImage* img = [UIImage imageNamed:@"checkmark.png"];
-                NSString *path = [[NSBundle mainBundle] pathForResource:ICON_CHECK ofType:@"png"];
-                UIImage* img = [[UIImage alloc] initWithContentsOfFile:path];
-                
-                [backImgView setBackgroundColor:[UIColor whiteColor]];
-                [backImgView setFrame:CGRectMake(mainFrame.size.width - 76, mainFrame.size.height - 84, 66, 66)];
-                [backImgView.layer setCornerRadius:8];
-                [backImgView.layer setBorderColor:[UIColor colorWithHexString:@"#ffffff"].CGColor];
-                [backImgView.layer setBorderWidth:0.5];
-                
-                [backImgView setImage:img];
-                [backImgView setContentMode:UIViewContentModeScaleAspectFit];
-                [backImgView setUserInteractionEnabled:YES];
-                
-                [self addSubview:backImgView];
-                
-                __weak ReportView* self_ = self;
-                [backImgView setOnTapAction:^(ImageButtonView *target) {
-                    [self_ endThis];
-                }];
-            }
-            // cover
-            {
-                UIView* v = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
-                [v setBackgroundColor:[UIColor blackColor]];
-                [v setUserInteractionEnabled:YES];
-                [self addSubview:v];
-                __weak UIView* v_ = v;
-                [UIView animateWithDuration:0.7 animations:^{
-                    [v_ setAlpha:0];
-                } completion:^(BOOL finished) {
-                    [v_ removeFromSuperview];
-                }];
-            }
+#endif
         }
+        // 戻るボタン
+        {
+            ImageButtonView* backImgView = [[ImageButtonView alloc] initWithFrame:CGRectMake(0, 0, 66, 66)];
+            //UIImage* img = [UIImage imageNamed:@"checkmark.png"];
+            //NSString *path = [[NSBundle mainBundle] pathForResource:ICON_CHECK ofType:@"png"];
+            //UIImage* img = [[UIImage alloc] initWithContentsOfFile:path];
+            UIImage* img = [MainViewController getCheckImage];
+            
+            [backImgView setBackgroundColor:[UIColor whiteColor]];
+            [backImgView setFrame:CGRectMake(mainFrame.size.width - 76, mainFrame.size.height - 84, 66, 66)];
+            [backImgView.layer setCornerRadius:8];
+            [backImgView.layer setBorderColor:[UIColor colorWithHexString:@"#ffffff"].CGColor];
+            [backImgView.layer setBorderWidth:0.5];
+            
+            [backImgView setImage:img];
+            [backImgView setContentMode:UIViewContentModeScaleAspectFit];
+            [backImgView setUserInteractionEnabled:YES];
+            
+            [self addSubview:backImgView];
+            
+            __weak ReportView* self_ = self;
+            [backImgView setOnTapAction:^(ImageButtonView *target) {
+                [self_ endThis];
+            }];
+        }
+        // cover
+        {
+            UIView* v = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
+            [v setBackgroundColor:[UIColor blackColor]];
+            [v setUserInteractionEnabled:YES];
+            [self addSubview:v];
+            __weak UIView* v_ = v;
+            [UIView animateWithDuration:0.7 animations:^{
+                [v_ setAlpha:0];
+            } completion:^(BOOL finished) {
+                [v_ removeFromSuperview];
+            }];
+        }
+        
         
         [self setBackgroundColor:[UIColor blackColor]];
         
@@ -366,6 +569,8 @@
     __weak ReportView* self_ = self;
     [UIView animateWithDuration:0.3 animations:^{
         [self_ setAlpha:0];
+    } completion:^(BOOL finished) {
+        [self_ removeFromSuperview];
     }];
     if (onEndAction) {
         onEndAction();
@@ -407,6 +612,9 @@
 
 - (void) setOnEndAction:(void(^)(void))action
 {
+    if (onEndAction) {
+        onEndAction = nil;
+    }
     onEndAction = [action copy];
 }
 

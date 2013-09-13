@@ -7,22 +7,32 @@
 //
 
 #import <UIKit/UIKit.h>
+
+#if IS_GAMEFEAT
 // gamefeat
 #import <GameFeatKit/GFView.h>
 #import <GameFeatKit/GFController.h>
+#endif
 
 // Google AdMob
 #import "GADBannerView.h"
 
+#if IS_GAMEFEAT
 @interface MainViewController : UIViewController<GFViewDelegate>
 {
 }
+#else
+@interface MainViewController : UIViewController
+{
+}
+#endif
 
 +(void)Start;
 +(void)PresentViewController:(UIViewController*) vc;
 + (void)RemoveBackgroundView;
 + (void)ShowBackgroundView;
 +(GADBannerView*)CreateGADBannerView;
++ (UIImage*)getCheckImage;
 
 @end
 

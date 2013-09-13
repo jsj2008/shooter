@@ -33,7 +33,7 @@ namespace hg {
         base(),
         textureSrcOffset(0,0),
         textureSrcSize(0,0),
-        aspectDegree(0),
+        aspectDegree(270),
         speed(0),
         textureName(""),
         life(0),

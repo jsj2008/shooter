@@ -160,6 +160,12 @@ namespace hg
             refCount++;
             s_pHeap->retain(this);
         }
+        inline void forceRelease()
+        {
+            refCount = 0;
+            this->~HGObject();
+            s_pHeap->release(this);
+        }
         inline void release()
         {
             //assert(refCount > 0);
@@ -209,6 +215,8 @@ namespace hg
         int frameCount;
         bool isInitialUpdate;
     };
+    
+    void cleanupMemory();
 
     class HGStateManager
     {
@@ -221,9 +229,11 @@ namespace hg
         void update();
         void pop();
         void push(HGState* state);
-        ~HGStateManager(){assert(false);}
+        static void initInstance();
+        ~HGStateManager(){}
     private:
         HGStateManager(){};
+        static HGStateManager* pStateManager;
     };
     
     ////////////////////
@@ -372,16 +382,8 @@ namespace hg
     class HGProcessManager
     {
     public:
-        static inline HGProcessManager* sharedProcessManager()
-        {
-            static HGProcessManager* hgProcessManagerPtr = NULL;
-            if (!hgProcessManagerPtr)
-            {
-                hgProcessManagerPtr = new HGProcessManager();
-                hgProcessManagerPtr->init();
-            }
-            return hgProcessManagerPtr;
-        }
+        static HGProcessManager* sharedProcessManager();
+        void initInstance();
         HGProcessManager(){}
         void clear();
         void addProcess(HGProcess* pProcess);
@@ -389,6 +391,7 @@ namespace hg
         void update();
         
     private:
+        static HGProcessManager* instance;
         void exec(HGProcess* proc);
         ProcessList processList;
         ProcessList addProcessList;
@@ -404,6 +407,14 @@ namespace hg
     {
     public:
         HGNode():
+        size(0,0),
+        scale(1,1,1),
+        position(0,0,0),
+        rotate(0,0,0),
+        parent(NULL)
+        {
+        }
+        HGNode(int reserveChildrenNum):
         size(0,0),
         scale(1,1,1),
         position(0,0,0),
@@ -772,6 +783,9 @@ namespace hg
                     hgles::setCurrentContext(hgles::ProgramType2D);
                 }
             }
+            
+            hgles::HGLGraphics2D::draw(&worldPosition, &worldScale, &WorldRotate,  &texture);
+            /*
             switch (type)
             {
                 case SPRITE_TYPE_BILLBOARD:
@@ -780,7 +794,7 @@ namespace hg
                 case SPRITE_TYPE_NORMAL:
                     hgles::HGLGraphics2D::drawLike3d(&worldPosition, &worldScale, &WorldRotate,  &texture);
                     break;
-            }
+            }*/
 #endif
         }
         
@@ -1190,7 +1204,9 @@ namespace hg
         };
         ~ChangeSpriteBlendColorProcess()
         {
-            pSpr->release();
+            if (pSpr) {
+                pSpr->release();
+            }
         }
         void setEaseFunc(float (*pEaseFunc)(float t, float b, float c, float d))
         {

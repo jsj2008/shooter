@@ -116,6 +116,7 @@ namespace hgles {
     extern HGLVector3 cameraPosition;
     extern HGLVector3 cameraRotate;
     //
+    void cleanup();
     
     struct Color;
     struct Position;

@@ -31,7 +31,7 @@ namespace hgles {
     {
         for (std::vector<HGLMesh*>::iterator itr = meshlist.begin(); itr != meshlist.end(); itr++)
         {
-            free(*itr);
+            delete (*itr);
         }
         meshlist.clear();
     }

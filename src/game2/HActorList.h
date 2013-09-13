@@ -10,7 +10,7 @@
 #define __Shooter__HActorList__
 
 #include <iostream>
-#include <vector>
+#include <deque>
 
 namespace hg {
     
@@ -35,12 +35,12 @@ namespace hg {
     template <class T>
     class ActorList
     {
-        typedef std::vector<T*> List;
+        typedef std::deque<T*> List;
     public:
         typedef typename List::iterator iterator;
         ActorList()
         {
-            list.reserve(300);
+            //list.reserve(300);
         }
         
         void removeInactiveActors()
@@ -60,8 +60,8 @@ namespace hg {
                 {
                     (*it)->release();
                 }
-                list.clear();
             }
+            list.erase(list.begin(), list.end());
         }
         
         void addActor(T* t)

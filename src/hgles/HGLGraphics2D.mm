@@ -20,6 +20,18 @@ namespace hgles {
     //HGLVertexBuffer* HGLGraphics2D::vertexBuffer;
     //HGLIndexBuffer* HGLGraphics2D::indexBuffer;
     
+    void HGLGraphics2D::cleanup()
+    {
+        if (squareVertexBuffer) {
+            delete squareVertexBuffer;
+            squareVertexBuffer = NULL;
+        }
+        if (squareIndexBuffer) {
+            delete squareIndexBuffer;
+            squareIndexBuffer = NULL;
+        }
+    }
+    
     void HGLGraphics2D::initialize()
     {
         // 頂点バッファ、インデックスバッファ作成

@@ -18,6 +18,7 @@
 #import "RRSGlowLabel.h"
 #import <sstream>
 #import <stdlib.h>
+#import "MainViewController.h"
 
 // Google AdMob
 #import "GADBannerView.h"
@@ -150,16 +151,19 @@
             float adheight = 0;
             
             // admob
-            if (IS_PLAYER_DETAIL_ADMOB)
+#if IS_PLAYER_DETAIL_ADMOB
             {
                 GADBannerView* ad = [MainViewController CreateGADBannerView];
-                [self addSubview:ad];
-                CGRect r = ad.frame;
-                r.origin.x = mainFrame.size.width/2 - r.size.width/2;
-                r.origin.y = mainFrame.size.height - r.size.height;
-                [ad setFrame:r];
-                adheight = r.size.height;
+                if (ad) {
+                    [self addSubview:ad];
+                    CGRect r = ad.frame;
+                    r.origin.x = mainFrame.size.width/2 - r.size.width/2;
+                    r.origin.y = mainFrame.size.height - r.size.height;
+                    [ad setFrame:r];
+                    adheight = r.size.height;
+                }
             }
+#endif
             
             // table
             float row_height = 25;
@@ -268,8 +272,7 @@
             {
                 ImageButtonView* backImgView = [[ImageButtonView alloc] initWithFrame:CGRectMake(0, 0, 66, 66)];
                 //UIImage* img = [UIImage imageNamed:@"checkmark.png"];
-                NSString *path = [[NSBundle mainBundle] pathForResource:ICON_CHECK ofType:@"png"];
-                UIImage* img = [[UIImage alloc] initWithContentsOfFile:path];
+                UIImage* img = [MainViewController getCheckImage];
                 
                 [backImgView setBackgroundColor:[UIColor whiteColor]];
                 [backImgView setFrame:CGRectMake(mainFrame.size.width - 76, mainFrame.size.height - 84, 66, 66)];

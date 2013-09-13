@@ -14,13 +14,14 @@
 #include <OpenGLES/ES2/glext.h>
 #import <string>
 #import "HGLCommon.h"
+#import "HGLGraphics2D.h"
 
 namespace hgles {
     
     ////////////////////
     // テクスチャ描画用プリミティブ
-    HGLIndexBuffer* squareIndexBuffer;
-    HGLVertexBuffer* squareVertexBuffer;
+    HGLIndexBuffer* squareIndexBuffer = NULL;
+    HGLVertexBuffer* squareVertexBuffer = NULL;
     ////////////////////
     // テクスチャIDリスト
     std::map<std::string, HGLTexture*> textureIds;
@@ -39,6 +40,11 @@ namespace hgles {
     HGLVector3 cameraPosition;
     HGLVector3 cameraRotate;
     //
+    
+    void cleanup()
+    {
+        HGLGraphics2D::cleanup();
+    }
     
     std::map<ProgramType, t_context> contextMap;
     

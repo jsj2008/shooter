@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+
+#if IS_GAMEFEAT
 #import <GameFeatKit/GFController.h>
+#endif
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 

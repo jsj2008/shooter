@@ -123,6 +123,7 @@ namespace hg
         {
             pLast->pNext = pHeader;
             pHeader->pPrev = pLast;
+            pLast = pHeader;
         }
         this->addAllocation(size);
         char* pStartMemBlock = pMem + sizeof(AllocHeader);
@@ -168,9 +169,13 @@ namespace hg
     {
         HDebug(@"HEAP CLEAR START");
         AllocHeader* pWk = NULL;
-        while((pWk = pFirst) != NULL)
+        while((pWk = pLast) != NULL)
         {
-            deleteAllocation(pWk->pStart);
+            HGObject* o = (HGObject*)(pWk->pStart);
+            int refCount = o->getRefCount();
+            for (int i = 0; i < refCount; i++) {
+                o->release();
+            }
         }
         pFirst = NULL;
         pLast = NULL;
@@ -189,6 +194,10 @@ namespace hg
 #if IS_NORELEASE
 #else
         AllocHeader *pHeader = (AllocHeader *)((char *)pMem - sizeof(AllocHeader));
+        if (pHeader->iSignature != SIGNATURE || pHeader->referenceCount <= 0)
+        {
+            return;
+        }
         assert(pHeader->iSignature == SIGNATURE);
         assert(pHeader->referenceCount > 0);
         pHeader->referenceCount--;
@@ -250,6 +259,11 @@ namespace hg
         s_pHeap->deleteAllocation(p);
     }*/
     
+    void cleanupMemory()
+    {
+        HGHeapFactory::CreateHeap(DEFAULT_HEAP_NAME)->freeAll();
+    }
+    
     ////////////////////
     // ステート管理
     std::string HGState::getName()
@@ -271,15 +285,17 @@ namespace hg
         this->onResume();
     }
 
+    HGStateManager* HGStateManager::pStateManager = NULL;
     HGStateManager* HGStateManager::sharedStateManger()
     {
-        static HGStateManager* pStateManager = NULL;
-        if (!pStateManager)
-        {
-            pStateManager = new HGStateManager();
-            //pStateManager->retain();
-        }
         return pStateManager;
+    }
+    void HGStateManager::initInstance()
+    {
+        if (pStateManager) {
+            delete pStateManager;
+        }
+        pStateManager = new HGStateManager();
     }
     
     void HGStateManager::clear()
@@ -364,6 +380,20 @@ namespace hg
         addProcessList.clear();
         delProcessList.clear();
         HDebug(@"PROCESS MANAGER CLEAR END");
+    }
+    
+    HGProcessManager* HGProcessManager::instance = NULL;
+    HGProcessManager* HGProcessManager::sharedProcessManager()
+    {
+        return instance;
+    }
+    void HGProcessManager::initInstance()
+    {
+        if (instance) {
+            delete instance;
+        }
+        instance = new HGProcessManager();
+        instance->init();
     }
     
     void HGProcessManager::addAndExecProcess(HGProcess* pProcess)
