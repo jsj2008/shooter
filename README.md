@@ -4,6 +4,7 @@ Shooting Game App Released on AppStore 2012
 ## Programming Language
 - C++
 - Objective-C
+- OpenGL ES
 
 ## Screenshots
 ![img](https://i.gyazo.com/6e850a0f38d86bcbe0adb1614ad281eb.png)
